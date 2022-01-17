@@ -1,3 +1,9 @@
-.container {
-  height: screen;
+.body {
+  height: 80vh;
+}
+
+.header_image {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
 }
