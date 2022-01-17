@@ -15,9 +15,9 @@ function TextInput(props) {
       </div>
       <div className="input-box">
         <input
+          id={props.name}
           type={props.type}
           class="form-control"
-          id={props.name}
           placeholder={props.placeholder}
           onChange={onChange}
         />
