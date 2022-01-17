@@ -23,8 +23,8 @@ function Navbar() {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">
-                Home
+              <a class="nav-link" aria-current="page" href="#">
+                설문조사
               </a>
             </li>
             <li class="nav-item">
@@ -70,18 +70,6 @@ function Navbar() {
               </ul>
             </li> */}
           </ul>
-          <div class="d-flex">
-            <a class="nav-link" href="#">
-              <button type="button" class="btn btn-primary">
-                로그인
-              </button>
-            </a>
-            <a class="nav-link" href="#">
-              <button type="button" class="btn btn-primary">
-                서비스 신청
-              </button>
-            </a>
-          </div>
         </div>
       </div>
     </nav>
