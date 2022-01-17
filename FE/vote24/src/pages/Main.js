@@ -8,7 +8,11 @@ function Main() {
       <div className="background bg-primary d-flex justify-content-center align-items-center">
         <div className="main_body bg-yellow d-flex flex-column justify-content-between align-items-center">
           <div className="text-white fw-bold">Vote24 설문조사 플랫폼</div>
-          <img className="absolute header_image" src={header_image}></img>
+          <img
+            className="absolute header_image"
+            src={header_image}
+            alt="header"
+          ></img>
           <button
             type="button"
             class="d-flex align-items-center indigo btn btn-lg"

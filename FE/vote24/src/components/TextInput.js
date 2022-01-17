@@ -1,8 +1,15 @@
 function TextInput(props) {
+  const onChange = (e) => {
+    props.onChange({
+      name: props.name,
+      value: e.target.value,
+    });
+  };
+
   return (
-    <div class="mb-5 d-flex">
+    <div class="mb-5 d-flex justify-content-between">
       <div className="label-box">
-        <label for={props.id} class="form-label">
+        <label for={props.name} class="form-label">
           {props.label}
         </label>
       </div>
@@ -10,11 +17,12 @@ function TextInput(props) {
         <input
           type={props.type}
           class="form-control"
-          id={props.id}
+          id={props.name}
           placeholder={props.placeholder}
+          onChange={onChange}
         />
       </div>
-      {props.label === "아이디(이메일)" ? (
+      {props.name === "email" ? (
         <button class="check-button btn btn-primary">중복확인</button>
       ) : null}
     </div>
