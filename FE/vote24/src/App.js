@@ -5,6 +5,9 @@ import Navbar from "./components/Navbar";
 import NavbarOnLogin from "./components/NavbarOnLogin";
 import NavbarUser from "./components/NavbarUser";
 import Footer from "./components/Footer";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Header from "./components/Header";
 
 function App() {
   const [isLogIn, setIsLogIn] = useState(false);
@@ -17,7 +20,8 @@ function App() {
         <NavbarUser></NavbarUser>
       </div>
       <div className="page_body">
-        <Main></Main>
+        {isLogIn ? <Main></Main> : <Header></Header>}
+        <Login></Login>
       </div>
       <Footer />
     </div>
