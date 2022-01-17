@@ -1,6 +1,7 @@
-.container {
+.form-box {
   height: 80vh;
-  margin: 30px 100px;
+  width: 75%;
+  margin-top: 30px;
 }
 
 .submit-button {
