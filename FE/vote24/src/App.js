@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Header from "./components/Header";
+import NoticeHospital from "./pages/NoticeHospital";
 
 function App() {
   const [isLogIn, setIsLogIn] = useState(false);
@@ -22,6 +23,9 @@ function App() {
       <div className="page_body">
         {isLogIn ? <Main></Main> : <Header></Header>}
         <Login></Login>
+      </div>
+      <div className="board">
+        <NoticeHospital></NoticeHospital>
       </div>
       <Footer />
     </div>
