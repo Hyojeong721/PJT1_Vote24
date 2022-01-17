@@ -11,7 +11,7 @@ import Header from "./components/Header";
 import NoticeHospital from "./pages/NoticeHospital";
 
 function App() {
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(true);
   return (
     <div>
       <div className="navbar">
@@ -21,8 +21,8 @@ function App() {
         <NavbarUser></NavbarUser>
       </div> */}
       <div className="page_body">
-        {isLogIn ? <Main></Main> : <Header></Header>}
-        <Login></Login>
+        {!isLogIn ? <Main></Main> : <Header></Header>}
+        <NoticeHospital></NoticeHospital>
       </div>
       <Footer />
     </div>
