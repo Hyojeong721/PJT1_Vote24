@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Main from "./components/Main";
+import Main from "./pages/Main";
 import Navbar from "./components/Navbar";
 import NavbarOnLogin from "./components/NavbarOnLogin";
 import NavbarUser from "./components/NavbarUser";
@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 import NoticeHospital from "./pages/NoticeHospital";
 
 function App() {
-  const [isLogIn, setIsLogIn] = useState(true);
+  const [isLogIn, setIsLogIn] = useState(false);
   return (
     <div>
       <div className="navbar">
