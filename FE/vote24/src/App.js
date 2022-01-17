@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import NavbarOnLogin from "./components/NavbarOnLogin";
 import NavbarUser from "./components/NavbarUser";
 import Footer from "./components/Footer";
+import NoticeHospital from "./pages/NoticeHospital";
 
 function App() {
   const [isLogIn, setIsLogIn] = useState(false);
@@ -16,7 +17,10 @@ function App() {
       <div className="navbar">
         <NavbarUser></NavbarUser>
       </div>
-      <div className="page_body">
+      <div className="board">
+        <NoticeHospital></NoticeHospital>
+      </div>
+      <div className="body">
         <Main></Main>
       </div>
       <Footer />
