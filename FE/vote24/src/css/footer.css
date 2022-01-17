@@ -6,3 +6,11 @@ a {
   text-decoration: none;
   color: black;
 }
+
+footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 60px;
+  width: 100%;
+}
