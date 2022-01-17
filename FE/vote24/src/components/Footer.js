@@ -1,4 +1,5 @@
 import "./css/Footer.css";
+import Logo from "../images/logo.png";
 
 function Footer() {
   return (
@@ -7,8 +8,8 @@ function Footer() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-sm-4 col-md-8 item">
-              <a href="#" className="a">
-                <h3>Vote 24</h3>
+              <a class="navbar-brand" href="#">
+                <img class="logo" src={Logo} alt="vote24" />
               </a>
               <p className="copyright">Vote24 © 2022</p>
             </div>
