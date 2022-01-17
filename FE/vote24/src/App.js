@@ -3,6 +3,7 @@ import "./App.css";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import NavbarOnLogin from "./components/NavbarOnLogin";
+import Footer from "./components/Footer";
 
 function App() {
   const [isLogIn, setIsLogIn] = useState(true);
@@ -14,6 +15,7 @@ function App() {
       <div className="body">
         <Main></Main>
       </div>
+      <Footer />
     </div>
   );
 }
