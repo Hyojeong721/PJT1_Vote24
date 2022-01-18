@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import axios from "axios";
 import TextInput from "../components/TextInput";
 import "../css/signup.css";
 import "../css/textinput.css";
 
-const SIGNUP_URL = "http://teama205.iptime.org/post";
+const SIGNUP_URL = "http://teama205.iptime.org/join";
 
 function Signup() {
   const [passwordWarning, setPasswordWarning] = useState(false);
@@ -24,6 +25,7 @@ function Signup() {
       return setPasswordWarning("두 비밀번호가 일치하지 않습니다.");
     }
 
+    console.log(info);
     axios
       .post(SIGNUP_URL, info)
       .then((res) => {
@@ -38,7 +40,6 @@ function Signup() {
       ...info,
       [name]: value,
     });
-    console.log(info);
   };
 
   return (
@@ -99,7 +100,7 @@ function Signup() {
 
         <div className="d-flex justify-content-center">
           <button
-            onSubmit={onSubmit}
+            onClick={onSubmit}
             type="submit"
             class="submit-button btn btn-primary"
           >
