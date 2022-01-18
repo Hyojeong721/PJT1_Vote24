@@ -1,4 +1,6 @@
-function TextInput(props) {
+import React from "react";
+
+function LinearInputForm(props) {
   const onChange = (e) => {
     props.onChange({
       name: props.name,
@@ -29,4 +31,4 @@ function TextInput(props) {
   );
 }
 
-export default TextInput;
+export default LinearInputForm;
