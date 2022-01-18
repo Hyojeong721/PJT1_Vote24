@@ -18,3 +18,4 @@ Copy this command for install all dependency Package;
 ** 병원 id 랜덤하게 생성 및 저장
 ** 서버 로그 출력 제작
 ** 코드 정리
+** 사진 받아와서 날짜 붙여서 저장
