@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TermsOfUse from "./TermsOfUse";
 import PrivacyPolicy from "./PrivacyPolicy";
 

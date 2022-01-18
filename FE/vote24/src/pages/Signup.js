@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import TextInput from "../components/TextInput";
+import LinearInputForm from "../components/LinearInputForm";
 import "../css/signup.css";
 import "../css/textinput.css";
 
@@ -45,7 +45,7 @@ function Signup() {
   return (
     <div className="container d-flex justify-content-center">
       <div className="form-box d-flex flex-column">
-        <TextInput
+        <LinearInputForm
           id="1"
           name="email"
           type="email"
@@ -53,7 +53,7 @@ function Signup() {
           placeholder="아이디는 이메일으로 입력해주세요."
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="2"
           name="password"
           type="password"
@@ -61,35 +61,35 @@ function Signup() {
           placeholder="비밀번호는 특수문자, 숫자, 영문을 각 1자 이상 포함해야합니다."
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="3"
           name="passwordCheck"
           type="password"
           label="비밀번호 확인"
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="4"
           name="hospitalName"
           type="text"
           label="병원명"
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="5"
           name="businessNumber"
           type="text"
           label="사업자번호"
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="6"
           name="phoneNumber"
           type="text"
           label="전화번호"
           onChange={onChange}
         />
-        <TextInput
+        <LinearInputForm
           id="7"
           name="logoFile"
           type="file"

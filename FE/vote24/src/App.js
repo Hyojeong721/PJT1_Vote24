@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Main from "./pages/Main";
+import MainOnLogin from "./pages/MainOnLogin";
 import Navbar from "./components/Navbar";
 import NavbarOnLogin from "./components/NavbarOnLogin";
 import NavbarUser from "./components/NavbarUser";
@@ -23,7 +24,7 @@ function App() {
       </div> */}
       <div className="page_body">
         {!isLogIn ? <Main></Main> : <Header></Header>}
-        <Signup />
+        <MainOnLogin />
       </div>
       <Footer />
     </div>
