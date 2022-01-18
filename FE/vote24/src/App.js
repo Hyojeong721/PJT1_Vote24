@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Header from "./components/Header";
 import NoticeHospital from "./pages/NoticeHospital";
+import ServiceInfo from "./pages/ServiceInfo";
 
 function App() {
   const [isLogIn, setIsLogIn] = useState(true);
@@ -22,7 +23,7 @@ function App() {
       </div> */}
       <div className="page_body">
         {!isLogIn ? <Main></Main> : <Header></Header>}
-        <Signup></Signup>
+        <Signup />
       </div>
       <Footer />
     </div>
