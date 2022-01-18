@@ -1,13 +1,16 @@
 사용한 Package
-` express, mysql2, cors, winston, winston-daily-rotate-file, multer`
+Copy this command for install all dependency Package; 
+` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path`
 
-[2022/01/17]
 
-1. 서버 오픈
-2. MYSQL 연동
-3. 간단한 API 생성 통신 확인
+#[2022/01/17]
+
+*** 서버 오픈
+*** MYSQL 연동
+*** 간단한 API 생성 통신 확인
 
 [2022/02/18]
 
-1. 회원가입 CRUD 생성 /join
-2. BE 폴더에 .gitignore 파일생성
+*** 회원가입 CRUD 생성 /join
+*** BE 폴더에 .gitignore 파일생성
+*** Make Route For File System
