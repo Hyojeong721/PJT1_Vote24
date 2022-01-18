@@ -2,16 +2,23 @@ import React from "react";
 
 function LinearInputForm(props) {
   const onChange = (e) => {
-    props.onChange({
-      name: props.name,
-      value: e.target.value,
-    });
+    if (props.type === "file") {
+      props.onChange({
+        name: props.name,
+        value: e.target.files[0],
+      });
+    } else {
+      props.onChange({
+        name: props.name,
+        value: e.target.value,
+      });
+    }
   };
 
   return (
-    <div class="mb-5 d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
       <div className="label-box">
-        <label for={props.name} class="form-label">
+        <label htmlFor={props.name} class="form-label">
           {props.label}
         </label>
       </div>
