@@ -5,25 +5,6 @@ function termsOfUseText() {
     <div class="content">
       <script src="//asset.moaform.com/assets/statics/terms-d67c24096f56fdafb40d9875925b5c31431812d59959b1376aa08b5bb3f5925c.js"></script>
       <div class="contentbox notices-terms">
-        <h2>이용약관</h2>
-        <div class="dropdown-box-wrapper js-dropdown-box-wrapper">
-          <div class="selected-item-wrapper">
-            <span class="behind-dev">
-              <i class="fi fi-v2-arrow-dropdown"></i>
-            </span>
-            <div class="selected-item">
-              <div
-                class="selected js-selected"
-                data-current-version="20171108-1"
-              >
-                20171108-1
-              </div>
-            </div>
-            <div class="hide-shadow">
-              <hr />
-            </div>
-          </div>
-        </div>
         <p>
           <strong>제1조(목적)</strong>
         </p>
