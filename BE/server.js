@@ -1,24 +1,33 @@
-/*
- * Installed Package Import
- */
-const fs = require("fs");
+// Installed Package Import
 const express = require("express");
-const server = express();
-const { pool } = require("./utils/mysql");
 const multer = require("multer");
+const fs = require("fs");
+
+// Utils Function Import
+const { pool } = require("./utils/mysql");
+const { logger } = require("./utils/winston");
+
+const PORT = 80;
+const server = express();
 const upload = multer({ dest: "./upload" });
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-
 server.use("/image", express.static("./upload"));
+server.use(cors());
 
 server.get("/", (req, res) => {
-  res.send("hello world");
-});
+  try{
+    logger.error("GET '/'");
+    console.log("GET '/'");
+    res.send("hello world");
+  } catch{
+    logger.error("GET '/ Error" + error);
+    console.log("GET '/' Error" + error);
+    return res.json(error);
+  }
 
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+});
 
 server.post("/login", upload.single("image"), async (req, res) => {
   const email = req.body.email;
@@ -40,29 +49,35 @@ server.post("/join", upload.single("image"), async (req, res) => {
   const business_number = req.body.business_number;
   const phone = req.body.phone;
   const logo_image = req.body.logo_image;
+
   // console.log("email : [" + email + "]");
   if (logo_image) {
     const image = "/image/" + logo_image;
     try {
       const sql = `INSERT INTO hospital_info (email, password, name, business_number, phone, logo_image) VALUES(?, ?, ?, ?, ?, ?);`;
       const data = await pool.query(sql, [email, password, name, business_number, phone, image]);
+      logger.info("[INFO] GET /join");
       return res.json({ result: "ok" });
     } catch (error) {
-      console.log("Error!!", error);
+      logger.error("POST /join Error" + error);
+      console.log("POST /join Error" + error);
       return res.json(error);
     }
   } else {
     try {
       const sql = `INSERT INTO hospital_info (email, password, name, business_number, phone) VALUES(?, ?, ?, ?, ?);`;
       const data = await pool.query(sql, [email, password, name, business_number, phone]);
+      logger.info("[INFO] GET /join");
       return res.json({ result: "ok" });
     } catch (error) {
-      console.log("Error!!", error);
+      logger.error("POST /join Error" + error);
+      console.log("POST /join Error" + error);
       return res.json(error);
     }
   }
 });
 
-server.listen(80, function () {
+server.listen(PORT, function () {
+  logger.info("Server listening on port 80");
   console.log("Server open port 80");
 });
