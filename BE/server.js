@@ -29,17 +29,6 @@ server.get("/", (req, res) => {
   }
 });
 
-server.post("/login", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  try {
-    const sql = `SELECT password FROM hospital_info WHERE email=?`;
-    const data = await pool.query(sql, [email]);
-    return res.json({ result: "ok" });
-  } catch {}
-});
-
 server.listen(PORT, function () {
   logger.info("Server listening on port 80");
   console.log("Server open port 80");
