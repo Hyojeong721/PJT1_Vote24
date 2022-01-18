@@ -17,18 +17,6 @@ server.use(express.urlencoded({ extended: true }));
 server.use(cors());
 server.use("/", routes);
 
-server.get("/", (req, res) => {
-  try {
-    logger.error("GET '/'");
-    console.log("GET '/'");
-    res.send("hello world");
-  } catch {
-    logger.error("GET '/ Error" + error);
-    console.log("GET '/' Error" + error);
-    return res.json(error);
-  }
-});
-
 server.post("/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
