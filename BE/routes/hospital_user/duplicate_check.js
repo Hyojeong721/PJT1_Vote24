@@ -11,13 +11,15 @@ router.post("/emailCheck", async (req, res) => {
     const data = await pool.query(sql, [email]);
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
+      logger.info("[INFO] POST /emailCheck");
       return res.json({ result: "이미 가입된 email 입니다." });
     } else {
-      return res.json({ result: "가압가능한 email 입니다." });
+      logger.info("[INFO] POST /emailCheck");
+      return res.json({ result: "가입 가능한 email 입니다." });
     }
   } catch (error) {
-    logger.error("POST /join Error" + error);
-    console.log("POST /join Error" + error);
+    logger.error("POST /emailCheck Error" + error);
+    console.log("POST /emailCheck Error" + error);
     return res.json(error);
   }
 });
@@ -29,13 +31,15 @@ router.post("/bnNumberCheck", async (req, res) => {
     const data = await pool.query(sql, [business_number]);
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
+      logger.info("[INFO] POST /bnNumberCheck");
       return res.json({ result: "이미 가입된 사업자 등록번호 입니다." });
     } else {
-      return res.json({ result: "가압가능한 사업자 등록번호 입니다." });
+      logger.info("[INFO] POST /bnNumberCheck");
+      return res.json({ result: "가입 가능한 사업자 등록번호 입니다." });
     }
   } catch (error) {
-    logger.error("POST /join Error" + error);
-    console.log("POST /join Error" + error);
+    logger.error("POST /bnNumberCheck Error" + error);
+    console.log("POST /bnNumberCheck Error" + error);
     return res.json(error);
   }
 });
