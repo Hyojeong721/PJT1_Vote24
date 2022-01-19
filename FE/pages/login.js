@@ -25,10 +25,12 @@ function Login() {
         } else {
           const reason = data.result.split(":");
           setErrorMessage(reason[1]);
-          alert(reason[1]);
+          toast(reason[1]);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -84,6 +86,7 @@ function Login() {
             </button>
           </div>
         </form>
+        <ToastContainer position="top-right" />
       </div>
     </>
   );

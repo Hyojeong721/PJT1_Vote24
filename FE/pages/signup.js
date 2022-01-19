@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Header from "../components/Header";
 import "../styles/Signup.module.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://teama205.iptime.org/api/join";
 const EMAIL_CHECK = "http://teama205.iptime.org/api/emailCheck";
@@ -13,8 +14,8 @@ const BN_CHECK = "http://teama205.iptime.org/api/bnNumberCheck";
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
-  // const [emailWarning, setEmailWarning] = useState("");
-  // const [bnWarning, setBnWarning] = useState("");
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [bnChecked, setBnChecked] = useState(false);
 
   const schema = yup.object().shape({
     email: yup.string().email().required("이메일 입력은 필수입니다."),
@@ -92,15 +93,31 @@ function Signup() {
         },
       })
       .then((res) => {
-        toast("회원가입 성공!");
+        toast("회원가입 성공!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((err) => {
-        toast("회원가입 실패!");
+        toast.error("회원가입 실패!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         console.log(err);
       });
   };
 
-  const emailCheck = async (e) => {
+  const onEmailCheck = async (e) => {
     const data = { email: e.target.value };
 
     await axios
@@ -110,12 +127,14 @@ function Signup() {
         },
       })
       .then((res) => {
-        console.log(res);
+        if (res.data.result === "ok") {
+          setEmailChecked(true);
+        }
       })
       .catch((err) => console.log(err));
   };
 
-  const bnCheck = async (e) => {
+  const onBnCheck = async (e) => {
     const data = { business_number: e.target.value };
     await axios
       .post(BN_CHECK, data, {
@@ -154,10 +173,10 @@ function Signup() {
             </div>
             <button
               type="button"
-              onClick={emailCheck}
+              onClick={onEmailCheck}
               class="check-button btn btn-primary"
             >
-              중복체크
+              {emailChecked ? <p>체크완료</p> : <p>중복체크</p>}
             </button>
           </div>
           <span className="error">{errors.email?.message}</span>
@@ -240,16 +259,16 @@ function Signup() {
                 id="business_number"
                 type="text"
                 class="form-control"
-                placeholder="전화번호를 입력해주세요."
+                placeholder="사업자 등록 번호를 입력해주세요."
                 {...register("business_number")}
               />
             </div>
             <button
               type="button"
-              onClick={bnCheck}
+              onClick={onBnCheck}
               class="check-button btn btn-primary"
             >
-              중복체크
+              {bnChecked ? <p>체크완료</p> : <p>중복체크</p>}
             </button>
           </div>
           <span className="error">{errors.business_number?.message}</span>
@@ -285,8 +304,8 @@ function Signup() {
             </button>
           </div>
         </form>
-        <ToastContainer position="top-right" />
       </div>
+      <ToastContainer position="top-right" />
     </>
   );
 }
