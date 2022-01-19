@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import Header from "../components/Header";
 import "../styles/Signup.module.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://teama205.iptime.org/api/join";
 const EMAIL_CHECK = "http://teama205.iptime.org/api/emailCheck";
@@ -11,8 +14,8 @@ const BN_CHECK = "http://teama205.iptime.org/api/bnNumberCheck";
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
-  // const [emailWarning, setEmailWarning] = useState("");
-  // const [bnWarning, setBnWarning] = useState("");
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [bnChecked, setBnChecked] = useState(false);
 
   const schema = yup.object().shape({
     email: yup.string().email().required("이메일 입력은 필수입니다."),
@@ -90,12 +93,31 @@ function Signup() {
         },
       })
       .then((res) => {
-        console.log(res);
+        toast("회원가입 성공!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("회원가입 실패!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        console.log(err);
+      });
   };
 
-  const emailCheck = async (e) => {
+  const onEmailCheck = async (e) => {
     const data = { email: e.target.value };
 
     await axios
@@ -105,12 +127,14 @@ function Signup() {
         },
       })
       .then((res) => {
-        console.log(res);
+        if (res.data.result === "ok") {
+          setEmailChecked(true);
+        }
       })
       .catch((err) => console.log(err));
   };
 
-  const bnCheck = async (e) => {
+  const onBnCheck = async (e) => {
     const data = { business_number: e.target.value };
     await axios
       .post(BN_CHECK, data, {
@@ -125,160 +149,164 @@ function Signup() {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="form-box d-flex flex-column"
-      >
-        <div class="d-flex justify-content-between mt-5">
-          <div className="label-box">
-            <label htmlFor="email" class="form-label">
-              이메일
-            </label>
+    <>
+      <Header></Header>
+      <div className="container d-flex justify-content-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="form-box d-flex flex-column"
+        >
+          <div class="d-flex justify-content-between mt-5">
+            <div className="label-box">
+              <label htmlFor="email" class="form-label">
+                이메일
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                placeholder="이메일을 입력해주세요."
+                {...register("email")}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={onEmailCheck}
+              class="check-button btn btn-primary"
+            >
+              {emailChecked ? <p>체크완료</p> : <p>중복체크</p>}
+            </button>
           </div>
-          <div className="input-box">
-            <input
-              id="email"
-              type="email"
-              class="form-control"
-              placeholder="이메일을 입력해주세요."
-              {...register("email")}
-            />
+          <span className="error">{errors.email?.message}</span>
+          <div class="d-flex justify-content-between mt-5">
+            <div className="label-box">
+              <label htmlFor="password" class="form-label">
+                비밀번호
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="password"
+                type="password"
+                class="form-control"
+                placeholder="비밀번호는 8 ~ 16자 사이로 설정해주세요."
+                {...register("password")}
+              />
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={emailCheck}
-            class="check-button btn btn-primary"
-          >
-            중복체크
-          </button>
-        </div>
-        <span className="error">{errors.email?.message}</span>
-        <div class="d-flex justify-content-between mt-5">
-          <div className="label-box">
-            <label htmlFor="password" class="form-label">
-              비밀번호
-            </label>
+          <span className="error">{errors.password?.message}</span>
+          <div class="d-flex justify-content-between mt-3">
+            <div className="label-box">
+              <label htmlFor="passwordConfirm" class="form-label">
+                비밀번호 확인
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="passwordConfirm"
+                type="password"
+                class="form-control"
+                placeholder="비밀번호를 확인해주세요."
+                {...register("passwordConfirm")}
+              />
+            </div>
           </div>
-          <div className="input-box">
-            <input
-              id="password"
-              type="password"
-              class="form-control"
-              placeholder="비밀번호는 8 ~ 16자 사이로 설정해주세요."
-              {...register("password")}
-            />
+          <span className="error">{errors.password?.message}</span>
+          <div class="d-flex justify-content-between mt-3">
+            <div className="label-box">
+              <label htmlFor="name" class="form-label">
+                병원명
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                placeholder="비밀번호를 확인해주세요."
+                {...register("name")}
+              />
+            </div>
           </div>
-        </div>
-        <span className="error">{errors.password?.message}</span>
-        <div class="d-flex justify-content-between mt-3">
-          <div className="label-box">
-            <label htmlFor="passwordConfirm" class="form-label">
-              비밀번호 확인
-            </label>
+          <span className="error">{errors.name?.message}</span>
+          <div class="d-flex justify-content-between mt-3">
+            <div className="label-box">
+              <label htmlFor="phone" class="form-label">
+                전화번호
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="phone"
+                type="text"
+                class="form-control"
+                placeholder="전화번호를 입력해주세요."
+                {...register("phone")}
+              />
+            </div>
           </div>
-          <div className="input-box">
-            <input
-              id="passwordConfirm"
-              type="password"
-              class="form-control"
-              placeholder="비밀번호를 확인해주세요."
-              {...register("passwordConfirm")}
-            />
+          <span className="error">{errors.phone?.message}</span>
+          <div class="d-flex justify-content-between mt-3">
+            <div className="label-box">
+              <label htmlFor="business_number" class="form-label">
+                사업자 등록 번호
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="business_number"
+                type="text"
+                class="form-control"
+                placeholder="사업자 등록 번호를 입력해주세요."
+                {...register("business_number")}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={onBnCheck}
+              class="check-button btn btn-primary"
+            >
+              {bnChecked ? <p>체크완료</p> : <p>중복체크</p>}
+            </button>
           </div>
-        </div>
-        <span className="error">{errors.password?.message}</span>
-        <div class="d-flex justify-content-between mt-3">
-          <div className="label-box">
-            <label htmlFor="name" class="form-label">
-              병원명
-            </label>
-          </div>
-          <div className="input-box">
-            <input
-              id="name"
-              type="text"
-              class="form-control"
-              placeholder="비밀번호를 확인해주세요."
-              {...register("name")}
-            />
-          </div>
-        </div>
-        <span className="error">{errors.name?.message}</span>
-        <div class="d-flex justify-content-between mt-3">
-          <div className="label-box">
-            <label htmlFor="phone" class="form-label">
-              전화번호
-            </label>
-          </div>
-          <div className="input-box">
-            <input
-              id="phone"
-              type="text"
-              class="form-control"
-              placeholder="전화번호를 입력해주세요."
-              {...register("phone")}
-            />
-          </div>
-        </div>
-        <span className="error">{errors.phone?.message}</span>
-        <div class="d-flex justify-content-between mt-3">
-          <div className="label-box">
-            <label htmlFor="business_number" class="form-label">
-              사업자 등록 번호
-            </label>
-          </div>
-          <div className="input-box">
-            <input
-              id="business_number"
-              type="text"
-              class="form-control"
-              placeholder="전화번호를 입력해주세요."
-              {...register("business_number")}
-            />
-          </div>
-          <button
-            type="button"
-            onClick={bnCheck}
-            class="check-button btn btn-primary"
-          >
-            중복체크
-          </button>
-        </div>
-        <span className="error">{errors.business_number?.message}</span>
+          <span className="error">{errors.business_number?.message}</span>
 
-        <div class="d-flex justify-content-between mt-3">
-          <div className="label-box">
-            <label htmlFor="logo_image" class="form-label">
-              병원 로고
-            </label>
+          <div class="d-flex justify-content-between mt-3">
+            <div className="label-box">
+              <label htmlFor="logo_image" class="form-label">
+                병원 로고
+              </label>
+            </div>
+            <div className="input-box">
+              <input
+                id="logo_image"
+                type="file"
+                class="form-control"
+                {...register("logo_image")}
+                onChange={onFileChange}
+              />
+            </div>
           </div>
-          <div className="input-box">
-            <input
-              id="logo_image"
-              type="file"
-              class="form-control"
-              {...register("logo_image")}
-              onChange={onFileChange}
+
+          <div className="w-75 d-flex justify-content-center">
+            <img
+              className="mw-100 border"
+              src={imgBase64}
+              alt="선택된 이미지 출력"
             />
           </div>
-        </div>
 
-        <div className="w-75 d-flex justify-content-center">
-          <img
-            className="mw-100 border"
-            src={imgBase64}
-            alt="선택된 이미지 출력"
-          />
-        </div>
-
-        <div className="d-flex justify-content-center mt-5">
-          <button type="submit" class="submit-button btn btn-primary">
-            회원가입
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="d-flex justify-content-center mt-5">
+            <button type="submit" class="submit-button btn btn-primary">
+              회원가입
+            </button>
+          </div>
+        </form>
+      </div>
+      <ToastContainer position="top-right" />
+    </>
   );
 }
 

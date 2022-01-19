@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Logo from "../public/logo.png";
 import "../styles/Footer.module.css";
 
@@ -9,7 +10,7 @@ function Footer() {
           <div className="row justify-content-center">
             <div className="col-sm-4 col-md-8 item">
               <a class="navbar-brand" href="#">
-                <img class="logo" src={Logo} alt="vote24" />
+                <Image class="logo" src={Logo} alt="vote24" />
               </a>
               <p className="copyright">Vote24 © 2022</p>
             </div>
