@@ -1,5 +1,5 @@
 import Logo from "../public/logo.png";
-import "../styles/footer.css";
+import "../styles/Footer.module.css";
 
 function Footer() {
   return (
