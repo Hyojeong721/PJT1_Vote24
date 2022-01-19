@@ -5,7 +5,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Header from "../components/Header";
-import "../styles/Signup.module.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://teama205.iptime.org/api/join";
@@ -176,7 +175,7 @@ function Signup() {
               onClick={onEmailCheck}
               class="check-button btn btn-primary"
             >
-              {emailChecked ? <p>체크완료</p> : <p>중복체크</p>}
+              {emailChecked ? <div>체크완료</div> : <div>중복체크</div>}
             </button>
           </div>
           <span className="error">{errors.email?.message}</span>
@@ -214,7 +213,7 @@ function Signup() {
             </div>
           </div>
           <span className="error">{errors.password?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex justify-content-between mt-5">
             <div className="label-box">
               <label htmlFor="name" class="form-label">
                 병원명
@@ -268,7 +267,7 @@ function Signup() {
               onClick={onBnCheck}
               class="check-button btn btn-primary"
             >
-              {bnChecked ? <p>체크완료</p> : <p>중복체크</p>}
+              {bnChecked ? <div>체크완료</div> : <div>중복체크</div>}
             </button>
           </div>
           <span className="error">{errors.business_number?.message}</span>
@@ -290,12 +289,9 @@ function Signup() {
             </div>
           </div>
 
-          <div className="w-75 d-flex justify-content-center">
-            <img
-              className="mw-100 border"
-              src={imgBase64}
-              alt="선택된 이미지 출력"
-            />
+          <div className="w-75 d-flex justify-content-center mt-2">
+            미리보기
+            <img className="mw-100 border m-2" src={imgBase64} alt="" />
           </div>
 
           <div className="d-flex justify-content-center mt-5">

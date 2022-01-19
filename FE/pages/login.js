@@ -3,7 +3,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Header from "../components/Header";
-import "../styles/Login.module.css";
 
 const LOGIN_URL = "http://teama205.iptime.org/api/login";
 
@@ -41,13 +40,13 @@ function Login() {
           onSubmit={handleSubmit(onSubmit)}
           className="form-box d-flex flex-column"
         >
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
+          <div class="mt-5">
+            <div className="login-label-box">
               <label htmlFor="email" class="form-label">
                 이메일
               </label>
             </div>
-            <div className="input-box">
+            <div className="login-input-box">
               <input
                 id="email"
                 type="email"
@@ -57,13 +56,13 @@ function Login() {
               />
             </div>
           </div>
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
+          <div class="mt-3">
+            <div className="login-label-box">
               <label htmlFor="password" class="form-label">
                 비밀번호
               </label>
             </div>
-            <div className="input-box">
+            <div className="login-input-box">
               <input
                 id="password"
                 type="password"
