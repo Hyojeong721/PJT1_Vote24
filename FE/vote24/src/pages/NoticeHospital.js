@@ -1,11 +1,10 @@
-import Table from "../components/Table";
+import React from "react";
+import PostList from "../components/PostList";
 
 function NoticeHospital() {
   return (
     <div>
-      <div>
-        <Table></Table>
-      </div>
+      <PostList></PostList>
     </div>
   );
 }

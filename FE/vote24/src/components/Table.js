@@ -1,24 +1,23 @@
-import { useState } from "react";
-import Tr from "./Tr";
+import React from "react";
+import "../css/table.css";
 
-function Table() {
-  const [info, setInfo] = useState([]);
-
+const Table = ({ headersName, children }) => {
   return (
-    <div>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">번호(고정)</th>
-            <th scope="col">생성일</th>
-            <th scope="col">제목</th>
-            <th scope="col">조회수</th>
-          </tr>
-        </thead>
-        <Tr info={info}></Tr>
-      </table>
-    </div>
+    <table className="table">
+      <thead>
+        <tr>
+          {headersName.map((item, index) => {
+            return (
+              <td className="table-header-column" key={index}>
+                {item}
+              </td>
+            );
+          })}
+        </tr>
+      </thead>
+      <tbody>{children}</tbody>
+    </table>
   );
-}
+};
 
 export default Table;
