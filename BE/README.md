@@ -25,3 +25,4 @@ Copy this command for install all dependency Package;
 ** bcrypt.js, jsonwebtoken.js 생성
 ** bcrypt 모듈 사용 암호화
 ** jsonwebtoken 토큰 발급
+\*\* 아이디, 사업자 등록번호 중복체크 추가
