@@ -12,10 +12,10 @@ router.post("/emailCheck", async (req, res) => {
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
       logger.info("[INFO] POST /emailCheck");
-      return res.json({ result: "이미 가입된 email 입니다." });
+      return res.json({ result: "notok" });
     } else {
       logger.info("[INFO] POST /emailCheck");
-      return res.json({ result: "가입 가능한 email 입니다." });
+      return res.json({ result: "ok" });
     }
   } catch (error) {
     logger.error("POST /emailCheck Error" + error);
@@ -32,10 +32,10 @@ router.post("/bnNumberCheck", async (req, res) => {
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
       logger.info("[INFO] POST /bnNumberCheck");
-      return res.json({ result: "이미 가입된 사업자 등록번호 입니다." });
+      return res.json({ result: "notok" });
     } else {
       logger.info("[INFO] POST /bnNumberCheck");
-      return res.json({ result: "가입 가능한 사업자 등록번호 입니다." });
+      return res.json({ result: "ok" });
     }
   } catch (error) {
     logger.error("POST /bnNumberCheck Error" + error);
