@@ -32,17 +32,20 @@ router.post("/login", async (req, res) => {
           { expiresIn: "24h" }
         );
         // console.log(token);
+        logger.info("[INFO] POST /login");
         return res.json({ result: "ok", token: token });
       } else {
         // console.log(compareResult);
+        logger.info("[INFO] POST /login");
         return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
       }
     } else {
+      logger.info("[INFO] POST /login");
       return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
     }
   } catch (error) {
-    logger.error("POST /join Error" + error);
-    console.log("POST /join Error" + error);
+    logger.error("POST /login Error" + error);
+    console.log("POST /login Error" + error);
     return res.json(error);
   }
 });
