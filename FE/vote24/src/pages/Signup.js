@@ -4,30 +4,40 @@ import LinearInputForm from "../components/LinearInputForm";
 import "../css/signup.css";
 import "../css/textinput.css";
 
-const SIGNUP_URL = "http://teama205.iptime.org/join";
+const SIGNUP_URL = "http://teama205.iptime.org/api/join";
 
 function Signup() {
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [passwordWarning, setPasswordWarning] = useState(false);
   const [info, setInfo] = useState({
     email: "",
     password: "",
     passwordCheck: "",
-    hospitalName: "",
-    businessNumber: "",
-    phoneNumber: "",
-    logoFile: "",
+    name: "",
+    business_number: "",
+    phone: "",
+    logo_name: "",
+    logo_image: "",
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (info.password !== info.passwordCheck) {
       return setPasswordWarning("두 비밀번호가 일치하지 않습니다.");
     }
 
-    console.log(info);
-    axios
-      .post(SIGNUP_URL, info)
+    const fd = new FormData();
+    for (let key in info) {
+      fd.append(`${key}`, info[key]);
+    }
+
+    await axios
+      .post(SIGNUP_URL, fd, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+        },
+      })
       .then((res) => {
         console.log(res);
       })
@@ -42,11 +52,33 @@ function Signup() {
     });
   };
 
+  const onFileChange = (input) => {
+    const { name, value } = input;
+
+    setInfo({
+      ...info,
+      logo_name: value.name,
+      logo_image: value,
+    });
+
+    if (value) {
+      let reader = new FileReader();
+      reader.readAsDataURL(value);
+
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        if (base64) {
+          var base64Sub = base64.toString();
+          setImgBase64(base64Sub);
+        }
+      };
+    }
+  };
+
   return (
     <div className="container d-flex justify-content-center">
-      <div className="form-box d-flex flex-column">
+      <div className="form-box d-flex flex-column gap-5">
         <LinearInputForm
-          id="1"
           name="email"
           type="email"
           label="아이디(이메일)"
@@ -54,7 +86,6 @@ function Signup() {
           onChange={onChange}
         />
         <LinearInputForm
-          id="2"
           name="password"
           type="password"
           label="비밀번호"
@@ -62,41 +93,44 @@ function Signup() {
           onChange={onChange}
         />
         <LinearInputForm
-          id="3"
           name="passwordCheck"
           type="password"
           label="비밀번호 확인"
           onChange={onChange}
         />
         <LinearInputForm
-          id="4"
-          name="hospitalName"
+          name="name"
           type="text"
           label="병원명"
           onChange={onChange}
         />
         <LinearInputForm
-          id="5"
-          name="businessNumber"
+          name="business_number"
           type="text"
           label="사업자번호"
           onChange={onChange}
         />
         <LinearInputForm
-          id="6"
-          name="phoneNumber"
+          name="phone"
           type="text"
           label="전화번호"
           onChange={onChange}
         />
         <LinearInputForm
-          id="7"
-          name="logoFile"
+          name="logo_image"
           type="file"
           label="병원 로고"
           placeholder="파일을 업로드 해주세요."
-          onChange={onChange}
+          onChange={onFileChange}
         />
+
+        <div className="w-75 d-flex justify-content-center">
+          <img
+            className="mw-100 border"
+            src={imgBase64}
+            alt="선택된 이미지 출력"
+          />
+        </div>
 
         <div className="d-flex justify-content-center">
           <button

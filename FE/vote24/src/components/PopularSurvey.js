@@ -33,7 +33,7 @@ function PopularSurvery() {
           </thead>
           <tbody>
             {surveyList.map((el) => (
-              <tr>
+              <tr key={el.id}>
                 <th scope="row">{el.id}</th>
                 <td>{el.title}</td>
                 <td>{el.userId}</td>
