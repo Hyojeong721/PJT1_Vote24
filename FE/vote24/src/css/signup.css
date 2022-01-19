@@ -7,3 +7,23 @@
 .submit-button {
   width: 200px;
 }
+
+.check-button {
+  width: 120px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.error {
+  color: crimson;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.label-box {
+  width: 200px;
+}
+
+.input-box {
+  width: 100%;
+}

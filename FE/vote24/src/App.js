@@ -24,7 +24,7 @@ function App() {
       </div> */}
       <div className="page_body">
         {!isLogIn ? <Main></Main> : <Header></Header>}
-        <Signup />
+        <Login />
       </div>
       <Footer />
     </div>
