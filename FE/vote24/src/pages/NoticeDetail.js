@@ -4,6 +4,7 @@ import "../css/post.css";
 
 const NoticeDetail = ({ history, location, match }) => {
   const [data, setData] = useState({});
+
   const { no } = match.params;
 
   useEffect(() => {

@@ -6,9 +6,9 @@ const Table = ({ headersName, children }) => {
     <table className="table">
       <thead>
         <tr>
-          {headersName.map((item) => {
+          {headersName.map((item, index) => {
             return (
-              <td className="table-header-column" key={item.no}>
+              <td className="table-header-column" key={index}>
                 {item}
               </td>
             );

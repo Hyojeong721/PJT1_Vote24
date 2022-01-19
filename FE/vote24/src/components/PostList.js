@@ -20,7 +20,8 @@ const PostList = () => {
                 <TableRow key={index}>
                   <TableColumn>{item.no}</TableColumn>
                   <TableColumn>
-                    <link to={`/noticeDetail/${item.no}`}>{item.title}</link>
+                    {/* <link to={`/noticeDetail/${item.no}`}>{item.title}</link> */}
+                    {item.title}
                   </TableColumn>
                   <TableColumn>{item.createDate}</TableColumn>
                   <TableColumn>{item.readCount}</TableColumn>

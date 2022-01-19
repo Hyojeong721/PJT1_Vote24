@@ -15,18 +15,18 @@ function App() {
       <div className="navbar">
         {isLogIn ? <Navbar></Navbar> : <NavbarOnLogin></NavbarOnLogin>}
       </div>
-      <div className="navbar">
+      {/* <div className="navbar">
         <NavbarUser></NavbarUser>
-      </div>
+      </div> */}
       <div className="board">
         <NoticeHospital></NoticeHospital>
       </div>
-      <div className="board">
+      {/* <div className="board">
         <NoticeDetail></NoticeDetail>
-      </div>
-      <div className="body">
+      </div> */}
+      {/* <div className="body">
         <Main></Main>
-      </div>
+      </div> */}
       <Footer />
     </div>
   );
