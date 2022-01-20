@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps }) {
   const [isLogIn, setIsLogIn] = useState(false);
 
   useEffect(() => {
-    console.log("1");
     const token = window.localStorage.getItem("token");
     if (token) {
       setIsLogIn(true);
