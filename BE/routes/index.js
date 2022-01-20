@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const mainPage_userRouter = require("./mainPage");
-const eventPage_userRouter = require("./event_page");
+const eventPage_userRouter = require("./eventPage");
 const hospital_userRouter = require("./hospital_user/join");
 const hospital_userRouter_login = require("./hospital_user/login");
 const duplicate_checkRouter = require("./hospital_user/duplicate_check");
