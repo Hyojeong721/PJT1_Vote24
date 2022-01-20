@@ -111,7 +111,7 @@ router.delete("/event/:hospital_id/:id", async (req, res) => {
  * Update event info from Server
  * Example URL = ../event/list/947780?id=1
  *----------------------------------------------------------------------*/
-router.put('/event/:hospital_id/:id', event_upload('event_image'),async (req, res) => {
+router.put('/event/:hospital_id/:id', event_upload.single('event_image'),async (req, res) => {
     const hospital_id = req.params.hospital_id;
     const id = req.query;
     const {
