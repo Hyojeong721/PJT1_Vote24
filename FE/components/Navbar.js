@@ -6,7 +6,7 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const [isLogIn, setIsLogIn] = useState(true);
+  const [isLogIn, setIsLogIn] = useState(false);
   const surveyNav = [
     {
       title: "설문 목록",
