@@ -1,10 +1,43 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import NavItem from "./NavItem";
 import Logo from "../public/logo.png";
+import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [isLogIn, setIsLogIn] = useState(true);
+  const surveyNav = [
+    {
+      title: "설문 목록",
+      url: "/survey",
+    },
+    {
+      title: "설문 생성",
+      url: "/survey/create",
+    },
+  ];
+  const hNoticeNav = [
+    {
+      title: "공지 목록",
+      url: "/notice",
+    },
+    {
+      title: "공지 생성",
+      url: "/notice/create",
+    },
+  ];
+  const hEventNav = [
+    {
+      title: "이벤트 목록",
+      url: "/event",
+    },
+    {
+      title: "이벤트 생성",
+      url: "/event/create",
+    },
+  ];
+
   const handleLogout = () => {
     window.localStorage.removeItem("token");
     console.log("logout");
@@ -37,111 +70,24 @@ function Navbar() {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav links */}
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <Link href="/">
-                <a class="nav-link active fs-5" aria-current="page">
-                  Home
-                </a>
-              </Link>
-            </li>
-            {isLogIn ? (
+            <NavItem url="/" title="Home" />
+            {!isLogIn ? (
               <>
-                <li class="nav-item">
-                  <Link href="/service/notice">
-                    <a class="nav-link fs-5">공지사항</a>
-                  </Link>
-                </li>
-                <li class="nav-item">
-                  <Link href="/service/event">
-                    <a class="nav-link fs-5">이벤트</a>
-                  </Link>
-                </li>
+                <NavItem url="/service/info" title="서비스 소개" />
+                <NavItem url="/service/notice" title="공지사항" />
               </>
             ) : (
               <>
-                <li class="nav-item">
-                  <Link href="/service/notice">
-                    <a class="nav-link">서비스 공지사항</a>
-                  </Link>
-                </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    설문
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        설문 목록
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        설문 생성
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    병원 공지
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        공지 목록
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        공지 생성
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    병원 이벤트
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        이벤트 목록
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        이벤트 생성
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+                <NavItem url="/service/notice" title="서비스 공지사항" />
+                <NavDropdown title="설문" subtitles={surveyNav} />
+                <NavDropdown title="병원 공지" subtitles={hNoticeNav} />
+                <NavDropdown title="병원 이벤트" subtitles={hEventNav} />
               </>
             )}
           </ul>
 
           {/* top-right button */}
-          {isLogIn ? (
+          {!isLogIn ? (
             <div class="d-flex">
               <Link href="/login">
                 <a class="nav-link">

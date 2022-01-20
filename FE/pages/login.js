@@ -34,7 +34,7 @@ function Login() {
 
   return (
     <>
-      <Header></Header>
+      <Header title="로그인"></Header>
       <div className="container d-flex justify-content-center">
         <form
           onSubmit={handleSubmit(onSubmit)}

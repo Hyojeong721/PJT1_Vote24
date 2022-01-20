@@ -1,10 +1,14 @@
 import React from "react";
-import PostList from "../components/PostList";
+import Header from "../../components/Header";
+import PostList from "../../components/PostList";
 
 function NoticeHospital() {
   return (
     <div>
-      <PostList></PostList>
+      <Header title="병원 공지사항"></Header>
+      <div className="container">
+        <PostList></PostList>
+      </div>
     </div>
   );
 }

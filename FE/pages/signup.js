@@ -149,7 +149,7 @@ function Signup() {
 
   return (
     <>
-      <Header></Header>
+      <Header title="서비스 신청"></Header>
       <div className="container d-flex justify-content-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -296,7 +296,7 @@ function Signup() {
 
           <div className="d-flex justify-content-center mt-5">
             <button type="submit" class="submit-button btn btn-primary">
-              회원가입
+              서비스 신청
             </button>
           </div>
         </form>

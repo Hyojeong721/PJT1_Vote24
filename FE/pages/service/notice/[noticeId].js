@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getPostByNo } from "../data/Postdata";
+import { getPostByNo } from "../../../data/Postdata";
 
 const NoticeDetail = ({ history, location, match }) => {
   const [data, setData] = useState({});
   const router = useRouter();
-  const { noticeId } = router.params;
 
   useEffect(() => {
-    setData(getPostByNo(noticeId));
+    console.log(router.params);
+    setData(getPostByNo(1));
   }, []);
 
   return (

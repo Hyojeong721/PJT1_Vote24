@@ -19,7 +19,7 @@ function PopularSurvery() {
   }, []);
 
   return (
-    <div class="large-card card mb-3">
+    <div class="card mb-3">
       <div class="card-body">
         <h2 class="card-title">인기 설문</h2>
         <table class="table">

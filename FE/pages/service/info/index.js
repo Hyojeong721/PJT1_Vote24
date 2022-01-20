@@ -6,7 +6,7 @@ import TermsOfUse from "../../../components/TermsOfUse";
 function ServiceInfo() {
   return (
     <>
-      <Header></Header>
+      <Header title="서비스 이용 안내"></Header>
       <div className="container mt-5">
         <div className="d-flex gap-5">
           <Link href="">
