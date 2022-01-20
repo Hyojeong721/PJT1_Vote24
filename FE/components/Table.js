@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/Table.module.css";
 
 const Table = ({ headersName, children }) => {
   return (

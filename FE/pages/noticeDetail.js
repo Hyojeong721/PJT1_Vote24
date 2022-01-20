@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getPostByNo } from "../data/Postdata";
-import "../styles/Post.module.css";
 
 const NoticeDetail = ({ history, location, match }) => {
   const [data, setData] = useState({});

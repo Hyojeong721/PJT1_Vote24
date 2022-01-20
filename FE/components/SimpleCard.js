@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/Simplecard.module.css";
 
 function SimpleCard(props) {
   return (

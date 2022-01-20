@@ -2,7 +2,6 @@ import React from "react";
 import HospitalSatisfaction from "../components/HospitalSatisfaction";
 import PopularSurvery from "../components/PopularSurvey";
 import SimpleCard from "../components/SimpleCard";
-import "../css/Mainonlogin.css";
 
 function Main() {
   return (

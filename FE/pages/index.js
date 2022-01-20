@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import header_image from "../public/header_image.png";
-import "../styles/Main.module.css";
 
 function Main() {
+  const [isLogIn, setIsLogIn] = useState(false);
+
+  useEffect(() => {
+    console.log("2");
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      setIsLogIn(true);
+    }
+  });
+
   return (
     <div>
       <div className="background bg-primary d-flex justify-content-center align-items-center">

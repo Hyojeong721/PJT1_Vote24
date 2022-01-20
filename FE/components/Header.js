@@ -1,5 +1,3 @@
-import "../styles/Header.module.css";
-
 function Header() {
   return (
     <div className="header-box bg-primary text-white d-flex align-items-center">
