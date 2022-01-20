@@ -7,6 +7,7 @@ import NavDropdown from "./NavDropdown";
 
 function Navbar() {
   const [isLogIn, setIsLogIn] = useState(false);
+
   const surveyNav = [
     {
       title: "설문 목록",

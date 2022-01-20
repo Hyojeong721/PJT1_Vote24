@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Header from "../components/Header";
+import "react-toastify/dist/ReactToastify.css";
 
 const LOGIN_URL = "http://teama205.iptime.org/api/login";
 
@@ -11,14 +12,13 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data) => {
+    console.log(data);
+
     await axios
-      .post(LOGIN_URL, data, {
-        headers: {
-          "Content-Type": `multipart/form-data`,
-        },
-      })
+      .post(LOGIN_URL, JSON.stringify(data))
       .then((res) => {
         const data = res.data;
+        console.log(res.data);
         if (data.result === "ok") {
           window.localStorage.setItem("JWT", data.token);
         } else {
@@ -48,7 +48,7 @@ function Login() {
             </div>
             <div className="login-input-box">
               <input
-                id="email"
+                name="email"
                 type="email"
                 class="form-control"
                 placeholder="이메일을 입력해주세요."
@@ -64,7 +64,7 @@ function Login() {
             </div>
             <div className="login-input-box">
               <input
-                id="password"
+                name="password"
                 type="password"
                 class="form-control"
                 placeholder="비밀번호를 입력해주세요."
