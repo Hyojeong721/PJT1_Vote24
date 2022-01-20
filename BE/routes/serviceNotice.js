@@ -2,23 +2,22 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
-const { pool } = require("../../utils/mysql");
-const { logger } = require("../../utils/winston");
-const { service_storage } = require("../../utils/multer");
+const { pool } = require("../utils/mysql");
+const { logger } = require("../utils/winston");
+const { service_upload } = require("../utils/multer");
 const { nameParser } = require("../utils/nameParser");
 
 const router = express.Router();
 
 // service_notice write.
-router.post("/service", service_storage.single("service_notice_image"), async (req, res) => {
+router.post("/service", service_upload.single("service_notice_image"), async (req, res) => {
   const { title, context, fixed, attachment } = req.body;
   const rename = Date() + attachment;
   const path = "uploads/service/" + rename;
 
-  nameParser("uploads/service", "uploads/service", attachment, rename);
-
   try {
     if (req.body.attachment) {
+      nameParser("uploads/service", "uploads/service", attachment, rename);
       const sql = `INSERT INTO service_notice ( title, context, fixed, attachment) VALUES(?, ?, ?, ?);`;
       const data = await pool.query(sql, [title, context, fixed, path]);
     } else {
@@ -39,20 +38,18 @@ router.post("/service", service_storage.single("service_notice_image"), async (r
 // router.put("/:id", upload.single("attachment"), async (req, res) => {
 // const id = req.params.id;
 // json객체로 id 받는 방식
-router.put("/service/:id", service_storage.single("service_notice_image"), async (req, res) => {
-  const id = req.query;
+router.put("/service/:id", service_upload.single("service_notice_image"), async (req, res) => {
+  const id = req.params.id;
   const { title, context, fixed, attachment } = req.body;
   const rename = Date() + attachment;
   const path = "uploads/service/" + rename;
-
-  nameParser("uploads/service", "uploads/service", attachment, rename);
-
   try {
     if (req.body.attachment) {
-      const sql = `UPDATE service_notice SET title=?, context=?, fixed=?, attachment=?) WHERE id = ?;`;
+      nameParser("uploads/service", "uploads/service", attachment, rename);
+      const sql = `UPDATE service_notice SET title=?, context=?, fixed=?, attachment=? WHERE id=?;`;
       const data = await pool.query(sql, [title, context, fixed, path, id]);
     } else {
-      const sql = `UPDATE service_notice SET title=?, context=?, fixed=?) WHERE id = ?;`;
+      const sql = `UPDATE service_notice SET title=?, context=?, fixed=? WHERE id=?;`;
       const data = await pool.query(sql, [title, context, fixed, id]);
     }
     logger.info("[INFO] PATCH /service_notice/update");
@@ -64,11 +61,11 @@ router.put("/service/:id", service_storage.single("service_notice_image"), async
 });
 
 // service_notice delete
-router.delete("/:id", async (req, res) => {
+router.delete("/service/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const sql = `DELETE FROM service_notice WRERE id=?;`;
+    const sql = `DELETE FROM service_notice WHERE id=?;`;
     const data = await pool.query(sql, [id]);
 
     logger.info("[INFO] DELETE /service_notice/delete");
@@ -80,11 +77,11 @@ router.delete("/:id", async (req, res) => {
 });
 
 // service_notice Detail
-router.get("/:id", async (req, res) => {
+router.get("/service/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const sql = `SERECT * FROM service_notice WHERE ID = ?;`;
+    const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id]);
     const result = data[0];
 
@@ -100,12 +97,12 @@ router.get("/:id", async (req, res) => {
 
 // service_notice list
 
-router.get("/", async (req, res) => {
+router.get("/service/", async (req, res) => {
   try {
     // front에서 필요한 부분만 보내도록 쿼리 수정가능
 
     const { page } = req.query;
-    const sql = `SERECT * FROM service_notice;`;
+    const sql = `SELECT * FROM service_notice;`;
     const data = await pool.query(sql);
     const result = data[0].slice((page - 1) * 10, page * 10);
 
