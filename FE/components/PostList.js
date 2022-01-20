@@ -3,11 +3,13 @@ import Table from "./Table";
 import TableRow from "./TableRow";
 import TableColumn from "./TableColumn";
 import { postList } from "../data/Postdata";
+import axios from "axios";
 
 const PostList = () => {
   const [dataList, setDataList] = useState([]);
 
   useEffect(() => {
+    // await axios.get();
     setDataList(postList);
   }, []);
 

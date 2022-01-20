@@ -1,39 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import header_image from "../public/header_image.png";
+import Main from "../components/Main";
+import MainOnLogin from "../components/MainOnLogin";
 
-function Main() {
+function Home() {
   const [isLogIn, setIsLogIn] = useState(false);
 
   useEffect(() => {
-    console.log("2");
     const token = window.localStorage.getItem("token");
     if (token) {
       setIsLogIn(true);
     }
   });
 
-  return (
-    <div>
-      <div className="background bg-primary d-flex justify-content-center align-items-center">
-        <div className="main_body bg-yellow d-flex flex-column justify-content-between align-items-center">
-          <div className="text-white fw-bold">Vote24 설문조사 플랫폼</div>
-          <div className="absolute header_image">
-            <Image src={header_image} alt="header" />
-          </div>
-          <button
-            type="button"
-            class="d-flex align-items-center indigo btn btn-lg"
-          >
-            <div>
-              <input type="text"></input>
-            </div>
-            <div className="text-white">코드 입력</div>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  return <div>{isLogIn ? <Main /> : <MainOnLogin />}</div>;
 }
 
-export default Main;
+export default Home;
