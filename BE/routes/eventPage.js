@@ -12,16 +12,15 @@ const router = express.Router();
  * Get event list from Server
  * Example URL = ../event/list/947780?page=1
  *----------------------------------------------------------------------*/
-router.get('/event/list/:hospital_id', async (req, res) => {
+router.get('/event/:hospital_id', async (req, res) => {
     try { 
         const hospital_id = req.params.hospital_id;
         const { page } = req.query;
 
         const data = await pool.query("select * from hospital_event where hospital_id =?", [hospital_id]);  
         const result = data[0].slice(((page-1) * 10), (page * 10));
-
-        return res.json(result);
         logger.info('GET /event/:hosptial_id?page=n');
+        return res.json(result);
     }
     catch(error){
         logger.error('GET /event/:hosptial_id?page=n' + error);
@@ -33,14 +32,14 @@ router.get('/event/list/:hospital_id', async (req, res) => {
  * Get event info from Server
  * Example URL = ../event/list/947780?id=1
  *----------------------------------------------------------------------*/
-router.get("/event/detail/:hospital_id", async (req, res) => {
+router.get("/event/:hospital_id/:id", async (req, res) => {
     try {
         const hospital_id = req.params.hospital_id;
-        const { id } = req.query;
+        const id = req.params.id;
                 
         const data = await pool.query("select * from hospital_event where hospital_id =? and id=?", [hospital_id, id]);
         const result = data[0];
-
+aa
         logger.info('GET /event/:hosptial_id?id=n');
         return res.json(result);
     }   
@@ -54,7 +53,7 @@ router.get("/event/detail/:hospital_id", async (req, res) => {
  * POST event info to Server
  * Example URL = ../event/list/947780
  *----------------------------------------------------------------------*/
-router.post('/event/create/:hospital_id', event_upload.single('event_img'),async (req, res) => {
+router.post('/event/:hospital_id', event_upload.single('event_img'),async (req, res) => {
     try {
         const hospital_id = req.params.hospital_id;
         const {
@@ -92,10 +91,10 @@ router.post('/event/create/:hospital_id', event_upload.single('event_img'),async
  * Delete event info from Server
  * Example URL = ../event/list/947780?id=1
  *----------------------------------------------------------------------*/
-router.delete("/event/delete/:hospital_id", async (req, res) => {
+router.delete("/event/:hospital_id/:id", async (req, res) => {
     try {
         const hospital_id = req.params.hospital_id;
-        const {id} = req.query;
+        const id = req.params.id;
         const sql = `DELETE FROM hospital_event WHERE hospital_id =? AND id =?`
         const data = await pool.query(sql, [hospital_id, id]);
         console.log(id);
@@ -112,9 +111,9 @@ router.delete("/event/delete/:hospital_id", async (req, res) => {
  * Update event info from Server
  * Example URL = ../event/list/947780?id=1
  *----------------------------------------------------------------------*/
-router.patch('/event/patch/:hospital_id', async (req, res) => {
+router.put('/event/:hospital_id/:id', event_upload('event_image'),async (req, res) => {
     const hospital_id = req.params.hospital_id;
-    const {id} = req.query;
+    const id = req.query;
     const {
         title,
         end_at,
@@ -123,6 +122,11 @@ router.patch('/event/patch/:hospital_id', async (req, res) => {
         attachment
     } = req.body;
 
+    const rename = Date() + attachment;
+    const path = 'uploads/event/' + rename;
+
+    nameParser("uploads/event", "uploads/event", attachment, rename);
+
     try {
         const sql = `update hospital_event set
             title =?, 
@@ -130,7 +134,8 @@ router.patch('/event/patch/:hospital_id', async (req, res) => {
             start_at =?, 
             end_at =?, 
             attachment =? where id=? AND hospital_id`;
-        const data = await pool.query(sql, [title, context, start_at, end_at, attachment, id, hospital_id]);
+
+            const data = await pool.query(sql, [title, context, start_at, end_at, attachment, id, hospital_id]);
 
         logger.info('PATCH /event/patch/:hospital_id');
         return res.json({state:'Success'});
@@ -163,7 +168,6 @@ router.get("/event/:hospital_id/:id/download", async (req, res) => {
         logger.error('GET Fail ' + error);
         return res.send("Fail");
     }
-
 })
 
 module.exports = router;
