@@ -6,7 +6,6 @@ Copy this command for install all dependency Package;
 * MYSQL 연동
 * 간단한 API 생성 통신 확인
 
-<<<<<<< BE/README.md
 #[2022/01/18]
 * 회원가입 CRUD 생성 /join
 * BE 폴더에 .gitignore 파일생성
