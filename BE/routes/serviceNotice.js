@@ -97,14 +97,15 @@ router.get("/service/:id", async (req, res) => {
 
 // service_notice list
 
-router.get("/service/", async (req, res) => {
+router.get("/service", async (req, res) => {
   try {
     // front에서 필요한 부분만 보내도록 쿼리 수정가능
 
-    const { page } = req.query;
+    // const { page } = req.query;
     const sql = `SELECT * FROM service_notice;`;
     const data = await pool.query(sql);
-    const result = data[0].slice((page - 1) * 10, page * 10);
+    // const result = data[0].slice((page - 1) * 10, page * 10);
+    const result = data[0];
 
     logger.info("[INFO] GET /service_notice/list");
     return res.json(result);
