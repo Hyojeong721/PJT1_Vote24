@@ -36,3 +36,8 @@ Copy this command for install all dependency Package;
 * 공지 관련 api 제작
 * 코드 간결화 및 유효성 검사
 * 서비스 공지사항 CRUD 작성
+
+#[2022/01/21]
+* hospitalUser.js 수정
+* survey 관련 테이블 restAPI CRUD 작성
+* 조회수 쿼리 추가
