@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import Table from "./Table";
 import TableRow from "./TableRow";
 import TableColumn from "./TableColumn";
-import { postList } from "../data/Postdata";
 import axios from "axios";
+import Link from "next/link";
 
 const PostList = () => {
   const [dataList, setDataList] = useState([]);
 
   useEffect(() => {
-    // await axios.get();
-    setDataList(postList);
+    const getList = async () => {
+      const res = await axios.get(
+        `http://teama205.iptime.org/api/event/947780`
+      );
+      const data = res.data;
+      console.log(data);
+      setDataList(data);
+    };
+    getList();
   }, []);
 
   return (
@@ -20,13 +27,12 @@ const PostList = () => {
           ? dataList.map((item, index) => {
               return (
                 <TableRow key={index}>
-                  <TableColumn>{item.no}</TableColumn>
+                  <TableColumn>{item.id}</TableColumn>
                   <TableColumn>
-                    {/* <link to={`/noticeDetail/${item.no}`}>{item.title}</link> */}
-                    {item.title}
+                    <Link href={`/notice/${item.id}`}>{item.title}</Link>
                   </TableColumn>
-                  <TableColumn>{item.createDate}</TableColumn>
-                  <TableColumn>{item.readCount}</TableColumn>
+                  <TableColumn>{item.created_at}</TableColumn>
+                  <TableColumn>{item.views}</TableColumn>
                 </TableRow>
               );
             })
