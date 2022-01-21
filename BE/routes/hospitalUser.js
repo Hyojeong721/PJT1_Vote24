@@ -43,7 +43,8 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
     }
     logger.info("GET /join");
     return res.json({ result: "ok" });
-  } catch (error) {
+  } 
+  catch (error) {
     logger.error("POST /join Error" + error);
     return res.json(error);
   }
@@ -80,7 +81,6 @@ router.get("/login", async (req, res) => {
     return res.json({ result: "ok", id: UserId, code: code, token: token });
   } catch (error) {
     logger.error("GET /login Error" + error);
-    console.log("GET /login Error" + error);
     return res.json(error);
   }
 });
