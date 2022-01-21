@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import NavItem from "./NavItem";
@@ -6,7 +8,8 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const [isLogIn, setIsLogIn] = useState(true);
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   const surveyNav = [
     {
@@ -39,10 +42,24 @@ function Navbar() {
     },
   ];
 
+  useEffect(() => {
+    console.log("navbar useEffect", isLoggedIn);
+  }, [isLoggedIn]);
+
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
-    console.log("logout");
-    setIsLogIn(false);
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("code");
+    localStorage.removeItem("id");
+    dispatch({ type: "LOGOUT" });
+    toast("로그아웃 성공!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -72,7 +89,7 @@ function Navbar() {
           {/* nav links */}
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <NavItem url="/" title="Home" />
-            {!isLogIn ? (
+            {!isLoggedIn ? (
               <>
                 <NavItem url="/service/info" title="서비스 소개" />
                 <NavItem url="/service/notice" title="공지사항" />
@@ -88,7 +105,7 @@ function Navbar() {
           </ul>
 
           {/* top-right button */}
-          {!isLogIn ? (
+          {!isLoggedIn ? (
             <div class="d-flex">
               <Link href="/login">
                 <a class="nav-link">

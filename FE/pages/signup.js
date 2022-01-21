@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import Header from "../components/Header";
+import Image from "next/image";
+import verified from "../public/verified_white_24dp.svg";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://teama205.iptime.org/api/join";
@@ -13,8 +17,17 @@ const BN_CHECK = "http://teama205.iptime.org/api/bnNumberCheck";
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
-  const [emailChecked, setEmailChecked] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(true);
   const [bnChecked, setBnChecked] = useState(false);
+  const router = useRouter();
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+
+  useEffect(() => {
+    console.log("login useEffect:", isLoggedIn);
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
 
   const schema = yup.object().shape({
     email: yup.string().email().required("이메일 입력은 필수입니다."),
@@ -50,6 +63,7 @@ function Signup() {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -92,7 +106,7 @@ function Signup() {
         },
       })
       .then((res) => {
-        toast("회원가입 성공!", {
+        toast("서비스 신청 완료!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -101,9 +115,10 @@ function Signup() {
           draggable: true,
           progress: undefined,
         });
+        router.push("/");
       })
       .catch((err) => {
-        toast.error("회원가입 실패!", {
+        toast.error("서비스 신청 실패!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -116,33 +131,76 @@ function Signup() {
       });
   };
 
+  const onEmailChange = () => {
+    setEmailChecked(false);
+  };
+
+  const onBnChange = () => {
+    setBnChecked(false);
+  };
+
   const onEmailCheck = async (e) => {
-    const data = { email: e.target.value };
+    const data = { email: getValues("email") };
 
     await axios
-      .post(EMAIL_CHECK, data, {
-        headers: {
-          "Content-Type": `multipart/form-data`,
-        },
-      })
+      .post(EMAIL_CHECK, data)
       .then((res) => {
-        if (res.data.result === "ok") {
-          setEmailChecked(true);
+        if (res.data.result === "notok") {
+          toast.error("이미 존재하는 이메일입니다!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setEmailChecked(false);
+          return;
         }
+        toast("사용 가능한 이메일입니다!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setEmailChecked(true);
       })
       .catch((err) => console.log(err));
   };
 
   const onBnCheck = async (e) => {
-    const data = { business_number: e.target.value };
+    const data = { business_number: getValues("business_number") };
+
     await axios
-      .post(BN_CHECK, data, {
-        headers: {
-          "Content-Type": `multipart/form-data`,
-        },
-      })
+      .post(BN_CHECK, data)
       .then((res) => {
-        console.log(res);
+        if (res.data.result === "notok") {
+          toast("이미 존재하는 사업자 번호입니다!", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setBnChecked(false);
+          return;
+        }
+        toast("사용 가능한 사업자번호 입니다!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setBnChecked(true);
       })
       .catch((err) => console.log(err));
   };
@@ -167,16 +225,23 @@ function Signup() {
                 type="email"
                 class="form-control"
                 placeholder="이메일을 입력해주세요."
+                onChange={onEmailChange}
                 {...register("email")}
               />
             </div>
-            <button
-              type="button"
-              onClick={onEmailCheck}
-              class="check-button btn btn-primary"
-            >
-              {emailChecked ? <div>체크완료</div> : <div>중복체크</div>}
-            </button>
+            {emailChecked ? (
+              <button class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                <Image src={verified} height={30} width={30} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onEmailCheck}
+                class="check-button btn btn-primary"
+              >
+                중복체크
+              </button>
+            )}
           </div>
           <span className="error">{errors.email?.message}</span>
           <div class="d-flex justify-content-between mt-5">
@@ -259,16 +324,23 @@ function Signup() {
                 type="text"
                 class="form-control"
                 placeholder="사업자 등록 번호를 입력해주세요."
+                onChange={onBnChange}
                 {...register("business_number")}
               />
             </div>
-            <button
-              type="button"
-              onClick={onBnCheck}
-              class="check-button btn btn-primary"
-            >
-              {bnChecked ? <div>체크완료</div> : <div>중복체크</div>}
-            </button>
+            {bnChecked ? (
+              <button type="button" class="btn btn-primary btn-sm">
+                <span class="material-icons-outlined">verified</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onBnCheck}
+                class="check-button btn btn-primary"
+              >
+                중복체크
+              </button>
+            )}
           </div>
           <span className="error">{errors.business_number?.message}</span>
 
@@ -301,7 +373,6 @@ function Signup() {
           </div>
         </form>
       </div>
-      <ToastContainer position="top-right" />
     </>
   );
 }

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { wrapper } from "../store";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer2";
 import "../styles/footer.css";
@@ -12,6 +13,7 @@ import "../styles/post.css";
 import "../styles/signup.css";
 import "../styles/simplecard.css";
 import "../styles/table.css";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -23,8 +25,9 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </div>
       <Footer />
+      <ToastContainer position="top-right" />
     </div>
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

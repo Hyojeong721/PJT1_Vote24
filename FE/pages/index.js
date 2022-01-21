@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Main from "../components/Main";
 import MainOnLogin from "../components/MainOnLogin";
 
 function Home() {
-  const [isLogIn, setIsLogIn] = useState(false);
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      setIsLogIn(true);
-    }
-  });
+    console.log("Home useEffect", isLoggedIn);
+  }, [isLoggedIn]);
 
-  return <div>{!isLogIn ? <Main /> : <MainOnLogin />}</div>;
+  return <div>{!isLoggedIn ? <Main /> : <MainOnLogin />}</div>;
 }
 
 export default Home;

@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import Header from "./Header";
 import SimpleCard from "./SimpleCard";
-import PopularSurvery from "./PopularSurvey";
+import PopularSurvey from "./PopularSurvey";
 import HospitalSatisfaction from "./HospitalSatisfaction";
 
 function MainOnLogin() {
-  const [hInfo, setHInfo] = useState({ name: "OO 병원" });
+  const { isLoggedIn, userInfo } = useSelector((state) => state.userInfo);
+  const { id, code, name } = userInfo;
   return (
     <>
-      <Header title={hInfo.name}></Header>
+      <Header title={name} subtitle={name}></Header>
       <div className="container d-flex flex-column justify-content-center mt-5 gap-5">
         <div className="d-flex gap-5">
           <SimpleCard title="누적 설문 참여자 수" context="60" />
           <SimpleCard title="일일 설문 참여자 수" context="10" color="orange" />
           <SimpleCard title="현재 진행중인 설문 수" context="6" color="green" />
           <SimpleCard
-            title="현재 진행중인 이벤트 수 "
+            title="현재 진행중인 이벤트 수"
             context="5"
             color="blue"
           />
         </div>
         <div className="d-flex gap-5">
-          <PopularSurvery />
+          <PopularSurvey />
           <HospitalSatisfaction />
         </div>
       </div>
