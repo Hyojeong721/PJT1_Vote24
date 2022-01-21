@@ -2,53 +2,52 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 import "react-toastify/dist/ReactToastify.css";
 
 const LOGIN_URL = "http://teama205.iptime.org/api/login";
 
-function Login(props) {
+function Login() {
   const { register, handleSubmit } = useForm();
   const [errorMessage, setErrorMessage] = useState("");
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const setTokenToLocalStorange = ({ token, id, code }) => {
-    window.localStorage.setItem("jwt", token);
-    window.localStorage.setItem("id", token);
-    window.localStorage.setItem("code", code);
-  };
-
-  const getInfoFromLocalStorange = (token) => {
-    return window.localStorage.getItem("jwt", token);
-  };
-
   useEffect(() => {
-    if (getInfoFromLocalStorange) {
+    console.log("Login useEffect:", isLoggedIn);
+    if (isLoggedIn) {
       router.push("/");
     }
   }, []);
 
   const onSubmit = async (data) => {
-    await axios
+    const { id, code, token, name } = await axios
       .post(LOGIN_URL, data)
       .then((res) => {
-        const data = res.data;
+        const { result, id, code, name, token } = res.data;
 
-        if (data.result !== "ok") {
-          const reason = data.result.split(":");
+        if (result !== "ok") {
+          const reason = result.split(":");
           setErrorMessage(reason[1]);
+          toast(`로그인 실패 : ${errorMessage}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
           return;
         }
 
-        setTokenToLocalStorange;
-        props.login({
-          type: "LOGIN",
-          userInfo: data.info,
-        });
-
-        toast("로그인 완료!", {
+        return { id, code, token, name };
+      })
+      .catch((err) => {
+        toast("로그인 실패!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -57,11 +56,37 @@ function Login(props) {
           draggable: true,
           progress: undefined,
         });
-        router.push("/");
-      })
-      .catch((err) => {
         console.log(err);
       });
+
+    localStorage.setItem("jwt", token);
+    localStorage.setItem("id", id);
+    localStorage.setItem("code", code);
+    localStorage.setItem("code", name);
+
+    dispatch({
+      type: "LOGIN",
+      userInfo: {
+        id,
+        code,
+        name,
+      },
+    });
+
+    toast("로그인 완료!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    router.push("/");
+  };
+
+  const goSignup = () => {
+    router.push("/signup");
   };
 
   return (
@@ -112,12 +137,15 @@ function Login(props) {
             </button>
           </div>
           <div className="d-flex justify-content-center mt-2">
-            <button type="button" class="submit-button btn btn-success">
-              회원가입
+            <button
+              type="button"
+              onClick={goSignup}
+              class="submit-button btn btn-success"
+            >
+              서비스 신청
             </button>
           </div>
         </form>
-        <ToastContainer position="top-right" />
       </div>
     </>
   );

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import Header from "../components/Header";
 import Image from "next/image";
 import verified from "../public/verified_white_24dp.svg";
-import Header from "../components/Header";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://teama205.iptime.org/api/join";
@@ -17,6 +19,15 @@ function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
   const [emailChecked, setEmailChecked] = useState(true);
   const [bnChecked, setBnChecked] = useState(false);
+  const router = useRouter();
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+
+  useEffect(() => {
+    console.log("login useEffect:", isLoggedIn);
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
 
   const schema = yup.object().shape({
     email: yup.string().email().required("이메일 입력은 필수입니다."),
@@ -104,6 +115,7 @@ function Signup() {
           draggable: true,
           progress: undefined,
         });
+        router.push("/");
       })
       .catch((err) => {
         toast.error("서비스 신청 실패!", {
@@ -361,7 +373,6 @@ function Signup() {
           </div>
         </form>
       </div>
-      <ToastContainer position="top-right" />
     </>
   );
 }

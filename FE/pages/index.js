@@ -4,14 +4,12 @@ import Main from "../components/Main";
 import MainOnLogin from "../components/MainOnLogin";
 
 function Home() {
-  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      useDispatch({ type: "LOGIN", userInfo: {} });
-    }
-  });
+    console.log("Home useEffect", isLoggedIn);
+  }, [isLoggedIn]);
 
   return <div>{!isLoggedIn ? <Main /> : <MainOnLogin />}</div>;
 }

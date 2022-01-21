@@ -1,9 +1,10 @@
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 
-const getTokenToLocalStorange = (token) => {
+const getTokenToLocalStorange = async (token) => {
   if (typeof window !== "undefined") {
-    return window.localStorage.getItem("jwt", token);
+    const token = await window.localStorage.getItem("jwt");
+    return token;
   }
 };
 

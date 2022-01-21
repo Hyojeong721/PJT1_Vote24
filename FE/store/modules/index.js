@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
 
-import counter from "./counter";
+import userInfo from "./userInfo";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,7 +10,7 @@ const reducer = (state, action) => {
       return { ...state, ...action.payload };
     default: {
       const combineReducer = combineReducers({
-        counter,
+        userInfo,
       });
       return combineReducer(state, action);
     }

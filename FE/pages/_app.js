@@ -13,6 +13,7 @@ import "../styles/post.css";
 import "../styles/signup.css";
 import "../styles/simplecard.css";
 import "../styles/table.css";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </div>
       <Footer />
+      <ToastContainer position="top-right" />
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import NavItem from "./NavItem";
@@ -7,7 +8,7 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const { isLoggedIn } = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
   const surveyNav = [
@@ -41,9 +42,24 @@ function Navbar() {
     },
   ];
 
+  useEffect(() => {
+    console.log("navbar useEffect", isLoggedIn);
+  }, [isLoggedIn]);
+
   const handleLogout = () => {
-    window.localStorage.removeItem("jwt");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("code");
+    localStorage.removeItem("id");
     dispatch({ type: "LOGOUT" });
+    toast("로그아웃 성공!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
