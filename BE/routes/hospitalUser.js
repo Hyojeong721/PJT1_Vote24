@@ -43,7 +43,8 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
     }
     logger.info("GET /join");
     return res.json({ result: "ok" });
-  } catch (error) {
+  } 
+  catch (error) {
     logger.error("POST /join Error" + error);
     return res.json(error);
   }
@@ -57,32 +58,33 @@ router.get("/login", async (req, res) => {
     const sql = `SELECT id, email, password FROM hospital_info WHERE email=?`;
     const data = await pool.query(sql, [email]);
 
+    const UserId = data[0][0].id;
+    const hashedPassword = await hashPassword(data[0][0].password);
+    const compareResult = await comparePassword(password, hashedPassword);
+
     if (!data[0][0]) {
       logger.info("[INFO] GET /login");
       return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
-    } else {
-      const UserId = data[0][0].id;
-      const hashedPassword = await hashPassword(data[0][0].password);
-      const compareResult = await comparePassword(password, hashedPassword);
-      if (!compareResult) {
-        logger.info("[INFO] GET /login");
-        return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
-      } else {
-        const token = jwt.sign(
-          {
-            id: UserId,
-          },
-          "ssafy",
-          { expiresIn: "24h" }
-        );
-        // console.log(token);
-        logger.info("[INFO] GET /login");
-        return res.json({ result: "ok", token: token });
-      }
+    } 
+
+    if (!compareResult) {
+      logger.info("[INFO] GET /login");
+      return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
     }
-  } catch (error) {
+
+    const token = jwt.sign(
+      {
+        id: UserId,
+      },
+      "ssafy",
+      { expiresIn: "24h" }
+    );
+
+    logger.info("[INFO] GET /login");
+    return res.json({ result: "ok", token: token });
+  } 
+  catch (error) {
     logger.error("GET /login Error" + error);
-    console.log("GET /login Error" + error);
     return res.json(error);
   }
 });
