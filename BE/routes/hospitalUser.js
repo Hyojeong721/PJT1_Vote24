@@ -49,7 +49,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.get("/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
@@ -57,15 +57,17 @@ router.post("/login", async (req, res) => {
     const sql = `SELECT id, email, password FROM hospital_info WHERE email=?`;
     const data = await pool.query(sql, [email]);
 
-    if (data[0][0]) {
+    if (!data[0][0]) {
+      logger.info("[INFO] GET /login");
+      return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
+    } else {
       const UserId = data[0][0].id;
       const hashedPassword = await hashPassword(data[0][0].password);
-      // console.log("password: [" + password + "]");
-      // console.log("hashedPassword : [" + hashedPassword + "]");
-      // const compareResult = await comparePassword(password, "ssafypw1!");
       const compareResult = await comparePassword(password, hashedPassword);
-
-      if (compareResult) {
+      if (!compareResult) {
+        logger.info("[INFO] GET /login");
+        return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
+      } else {
         const token = jwt.sign(
           {
             id: UserId,
@@ -74,60 +76,53 @@ router.post("/login", async (req, res) => {
           { expiresIn: "24h" }
         );
         // console.log(token);
-        logger.info("[INFO] POST /login");
+        logger.info("[INFO] GET /login");
         return res.json({ result: "ok", token: token });
-      } else {
-        // console.log(compareResult);
-        logger.info("[INFO] POST /login");
-        return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
       }
-    } else {
-      logger.info("[INFO] POST /login");
-      return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
     }
   } catch (error) {
-    logger.error("POST /login Error" + error);
-    console.log("POST /login Error" + error);
+    logger.error("GET /login Error" + error);
+    console.log("GET /login Error" + error);
     return res.json(error);
   }
 });
 
-router.post("/emailCheck", async (req, res) => {
+router.get("/emailCheck", async (req, res) => {
   const email = req.body.email;
   try {
     const sql = `SELECT EXISTS(SELECT * FROM hospital_info where email = ? ) as isHava;`;
     const data = await pool.query(sql, [email]);
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
-      logger.info("[INFO] POST /emailCheck");
+      logger.info("[INFO] GET /emailCheck");
       return res.json({ result: "notok" });
     } else {
-      logger.info("[INFO] POST /emailCheck");
+      logger.info("[INFO] GET /emailCheck");
       return res.json({ result: "ok" });
     }
   } catch (error) {
-    logger.error("POST /emailCheck Error" + error);
-    console.log("POST /emailCheck Error" + error);
+    logger.error("GET /emailCheck Error" + error);
+    console.log("GET /emailCheck Error" + error);
     return res.json(error);
   }
 });
 
-router.post("/bnNumberCheck", async (req, res) => {
+router.get("/bnNumberCheck", async (req, res) => {
   const business_number = req.body.business_number;
   try {
     const sql = `SELECT EXISTS(SELECT * FROM hospital_info where business_number = ? ) as isHava;`;
     const data = await pool.query(sql, [business_number]);
     console.log(data[0][0].isHava);
     if (data[0][0].isHava == 1) {
-      logger.info("[INFO] POST /bnNumberCheck");
+      logger.info("[INFO] GET /bnNumberCheck");
       return res.json({ result: "notok" });
     } else {
-      logger.info("[INFO] POST /bnNumberCheck");
+      logger.info("[INFO] GET /bnNumberCheck");
       return res.json({ result: "ok" });
     }
   } catch (error) {
-    logger.error("POST /bnNumberCheck Error" + error);
-    console.log("POST /bnNumberCheck Error" + error);
+    logger.error("GET /bnNumberCheck Error" + error);
+    console.log("GET /bnNumberCheck Error" + error);
     return res.json(error);
   }
 });
