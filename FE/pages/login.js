@@ -15,7 +15,7 @@ function Login() {
     console.log(data);
 
     await axios
-      .post(LOGIN_URL, JSON.stringify(data))
+      .post(LOGIN_URL, data)
       .then((res) => {
         const data = res.data;
         console.log(res.data);
