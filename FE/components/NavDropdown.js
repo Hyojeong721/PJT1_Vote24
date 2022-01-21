@@ -16,8 +16,8 @@ function NavDropdown({ title, subtitles }) {
       </a>
       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         {subtitles
-          ? subtitles.map((subtitle) => (
-              <li>
+          ? subtitles.map((subtitle, idx) => (
+              <li key={idx}>
                 <Link class="dropdown-item" href={subtitle.url}>
                   {subtitle.title}
                 </Link>

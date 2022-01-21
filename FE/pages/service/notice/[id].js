@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { getPostByNo } from "../../../data/Postdata";
 
 const NoticeDetail = ({ history, location, match }) => {
+  const [id, setId] = useState("");
   const [data, setData] = useState({});
   const router = useRouter();
+  setId(router.query.id);
 
   useEffect(() => {
-    console.log(router.params);
     setData(getPostByNo(1));
   }, []);
 

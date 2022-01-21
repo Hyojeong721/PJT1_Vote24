@@ -12,7 +12,7 @@ function Home() {
     }
   });
 
-  return <div>{isLogIn ? <Main /> : <MainOnLogin />}</div>;
+  return <div>{!isLogIn ? <Main /> : <MainOnLogin />}</div>;
 }
 
 export default Home;
