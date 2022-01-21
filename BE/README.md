@@ -35,3 +35,4 @@ Copy this command for install all dependency Package;
 #[2022/01/20]
 * 공지 관련 api 제작
 * 코드 간결화 및 유효성 검사
+* 서비스 공지사항 CRUD 작성
