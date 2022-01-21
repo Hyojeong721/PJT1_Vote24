@@ -3,6 +3,7 @@ const router = express.Router();
 
 const mainPage_userRouter = require("./mainPage");
 const eventPage_userRouter = require("./eventPage");
+const noticePage_userRouter = require("./noticePage");
 const hospital_userRouter = require("./hospitalUser");
 const service_notice = require("./serviceNotice");
 const survey = require("./survey/survey");
@@ -14,6 +15,7 @@ const benchmark = require("./survey/benchmark");
 
 router.use("/api", mainPage_userRouter);
 router.use("/api", eventPage_userRouter);
+router.use("/api", noticePage_userRouter);
 router.use("/api", hospital_userRouter);
 router.use("/api", service_notice);
 router.use("/api", survey);
