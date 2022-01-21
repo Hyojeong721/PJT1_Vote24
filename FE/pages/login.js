@@ -1,31 +1,63 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 import "react-toastify/dist/ReactToastify.css";
 
 const LOGIN_URL = "http://teama205.iptime.org/api/login";
 
-function Login() {
+function Login(props) {
   const { register, handleSubmit } = useForm();
   const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+
+  const setTokenToLocalStorange = ({ token, id, code }) => {
+    window.localStorage.setItem("jwt", token);
+    window.localStorage.setItem("id", token);
+    window.localStorage.setItem("code", code);
+  };
+
+  const getInfoFromLocalStorange = (token) => {
+    return window.localStorage.getItem("jwt", token);
+  };
+
+  useEffect(() => {
+    if (getInfoFromLocalStorange) {
+      router.push("/");
+    }
+  }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     await axios
       .post(LOGIN_URL, data)
       .then((res) => {
         const data = res.data;
-        console.log(res.data);
-        if (data.result === "ok") {
-          window.localStorage.setItem("JWT", data.token);
-        } else {
+
+        if (data.result !== "ok") {
           const reason = data.result.split(":");
           setErrorMessage(reason[1]);
-          toast(reason[1]);
+          return;
         }
+
+        setTokenToLocalStorange;
+        props.login({
+          type: "LOGIN",
+          userInfo: data.info,
+        });
+
+        toast("로그인 완료!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        router.push("/");
       })
       .catch((err) => {
         console.log(err);

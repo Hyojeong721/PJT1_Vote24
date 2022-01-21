@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { wrapper } from "../store";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer2";
 import "../styles/footer.css";
@@ -27,4 +28,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import NavItem from "./NavItem";
@@ -6,7 +7,8 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const [isLogIn, setIsLogIn] = useState(true);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const dispatch = useDispatch();
 
   const surveyNav = [
     {
@@ -40,9 +42,8 @@ function Navbar() {
   ];
 
   const handleLogout = () => {
-    window.localStorage.removeItem("token");
-    console.log("logout");
-    setIsLogIn(false);
+    window.localStorage.removeItem("jwt");
+    dispatch({ type: "LOGOUT" });
   };
 
   return (
@@ -72,7 +73,7 @@ function Navbar() {
           {/* nav links */}
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <NavItem url="/" title="Home" />
-            {!isLogIn ? (
+            {!isLoggedIn ? (
               <>
                 <NavItem url="/service/info" title="서비스 소개" />
                 <NavItem url="/service/notice" title="공지사항" />
@@ -88,7 +89,7 @@ function Navbar() {
           </ul>
 
           {/* top-right button */}
-          {!isLogIn ? (
+          {!isLoggedIn ? (
             <div class="d-flex">
               <Link href="/login">
                 <a class="nav-link">

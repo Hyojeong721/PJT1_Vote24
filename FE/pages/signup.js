@@ -134,7 +134,7 @@ function Signup() {
       .post(EMAIL_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast("이미 존재하는 이메일입니다!", {
+          toast.error("이미 존재하는 이메일입니다!", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
