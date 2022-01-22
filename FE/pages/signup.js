@@ -23,9 +23,8 @@ function Signup() {
   const { isLoggedIn } = useSelector((state) => state.userStatus);
 
   useEffect(() => {
-    console.log("login useEffect:", isLoggedIn);
     if (isLoggedIn) {
-      toast("이미 로그인 된 사용자입니다.", {
+      toast.info("이미 로그인 된 사용자입니다.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -115,7 +114,7 @@ function Signup() {
         },
       })
       .then((res) => {
-        toast("서비스 신청 완료!", {
+        toast.success("서비스 신청 완료!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -167,7 +166,7 @@ function Signup() {
           setEmailChecked(false);
           return;
         }
-        toast("사용 가능한 이메일입니다!", {
+        toast.success("사용 가능한 이메일입니다!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -188,7 +187,7 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast("이미 존재하는 사업자 번호입니다!", {
+          toast.error("이미 존재하는 사업자 번호입니다!", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -200,7 +199,7 @@ function Signup() {
           setBnChecked(false);
           return;
         }
-        toast("사용 가능한 사업자번호 입니다!", {
+        toast.success("사용 가능한 사업자번호 입니다!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,

@@ -47,7 +47,7 @@ function Navbar() {
     localStorage.removeItem("code");
     localStorage.removeItem("id");
     dispatch({ type: "LOGOUT" });
-    toast("로그아웃 성공!", {
+    toast.success("로그아웃 성공!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,

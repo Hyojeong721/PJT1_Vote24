@@ -17,9 +17,8 @@ function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("Login useEffect:", isLoggedIn);
     if (isLoggedIn) {
-      toast("이미 로그인 된 사용자입니다.", {
+      toast.info("이미 로그인 된 사용자입니다.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -41,7 +40,7 @@ function Login() {
         if (result !== "ok") {
           const reason = result.split(":");
           setErrorMessage(reason[1]);
-          toast(`로그인 실패 : ${errorMessage}`, {
+          toast.error(`로그인 실패 : ${errorMessage}`, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -56,7 +55,7 @@ function Login() {
         return { id, code, token, name };
       })
       .catch((err) => {
-        toast("로그인 실패!", {
+        toast.error("로그인 실패!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -82,7 +81,7 @@ function Login() {
       },
     });
 
-    toast("로그인 완료!", {
+    toast.success("로그인 완료!", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
