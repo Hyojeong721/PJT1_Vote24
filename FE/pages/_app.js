@@ -1,4 +1,7 @@
 import { wrapper } from "../store";
+import { ToastContainer } from "react-toastify";
+import { useStore } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer2";
@@ -13,20 +16,22 @@ import "../styles/post.css";
 import "../styles/signup.css";
 import "../styles/simplecard.css";
 import "../styles/table.css";
-import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
+  const store = useStore();
   return (
-    <div>
-      <div className="navbar">
-        <Navbar></Navbar>
+    <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
+      <div>
+        <div className="navbar">
+          <Navbar></Navbar>
+        </div>
+        <div className="page_body min-vh-100">
+          <Component {...pageProps} />
+        </div>
+        <Footer />
+        <ToastContainer position="top-right" />
       </div>
-      <div className="page_body min-vh-100">
-        <Component {...pageProps} />
-      </div>
-      <Footer />
-      <ToastContainer position="top-right" />
-    </div>
+    </PersistGate>
   );
 }
 
