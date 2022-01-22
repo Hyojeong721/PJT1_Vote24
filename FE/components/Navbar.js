@@ -42,10 +42,6 @@ function Navbar() {
     },
   ];
 
-  useEffect(() => {
-    console.log("navbar useEffect", isLoggedIn);
-  }, [isLoggedIn]);
-
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("code");

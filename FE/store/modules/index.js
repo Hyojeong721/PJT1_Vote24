@@ -3,7 +3,7 @@ import { HYDRATE } from "next-redux-wrapper";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 
-import userInfo from "./userInfo";
+import userStatus from "./userStatus";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -12,7 +12,7 @@ const rootReducer = (state, action) => {
       return { ...state, ...action.payload };
     default: {
       const combineReducer = combineReducers({
-        userInfo,
+        userStatus,
       });
       return combineReducer(state, action);
     }

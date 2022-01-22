@@ -1,7 +1,11 @@
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
-
-export const initialState = { isLoggedIn: false, userInfo: {} };
+const initialUserInfo = {
+  id: "",
+  code: "",
+  name: "",
+};
+export const initialState = { isLoggedIn: false, userInfo: initialUserInfo };
 
 export default (state = initialState, action) => {
   switch (action.type) {
