@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { persistStore } from "redux-persist";
-
 import logger from "redux-logger";
 import { rootReducer, persistedReducer } from "./modules";
 
