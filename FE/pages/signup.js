@@ -20,11 +20,20 @@ function Signup() {
   const [emailChecked, setEmailChecked] = useState(true);
   const [bnChecked, setBnChecked] = useState(false);
   const router = useRouter();
-  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const { isLoggedIn } = useSelector((state) => state.userStatus);
 
   useEffect(() => {
     console.log("login useEffect:", isLoggedIn);
     if (isLoggedIn) {
+      toast("이미 로그인 된 사용자입니다.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       router.push("/");
     }
   }, [isLoggedIn]);

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Main from "../components/Main";
 import MainOnLogin from "../components/MainOnLogin";
 
 function Home() {
-  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const { isLoggedIn } = useSelector((state) => state.userStatus);
   const dispatch = useDispatch();
   const userInfo = {
     id: "1",

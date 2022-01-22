@@ -6,7 +6,7 @@ import PopularSurvey from "./PopularSurvey";
 import HospitalSatisfaction from "./HospitalSatisfaction";
 
 function MainOnLogin() {
-  const { isLoggedIn, userInfo } = useSelector((state) => state.userInfo);
+  const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
   const { id, code, name } = userInfo;
   return (
     <>

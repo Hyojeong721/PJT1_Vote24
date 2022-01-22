@@ -8,7 +8,7 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const { isLoggedIn } = useSelector((state) => state.userStatus);
   const dispatch = useDispatch();
 
   const surveyNav = [
