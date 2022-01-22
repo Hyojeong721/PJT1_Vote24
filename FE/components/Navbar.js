@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -6,12 +6,16 @@ import Image from "next/image";
 import NavItem from "./NavItem";
 import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
+import { useRouter } from "next/router";
 
 function Navbar() {
   const { isLoggedIn } = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const surveyNav = [
+  let currentPage = router.pathname;
+
+  const surveyDropdown = [
     {
       title: "설문 목록",
       url: "/survey",
@@ -21,7 +25,7 @@ function Navbar() {
       url: "/survey/create",
     },
   ];
-  const hNoticeNav = [
+  const hNoticeDropdown = [
     {
       title: "공지 목록",
       url: "/notice",
@@ -31,7 +35,7 @@ function Navbar() {
       url: "/notice/create",
     },
   ];
-  const hEventNav = [
+  const hEventDropdown = [
     {
       title: "이벤트 목록",
       url: "/event",
@@ -88,18 +92,42 @@ function Navbar() {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav links */}
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <NavItem url="/" title="Home" />
+            <NavItem active={currentPage === "/"} url="/" title="Home" />
             {!isLoggedIn ? (
               <>
-                <NavItem url="/service/info" title="서비스 소개" />
-                <NavItem url="/service/notice" title="공지사항" />
+                <NavItem
+                  active={currentPage === "/service/info"}
+                  url="/service/info"
+                  title="서비스 소개"
+                />
+                <NavItem
+                  active={currentPage === "/service/notice"}
+                  url="/service/notice"
+                  title="공지사항"
+                />
               </>
             ) : (
               <>
-                <NavItem url="/service/notice" title="서비스 공지사항" />
-                <NavDropdown title="설문" subtitles={surveyNav} />
-                <NavDropdown title="병원 공지" subtitles={hNoticeNav} />
-                <NavDropdown title="병원 이벤트" subtitles={hEventNav} />
+                <NavItem
+                  active={currentPage === "/service/notice"}
+                  url="/service/notice"
+                  title="서비스 공지사항"
+                />
+                <NavDropdown
+                  active={currentPage.includes("survey")}
+                  title="설문"
+                  subtitles={surveyDropdown}
+                />
+                <NavDropdown
+                  active={currentPage.includes("notice")}
+                  title="병원 공지"
+                  subtitles={hNoticeDropdown}
+                />
+                <NavDropdown
+                  active={currentPage.includes("event")}
+                  title="병원 이벤트"
+                  subtitles={hEventDropdown}
+                />
               </>
             )}
           </ul>
