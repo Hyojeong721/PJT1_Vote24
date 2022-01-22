@@ -24,15 +24,7 @@ function Signup() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      toast.info("이미 로그인 된 사용자입니다.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.warning("이미 로그인 된 사용자입니다.");
       router.push("/");
     }
   }, [isLoggedIn]);
@@ -114,27 +106,11 @@ function Signup() {
         },
       })
       .then((res) => {
-        toast.success("서비스 신청 완료!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("서비스 신청 완료!");
         router.push("/");
       })
       .catch((err) => {
-        toast.error("서비스 신청 실패!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("서비스 신청 실패!");
         console.log(err);
       });
   };
@@ -154,27 +130,11 @@ function Signup() {
       .post(EMAIL_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast.error("이미 존재하는 이메일입니다!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.error("이미 존재하는 이메일입니다!");
           setEmailChecked(false);
           return;
         }
-        toast.success("사용 가능한 이메일입니다!", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("사용 가능한 이메일입니다!");
         setEmailChecked(true);
       })
       .catch((err) => console.log(err));

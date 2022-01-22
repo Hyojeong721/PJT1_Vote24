@@ -18,15 +18,7 @@ function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      toast.info("이미 로그인 된 사용자입니다.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.warning("이미 로그인 된 사용자입니다.");
       router.push("/");
     }
   }, []);
@@ -40,37 +32,18 @@ function Login() {
         if (result !== "ok") {
           const reason = result.split(":");
           setErrorMessage(reason[1]);
-          toast.error(`로그인 실패 : ${errorMessage}`, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.error(`로그인 실패 : ${errorMessage}`);
           return;
         }
 
         return { id, code, token, name };
       })
       .catch((err) => {
-        toast.error("로그인 실패!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("로그인 실패!");
         console.log(err);
       });
 
     localStorage.setItem("jwt", token);
-    localStorage.setItem("id", id);
-    localStorage.setItem("code", code);
-    localStorage.setItem("code", name);
 
     dispatch({
       type: "LOGIN",
@@ -81,15 +54,7 @@ function Login() {
       },
     });
 
-    toast.success("로그인 완료!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    toast.success("로그인 완료!");
     router.push("/");
   };
 

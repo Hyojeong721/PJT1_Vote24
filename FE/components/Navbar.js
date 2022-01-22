@@ -44,18 +44,8 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("jwt");
-    localStorage.removeItem("code");
-    localStorage.removeItem("id");
+    toast.success("로그아웃 성공!");
     dispatch({ type: "LOGOUT" });
-    toast.success("로그아웃 성공!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
   };
 
   return (

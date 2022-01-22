@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </div>
         <Footer />
-        <ToastContainer position="top-right" />
+        <ToastContainer autoClose={3000} />
       </div>
     </PersistGate>
   );
