@@ -24,7 +24,7 @@ function Login() {
   }, []);
 
   const onSubmit = async (data) => {
-    const { id, code, token, name } = await axios
+    await axios
       .post(LOGIN_URL, data)
       .then((res) => {
         const { result, id, code, name, token } = res.data;
@@ -36,23 +36,21 @@ function Login() {
           return;
         }
 
-        return { id, code, token, name };
+        localStorage.setItem("jwt", token);
+
+        dispatch({
+          type: "LOGIN",
+          userInfo: {
+            id,
+            code,
+            name,
+          },
+        });
       })
       .catch((err) => {
         toast.error("로그인 실패!");
         console.log(err);
       });
-
-    localStorage.setItem("jwt", token);
-
-    dispatch({
-      type: "LOGIN",
-      userInfo: {
-        id,
-        code,
-        name,
-      },
-    });
 
     toast.success("로그인 완료!");
     router.push("/");

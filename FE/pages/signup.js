@@ -17,7 +17,7 @@ const BN_CHECK = "http://teama205.iptime.org/api/bnNumberCheck";
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
-  const [emailChecked, setEmailChecked] = useState(true);
+  const [emailChecked, setEmailChecked] = useState(false);
   const [bnChecked, setBnChecked] = useState(false);
   const router = useRouter();
   const { isLoggedIn } = useSelector((state) => state.userStatus);
@@ -147,27 +147,11 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast.error("이미 존재하는 사업자 번호입니다!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.error("이미 존재하는 사업자 번호입니다!", { autoClose: 2000 });
           setBnChecked(false);
           return;
         }
-        toast.success("사용 가능한 사업자번호 입니다!", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("사용 가능한 사업자번호 입니다!", { autoClose: 2000 });
         setBnChecked(true);
       })
       .catch((err) => console.log(err));
@@ -181,137 +165,145 @@ function Signup() {
           onSubmit={handleSubmit(onSubmit)}
           className="form-box d-flex flex-column"
         >
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="email" class="form-label">
-                이메일
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="email"
-                type="email"
-                class="form-control"
-                placeholder="이메일을 입력해주세요."
-                onChange={onEmailChange}
-                {...register("email")}
-              />
-            </div>
-            {emailChecked ? (
-              <button class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
-                <Image src={verified} height={30} width={30} />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onEmailCheck}
-                class="check-button btn btn-primary"
-              >
-                중복체크
-              </button>
-            )}
-          </div>
-          <span className="error">{errors.email?.message}</span>
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="password" class="form-label">
-                비밀번호
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="password"
-                type="password"
-                class="form-control"
-                placeholder="비밀번호는 8 ~ 16자 사이로 설정해주세요."
-                {...register("password")}
-              />
+          <div>
+            <div className="fw-bold">이메일</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  placeholder=" "
+                  onChange={onEmailChange}
+                  {...register("email")}
+                />
+                <label htmlFor="email" class="">
+                  <p className="text-secondary">you@example.com</p>
+                </label>
+                <span className="error">{errors.email?.message}</span>
+              </div>
+              {emailChecked ? (
+                <button class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                  <Image src={verified} height={30} width={30} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onEmailCheck}
+                  class="check-button btn btn-primary"
+                >
+                  중복체크
+                </button>
+              )}
             </div>
           </div>
-          <span className="error">{errors.password?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="passwordConfirm" class="form-label">
-                비밀번호 확인
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="passwordConfirm"
-                type="password"
-                class="form-control"
-                placeholder="비밀번호를 확인해주세요."
-                {...register("passwordConfirm")}
-              />
-            </div>
-          </div>
-          <span className="error">{errors.password?.message}</span>
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="name" class="form-label">
-                병원명
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="name"
-                type="text"
-                class="form-control"
-                placeholder="비밀번호를 확인해주세요."
-                {...register("name")}
-              />
+          <div className="mt-3">
+            <div className="fw-bold">비밀번호</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("password")}
+                />
+                <label htmlFor="password" class="form-label">
+                  <p className="text-secondary">
+                    비밀번호는 8 ~ 16자 사이이며, 특수문자 1개를 포함해야
+                    합니다.
+                  </p>
+                </label>
+                <span className="error">{errors.password?.message}</span>
+              </div>
             </div>
           </div>
-          <span className="error">{errors.name?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="phone" class="form-label">
-                전화번호
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="phone"
-                type="text"
-                class="form-control"
-                placeholder="전화번호를 입력해주세요."
-                {...register("phone")}
-              />
+          <div className="mt-3">
+            <div className="fw-bold">비밀번호 확인</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="passwordConfirm"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("passwordConfirm")}
+                />
+                <label htmlFor="passwordConfirm" class="form-label">
+                  <p className="text-secondary">비밀번호 확인</p>
+                </label>
+                <span className="error">{errors.passwordConfirm?.message}</span>
+              </div>
             </div>
           </div>
-          <span className="error">{errors.phone?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="business_number" class="form-label">
-                사업자 등록 번호
-              </label>
+          <div className="mt-3">
+            <div className="fw-bold">병원명</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="name"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("name")}
+                />
+                <label htmlFor="name" class="form-label">
+                  <p className="text-secondary">병원명을 입력해주세요.</p>
+                </label>
+                <span className="error">{errors.name?.message}</span>
+              </div>
             </div>
-            <div className="input-box">
-              <input
-                id="business_number"
-                type="text"
-                class="form-control"
-                placeholder="사업자 등록 번호를 입력해주세요."
-                onChange={onBnChange}
-                {...register("business_number")}
-              />
-            </div>
-            {bnChecked ? (
-              <button type="button" class="btn btn-primary btn-sm">
-                <span class="material-icons-outlined">verified</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onBnCheck}
-                class="check-button btn btn-primary"
-              >
-                중복체크
-              </button>
-            )}
           </div>
-          <span className="error">{errors.business_number?.message}</span>
-
+          <div className="mt-3">
+            <div className="fw-bold">전화번호</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="phone"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("name")}
+                />
+                <label htmlFor="phone" class="form-label">
+                  <p className="text-secondary">전화번호를 입력해주세요.</p>
+                </label>
+                <span className="error">{errors.phone?.message}</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="fw-bold">사업자 등록 번호</div>
+            <div class="d-flex justify-content-between mt-1 gap-2">
+              <div className="input-box form-floating ">
+                <input
+                  id="business_number"
+                  type="email"
+                  class="form-control"
+                  placeholder=" "
+                  onChange={onEmailChange}
+                  {...register("business_number")}
+                />
+                <label htmlFor="business_number" class="">
+                  <p className="text-secondary">OOO-OO-OOOOO</p>
+                </label>
+                <span className="error">{errors.business_number?.message}</span>
+              </div>
+              {bnChecked ? (
+                <button type="button" class="btn btn-primary btn-sm">
+                  <span class="material-icons-outlined">verified</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onBnCheck}
+                  class="check-button btn btn-primary"
+                >
+                  중복체크
+                </button>
+              )}
+            </div>
+          </div>
           <div class="d-flex justify-content-between mt-3">
             <div className="label-box">
               <label htmlFor="logo_image" class="form-label">
