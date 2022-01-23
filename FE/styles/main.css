@@ -2,23 +2,33 @@
   height: 80vh;
 }
 
-.main_body {
+.main_title {
   font-size: 5rem;
   line-height: 1;
+  z-index: 50;
+}
+.main_body {
   width: 600px;
   height: 400px;
 }
 
 .header_image {
   position: absolute;
-  top: 30%;
+  top: 35%;
   width: 600px;
   height: 322px;
   object-fit: cover;
-  opacity: 50%;
+  opacity: 75%;
 }
 
 .indigo {
   bottom: 0px;
   background-color: rgb(30 58 138);
+}
+
+.code_input {
+  width: 300px;
+  height: 100px;
+  border-radius: 20px;
+  z-index: 50;
 }

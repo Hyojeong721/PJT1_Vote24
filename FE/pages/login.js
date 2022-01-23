@@ -66,55 +66,61 @@ function Login() {
       <div className="container d-flex justify-content-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="form-box d-flex flex-column"
+          className="w-50 d-flex flex-column"
         >
           <div class="mt-5">
-            <div className="login-label-box">
-              <label htmlFor="email" class="form-label">
-                이메일
-              </label>
-            </div>
-            <div className="login-input-box">
-              <input
-                name="email"
-                type="email"
-                class="form-control"
-                placeholder="이메일을 입력해주세요."
-                {...register("email")}
-              />
+            <div className="fw-bold">이메일</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("email")}
+                />
+                <label htmlFor="email" class="">
+                  <p className="text-secondary">you@example.com</p>
+                </label>
+                <span className="error">{errorMessage}</span>
+              </div>
             </div>
           </div>
           <div class="mt-3">
-            <div className="login-label-box">
-              <label htmlFor="password" class="form-label">
-                비밀번호
-              </label>
-            </div>
-            <div className="login-input-box">
-              <input
-                name="password"
-                type="password"
-                class="form-control"
-                placeholder="비밀번호를 입력해주세요."
-                {...register("password")}
-              />
-              <span className="error">{errorMessage}</span>
+            <div className="fw-bold">비밀번호</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("password")}
+                />
+                <label htmlFor="password" class="">
+                  <p className="text-secondary">password</p>
+                </label>
+                <span className="error">{errorMessage}</span>
+              </div>
             </div>
           </div>
 
-          <div className="d-flex justify-content-center mt-5">
+          <div className="d-flex justify-content-center mt-3">
             <button type="submit" class="submit-button btn btn-primary">
               로그인
             </button>
           </div>
-          <div className="d-flex justify-content-center mt-2">
-            <button
-              type="button"
-              onClick={goSignup}
-              class="submit-button btn btn-success"
-            >
-              서비스 신청
-            </button>
+          <div className="d-flex justify-content-center mt-5">
+            <div>
+              <p className="text-center">아직 회원이 아니신가요?</p>
+              <button
+                type="button"
+                onClick={goSignup}
+                class="submit-button btn btn-success"
+              >
+                서비스 신청
+              </button>
+            </div>
           </div>
         </form>
       </div>
