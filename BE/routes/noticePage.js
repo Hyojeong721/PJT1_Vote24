@@ -5,33 +5,35 @@ const { pool } = require('../utils/mysql');
 const { logger } = require('../utils/winston');
 const { notice_upload } = require('../utils/multer');
 const { nameParser } = require('../utils/nameParser');
+const { verifyToken } = require('../utils/jwt');
 
 const router = express.Router();
 
 /*----------------------------------------------------------------------*
  * GET Notice List
- * Example URL = ../notice/947780?page=1
+ * Example URL = ../notice/947780
  *----------------------------------------------------------------------*/
 router.get('/notice/:hospital_id', async (req, res) => {
     try {
         const hospital_id = req.params.hospital_id;
-        const { page } = req.query;
-        console.log(typeof(hospital_id));
-        const sql = `select 
+        //const { filter } = req.query;
+
+        const sql = `select
+                        id, 
                         created_at, 
                         title, 
                         views 
                         from hospital_notice where hospital_id =?`
 
         const data = await pool.query(sql, [hospital_id]);
-        const result = data[0].slice(((page-1) * 10), (page * 10));
-        
+        const result = data[0];
+
         logger.info('GET Notice List');
         return res.json(result);
     }
     catch(error){
         logger.error('GET Notice List Fail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }
 });
 
@@ -55,7 +57,7 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
     }   
     catch(error){
         logger.error('GET Notice Detail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }
 });
 
@@ -64,38 +66,48 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
  * Example URL = ../notice/947780
  *----------------------------------------------------------------------*/
 router.post('/notice/:hospital_id', notice_upload.single('notice_image'), async (req, res) => {
+    const { 
+        hospital_id 
+    } = req.params;
+    
+    const {
+        title,
+        end_at,
+        start_at,
+        context,
+        attachment
+    } = req.body;
+
     try {
-        const { 
-            hospital_id 
-        } = req.params;
-        
-        const {
-            title,
-            end_at,
-            start_at,
-            context,
-            attachment
-        } = req.body;
-
-        const rename = Date() + attachment;
-        const path = 'uploads/notice/' + rename;
-        nameParser("uploads/notice", "uploads/notice", attachment, rename);
-
-        const sql = `insert into hospital_notice (
-                        hospital_id, 
-                        title, 
-                        context, 
-                        start_at, 
-                        end_at, 
-                        attachment) value(?,?,?,?,?,?)`;
-        const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
-
+        if(attachment){
+            const rename = Date() + attachment;
+            const path = 'uploads/notice/' + rename;
+            nameParser("uploads/notice", "uploads/notice", attachment, rename);
+            
+            const sql = `insert into hospital_notice (
+                hospital_id, 
+                title, 
+                context, 
+                start_at, 
+                end_at, 
+                attachment) value(?,?,?,?,?,?)`;
+            const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+        }
+        else {
+            const sql = `insert into hospital_notice (
+                hospital_id, 
+                title, 
+                context, 
+                start_at, 
+                end_at) value(?,?,?,?,?)`;
+            const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+        }
         logger.info('POST Notice Detail');
         return res.json({state:'Success'});
     }
     catch(error){
         logger.error('POST Notice Detail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }
 });
 
@@ -118,7 +130,7 @@ router.delete("/notice/:hospital_id/:id", async (req, res) => {
     }
     catch(error){
         logger.error('DELETE Notice Detail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }
 });
 
@@ -140,30 +152,41 @@ router.put('/notice/:hospital_id/:id', notice_upload.single('notice_image'),asyn
         attachment
     } = req.body;
 
-    const rename = Date() + attachment;
-    const path = 'uploads/notice/' + rename;
-    nameParser("uploads/notice", "uploads/notice", attachment, rename);
-
     try {
-        const sql = `update hospital_notice set
+        if(attachment){
+            const rename = Date() + attachment;
+            const path = 'uploads/notice/' + rename;
+            nameParser("uploads/notice", "uploads/notice", attachment, rename);
+            
+            const sql = `update hospital_notice set
             title =?, 
             context =?, 
             start_at =?, 
             end_at =?, 
             attachment =? where id=? AND hospital_id`;
-        const data = await pool.query(sql, [title, context, start_at, end_at, attachment, id, hospital_id]);
+            const data = await pool.query(sql, [title, context, start_at, end_at, path, id, hospital_id]);
+        }
+        else {
+            const sql = `update hospital_notice set
+            title =?, 
+            context =?, 
+            start_at =?, 
+            end_at =?, 
+            where id=? AND hospital_id`;
+            const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+        }
 
         logger.info('UPDATE Notice Detail');
         return res.json({state:'Success'});
     }
     catch(error){
         logger.error('UPDATE Notice Detail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }    
 });
 
 /*----------------------------------------------------------------------*
- * GET File Download
+ * GET Notice File Download
  * Example URL = ../notice/947780/3/download
  *----------------------------------------------------------------------*/
 router.get("/notice/:hospital_id/:id/download", async (req, res) => {
@@ -182,7 +205,7 @@ router.get("/notice/:hospital_id/:id/download", async (req, res) => {
     }
     catch(error){
         logger.error('GET File Download ' + error);
-        return res.json({state: 'Fail'});
+        return res.json(error);
     }
 })
 
