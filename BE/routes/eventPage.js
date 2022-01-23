@@ -15,9 +15,10 @@ const router = express.Router();
 router.get('/event/:hospital_id', async (req, res) => {
     try { 
         const hospital_id = req.params.hospital_id;
-        const { page } = req.query;
-        console.log(typeof(hospital_id));
+        //const { filter } = req.query;
+
         const sql = `select 
+                        id,
                         created_at,
                         title,
                         start_at,
@@ -26,8 +27,8 @@ router.get('/event/:hospital_id', async (req, res) => {
                         from hospital_event where hospital_id =?`
         
         const data = await pool.query(sql, [hospital_id]);  
-        const result = data[0].slice(((page-1) * 10), (page * 10));
-        
+        const result = data[0];
+
         logger.info('GET Event List');
         return res.json(result);
     }
@@ -66,38 +67,49 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
  * Example URL = ../event/947780/1
  *----------------------------------------------------------------------*/
 router.post('/event/:hospital_id', event_upload.single('event_img'),async (req, res) => {
+  
+    const {
+        hospital_id
+   } = req.params;
+   
+   const {
+       title,
+       end_at,
+       start_at,
+       context,
+       attachment
+   } = req.body;
+
     try {
-        const {
-             hospital_id
-        } = req.params;
-        
-        const {
-            title,
-            end_at,
-            start_at,
-            context,
-            attachment
-        } = req.body;
-
-        const rename = Date() + attachment;
-        const path = 'uploads/event/' + rename;
-        nameParser("uploads/event", "uploads/event", attachment, rename);
-
-        const sql = `insert into hospital_event (
-                        hospital_id, 
-                        title, 
-                        context, 
-                        start_at, 
-                        end_at, 
-                        attachment) value(?,?,?,?,?,?)`;
-        const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
-
+        if(attachment){
+            const rename = Date() + attachment;
+            const path = 'uploads/event/' + rename;
+            nameParser("uploads/event", "uploads/event", attachment, rename);
+    
+            const sql = `insert into hospital_event (
+                            hospital_id, 
+                            title, 
+                            context, 
+                            start_at, 
+                            end_at, 
+                            attachment) value(?,?,?,?,?,?)`;
+            const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+        } 
+        else {
+            const sql = `insert into hospital_event (
+                hospital_id, 
+                title, 
+                context, 
+                start_at, 
+                end_at) value(?,?,?,?,?)`;
+            const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+        }
         logger.info('POST Event Detail');
         return res.json({state:'Success'});
     }
     catch(error){
         logger.error('POST Event Detail' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }
 });
 
@@ -142,30 +154,40 @@ router.put('/event/:hospital_id/:id', event_upload.single('event_image'),async (
         attachment
     } = req.body;
 
-    const rename = Date() + attachment;
-    const path = 'uploads/event/' + rename;
-    nameParser("uploads/event", "uploads/event", attachment, rename);
-
     try {
-        const sql = `update hospital_event set
-            title =?, 
-            context =?, 
-            start_at =?, 
-            end_at =?, 
-            attachment =? where id=? AND hospital_id`;
-        const data = await pool.query(sql, [title, context, start_at, end_at, attachment, id, hospital_id]);
+        if(attachment){
+            const rename = Date() + attachment;
+            const path = 'uploads/event/' + rename;
+            nameParser("uploads/event", "uploads/event", attachment, rename);
+            
+            const sql = `update hospital_event set
+                            title =?, 
+                            context =?, 
+                            start_at =?, 
+                            end_at =?, 
+                            attachment =? where id=? AND hospital_id`;
+            const data = await pool.query(sql, [title, context, start_at, end_at, path, id, hospital_id]);
+        }
+        else {           
+            const sql = `update hospital_event set
+                            title =?, 
+                            context =?, 
+                            start_at =?, 
+                            end_at =? where id=? AND hospital_id`;
+            const data = await pool.query(sql, [title, context, start_at, end_at, attachment, id, hospital_id]);
+        }
 
         logger.info('UPDATE Event Detail');
         return res.json({state:'Success'});
     }
     catch(error){
         logger.error('UPDATE Event Detail ' + error);
-        return res.json({state:'Fail'});
+        return res.json(error);
     }    
 });
 
 /*----------------------------------------------------------------------*
- * GET File Detail
+ * GET Event File Detail
  * Example URL = ../event/947780/3/download
  *----------------------------------------------------------------------*/
 router.get("/event/:hospital_id/:id/download", async (req, res) => {
