@@ -53,18 +53,18 @@ function Navbar() {
   };
 
   return (
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div className="container-fluid">
         {/* Logo */}
         <Link href="/">
-          <a class="navbar-brand navbar-logo">
-            <Image class="navbar-logo" src={Logo} alt="vote24" />
+          <a className="navbar-brand navbar-logo">
+            <Image className="navbar-logo" src={Logo} alt="vote24" />
           </a>
         </Link>
 
         {/* hamburger button */}
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -72,12 +72,12 @@ function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav links */}
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <NavItem active={currentPage === "/"} url="/" title="Home" />
             {!isLoggedIn ? (
               <>
@@ -120,26 +120,26 @@ function Navbar() {
 
           {/* top-right button */}
           {!isLoggedIn ? (
-            <div class="d-flex">
+            <div className="d-flex">
               <Link href="/login">
-                <a class="nav-link">
-                  <button type="button" class="btn btn-primary">
+                <a className="nav-link">
+                  <button type="button" className="btn btn-primary">
                     로그인
                   </button>
                 </a>
               </Link>
               <Link href="/signup">
-                <a class="nav-link">
-                  <button type="button" class="btn btn-primary">
+                <a className="nav-link">
+                  <button type="button" className="btn btn-primary">
                     서비스 신청
                   </button>
                 </a>
               </Link>
             </div>
           ) : (
-            <div class="d-flex">
-              <a class="nav-link" onClick={handleLogout}>
-                <button type="button" class="btn btn-primary">
+            <div className="d-flex">
+              <a className="nav-link" onClick={handleLogout}>
+                <button type="button" className="btn btn-primary">
                   로그아웃
                 </button>
               </a>

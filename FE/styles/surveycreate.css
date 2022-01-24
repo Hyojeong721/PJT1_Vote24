@@ -1,0 +1,15 @@
+.survey-form-container {
+  min-width: 400px;
+  min-height: 100vh;
+  max-width: 800px;
+  background-color: #ffc107;
+}
+
+.no-border {
+  box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}
+
+.no-border:focus {
+  outline-width: 0;
+  border-bottom-color: red;
+}

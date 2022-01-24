@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 import "react-toastify/dist/ReactToastify.css";
 
-const LOGIN_URL = "http://teama205.iptime.org/api/login";
+const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -68,36 +68,36 @@ function Login() {
           onSubmit={handleSubmit(onSubmit)}
           className="w-50 d-flex flex-column"
         >
-          <div class="mt-5">
+          <div className="mt-5">
             <div className="fw-bold">이메일</div>
-            <div class="d-flex justify-content-between mt-1">
+            <div className="d-flex justify-content-between mt-1">
               <div className="input-box form-floating ">
                 <input
                   id="email"
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   placeholder=" "
                   {...register("email")}
                 />
-                <label htmlFor="email" class="">
+                <label htmlFor="email">
                   <p className="text-secondary">you@example.com</p>
                 </label>
                 <span className="error">{errorMessage}</span>
               </div>
             </div>
           </div>
-          <div class="mt-3">
+          <div className="mt-3">
             <div className="fw-bold">비밀번호</div>
-            <div class="d-flex justify-content-between mt-1">
+            <div className="d-flex justify-content-between mt-1">
               <div className="input-box form-floating ">
                 <input
                   id="password"
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   placeholder=" "
                   {...register("password")}
                 />
-                <label htmlFor="password" class="">
+                <label htmlFor="password">
                   <p className="text-secondary">password</p>
                 </label>
                 <span className="error">{errorMessage}</span>
@@ -106,7 +106,7 @@ function Login() {
           </div>
 
           <div className="d-flex justify-content-center mt-3">
-            <button type="submit" class="submit-button btn btn-primary">
+            <button type="submit" className="submit-button btn btn-primary">
               로그인
             </button>
           </div>
@@ -116,7 +116,7 @@ function Login() {
               <button
                 type="button"
                 onClick={goSignup}
-                class="submit-button btn btn-success"
+                className="submit-button btn btn-success"
               >
                 서비스 신청
               </button>

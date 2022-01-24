@@ -5,7 +5,7 @@ function NavDropdown({ active, title, subtitles }) {
   return (
     <li className={`nav-item dropdown ${active ? "active" : ""}`}>
       <a
-        class="nav-link dropdown-toggle"
+        className="nav-link dropdown-toggle"
         href="#"
         id="navbarDropdown"
         role="button"
@@ -14,11 +14,11 @@ function NavDropdown({ active, title, subtitles }) {
       >
         {title}
       </a>
-      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
         {subtitles
           ? subtitles.map((subtitle, idx) => (
               <li key={idx}>
-                <Link class="dropdown-item" href={subtitle.url}>
+                <Link className="dropdown-item" href={subtitle.url}>
                   {subtitle.title}
                 </Link>
               </li>
