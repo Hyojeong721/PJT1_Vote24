@@ -3,9 +3,9 @@ import Link from "next/link";
 
 function NavItem({ active, url, title }) {
   return (
-    <li class={`nav-item ${active ? "active" : ""}`}>
+    <li className={`nav-item ${active ? "active" : ""}`}>
       <Link href={url}>
-        <a class="nav-link">{title}</a>
+        <a className="nav-link">{title}</a>
       </Link>
     </li>
   );
