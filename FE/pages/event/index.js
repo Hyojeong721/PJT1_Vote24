@@ -13,7 +13,7 @@ function HospitalEvent() {
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const EVENT_URL = `http://teama205.iptime.org/api/event/${hospital_id}`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
 
   // 서버에서 이벤트 목록 받아오는 코드
   useEffect(() => {

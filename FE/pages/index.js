@@ -7,7 +7,7 @@ function Home() {
   const { isLoggedIn } = useSelector((state) => state.userStatus);
   const dispatch = useDispatch();
   const userInfo = {
-    id: "947780",
+    id: "1",
     code: "222",
     name: "SSAFY",
   };

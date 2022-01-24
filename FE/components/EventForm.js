@@ -14,29 +14,30 @@ const EventForm = () => {
     imgFile: null,
   });
 
+  // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const EVENT_URL = `http://teama205.iptime.org/api/event/${hospital_id}`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
+  //   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/1`;
 
+  // 글 작성시 state에 반영
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
   const handleChange = (name, value) => {
     setValues((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
   };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    handleChange(name, value);
-  };
 
+  // 작성완료 눌렀을때 서버에 보내기
   const handleSubmit = async (e) => {
-    // 기본 submit기능인 페이지이동기능을 막아준다. = preventDefault();
     e.preventDefault();
-    console.log({ values });
 
-    // const onSubmit = async (values) => {
+    // 보낼 데이터들을 fromdata에 담는 과정
     const fd = new FormData();
-
     for (let key in values) {
       if (key === "imgFile") {
         if (values[key] != null) {
@@ -51,20 +52,22 @@ const EventForm = () => {
       }
     }
 
-    for (let value of fd.values()) {
-      console.log(value);
-    }
+    // // formData 안에 값들 확인할 때
+    // for (let value of fd.values()) {
+    //   console.log(value);
+    // }
 
+    // 서버에 보내기
     await axios
       .post(EVENT_URL, fd, {
         headers: {
           "Content-Type": `multipart/form-data`,
         },
-        // params: { "hospital_id": '947780' },
       })
       .then((res) => {
         toast("이벤트 등록 성공!");
         console.log(res.data);
+        post_id = res.data.id;
       })
       .catch((err) => {
         toast.error("이벤트 등록 실패!");
@@ -130,9 +133,15 @@ const EventForm = () => {
           <Link href="/event/">
             <button className="btn btn-secondary">취소</button>
           </Link>
-          <button type="submit" className="btn btn-primary">
-            작성
+
+          <button type="submit" className="btn btn-secondary">
+            작성완료
           </button>
+
+          {/* <button type="submit" className="btn btn-primary">
+            작성 완료
+          </button>
+          <Link href={`${EVENT_URL}/${post_id}`}></Link> */}
         </div>
       </form>
     </div>
