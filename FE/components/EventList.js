@@ -8,11 +8,13 @@ import Link from "next/link";
 const EventList = () => {
   const [dataList, setDataList] = useState([]);
 
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const hospital_id = userInfo.id;
+  const EVENT_URL = `http://teama205.iptime.org/api/event/${hospital_id}`;
+
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(
-        `http://teama205.iptime.org/api/event/947780`
-      );
+      const res = await axios.get(EVENT_URL);
       const data = res.data;
       setDataList(data);
     };

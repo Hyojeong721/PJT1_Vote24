@@ -1,24 +1,22 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import FileInput from "./EventFileInput";
 import Link from "next/link";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
-
-const EVENT_URL = "http://teama205.iptime.org/api/event/947780";
 
 const EventForm = () => {
   const [values, setValues] = useState({
-    title: '', 
-    context: '', 
-    start_at: '', 
-    end_at: '', 
-    imgFile: null, 
+    title: "",
+    context: "",
+    start_at: "",
+    end_at: "",
+    imgFile: null,
   });
 
-//   const hospitalId = () => {
-//     const router = useRouter();
-//     const { hospital_id } = router.query;
-//   }
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const hospital_id = userInfo.id;
+  const EVENT_URL = `http://teama205.iptime.org/api/event/${hospital_id}`;
 
   const handleChange = (name, value) => {
     setValues((prevValues) => ({
@@ -41,10 +39,12 @@ const EventForm = () => {
 
     for (let key in values) {
       if (key === "imgFile") {
-        const imgFile = values[key];
-        const imgName = imgFile.name;
-        fd.append("event_img", imgFile);
-        fd.append("attachment", imgName);
+        if (values[key] != null) {
+          const imgFile = values[key];
+          const imgName = imgFile.name;
+          fd.append("event_img", imgFile);
+          fd.append("attachment", imgName);
+        }
       } else {
         console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
@@ -63,26 +63,11 @@ const EventForm = () => {
         // params: { "hospital_id": '947780' },
       })
       .then((res) => {
-        toast("이벤트 등록 성공!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast("이벤트 등록 성공!");
+        console.log(res.data);
       })
       .catch((err) => {
-        toast.error("이벤트 등록 실패!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("이벤트 등록 실패!");
         console.log(err);
       });
   };
@@ -103,11 +88,23 @@ const EventForm = () => {
           ></input>
         </div>
         <div className="mb-3">
-            <label htmlFor="start_at">시작일</label>
-            <input id="start_at" name="start_at" type="date" onChange={handleInputChange} value={values.start_at} ></input>
+          <label htmlFor="start_at">시작일</label>
+          <input
+            id="start_at"
+            name="start_at"
+            type="date"
+            onChange={handleInputChange}
+            value={values.start_at}
+          ></input>
 
-            <label htmlFor="end_at">마감일</label>
-            <input id="end_at" name="end_at" type="date" onChange={handleInputChange} value={values.end_at} ></input>
+          <label htmlFor="end_at">마감일</label>
+          <input
+            id="end_at"
+            name="end_at"
+            type="date"
+            onChange={handleInputChange}
+            value={values.end_at}
+          ></input>
         </div>
         <div className="mb-3">
           <label htmlFor="context" className="form-label">
@@ -138,9 +135,8 @@ const EventForm = () => {
           </button>
         </div>
       </form>
-      <ToastContainer position="top-right" />
     </div>
   );
-}
+};
 
 export default EventForm;
