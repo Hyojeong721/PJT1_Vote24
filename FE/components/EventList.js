@@ -1,38 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+
 import Table from "./Table";
 import TableRow from "./TableRow";
 import TableColumn from "./TableColumn";
-import axios from "axios";
 import Link from "next/link";
 
-const EventList = () => {
-  const [dataList, setDataList] = useState([]);
-
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
-  const EVENT_URL = `http://teama205.iptime.org/api/event/${hospital_id}`;
-
-  useEffect(() => {
-    const getList = async () => {
-      const res = await axios.get(EVENT_URL);
-      const data = res.data;
-      setDataList(data);
-    };
-    getList();
-  }, []);
+const EventList = ({ dataList }) => {
+  // 날짜 형식 바꾸는 코드
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    return [year, month, day].join("-");
+  }
 
   return (
     <div>
-      <Table headersName={["글번호", "제목", "등록일", "조회수"]}>
+      <Table headersName={["글번호", "생성일", "제목", "기한", "조회수"]}>
         {dataList
-          ? dataList.map((item, index) => {
+          ? dataList.map((item) => {
               return (
-                <TableRow key={index}>
+                <TableRow key={item.id}>
                   <TableColumn>{item.id}</TableColumn>
+                  <TableColumn>{formatDate(item.created_at)}</TableColumn>
                   <TableColumn>
                     <Link href={`/notice/${item.id}`}>{item.title}</Link>
                   </TableColumn>
-                  <TableColumn>{item.created_at}</TableColumn>
+                  <TableColumn>
+                    {formatDate(item.start_at)} ~ {formatDate(item.end_at)}
+                  </TableColumn>
                   <TableColumn>{item.views}</TableColumn>
                 </TableRow>
               );
