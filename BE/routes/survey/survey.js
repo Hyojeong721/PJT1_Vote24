@@ -19,8 +19,13 @@ router.post("/survey/:hospital_id", async (req, res) => {
     benchmark,
   } = req.body;
   try {
-    const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?);`;
-    await pool.query(survey_sql, [hospital_id, title, context, output_link, start_at, end_at]);
+    if (req.body.end_at) {
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?);`;
+      await pool.query(survey_sql, [hospital_id, title, context, output_link, start_at, end_at]);
+    } else {
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?);`;
+      await pool.query(survey_sql, [hospital_id, title, context, output_link, start_at]);
+    }
     const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const surveyID_data = await pool.query(LAST_INSERT_ID);
     const surveyID = surveyID_data[0][0].auto_id;
