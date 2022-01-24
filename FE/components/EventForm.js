@@ -4,14 +4,21 @@ import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
-const EVENT_URL = "https://teama205.iptime.org/api/event/947780";
+const EVENT_URL = "http://teama205.iptime.org/api/event/947780";
 
-function EventForm() {
+const EventForm = () => {
   const [values, setValues] = useState({
-    title: "",
-    content: "",
-    imgFile: null,
+    title: '', 
+    context: '', 
+    start_at: '', 
+    end_at: '', 
+    imgFile: null, 
   });
+
+//   const hospitalId = () => {
+//     const router = useRouter();
+//     const { hospital_id } = router.query;
+//   }
 
   const handleChange = (name, value) => {
     setValues((prevValues) => ({
@@ -36,13 +43,14 @@ function EventForm() {
       if (key === "imgFile") {
         const imgFile = values[key];
         const imgName = imgFile.name;
-        fd.append("img_file", imgFile);
-        fd.append("img_name", imgName);
+        fd.append("event_img", imgFile);
+        fd.append("attachment", imgName);
       } else {
         console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
+
     for (let value of fd.values()) {
       console.log(value);
     }
@@ -52,6 +60,7 @@ function EventForm() {
         headers: {
           "Content-Type": `multipart/form-data`,
         },
+        // params: { "hospital_id": '947780' },
       })
       .then((res) => {
         toast("이벤트 등록 성공!", {
@@ -81,7 +90,7 @@ function EventForm() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div class="mb-3">
+        <div className="mb-3">
           <label htmlFor="title" className="form-label">
             제목
           </label>
@@ -93,17 +102,24 @@ function EventForm() {
             id="title"
           ></input>
         </div>
-        <div class="mb-3">
-          <label htmlFor="content" className="form-label">
+        <div className="mb-3">
+            <label htmlFor="start_at">시작일</label>
+            <input id="start_at" name="start_at" type="date" onChange={handleInputChange} value={values.start_at} ></input>
+
+            <label htmlFor="end_at">마감일</label>
+            <input id="end_at" name="end_at" type="date" onChange={handleInputChange} value={values.end_at} ></input>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="context" className="form-label">
             내용
           </label>
           <textarea
             className="form-control"
-            name="content"
-            value={values.content}
+            name="context"
+            value={values.context}
             onChange={handleInputChange}
-            id="content"
-            rows="3"
+            id="context"
+            rows="5"
           ></textarea>
         </div>
 
