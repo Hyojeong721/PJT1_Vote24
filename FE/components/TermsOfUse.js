@@ -2,9 +2,9 @@ import React from "react";
 
 function termsOfUseText() {
   return (
-    <div class="content">
+    <div className="content">
       <script src="//asset.moaform.com/assets/statics/terms-d67c24096f56fdafb40d9875925b5c31431812d59959b1376aa08b5bb3f5925c.js"></script>
-      <div class="contentbox notices-terms">
+      <div className="contentbox notices-terms">
         <p>
           <strong>제1조(목적)</strong>
         </p>
