@@ -56,3 +56,8 @@ for (let key of formData.keys()) {
 for (let value of formData.values()) {
   console.log(value);
 }
+
+
+### 0124
+1. 이벤트 작성에서 시작일이 마감일보다 늦는거 안되게 바꾸기
+2. 
