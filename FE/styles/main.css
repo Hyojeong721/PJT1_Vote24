@@ -23,7 +23,8 @@
 
 .indigo {
   bottom: 0px;
-  background-color: rgb(30 58 138);
+  opacity: 80%;
+  background-color: #1b2845;
 }
 
 .code_input {

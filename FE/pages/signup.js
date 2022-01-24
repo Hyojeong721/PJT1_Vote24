@@ -6,8 +6,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
-import Image from "next/image";
-import verified from "../public/verified_white_24dp.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -144,11 +142,11 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast.error("이미 존재하는 사업자 번호입니다!", { autoClose: 2000 });
+          toast.error("이미 존재하는 사업자 번호입니다!");
           setBnChecked(false);
           return;
         }
-        toast.success("사용 가능한 사업자번호 입니다!", { autoClose: 2000 });
+        toast.success("사용 가능한 사업자번호 입니다!");
         setBnChecked(true);
       })
       .catch((err) => console.log(err));
@@ -290,8 +288,8 @@ function Signup() {
                 <label htmlFor="business_number">사업자 등록 번호</label>
               </div>
               {bnChecked ? (
-                <button type="button" className="btn btn-primary btn-sm">
-                  <span className="material-icons-outlined">verified</span>
+                <button className="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                  <span className="material-icons">check_circle</span>
                 </button>
               ) : (
                 <button
@@ -311,7 +309,7 @@ function Signup() {
                   className="form-control"
                   placeholder=" "
                   {...register("business_number", {
-                    onChange: () => setEmailChecked(false),
+                    onChange: () => setBnChecked(false),
                   })}
                 />
                 <label htmlFor="business_number">

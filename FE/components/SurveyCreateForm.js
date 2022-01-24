@@ -78,7 +78,7 @@ function SurveyCreateForm() {
       </div>
       <div className="w-100 d-flex flex-column survey-form-body mt-3">
         {paintQuestions}
-        <div className="bg-info p-2 d-flex justify-content-center gap-2 mt-5">
+        <div className="p-2 d-flex justify-content-center gap-2 mt-5">
           <button
             className="btn btn-primary d-flex align-items-center"
             onClick={handleQuestionChoiceAdd}

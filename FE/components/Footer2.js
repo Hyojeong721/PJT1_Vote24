@@ -3,7 +3,7 @@ import Logo from "../public/logo.png";
 
 function Footer() {
   return (
-    <footer className="container-fluid navbar-fixed-bottom pt-4 my-md-5 pt-md-5 border-top bg-info">
+    <footer className="container-fluid footer-box navbar-fixed-bottom pt-4 my-md-5 pt-md-5 border-top">
       <div className="container w-50 d-flex justify-content-between align-items-center">
         <div>
           <Image

@@ -1,4 +1,3 @@
-import { slice } from "lodash";
 import { useState } from "react";
 
 function QuestionChoice({ q }) {
@@ -33,7 +32,7 @@ function QuestionChoice({ q }) {
   });
 
   return (
-    <div className="bg-info w-100 mt-3 p-1">
+    <div className="w-100 mt-3 p-1">
       <div className="d-flex form-floating">
         <input
           id={q.id}

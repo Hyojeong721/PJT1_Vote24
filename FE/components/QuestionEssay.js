@@ -1,6 +1,6 @@
 function QuestionEssay({ q }) {
   return (
-    <div className="bg-info w-100 mt-3 p-1">
+    <div className="w-100 mt-3 p-1">
       <div className="form-floating">
         <input
           id={q.id}
