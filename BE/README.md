@@ -41,3 +41,7 @@ Copy this command for install all dependency Package;
 * hospitalUser.js 수정
 * survey 관련 테이블 restAPI CRUD 작성
 * 조회수 쿼리 추가
+
+#[2022/01/21]
+* survey 생성 쿼리문 작성 및 구현
+* 각 게시판 조회수 기능 추가
