@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-function NavDropdown({ title, subtitles }) {
+function NavDropdown({ active, title, subtitles }) {
   return (
-    <li class="nav-item dropdown">
+    <li className={`nav-item dropdown ${active ? "active" : ""}`}>
       <a
         class="nav-link dropdown-toggle"
         href="#"
