@@ -14,13 +14,7 @@ const router = express.Router();
  * Example URL = ../join
  *----------------------------------------------------------------------*/
 router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
-  const { 
-    email, 
-    password, 
-    name, 
-    business_number, 
-    phone 
-  } = req.body;
+  const { email, password, name, business_number, phone } = req.body;
 
   const logo_rename = Date.now() + req.body.logo_name;
   const logo_path = "uploads/logo" + logo_rename;
@@ -36,9 +30,15 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
                         phone, 
                         logo_image) VALUES(?, ?, ?, ?, ?, ?);`;
 
-      const data = await pool.query(sql, [email, password, name, business_number, phone, logo_path]);
-    } 
-    else {
+      const data = await pool.query(sql, [
+        email,
+        password,
+        name,
+        business_number,
+        phone,
+        logo_path,
+      ]);
+    } else {
       const sql = `INSERT INTO hospital_info ( 
                         email, 
                         password, 
@@ -47,11 +47,10 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
                         phone) VALUES(?, ?, ?, ?, ?);`;
       const data = await pool.query(sql, [email, password, name, business_number, phone]);
     }
-    
+
     logger.info("POST HospitalUser Join");
     return res.json({ result: "Success" });
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("POST HospitalUser Join " + error);
     return res.json(error);
   }
@@ -61,28 +60,27 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
  * GET HospitalUser Login
  * Example URL = ../login
  *----------------------------------------------------------------------*/
-router.post('/login', async (req, res) => {
-  const {
-    email,
-    password
-   } = req.body;
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
   try {
     const sql = `SELECT 
                     id, 
                     email, 
-                    password FROM hospital_info WHERE email=?`;
+                    password
+                    name,
+                    code FROM hospital_info WHERE email=?`;
     const data = await pool.query(sql, [email]);
     const UserId = data[0][0].id;
     const code = data[0][0].code;
-
+    const name = data[0][0].name; // name 추가
     const hashedPassword = await hashPassword(data[0][0].password);
     const compareResult = await comparePassword(password, hashedPassword);
 
     if (!data[0][0]) {
-      logger.error('GET HospitalUser Login Fail : No exist ID');
+      logger.error("GET HospitalUser Login Fail : No exist ID");
       return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
-    } 
+    }
 
     if (!compareResult) {
       logger.error("GET HospitalUser Login Fail : No exit Password");
@@ -90,17 +88,16 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-        {
+      {
         id: UserId,
-        },
-        "ssafy",
-        { expiresIn: "24h" }
+      },
+      "ssafy",
+      { expiresIn: "24h" }
     );
 
     logger.info("GET HospitalUser login");
-    return res.json({ result: "ok", id: UserId, code: code, token: token });
-  } 
-  catch (error) {
+    return res.json({ result: "ok", id: UserId, name: name, code: code, token: token });
+  } catch (error) {
     logger.info("GET HospitalUser login " + error);
     return res.json(error);
   }
@@ -120,13 +117,11 @@ router.post("/emailCheck", async (req, res) => {
     if (data[0][0].isHava === 1) {
       logger.info("GET HospitalUser emailcheck Fail");
       return res.json({ result: "notok" });
-    } 
-    else {
+    } else {
       logger.info("GET HospitalUser emailcheck Success");
       return res.json({ result: "ok" });
     }
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("GET HospitalUser emailcheck " + error);
     return res.json(error);
   }
@@ -138,21 +133,19 @@ router.post("/emailCheck", async (req, res) => {
  *----------------------------------------------------------------------*/
 router.post("/bnNumberCheck", async (req, res) => {
   const business_number = req.body.business_number;
-  
+
   try {
     const sql = `SELECT EXISTS(SELECT * FROM hospital_info where business_number = ? ) as isHava;`;
     const data = await pool.query(sql, [business_number]);
-    
+
     if (data[0][0].isHava == 1) {
       logger.info("GET HospitalUser bnNumberCheck Fail");
       return res.json({ result: "notok" });
-    } 
-    else {
+    } else {
       logger.info("GET HospitalUser bnNumberCheck Success");
       return res.json({ result: "ok" });
     }
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("GET HospitalUser bnNumberCheck " + error);
     return res.json(error);
   }

@@ -14,12 +14,7 @@ const router = express.Router();
  * Example URL = ../service
  *----------------------------------------------------------------------*/
 router.post("/service", service_upload.single("service_notice_image"), async (req, res) => {
-  const { 
-      title, 
-      context, 
-      fixed, 
-      attachment 
-  } = req.body;
+  const { title, context, fixed, attachment } = req.body;
 
   const rename = Date() + attachment;
   const path = "uploads/service/" + rename;
@@ -33,19 +28,21 @@ router.post("/service", service_upload.single("service_notice_image"), async (re
                         fixed, 
                         attachment) VALUES(?, ?, ?, ?);`;
       const data = await pool.query(sql, [title, context, fixed, path]);
-    } 
-    else {
+    } else {
       const sql = `INSERT INTO service_notice ( 
                         title, 
                         context, 
                         fixed) VALUES(?, ?, ?);`;
       const data = await pool.query(sql, [title, context, fixed]);
     }
-    logger.info("POST Service Notice Detail");
-    return res.json({ state: "Success" });
+    const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
+    const data_id = await pool.query(LAST_INSERT_ID);
+    const create_id = data_id[0][0].auto_id;
+    logger.info("POST Event Detail");
+    return res.json({ state: "Success", id: create_id });
   } catch (error) {
     logger.error("POST Service Notice Detail " + error);
-    return res.json({state: "Fail"});
+    return res.json({ state: "Fail" });
   }
 });
 
@@ -55,12 +52,7 @@ router.post("/service", service_upload.single("service_notice_image"), async (re
  *----------------------------------------------------------------------*/
 router.put("/service/:id", service_upload.single("service_notice_image"), async (req, res) => {
   const id = req.params.id;
-  const { 
-    title, 
-    context, 
-    fixed, 
-    attachment 
-  } = req.body;
+  const { title, context, fixed, attachment } = req.body;
 
   const rename = Date() + attachment;
   const path = "uploads/service/" + rename;
@@ -74,8 +66,7 @@ router.put("/service/:id", service_upload.single("service_notice_image"), async 
                       fixed=?, 
                       attachment=? WHERE id=?;`;
       const data = await pool.query(sql, [title, context, fixed, path, id]);
-    } 
-    else {
+    } else {
       const sql = `UPDATE service_notice SET 
                       title=?, 
                       context=?, 
@@ -118,14 +109,15 @@ router.get("/service/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
+    const sqlInc = `UPDATE service_notice SET views = views+1 WHERE id = ?;`;
+    await pool.query(sqlInc, [id]);
     const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id]);
     const result = data[0];
 
     logger.info("GET Service Notice Detail");
     return res.json(result);
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("GET Service Notice Detail " + error);
     return res.json(error);
   }
@@ -146,8 +138,7 @@ router.get("/service/", async (req, res) => {
 
     logger.info("GET Service Notice List");
     return res.json(result);
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("GET Service Notice List " + error);
     return res.json(error);
   }
@@ -167,10 +158,9 @@ router.get("/service/:id/download", async (req, res) => {
 
     logger.info("GET Service File Download");
     return res.download(path.join(__dirname, filepath));
-  } 
-  catch (error) {
+  } catch (error) {
     logger.error("GET Service File Download " + error);
-    return res.send({state:"Fail"});
+    return res.send({ state: "Fail" });
   }
 });
 
