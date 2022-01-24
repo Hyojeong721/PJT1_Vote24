@@ -5,14 +5,14 @@ import TableColumn from "./TableColumn";
 import axios from "axios";
 import Link from "next/link";
 
-const EVENT_URL = "https://teama205.iptime.org/api/event/947780";
-
-const PostList = () => {
+const EventList = () => {
   const [dataList, setDataList] = useState([]);
 
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(EVENT_URL);
+      const res = await axios.get(
+        `http://teama205.iptime.org/api/event/947780`
+      );
       const data = res.data;
       setDataList(data);
     };
@@ -21,7 +21,7 @@ const PostList = () => {
 
   return (
     <div>
-      <Table headersName={["글번호", "제목", "이벤트기한", "조회수"]}>
+      <Table headersName={["글번호", "제목", "등록일", "조회수"]}>
         {dataList
           ? dataList.map((item, index) => {
               return (
@@ -41,4 +41,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default EventList;
