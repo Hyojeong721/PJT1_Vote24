@@ -17,6 +17,7 @@ import "../styles/signup.css";
 import "../styles/simplecard.css";
 import "../styles/table.css";
 import "../styles/surveycreate.css";
+import "../styles/paging.css";
 
 function MyApp({ Component, pageProps }) {
   const store = useStore();
