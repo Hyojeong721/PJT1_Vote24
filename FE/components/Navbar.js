@@ -8,7 +8,7 @@ import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
 
 function Navbar() {
-  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const { isLoggedIn } = useSelector((state) => state.userStatus);
   const dispatch = useDispatch();
 
   const surveyNav = [
@@ -42,24 +42,10 @@ function Navbar() {
     },
   ];
 
-  useEffect(() => {
-    console.log("navbar useEffect", isLoggedIn);
-  }, [isLoggedIn]);
-
   const handleLogout = () => {
     localStorage.removeItem("jwt");
-    localStorage.removeItem("code");
-    localStorage.removeItem("id");
+    toast.success("로그아웃 성공!");
     dispatch({ type: "LOGOUT" });
-    toast("로그아웃 성공!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
   };
 
   return (

@@ -17,14 +17,14 @@ const BN_CHECK = "http://teama205.iptime.org/api/bnNumberCheck";
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState([]);
-  const [emailChecked, setEmailChecked] = useState(true);
+  const [emailChecked, setEmailChecked] = useState(false);
   const [bnChecked, setBnChecked] = useState(false);
   const router = useRouter();
-  const { isLoggedIn } = useSelector((state) => state.userInfo);
+  const { isLoggedIn } = useSelector((state) => state.userStatus);
 
   useEffect(() => {
-    console.log("login useEffect:", isLoggedIn);
     if (isLoggedIn) {
+      toast.warning("이미 로그인 된 사용자입니다.");
       router.push("/");
     }
   }, [isLoggedIn]);
@@ -86,6 +86,11 @@ function Signup() {
   };
 
   const onSubmit = async (data) => {
+    if (!(emailChecked && bnChecked)) {
+      toast.warning("중복 확인이 필요합니다.");
+      return;
+    }
+
     const fd = new FormData();
 
     for (let key in data) {
@@ -106,37 +111,13 @@ function Signup() {
         },
       })
       .then((res) => {
-        toast("서비스 신청 완료!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("서비스 신청 완료!");
         router.push("/");
       })
       .catch((err) => {
-        toast.error("서비스 신청 실패!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("서비스 신청 실패!");
         console.log(err);
       });
-  };
-
-  const onEmailChange = () => {
-    setEmailChecked(false);
-  };
-
-  const onBnChange = () => {
-    setBnChecked(false);
   };
 
   const onEmailCheck = async (e) => {
@@ -146,27 +127,11 @@ function Signup() {
       .post(EMAIL_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast.error("이미 존재하는 이메일입니다!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.error("이미 존재하는 이메일입니다!");
           setEmailChecked(false);
           return;
         }
-        toast("사용 가능한 이메일입니다!", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("사용 가능한 이메일입니다!");
         setEmailChecked(true);
       })
       .catch((err) => console.log(err));
@@ -179,27 +144,11 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
-          toast("이미 존재하는 사업자 번호입니다!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.error("이미 존재하는 사업자 번호입니다!", { autoClose: 2000 });
           setBnChecked(false);
           return;
         }
-        toast("사용 가능한 사업자번호 입니다!", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("사용 가능한 사업자번호 입니다!", { autoClose: 2000 });
         setBnChecked(true);
       })
       .catch((err) => console.log(err));
@@ -213,137 +162,153 @@ function Signup() {
           onSubmit={handleSubmit(onSubmit)}
           className="form-box d-flex flex-column"
         >
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="email" class="form-label">
-                이메일
-              </label>
+          <div>
+            <div className="d-flex justify-content-between">
+              <div className="fw-bold">이메일</div>
+              {emailChecked ? (
+                <button class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                  <span class="material-icons">check_circle</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onEmailCheck}
+                  class="check-button btn btn-primary"
+                >
+                  중복확인
+                </button>
+              )}
             </div>
-            <div className="input-box">
-              <input
-                id="email"
-                type="email"
-                class="form-control"
-                placeholder="이메일을 입력해주세요."
-                onChange={onEmailChange}
-                {...register("email")}
-              />
-            </div>
-            {emailChecked ? (
-              <button class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
-                <Image src={verified} height={30} width={30} />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onEmailCheck}
-                class="check-button btn btn-primary"
-              >
-                중복체크
-              </button>
-            )}
-          </div>
-          <span className="error">{errors.email?.message}</span>
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="password" class="form-label">
-                비밀번호
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="password"
-                type="password"
-                class="form-control"
-                placeholder="비밀번호는 8 ~ 16자 사이로 설정해주세요."
-                {...register("password")}
-              />
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("email", {
+                    onChange: () => setEmailChecked(false),
+                  })}
+                />
+                <label htmlFor="email" class="">
+                  <p className="text-secondary">you@example.com</p>
+                </label>
+                <span className="error">{errors.email?.message}</span>
+              </div>
             </div>
           </div>
-          <span className="error">{errors.password?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="passwordConfirm" class="form-label">
-                비밀번호 확인
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="passwordConfirm"
-                type="password"
-                class="form-control"
-                placeholder="비밀번호를 확인해주세요."
-                {...register("passwordConfirm")}
-              />
-            </div>
-          </div>
-          <span className="error">{errors.password?.message}</span>
-          <div class="d-flex justify-content-between mt-5">
-            <div className="label-box">
-              <label htmlFor="name" class="form-label">
-                병원명
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="name"
-                type="text"
-                class="form-control"
-                placeholder="비밀번호를 확인해주세요."
-                {...register("name")}
-              />
+          <div className="mt-3">
+            <div className="fw-bold">비밀번호</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("password")}
+                />
+                <label htmlFor="password" class="form-label">
+                  <p className="text-secondary">
+                    비밀번호는 8 ~ 16자 사이이며, 특수문자 1개를 포함해야
+                    합니다.
+                  </p>
+                </label>
+                <span className="error">{errors.password?.message}</span>
+              </div>
             </div>
           </div>
-          <span className="error">{errors.name?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="phone" class="form-label">
-                전화번호
-              </label>
-            </div>
-            <div className="input-box">
-              <input
-                id="phone"
-                type="text"
-                class="form-control"
-                placeholder="전화번호를 입력해주세요."
-                {...register("phone")}
-              />
+          <div className="mt-3">
+            <div className="fw-bold">비밀번호 확인</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="passwordConfirm"
+                  type="password"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("passwordConfirm")}
+                />
+                <label htmlFor="passwordConfirm" class="form-label">
+                  <p className="text-secondary">
+                    위 비밀번호와 동일한 비밀번호를 입력해주세요.
+                  </p>
+                </label>
+                <span className="error">{errors.passwordConfirm?.message}</span>
+              </div>
             </div>
           </div>
-          <span className="error">{errors.phone?.message}</span>
-          <div class="d-flex justify-content-between mt-3">
-            <div className="label-box">
-              <label htmlFor="business_number" class="form-label">
-                사업자 등록 번호
-              </label>
+          <div className="mt-3">
+            <div className="fw-bold">병원명</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="name"
+                  type="text"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("name")}
+                />
+                <label htmlFor="name" class="form-label">
+                  <p className="text-secondary">병원명을 입력해주세요.</p>
+                </label>
+                <span className="error">{errors.name?.message}</span>
+              </div>
             </div>
-            <div className="input-box">
-              <input
-                id="business_number"
-                type="text"
-                class="form-control"
-                placeholder="사업자 등록 번호를 입력해주세요."
-                onChange={onBnChange}
-                {...register("business_number")}
-              />
-            </div>
-            {bnChecked ? (
-              <button type="button" class="btn btn-primary btn-sm">
-                <span class="material-icons-outlined">verified</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={onBnCheck}
-                class="check-button btn btn-primary"
-              >
-                중복체크
-              </button>
-            )}
           </div>
-          <span className="error">{errors.business_number?.message}</span>
-
+          <div className="mt-3">
+            <div className="fw-bold">전화번호</div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="phone"
+                  type="text"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("phone")}
+                />
+                <label htmlFor="phone" class="form-label">
+                  <p className="text-secondary">전화번호를 입력해주세요.</p>
+                </label>
+                <span className="error">{errors.phone?.message}</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="d-flex justify-content-between">
+              <div className="fw-bold">사업자 등록 번호</div>
+              {bnChecked ? (
+                <button type="button" class="btn btn-primary btn-sm">
+                  <span class="material-icons-outlined">verified</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onBnCheck}
+                  class="check-button btn btn-primary"
+                >
+                  중복확인
+                </button>
+              )}
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+              <div className="input-box form-floating ">
+                <input
+                  id="business_number"
+                  type="text"
+                  class="form-control"
+                  placeholder=" "
+                  {...register("business_number", {
+                    onChange: () => setEmailChecked(false),
+                  })}
+                />
+                <label htmlFor="business_number" class="">
+                  <p className="text-secondary">OOO-OO-OOOOO</p>
+                </label>
+                <span className="error">{errors.business_number?.message}</span>
+              </div>
+            </div>
+          </div>
           <div class="d-flex justify-content-between mt-3">
             <div className="label-box">
               <label htmlFor="logo_image" class="form-label">

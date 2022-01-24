@@ -1,20 +1,29 @@
 import { combineReducers } from "redux";
 import { HYDRATE } from "next-redux-wrapper";
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
 
-import userInfo from "./userInfo";
+import userStatus from "./userStatus";
 
-const reducer = (state, action) => {
+const rootReducer = (state, action) => {
   switch (action.type) {
     // // 서버 사이드 데이터를 클라이언트 사이드 Store에 통합.
     case HYDRATE:
       return { ...state, ...action.payload };
     default: {
       const combineReducer = combineReducers({
-        userInfo,
+        userStatus,
       });
       return combineReducer(state, action);
     }
   }
 };
 
-export default reducer;
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export { persistedReducer, rootReducer };

@@ -1,16 +1,11 @@
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
-
-const getTokenToLocalStorange = async (token) => {
-  if (typeof window !== "undefined") {
-    const token = await window.localStorage.getItem("jwt");
-    return token;
-  }
+const initialUserInfo = {
+  id: "",
+  code: "",
+  name: "",
 };
-
-const isLoggedIn = getTokenToLocalStorange() ? true : false;
-
-export const initialState = { isLoggedIn: isLoggedIn, userInfo: {} };
+export const initialState = { isLoggedIn: false, userInfo: initialUserInfo };
 
 export default (state = initialState, action) => {
   switch (action.type) {
