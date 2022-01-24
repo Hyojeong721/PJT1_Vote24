@@ -5,6 +5,18 @@ import QuestionEssay from "./QuestionEssay";
 function SurveyCreateForm() {
   const [questions, setQuestions] = useState([]);
 
+  const handleChange = (name, value) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
+
   const handleQuestionChoiceAdd = () => {
     setQuestions([...questions, { id: questions.length, type: "choice" }]);
   };
