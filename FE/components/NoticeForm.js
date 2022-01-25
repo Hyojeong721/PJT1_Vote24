@@ -42,7 +42,7 @@ const NoticeForm = () => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_img", imgFile);
+          fd.append("notice_image", imgFile);
           fd.append("attachment", imgName);
         }
       } else {
@@ -51,10 +51,10 @@ const NoticeForm = () => {
       }
     }
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log(value);
-    // }
+    // formData 안에 값들 확인할 때
+    for (let value of fd.values()) {
+      console.log(value);
+    }
 
     // 서버에 보내기
     await axios
@@ -73,6 +73,14 @@ const NoticeForm = () => {
       });
   };
 
+  const handleCheckChange = () => {
+    if (document.getElementById("input_check").checked) {
+      handleChange("fixed", "1");
+    } else {
+      handleChange("fixed", "0");
+    }
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -88,19 +96,23 @@ const NoticeForm = () => {
             id="title"
           ></input>
         </div>
-
+        <hr></hr>
         <div>
-          <input
-            type="radio"
-            name="fixed"
-            onChange={handleInputChange}
-            value="1"
-          >
-            {" "}
-            상단 고정{" "}
-          </input>
+          <p>
+            <label className="form-label">
+              <input
+                type="checkbox"
+                name="fixed"
+                value="1"
+                id="input_check"
+                onChange={handleCheckChange}
+              />
+              고정공지
+            </label>
+          </p>
         </div>
 
+        <hr></hr>
         <div className="mb-3">
           <label htmlFor="context" className="form-label">
             내용
