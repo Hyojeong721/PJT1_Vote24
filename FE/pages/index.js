@@ -1,4 +1,5 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Main from "../components/Main";
 import MainOnLogin from "../components/MainOnLogin";
@@ -11,6 +12,9 @@ function Home() {
     code: "222",
     name: "SSAFY",
   };
+
+  const MAIN_URL = `http://i6a205.p.ssafy.io:8000/api/main/${userInfo.id}`;
+
   const test1 = () => {
     dispatch({ type: "LOGIN", userInfo });
   };
@@ -19,6 +23,9 @@ function Home() {
     dispatch({ type: "LOGOUT" });
   };
 
+  useEffect(() => {
+    axios.get(MAIN_URL).then((res) => console.log(res.data));
+  }, []);
   return (
     <div>
       <button type="button" onClick={test1}>
