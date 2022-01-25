@@ -59,34 +59,6 @@ router.post("/survey/:hospital_id", async (req, res) => {
   }
 });
 
-// survey write.
-// router.post("/survey/:hospital_id", async (req, res) => {
-//   const hospital_id = req.params.hospital_id;
-//   const { title, context, output_link, start_at, end_at } = req.body;
-
-//   try {
-//     if (req.body.end_at) {
-//       const sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?);`;
-//       const data = await pool.query(sql, [
-//         hospital_id,
-//         title,
-//         context,
-//         output_link,
-//         start_at,
-//         end_at,
-//       ]);
-//     } else {
-//       const sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?);`;
-//       const data = await pool.query(sql, [hospital_id, title, context, output_link, start_at]);
-//     }
-//     logger.info("[INFO] POST /survey/write");
-//     return res.json({ result: "ok" });
-//   } catch (error) {
-//     logger.error("POST /insert Error" + error);
-//     return res.json(error);
-//   }
-// });
-
 // survey update.
 router.put("/survey/:id", async (req, res) => {
   const id = req.params.id;
