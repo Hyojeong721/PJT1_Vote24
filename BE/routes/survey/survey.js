@@ -7,17 +7,7 @@ const router = express.Router();
 
 router.post("/survey/:hospital_id", async (req, res) => {
   const hospital_id = req.params.hospital_id;
-  const {
-    title,
-    context,
-    output_link,
-    start_at,
-    end_at,
-    questionCnt,
-    question,
-    benchmarkCnt,
-    benchmark,
-  } = req.body;
+  const { title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
     if (req.body.end_at) {
       const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?);`;
@@ -34,7 +24,7 @@ router.post("/survey/:hospital_id", async (req, res) => {
     let option_sql = ``;
     let benchmark_sql = ``;
 
-    for (i = 0; i < questionCnt; i++) {
+    for (i = 0; i < question.length; i++) {
       question_sql =
         "INSERT INTO question ( survey_id, `order`, context, type ) VALUES(?, ?, ?, ?);";
       await pool.query(question_sql, [
@@ -46,7 +36,7 @@ router.post("/survey/:hospital_id", async (req, res) => {
       let questionID_data = await pool.query(LAST_INSERT_ID);
       let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
-      for (j = 0; j < question[i].optionCnt; j++) {
+      for (j = 0; j < question[i].option.length; j++) {
         option_sql = "INSERT INTO `option` ( question_id, context, weight ) VALUES(?, ?, ?);";
         await pool.query(option_sql, [
           questionID,
@@ -55,7 +45,7 @@ router.post("/survey/:hospital_id", async (req, res) => {
         ]);
       }
     }
-    for (i = 0; i < benchmarkCnt; i++) {
+    for (i = 0; i < benchmark.length; i++) {
       benchmark_sql =
         "INSERT INTO benchmark ( survey_id, benchmark, output_text ) VALUES(?, ?, ?);";
       await pool.query(benchmark_sql, [surveyID, benchmark[i].benchmark, benchmark[i].output_text]);
