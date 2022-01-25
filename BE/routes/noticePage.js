@@ -86,7 +86,7 @@ router.post("/notice/:hospital_id", notice_upload.single("notice_image"), async 
                 title, 
                 context, 
                 fixed) value(?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, fixed, path]);
+      const data = await pool.query(sql, [hospital_id, title, context, fixed]);
     }
     const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const data_id = await pool.query(LAST_INSERT_ID);
