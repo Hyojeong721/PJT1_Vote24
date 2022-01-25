@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/Header";
 import EventForm from "../../components/EventForm";
 
-function HospitalEvent() {
+function EventCreate() {
   return (
     <div>
       <Header title="병원 이벤트 작성"></Header>
@@ -13,4 +13,4 @@ function HospitalEvent() {
   );
 }
 
-export default HospitalEvent;
+export default EventCreate;

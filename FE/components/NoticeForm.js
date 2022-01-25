@@ -5,20 +5,19 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const EventForm = () => {
+const NoticeForm = () => {
   const [values, setValues] = useState({
     title: "",
     context: "",
-    start_at: "",
-    end_at: "",
+    fixed: "0",
     imgFile: null,
   });
 
   // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
-  //   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/1`;
+  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
+  //   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -43,7 +42,7 @@ const EventForm = () => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("event_img", imgFile);
+          fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
         }
       } else {
@@ -59,18 +58,17 @@ const EventForm = () => {
 
     // 서버에 보내기
     await axios
-      .post(EVENT_URL, fd, {
+      .post(NOTICE_URL, fd, {
         headers: {
           "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
-        toast("이벤트 등록 성공!");
+        toast("공지사항 등록 성공!");
         console.log(res.data);
-        post_id = res.data.id;
       })
       .catch((err) => {
-        toast.error("이벤트 등록 실패!");
+        toast.error("공지사항 등록 실패!");
         console.log(err);
       });
   };
@@ -90,25 +88,19 @@ const EventForm = () => {
             id="title"
           ></input>
         </div>
-        <div className="mb-3">
-          <label htmlFor="start_at">시작일</label>
-          <input
-            id="start_at"
-            name="start_at"
-            type="date"
-            onChange={handleInputChange}
-            value={values.start_at}
-          ></input>
 
-          <label htmlFor="end_at">마감일</label>
+        <div>
           <input
-            id="end_at"
-            name="end_at"
-            type="date"
+            type="radio"
+            name="fixed"
             onChange={handleInputChange}
-            value={values.end_at}
-          ></input>
+            value="1"
+          >
+            {" "}
+            상단 고정{" "}
+          </input>
         </div>
+
         <div className="mb-3">
           <label htmlFor="context" className="form-label">
             내용
@@ -130,7 +122,7 @@ const EventForm = () => {
         ></FileInput>
 
         <div>
-          <Link href="/event/">
+          <Link href="/notice/">
             <button className="btn btn-secondary">취소</button>
           </Link>
 
@@ -141,11 +133,11 @@ const EventForm = () => {
           {/* <button type="submit" className="btn btn-primary">
             작성 완료
           </button>
-          <Link href={`${EVENT_URL}/${post_id}`}></Link> */}
+          <Link href={`${NOTICE_URL}/${post_id}`}></Link> */}
         </div>
       </form>
     </div>
   );
 };
 
-export default EventForm;
+export default NoticeForm;
