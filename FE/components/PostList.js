@@ -11,7 +11,7 @@ const PostList = () => {
   useEffect(() => {
     const getList = async () => {
       const res = await axios.get(
-        `http://teama205.iptime.org/api/event/947780`
+        `http://teama205.iptime.org/api/notice/947780`
       );
       const data = res.data;
       console.log(data);
