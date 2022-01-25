@@ -13,8 +13,8 @@ const NoticeDetailItem = () => {
   // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  //   const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}/${post_id}`;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1/${id}`;
+  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}/${post_id}`;
+  //   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1/${id}`;
 
   useEffect(() => {
     // 게시글 내용 받아오기
