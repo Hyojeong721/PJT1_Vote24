@@ -64,6 +64,21 @@ router.get("/score_sum/:id", async (req, res) => {
   }
 });
 
+// score_sum AVG
+router.get("/score_sum/avg/:survey_id", async (req, res) => {
+  const survey_id = req.params.survey_id;
+  try {
+    const sql = `select avg(score_sum) from score_sum where survey_id = ?;`;
+    const data = await pool.query(sql, [survey_id]);
+    const result = data[0];
+    logger.info("[INFO] GET /score_sum/avg");
+    return res.json(result);
+  } catch (error) {
+    logger.error("GET /select Error" + error);
+    return res.json(error);
+  }
+});
+
 // score_sum list
 router.get("/score_sum/list/:survey_id", async (req, res) => {
   try {
