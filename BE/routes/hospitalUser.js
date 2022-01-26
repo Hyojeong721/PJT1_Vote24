@@ -57,7 +57,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
 });
 
 /*----------------------------------------------------------------------*
- * GET HospitalUser Login
+ * POST HospitalUser Login
  * Example URL = ../login
  *----------------------------------------------------------------------*/
 router.post("/login", async (req, res) => {
@@ -78,12 +78,12 @@ router.post("/login", async (req, res) => {
     const compareResult = await comparePassword(password, hashedPassword);
 
     if (!data[0][0]) {
-      logger.error("GET HospitalUser Login Fail : No exist ID");
+      logger.error("POST HospitalUser Login Fail : No exist ID");
       return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
     }
 
     if (!compareResult) {
-      logger.error("GET HospitalUser Login Fail : No exit Password");
+      logger.error("POST HospitalUser Login Fail : No exit Password");
       return res.json({ result: "인증키 발급실패 : 비밀번호를 확인해 주세요." });
     }
 
@@ -95,16 +95,16 @@ router.post("/login", async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    logger.info("GET HospitalUser login");
+    logger.info("POST HospitalUser login");
     return res.json({ result: "ok", id: UserId, name: name, code: code, token: token });
   } catch (error) {
-    logger.info("GET HospitalUser login " + error);
+    logger.info("POST HospitalUser login " + error);
     return res.json(error);
   }
 });
 
 /*----------------------------------------------------------------------*
- * GET HospitalUser emailcheck
+ * POST HospitalUser emailcheck
  * Example URL = ../emailcheck
  *----------------------------------------------------------------------*/
 router.post("/emailCheck", async (req, res) => {
@@ -115,14 +115,14 @@ router.post("/emailCheck", async (req, res) => {
     const data = await pool.query(sql, [email]);
 
     if (data[0][0].isHava === 1) {
-      logger.info("GET HospitalUser emailcheck Fail");
+      logger.info("POST HospitalUser emailcheck Fail");
       return res.json({ result: "notok" });
     } else {
-      logger.info("GET HospitalUser emailcheck Success");
+      logger.info("POST HospitalUser emailcheck Success");
       return res.json({ result: "ok" });
     }
   } catch (error) {
-    logger.error("GET HospitalUser emailcheck " + error);
+    logger.error("POST HospitalUser emailcheck " + error);
     return res.json(error);
   }
 });
@@ -139,14 +139,14 @@ router.post("/bnNumberCheck", async (req, res) => {
     const data = await pool.query(sql, [business_number]);
 
     if (data[0][0].isHava == 1) {
-      logger.info("GET HospitalUser bnNumberCheck Fail");
+      logger.info("POST HospitalUser bnNumberCheck Fail");
       return res.json({ result: "notok" });
     } else {
-      logger.info("GET HospitalUser bnNumberCheck Success");
+      logger.info("POST HospitalUser bnNumberCheck Success");
       return res.json({ result: "ok" });
     }
   } catch (error) {
-    logger.error("GET HospitalUser bnNumberCheck " + error);
+    logger.error("POST HospitalUser bnNumberCheck " + error);
     return res.json(error);
   }
 });
