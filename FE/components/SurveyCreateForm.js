@@ -11,6 +11,7 @@ function SurveyCreateForm() {
   const [qCnt, setQCnt] = useState(1);
   const [bCnt, setBCnt] = useState(1);
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
+
   const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/1`;
 
   const { register, unregister, handleSubmit } = useForm();
@@ -18,10 +19,14 @@ function SurveyCreateForm() {
   const parseInput = (data) => {
     const bList = [];
     const qList = [];
-    const oList = {};
+    const oList = {
+      1: [],
+      2: [],
+      3: [],
+    };
     let qIndex = 1;
     let oIndex = 1;
-
+    console.log(data);
     for (let key of Object.keys(data).sort()) {
       switch (key[0]) {
         // header case
@@ -57,12 +62,12 @@ function SurveyCreateForm() {
           if (key.slice(-1) === "E") {
             qList.push({
               ...question,
-              type: "2",
+              type: "1",
             });
           } else {
             qList.push({
               ...question,
-              type: "1",
+              type: "0",
               option: oList[key.slice(1)],
             });
           }
@@ -88,6 +93,7 @@ function SurveyCreateForm() {
       question: qList,
       benchmark: bList,
     };
+    console.log(result);
     await axios.post(SURVEY_URL, result).then((res) => console.log(res.data));
   };
 
