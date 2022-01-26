@@ -69,7 +69,7 @@ router.get("/option/list/:question_id", async (req, res) => {
   try {
     const question_id = req.params.question_id;
     // const { page } = req.query;
-    const sql = `SELECT * FROM option WHERE question_id=?;`;
+    const sql = "SELECT * FROM `option` WHERE question_id=?;";
     const data = await pool.query(sql, [question_id]);
     // const result = data[0].slice((page - 1) * 10, page * 10);
     const result = data[0];

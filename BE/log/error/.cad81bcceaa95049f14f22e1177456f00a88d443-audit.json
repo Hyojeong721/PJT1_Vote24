@@ -34,6 +34,11 @@
             "date": 1643076843701,
             "name": "log\\error\\2022-01-25.error.log",
             "hash": "be80e7357cc92e3a745de73d1a04f56a"
+        },
+        {
+            "date": 1643159412812,
+            "name": "log\\error\\2022-01-26.error.log",
+            "hash": "90fa7c8221c8abfdd4cc8741838ec64b"
         }
     ]
 }
