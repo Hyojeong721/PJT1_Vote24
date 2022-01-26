@@ -1,14 +1,14 @@
 import React from "react";
-import DateForm from "./DateForm";
-import Table from "./Table";
-import TableRow from "./TableRow";
-import TableColumn from "./TableColumn";
+import DateForm from "../DateForm";
+import Table from "../Table/Table";
+import TableRow from "../Table/TableRow";
+import TableColumn from "../Table/TableColumn";
 import Link from "next/link";
 
-const NoticeList = ({ dataList }) => {
+const EventList = ({ dataList }) => {
   return (
     <div>
-      <Table headersName={["글번호", "생성일", "제목", "조회수"]}>
+      <Table headersName={["글번호", "생성일", "제목", "기한", "조회수"]}>
         {dataList
           ? dataList.map((item) => {
               return (
@@ -16,7 +16,10 @@ const NoticeList = ({ dataList }) => {
                   <TableColumn>{item.id}</TableColumn>
                   <TableColumn>{DateForm(item.created_at)}</TableColumn>
                   <TableColumn>
-                    <Link href={`/notice/${item.id}`}>{item.title}</Link>
+                    <Link href={`/event/${item.id}`}>{item.title}</Link>
+                  </TableColumn>
+                  <TableColumn>
+                    {DateForm(item.start_at)} ~ {DateForm(item.end_at)}
                   </TableColumn>
                   <TableColumn>{item.views}</TableColumn>
                 </TableRow>
@@ -28,4 +31,4 @@ const NoticeList = ({ dataList }) => {
   );
 };
 
-export default NoticeList;
+export default EventList;

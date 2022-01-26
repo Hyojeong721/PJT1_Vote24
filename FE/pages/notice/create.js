@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/Header";
-import NoticeForm from "../../components/NoticeForm";
+import NoticeForm from "../../components/Notice/NoticeForm";
 
 function NoticeCreate() {
   return (
