@@ -7,14 +7,22 @@ const router = express.Router();
 
 router.post("/survey/:hospital_id", async (req, res) => {
   const hospital_id = req.params.hospital_id;
-  const { title, context, output_link, start_at, end_at, question, benchmark } = req.body;
+  const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
     if (req.body.end_at) {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?);`;
-      await pool.query(survey_sql, [hospital_id, title, context, output_link, start_at, end_at]);
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?, ?);`;
+      await pool.query(survey_sql, [
+        hospital_id,
+        category,
+        title,
+        context,
+        output_link,
+        start_at,
+        end_at,
+      ]);
     } else {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?);`;
-      await pool.query(survey_sql, [hospital_id, title, context, output_link, start_at]);
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?, ?);`;
+      await pool.query(survey_sql, [hospital_id, category, title, context, output_link, start_at]);
     }
     const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const surveyID_data = await pool.query(LAST_INSERT_ID);
@@ -37,9 +45,11 @@ router.post("/survey/:hospital_id", async (req, res) => {
       let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
       for (j = 0; j < question[i].option.length; j++) {
-        option_sql = "INSERT INTO `option` ( question_id, context, weight ) VALUES(?, ?, ?);";
+        option_sql =
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, ?, ?, ?);";
         await pool.query(option_sql, [
           questionID,
+          question[i].option[j].order,
           question[i].option[j].context,
           question[i].option[j].weight,
         ]);
@@ -52,7 +62,7 @@ router.post("/survey/:hospital_id", async (req, res) => {
     }
 
     logger.info("[INFO] POST /survey/write");
-    return res.json({ result: "ok" });
+    return res.json({ result: "ok", surveyID: surveyID });
   } catch (error) {
     logger.error("POST /insert Error" + error);
     return res.json(error);
@@ -100,9 +110,117 @@ router.get("/survey/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const sql = `SELECT * FROM hospital_survey WHERE ID = ?;`;
-    const data = await pool.query(sql, [id]);
-    const result = data[0];
+    const survey_sql = "SELECT * FROM hospital_survey WHERE ID = ?;";
+    const survey_data = await pool.query(survey_sql, [id]);
+    const question_sql = "SELECT * FROM question WHERE survey_id = ? order by `order`;";
+    const question_data = await pool.query(question_sql, [id]);
+    let option_sql = "select * from `option` where question_id in (";
+    for (i = 0; i < question_data[0].length; i++) {
+      option_sql += `${question_data[0][i].id}`;
+      if (i == question_data[0].length - 1) option_sql += ")";
+      else option_sql += ",";
+    }
+    // console.log(option_sql);
+    const option_data = await pool.query(option_sql);
+
+    const benchmark_sql = "SELECT * FROM benchmark WHERE survey_id = ?;";
+    const benchmark_data = await pool.query(benchmark_sql, [id]);
+    // console.log(survey_data[0]);
+    // console.log(question_data[0]);
+    // console.log(option_data[0]);
+    // console.log(benchmark_data[0]);
+
+    // v2.(문제 : option_dataset 낭비)
+    // let option_dataset = [];
+    // for (i = 0; i < option_data[0].length; i++) {
+    //   if (option_dataset[option_data[0][i].question_id])
+    //     option_dataset[option_data[0][i].question_id].push(option_data[0][i]);
+    //   else option_dataset[option_data[0][i].question_id] = [option_data[0][i]];
+    //   // option_dataset[n] = [...option_dataset[n], option_data[0][i]];
+    // }
+
+    // let question_dataset = [];
+    // for (i = 0; i < question_data[0].length; i++) {
+    //   question_dataset[i] = question_data[0][i];
+    //   question_dataset[i].option = option_dataset[question_data[0][i].id];
+    // }
+
+    // v3
+    let n = 0;
+    let qid = option_data[0][0].question_id;
+    let option_dataset = [];
+    for (i = 0; i < option_data[0].length; i++) {
+      if (qid != option_data[0][i].question_id) {
+        qid = option_data[0][i].question_id;
+        n++;
+      }
+      if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
+      else option_dataset[n] = [option_data[0][i]];
+    }
+    let m = 0;
+    let question_dataset = [];
+    for (i = 0; i < question_data[0].length; i++) {
+      question_dataset[i] = question_data[0][i];
+      if (question_data[0][i].type == 0) {
+        question_dataset[i].option = option_dataset[m];
+        m++;
+      }
+    }
+
+    // v1.(문제 : 주 객관식 구분 불가능)
+    // let question_dataset = [];
+    // for (i = 0; i < question_data[0].length; i++) {
+    //   question_dataset[i] = question_data[0][i];
+    // }
+    // console.log(question_dataset[0].context);
+    // console.log(question_dataset);
+    // let n = 0;
+    // let qid = option_data[0][0].question_id;
+    // let option_dataset = [];
+    // for (i = 0; i < option_data[0].length; i++) {
+    //   if (qid != option_data[0][i].question_id) {
+    //     question_dataset[n].option = option_dataset[n];
+    //     qid = option_data[0][i].question_id;
+    //     n++;
+    //   }
+    //   if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
+    //   else option_dataset[n] = [option_data[0][i]];
+    //   // option_dataset[n] = [...option_dataset[n], option_data[0][i]];
+    // }
+    // question_dataset[n].option = option_dataset[n];
+
+    // console.log(question_dataset);
+    // console.log(question_dataset[0].option);
+
+    survey_dataset = {
+      ...survey_data[0][0],
+      question: question_dataset,
+      benchmark: benchmark_data[0],
+    };
+
+    // for (i = 0; i < question_data[0].length; i++){
+    //   for (j = question_data[0][i].) {
+    //     question_dataset = [{ question_data[0][i], [option_data[0][j]] }]
+    //   }
+    // }
+    // const question_data2 = [
+    //   [
+    //     question_data[0][i],
+    //     [
+    //       option_data[0][j],
+    //       option_data[0][j],
+    //       option_data[0][j],
+    //       option_data[0][j],
+    //       option_data[0][j],
+    //     ],
+    //   ],
+    //   [{}, [{}, {}, {}, {}, {}]],
+    //   [{}, [{}, {}, {}, {}, {}]],
+    //   [{}, [{}, {}, {}, {}, {}]],
+    // ];
+
+    const result = survey_dataset;
+    // console.log(option_sql);
 
     logger.info("[INFO] GET /survey/detail");
     return res.json(result);
@@ -111,6 +229,23 @@ router.get("/survey/:id", async (req, res) => {
     return res.json(error);
   }
 });
+
+// survey Detail
+// router.get("/survey/:id", async (req, res) => {
+//   const id = req.params.id;
+
+//   try {
+//     const sql = `SELECT * FROM hospital_survey WHERE ID = ?;`;
+//     const data = await pool.query(sql, [id]);
+//     const result = data[0];
+
+//     logger.info("[INFO] GET /survey/detail");
+//     return res.json(result);
+//   } catch (error) {
+//     logger.error("GET /select Error" + error);
+//     return res.json(error);
+//   }
+// });
 
 // survey list
 router.get("/survey/list/:hospital_id", async (req, res) => {
