@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Main from "../components/Main";
-import MainOnLogin from "../components/MainOnLogin";
+import Main from "../components/Main/Main";
+import MainOnLogin from "../components/Main/MainOnLogin";
 
 function Home() {
   const { isLoggedIn } = useSelector((state) => state.userStatus);

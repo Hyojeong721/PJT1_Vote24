@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Header from "../../../components/Header";
-import TermsOfUse from "../../../components/TermsOfUse";
+import TermsOfUse from "../../../components/Terms/TermsOfUse";
 
 function ServiceInfo() {
   return (

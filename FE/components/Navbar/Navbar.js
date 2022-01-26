@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
 import NavItem from "./NavItem";
-import Logo from "../public/logo.png";
 import NavDropdown from "./NavDropdown";
-import { useRouter } from "next/router";
+import Logo from "../../public/logo.png";
 
 function Navbar() {
   const { isLoggedIn } = useSelector((state) => state.userStatus);

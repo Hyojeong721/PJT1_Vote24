@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Header from "../../../components/Header";
-import PrivacyPolicy from "../../../components/PrivacyPolicy";
+import PrivacyPolicy from "../../../components/Terms/PrivacyPolicy";
 
 function ServiceInfo() {
   return (

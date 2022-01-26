@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import header_image from "../public/header_image.png";
+import header_image from "../../public/header_image.png";
 
 function Main() {
   const [hCode, setHCode] = useState("");

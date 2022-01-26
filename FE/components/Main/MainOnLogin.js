@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Header from "./Header";
+import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
 import HospitalSatisfaction from "./HospitalSatisfaction";

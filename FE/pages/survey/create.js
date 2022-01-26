@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../components/Header";
-import SurveyCreateForm from "../../components/SurveyCreateForm";
-import SurveyPreview from "../../components/SurveyPreview";
+import SurveyCreateForm from "../../components/Survey/SurveyCreateForm";
 
 function SurveyCreate() {
   return (
