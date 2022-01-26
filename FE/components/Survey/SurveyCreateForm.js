@@ -83,8 +83,9 @@ function SurveyCreateForm() {
 
   const onSubmit = async (data) => {
     const { qList, bList } = parseInput(data);
-    const { title, context, output_link, start_at, end_at } = data;
+    const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
+      category,
       title,
       context,
       output_link,
@@ -176,6 +177,34 @@ function SurveyCreateForm() {
   return (
     <div className="container survey-form-container d-flex flex-column align-items-center">
       <form className="w-100 survey-form-header">
+        <div>
+          <div className="form-check form-check-inline mt-3">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="category"
+              id="category1"
+              value="0"
+              {...register("category")}
+            />
+            <label className="form-check-label" htmlFor="category1">
+              건강설문
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="category"
+              id="category2"
+              value="1"
+              {...register("category")}
+            />
+            <label className="form-check-label" htmlFor="category2">
+              병원설문
+            </label>
+          </div>
+        </div>
         <input
           id="title"
           name="title"
@@ -185,7 +214,7 @@ function SurveyCreateForm() {
           {...register("title")}
         ></input>
         <div className="d-flex mt-3">
-          <div>
+          <div className="datetime-box">
             <label htmlFor="start_at" className="fw-bold ms-1">
               시작일
             </label>
@@ -197,7 +226,7 @@ function SurveyCreateForm() {
             ></input>
           </div>
 
-          <div>
+          <div className="datetime-box">
             <label htmlFor="end_at" className="fw-bold ms-1">
               종료일
             </label>

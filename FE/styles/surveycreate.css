@@ -13,3 +13,7 @@
   outline-width: 0;
   border-bottom-color: red;
 }
+
+.datetime-box {
+  max-width: 50%;
+}
