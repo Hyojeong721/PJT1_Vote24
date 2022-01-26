@@ -1,75 +1,85 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
+import TableRow from "../Table/TableRow";
+import TableColumn from "../Table/TableColumn";
+import Link from "next/link";
 
-const SurveyList = ({ dataList }) => {
+const SurveyHealthList = ({ dataList }) => {
+  const [CheckList, setCheckList] = useState([]);
+  const [IdList, setIdList] = useState([]);
+  const headersName = ["번호", "작성일", "제목", "설문기한", "참여자수"];
+
+  useEffect(() => {
+    let ids = [];
+
+    dataList.map((item, i) => {
+      ids[i] = item.id;
+    });
+
+    setIdList(ids);
+  }, [dataList]);
+
+  // 전체 선택/해제
+  const onChangeAll = (e) => {
+    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
+    setCheckList(e.target.checked ? IdList : []);
+  };
+
+  const onChangeEach = (e, id) => {
+    // 체크할 시 CheckList에 id값 넣기
+    if (e.target.checked) {
+      setCheckList([...CheckList, id]);
+      // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
+    } else {
+      setCheckList(CheckList.filter((checkedId) => checkedId !== id));
+    }
+  };
+
   return (
-    <div
-      id="carouselExampleIndicators"
-      className="carousel slide"
-      data-bs-ride="carousel"
-    >
-      건강설문
-      {dataList
-        ? dataList.map((item) => {
-            return (
-              <div key={item.id} className="carousel-inner">
-                <div className="card carousel-item active">
-                  <div className="card-body">
-                    <h5 className="card-title">{item.title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">
-                      {DateForm(item.created_at)}
-                    </h6>
-                    <p className="card-text">{item.context}</p>
-                    <a href={`/survey/${item.id}`} className="card-link">
-                      자세히보기
-                    </a>
-                  </div>
-                </div>
-              </div>
-            );
-          })
-        : "설문이 없어요ㅠㅠ"}
-      <button
-        className="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev"
-      >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Previous</span>
-      </button>
-      <button
-        className="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next"
-      >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        <span className="visually-hidden">Next</span>
-      </button>
-      <div className="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="0"
-          className="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
+    <div>
+      <table className="table">
+        <thead>
+          <tr>
+            <input
+              type="checkbox"
+              onChange={onChangeAll}
+              checked={CheckList.length === IdList.length}
+            />
+            {headersName.map((item, index) => {
+              return (
+                <td className="table-header-column" key={index}>
+                  {item}
+                </td>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {dataList
+            ? dataList.map((item) => {
+                return (
+                  <TableRow key={item.id}>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={CheckList.includes(item.id)}
+                    ></input>
+                    <TableColumn>{item.id}</TableColumn>
+                    <TableColumn>{DateForm(item.created_at)}</TableColumn>
+                    <TableColumn>
+                      <Link href={`/survey/${item.id}`}>{item.title}</Link>
+                    </TableColumn>
+                    <TableColumn>
+                      {DateForm(item.start_at)} ~ {DateForm(item.end_at)}
+                    </TableColumn>
+                    <TableColumn>{item.count}</TableColumn>
+                  </TableRow>
+                );
+              })
+            : ""}
+        </tbody>
+      </table>
     </div>
   );
 };
-export default SurveyList;
+export default SurveyHealthList;
