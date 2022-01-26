@@ -16,14 +16,9 @@ import "../styles/post.css";
 import "../styles/signup.css";
 import "../styles/simplecard.css";
 import "../styles/table.css";
-<<<<<<< HEAD
-import "../styles/paging.css";
-import "../styles/surveycreate.css";
-=======
 import "../styles/surveycreate.css";
 import "../styles/questionchoice.css";
 import "../styles/paging.css";
->>>>>>> feat/survey_create
 
 function MyApp({ Component, pageProps }) {
   const store = useStore();
