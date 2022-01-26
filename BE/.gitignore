@@ -2,3 +2,5 @@ node_modules
 dist/*
 *.log
 uploads
+server.js
+utils/mysql.js
