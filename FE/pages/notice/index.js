@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import NoticeList from "../../components/NoticeList";
+import NoticeList from "../../components/Notice/NoticeList";
 import Paging from "../../components/Paging";
 
 function HospitalEvent() {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import DateForm from "./DateForm";
+import DateForm from "../DateForm";
 
 const NoticeDetailItem = () => {
   const [data, setData] = useState([]);

@@ -1,6 +1,5 @@
 import React from "react";
-import DateForm from "./DateForm";
-import SurveyCard from "./SurveyCard";
+import DateForm from "../DateForm";
 
 const SurveyList = ({ dataList }) => {
   return (
@@ -18,7 +17,7 @@ const SurveyList = ({ dataList }) => {
                   <div className="card-body">
                     <h5 className="card-title">{item.title}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">
-                      survey subtitle
+                      {DateForm(item.created_at)}
                     </h6>
                     <p className="card-text">{item.context}</p>
                     <a href={`/survey/${item.id}`} className="card-link">

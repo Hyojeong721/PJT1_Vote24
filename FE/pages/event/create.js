@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/Header";
-import EventForm from "../../components/EventForm";
+import EventForm from "../../components/Event/EventForm";
 
 function EventCreate() {
   return (
