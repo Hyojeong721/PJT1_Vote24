@@ -9,6 +9,10 @@ const { nameParser } = require("../utils/nameParser");
 
 const router = express.Router();
 
+router.post("/code/:code", async (req, res) => {});
+
+router.post("/id/:id", async (req, res) => {});
+
 /*----------------------------------------------------------------------*
  * POST HospitalUser Join
  * Example URL = ../join
