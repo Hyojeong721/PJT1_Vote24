@@ -1,15 +1,16 @@
-function QuestionEssay({ q }) {
+function QuestionEssay({ register, q }) {
   return (
     <div className="w-100 mt-3 p-1">
       <div className="form-floating">
         <input
-          id={q.id}
-          name={q.id}
+          id={`Q${q.id}E`}
+          name={`Q${q.id}E`}
           type="text"
           className="form-control"
           placeholder=" "
+          {...register(`Q${q.id}E`)}
         ></input>
-        <label>주관식 질문</label>
+        <label htmlFor={`Q${q.id}E`}>주관식 질문</label>
       </div>
     </div>
   );

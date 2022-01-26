@@ -156,10 +156,7 @@ function Signup() {
     <>
       <Header title="서비스 신청"></Header>
       <div className="container d-flex justify-content-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="form-box d-flex flex-column"
-        >
+        <form className="form-box d-flex flex-column">
           <div>
             <div className="d-flex justify-content-between">
               <div className="fw-bold">
@@ -340,7 +337,11 @@ function Signup() {
           </div>
 
           <div className="d-flex justify-content-center mt-5">
-            <button type="submit" className="submit-button btn btn-primary">
+            <button
+              type="button"
+              onClick={handleSubmit(onSubmit)}
+              className="submit-button btn btn-primary"
+            >
               서비스 신청
             </button>
           </div>
