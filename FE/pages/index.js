@@ -24,8 +24,11 @@ function Home() {
   };
 
   useEffect(() => {
-    axios.get(MAIN_URL).then((res) => console.log(res.data));
+    if (isLoggedIn) {
+      axios.get(MAIN_URL).then((res) => console.log(res.data));
+    }
   }, []);
+
   return (
     <div>
       <button type="button" onClick={test1}>

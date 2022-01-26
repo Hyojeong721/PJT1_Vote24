@@ -8,12 +8,8 @@ import NavItem from "./NavItem";
 import NavDropdown from "./NavDropdown";
 import Logo from "../../public/logo.png";
 
-function Navbar() {
-  const { isLoggedIn } = useSelector((state) => state.userStatus);
+function Navbar({ isLoggedIn, currentPage }) {
   const dispatch = useDispatch();
-  const router = useRouter();
-
-  let currentPage = router.pathname;
 
   const surveyDropdown = [
     {
