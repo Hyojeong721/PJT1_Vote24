@@ -264,4 +264,21 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
   }
 });
 
+router.get("/survey/list/:hospital_id/:category", async (req, res) => {
+  try {
+    const hospital_id = req.params.hospital_id;
+    const category = req.params.category;
+    // const { page } = req.query;
+    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=?;`;
+    const data = await pool.query(sql, [hospital_id, category]);
+    // const result = data[0].slice((page - 1) * 10, page * 10);
+    const result = data[0];
+    logger.info("[INFO] GET /survey/list/:hospital_id/:category");
+    return res.json(result);
+  } catch (error) {
+    logger.error("GET /select Error" + error);
+    return res.json(error);
+  }
+});
+
 module.exports = router;
