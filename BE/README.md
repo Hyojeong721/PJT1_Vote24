@@ -42,6 +42,15 @@ Copy this command for install all dependency Package;
 * survey 관련 테이블 restAPI CRUD 작성
 * 조회수 쿼리 추가
 
-#[2022/01/21]
+#[2022/01/24]
 * survey 생성 쿼리문 작성 및 구현
 * 각 게시판 조회수 기능 추가
+
+#[2022/01/25]
+* survey list 출력 구현
+* survey 상세 쿼리문 작성
+* survey 상세 구현 (진행중)
+
+#[2022/01/26]
+* survey create 수정 (category 추가 및 id 반환)
+* survey 상세 구현
