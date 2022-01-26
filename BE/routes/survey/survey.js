@@ -72,22 +72,80 @@ router.post("/survey/:hospital_id", async (req, res) => {
 // survey update.
 router.put("/survey/:id", async (req, res) => {
   const id = req.params.id;
-  const { title, context, output_link, start_at, end_at } = req.body;
+  const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
     if (req.body.end_at) {
-      const sql = `UPDATE hospital_survey SET title=?, context=?, output_link=?, start_at=?, end_at=? WHERE id = ?;`;
-      const data = await pool.query(sql, [title, context, output_link, start_at, end_at, id]);
+      const survey_sql = `UPDATE hospital_survey SET category=?, title=?, context=?, output_link=?, start_at=?, end_at=? WHERE id = ?;`;
+      await pool.query(survey_sql, [category, title, context, output_link, start_at, end_at, id]);
     } else {
-      const sql = `UPDATE hospital_survey SET title=?, context=?, output_link=?, start_at=? WHERE id = ?;`;
-      const data = await pool.query(sql, [title, context, output_link, start_at, id]);
+      const survey_sql = `UPDATE hospital_survey SET category=?, title=?, context=?, output_link=?, start_at=? WHERE id = ?;`;
+      await pool.query(survey_sql, [category, title, context, output_link, start_at, id]);
     }
-    logger.info("[INFO] PUT /survey/update");
-    return res.json({ result: "ok" });
+    // const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
+    // const surveyID_data = await pool.query(LAST_INSERT_ID);
+    // const surveyID = surveyID_data[0][0].auto_id;
+    // console.log(surveyID);
+    let question_sql = ``;
+    let option_sql = ``;
+    let benchmark_sql = ``;
+
+    for (i = 0; i < question.length; i++) {
+      question_sql = "UPDATE question SET `order`=?, context=?, type=? WHERE id = ?;";
+      await pool.query(question_sql, [
+        question[i].order,
+        question[i].context,
+        question[i].type,
+        question[i].id,
+      ]);
+      // let questionID_data = await pool.query(LAST_INSERT_ID);
+      // let questionID = questionID_data[0][0].auto_id;
+      if (question[i].type == 1) continue;
+      for (j = 0; j < question[i].option.length; j++) {
+        option_sql = "UPDATE `option` SET `order`=?, context=?, weight=? WHERE id = ?;";
+        await pool.query(option_sql, [
+          question[i].option[j].order,
+          question[i].option[j].context,
+          question[i].option[j].weight,
+          question[i].option[j].id,
+        ]);
+      }
+    }
+    for (i = 0; i < benchmark.length; i++) {
+      benchmark_sql = "UPDATE benchmark SET benchmark=?, output_text=? WHERE id = ?;";
+      await pool.query(benchmark_sql, [
+        benchmark[i].benchmark,
+        benchmark[i].output_text,
+        benchmark[i].id,
+      ]);
+    }
+
+    logger.info("[INFO] POST /survey/update");
+    return res.json({ result: "ok", surveyID: id });
   } catch (error) {
-    logger.error("POST /update Error" + error);
+    logger.error("POST /insert Error" + error);
     return res.json(error);
   }
 });
+
+// // survey update.
+// router.put("/survey/:id", async (req, res) => {
+//   const id = req.params.id;
+//   const { title, context, output_link, start_at, end_at } = req.body;
+//   try {
+//     if (req.body.end_at) {
+//       const sql = `UPDATE hospital_survey SET title=?, context=?, output_link=?, start_at=?, end_at=? WHERE id = ?;`;
+//       const data = await pool.query(sql, [title, context, output_link, start_at, end_at, id]);
+//     } else {
+//       const sql = `UPDATE hospital_survey SET title=?, context=?, output_link=?, start_at=? WHERE id = ?;`;
+//       const data = await pool.query(sql, [title, context, output_link, start_at, id]);
+//     }
+//     logger.info("[INFO] PUT /survey/update");
+//     return res.json({ result: "ok" });
+//   } catch (error) {
+//     logger.error("POST /update Error" + error);
+//     return res.json(error);
+//   }
+// });
 
 // survey delete
 router.delete("/survey/:id", async (req, res) => {

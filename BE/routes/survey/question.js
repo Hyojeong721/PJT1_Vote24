@@ -9,7 +9,7 @@ router.post("/question/:survey_id", async (req, res) => {
   const { order, context, type } = req.body;
 
   try {
-    const sql = `INSERT INTO question ( survey_id, order, context, type ) VALUES(?, ?, ?, ?);`;
+    const sql = "INSERT INTO question ( survey_id, `order`, context, type ) VALUES(?, ?, ?, ?);";
     const data = await pool.query(sql, [survey_id, order, context, type]);
     logger.info("[INFO] POST /question/write");
     return res.json({ result: "ok" });
@@ -24,7 +24,7 @@ router.put("/question/:id", async (req, res) => {
   const id = req.params.id;
   const { order, context, type } = req.body;
   try {
-    const sql = `UPDATE question SET order=?, context=?, type=? WHERE id = ?;`;
+    const sql = "UPDATE question SET `order`=?, context=?, type=? WHERE id = ?;";
     const data = await pool.query(sql, [order, context, type, id]);
     logger.info("[INFO] PUT /question/update");
     return res.json({ result: "ok" });

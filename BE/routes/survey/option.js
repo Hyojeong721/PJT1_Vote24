@@ -6,11 +6,12 @@ const router = express.Router();
 // option write.
 router.post("/option/:question_id", async (req, res) => {
   const question_id = req.params.question_id;
-  const { count, context, weight } = req.body;
+  const { order, count, context, weight } = req.body;
 
   try {
-    const sql = `INSERT INTO option ( question_id, count, context, weight ) VALUES(?, ?, ?, ?);`;
-    const data = await pool.query(sql, [question_id, count, context, weight]);
+    const sql =
+      "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, ?, ?, ?);";
+    const data = await pool.query(sql, [question_id, order, context, weight]);
     logger.info("[INFO] POST /option/write");
     return res.json({ result: "ok" });
   } catch (error) {
@@ -24,8 +25,8 @@ router.put("/option/:id", async (req, res) => {
   const id = req.params.id;
   const { count, context, weight } = req.body;
   try {
-    const sql = `UPDATE option SET count=?, context=?, weight=? WHERE id = ?;`;
-    const data = await pool.query(sql, [count, context, weight, id]);
+    const sql = "UPDATE `option` SET `order`=?, context=?, weight=? WHERE id = ?;";
+    const data = await pool.query(sql, [order, context, weight, id]);
     logger.info("[INFO] PUT /option/update");
     return res.json({ result: "ok" });
   } catch (error) {
@@ -39,7 +40,7 @@ router.delete("/option/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const sql = `DELETE FROM option WHERE id=?;`;
+    const sql = "DELETE FROM `option` WHERE id=?;";
     const data = await pool.query(sql, [id]);
     logger.info("[INFO] DELETE /option/delete");
     return res.json({ result: "ok" });
@@ -53,7 +54,7 @@ router.delete("/option/:id", async (req, res) => {
 router.get("/option/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const sql = `SELECT * FROM option WHERE ID = ?;`;
+    const sql = "SELECT * FROM `option` WHERE ID = ?;";
     const data = await pool.query(sql, [id]);
     const result = data[0];
     logger.info("[INFO] GET /option/detail");
