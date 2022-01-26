@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../../components/Header";
-import PostDetail from "../../components/PostDetail";
+import NoticeDetailItem from "../../components/NoticeDetailItem";
 
 function NoticeDetail() {
   return (
     <div>
       <Header title="병원 공지사항"></Header>
       <div className="container">
-        <PostDetail></PostDetail>
+        <NoticeDetailItem></NoticeDetailItem>
       </div>
     </div>
   );

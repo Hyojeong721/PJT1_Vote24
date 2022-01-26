@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import DateForm from "./DateForm";
 
-const EventDetailItem = () => {
+const NoticeDetailItem = () => {
   const [data, setData] = useState([]);
   // 게시글 id 찾기
   const router = useRouter();
@@ -13,13 +13,13 @@ const EventDetailItem = () => {
   // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  //   const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}/${post_id}`;
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/1/${id}`;
+  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}/${id}`;
+  //   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1/${id}`;
 
   useEffect(() => {
     // 게시글 내용 받아오기
     const getPost = async () => {
-      const res = await axios.get(EVENT_DETAIL_URL);
+      const res = await axios.get(NOTICE_DETAIL_URL);
       const data = res.data[0];
       console.log("data", data);
       setData(data);
@@ -33,15 +33,12 @@ const EventDetailItem = () => {
         <h2 className="detail-title">
           <div>제목 : {data.title}</div>
         </h2>
+        <hr></hr>
         <div className="detail-info">
-          <p>작성자 : 관리자</p>
-          <p>작성일 : {DateForm(data.created_at)}</p>
-          <p>조회수 : {data.views}</p>
-          <div>
-            <p>
-              이벤트 기한 : {DateForm(data.start_at)} ~ {DateForm(data.end_at)}
-            </p>
-          </div>
+          <p>
+            작성자 : 관리자 | 작성일 : {DateForm(data.created_at)} | 조회수 :{" "}
+            {data.views}
+          </p>
         </div>
       </div>
       <div className="post-detail-body">
@@ -51,10 +48,11 @@ const EventDetailItem = () => {
           {data.event_img}</div> */}
         </div>
         <hr></hr>
-        <div className="detail-context">{data.context}</div>
+        <div className="detail-context">내용 : {data.context}</div>
       </div>
+      <hr></hr>
     </div>
   );
 };
 
-export default EventDetailItem;
+export default NoticeDetailItem;
