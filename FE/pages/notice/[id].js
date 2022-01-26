@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/Header";
-import NoticeDetailItem from "../../components/NoticeDetailItem";
+import NoticeDetailItem from "../../components/Notice/NoticeDetailItem";
 
 function NoticeDetail() {
   return (

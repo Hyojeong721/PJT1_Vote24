@@ -1,23 +1,24 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import FileInput from "./FileInput";
+import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const NoticeForm = () => {
+const EventForm = () => {
   const [values, setValues] = useState({
     title: "",
     context: "",
-    fixed: "0",
+    start_at: "",
+    end_at: "",
     imgFile: null,
   });
 
   // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
-  //   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
+  //   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/1`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -42,7 +43,7 @@ const NoticeForm = () => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_image", imgFile);
+          fd.append("event_img", imgFile);
           fd.append("attachment", imgName);
         }
       } else {
@@ -51,34 +52,27 @@ const NoticeForm = () => {
       }
     }
 
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log(value);
-    }
+    // // formData 안에 값들 확인할 때
+    // for (let value of fd.values()) {
+    //   console.log(value);
+    // }
 
     // 서버에 보내기
     await axios
-      .post(NOTICE_URL, fd, {
+      .post(EVENT_URL, fd, {
         headers: {
           "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
-        toast("공지사항 등록 성공!");
+        toast("이벤트 등록 성공!");
         console.log(res.data);
+        post_id = res.data.id;
       })
       .catch((err) => {
-        toast.error("공지사항 등록 실패!");
+        toast.error("이벤트 등록 실패!");
         console.log(err);
       });
-  };
-
-  const handleCheckChange = () => {
-    if (document.getElementById("input_check").checked) {
-      handleChange("fixed", "1");
-    } else {
-      handleChange("fixed", "0");
-    }
   };
 
   return (
@@ -96,23 +90,25 @@ const NoticeForm = () => {
             id="title"
           ></input>
         </div>
-        <hr></hr>
-        <div>
-          <p>
-            <label className="form-label">
-              <input
-                type="checkbox"
-                name="fixed"
-                value="1"
-                id="input_check"
-                onChange={handleCheckChange}
-              />
-              고정공지
-            </label>
-          </p>
-        </div>
+        <div className="mb-3">
+          <label htmlFor="start_at">시작일</label>
+          <input
+            id="start_at"
+            name="start_at"
+            type="date"
+            onChange={handleInputChange}
+            value={values.start_at}
+          ></input>
 
-        <hr></hr>
+          <label htmlFor="end_at">마감일</label>
+          <input
+            id="end_at"
+            name="end_at"
+            type="date"
+            onChange={handleInputChange}
+            value={values.end_at}
+          ></input>
+        </div>
         <div className="mb-3">
           <label htmlFor="context" className="form-label">
             내용
@@ -134,7 +130,7 @@ const NoticeForm = () => {
         ></FileInput>
 
         <div>
-          <Link href="/notice/">
+          <Link href="/event/">
             <button className="btn btn-secondary">취소</button>
           </Link>
 
@@ -145,11 +141,11 @@ const NoticeForm = () => {
           {/* <button type="submit" className="btn btn-primary">
             작성 완료
           </button>
-          <Link href={`${NOTICE_URL}/${post_id}`}></Link> */}
+          <Link href={`${EVENT_URL}/${post_id}`}></Link> */}
         </div>
       </form>
     </div>
   );
 };
 
-export default NoticeForm;
+export default EventForm;
