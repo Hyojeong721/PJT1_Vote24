@@ -21,6 +21,7 @@ import "../styles/table.css";
 import "../styles/surveycreate.css";
 import "../styles/questionchoice.css";
 import "../styles/paging.css";
+import "../styles/homeuser.css";
 
 function MyApp({ Component, pageProps }) {
   const { isLoggedIn } = useSelector((state) => state.userStatus);
