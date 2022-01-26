@@ -173,12 +173,15 @@ router.get("/survey/:id", async (req, res) => {
     const question_sql = "SELECT * FROM question WHERE survey_id = ? order by `order`;";
     const question_data = await pool.query(question_sql, [id]);
     let option_sql = "select * from `option` where question_id in (";
+
     for (i = 0; i < question_data[0].length; i++) {
       option_sql += `${question_data[0][i].id}`;
       if (i == question_data[0].length - 1) option_sql += ")";
       else option_sql += ",";
     }
-    // console.log(option_sql);
+    console.log(question_data[0]);
+    if (question_data[0].length == 0)
+      option_sql = "select * from `option` where question_id in (-1);";
     const option_data = await pool.query(option_sql);
 
     const benchmark_sql = "SELECT * FROM benchmark WHERE survey_id = ?;";
@@ -204,25 +207,48 @@ router.get("/survey/:id", async (req, res) => {
     // }
 
     // v3
-    let n = 0;
-    let qid = option_data[0][0].question_id;
-    let option_dataset = [];
-    for (i = 0; i < option_data[0].length; i++) {
-      if (qid != option_data[0][i].question_id) {
-        qid = option_data[0][i].question_id;
-        n++;
+    if (question_data[0].length != 0) {
+      let n = 0;
+      let qid = option_data[0][0].question_id;
+      let option_dataset = [];
+      for (i = 0; i < option_data[0].length; i++) {
+        if (qid != option_data[0][i].question_id) {
+          qid = option_data[0][i].question_id;
+          n++;
+        }
+        if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
+        else option_dataset[n] = [option_data[0][i]];
       }
-      if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
-      else option_dataset[n] = [option_data[0][i]];
-    }
-    let m = 0;
-    let question_dataset = [];
-    for (i = 0; i < question_data[0].length; i++) {
-      question_dataset[i] = question_data[0][i];
-      if (question_data[0][i].type == 0) {
-        question_dataset[i].option = option_dataset[m];
-        m++;
+      let m = 0;
+      let question_dataset = [];
+      for (i = 0; i < question_data[0].length; i++) {
+        question_dataset[i] = question_data[0][i];
+        if (question_data[0][i].type == 0) {
+          question_dataset[i].option = option_dataset[m];
+          m++;
+        }
       }
+      survey_dataset = {
+        ...survey_data[0][0],
+        question: question_dataset,
+        benchmark: benchmark_data[0],
+      };
+    } else {
+      let option_dataset = [];
+      let m = 0;
+      let question_dataset = [];
+      for (i = 0; i < question_data[0].length; i++) {
+        question_dataset[i] = question_data[0][i];
+        if (question_data[0][i].type == 0) {
+          question_dataset[i].option = option_dataset[m];
+          m++;
+        }
+      }
+      survey_dataset = {
+        ...survey_data[0][0],
+        question: question_dataset,
+        benchmark: benchmark_data[0],
+      };
     }
 
     // v1.(문제 : 주 객관식 구분 불가능)
@@ -249,12 +275,6 @@ router.get("/survey/:id", async (req, res) => {
 
     // console.log(question_dataset);
     // console.log(question_dataset[0].option);
-
-    survey_dataset = {
-      ...survey_data[0][0],
-      question: question_dataset,
-      benchmark: benchmark_data[0],
-    };
 
     // for (i = 0; i < question_data[0].length; i++){
     //   for (j = question_data[0][i].) {
