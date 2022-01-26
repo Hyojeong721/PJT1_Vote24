@@ -9,7 +9,19 @@ const { nameParser } = require("../utils/nameParser");
 
 const router = express.Router();
 
-router.post("/code/:code", async (req, res) => {});
+router.post("/code/:code", async (req, res) => {
+  const code = req.params.code;
+  try {
+    const sql = "SELECT id FROM hospital_info WHERE code = ?";
+    const data = await pool.query(sql, [code]);
+    const id = data[0][0].id;
+    logger.info("POST /code/:code");
+    return res.json({ id: id });
+  } catch (error) {
+    logger.error("POST /code/:code " + error);
+    return res.json(error);
+  }
+});
 
 router.post("/id/:id", async (req, res) => {});
 

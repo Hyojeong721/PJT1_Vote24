@@ -45,13 +45,15 @@ router.post("/survey/:hospital_id", async (req, res) => {
       let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
       for (j = 0; j < question[i].option.length; j++) {
+        let weight = 0;
+        if (question[i].option[j].weight) weight = question[i].option[j].weight;
         option_sql =
           "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, ?, ?, ?);";
         await pool.query(option_sql, [
           questionID,
           question[i].option[j].order,
           question[i].option[j].context,
-          question[i].option[j].weight,
+          weight,
         ]);
       }
     }
