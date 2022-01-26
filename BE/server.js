@@ -7,7 +7,7 @@ const cors = require("cors");
 const { pool } = require("./utils/mysql");
 const { logger } = require("./utils/winston");
 
-const PORT = 80;
+const PORT = 8000;
 const server = express();
 
 const routes = require("./routes");
@@ -18,6 +18,6 @@ server.use(cors());
 server.use("/", routes);
 
 server.listen(PORT, function () {
-  logger.info("Server listening on port 80");
-  console.log("Server open port 80");
+  logger.info(`Server listening on port ${PORT}`);
+  console.log(`Server open port ${PORT}`);
 });
