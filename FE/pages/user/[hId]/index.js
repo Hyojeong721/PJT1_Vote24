@@ -10,6 +10,8 @@ function HomeUser({ name, logo_file, phone }) {
             <div>phone</div>
             <div>logo_file</div>
           </div>
+
+          <div className=""></div>
         </div>
       </div>
     </div>
