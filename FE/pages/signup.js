@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const SIGNUP_URL = "http://i6a205.p.ssafy.io:8000/api/join";
 const EMAIL_CHECK = "http://i6a205.p.ssafy.io:8000/api/emailCheck";
@@ -81,6 +80,23 @@ function Signup() {
         }
       };
     }
+  };
+
+  // 모듈화
+  const makeFormData = (data) => {
+    const fd = new FormData();
+
+    for (let key in data) {
+      if (key === "logo_image") {
+        const logoFile = data[key][0];
+        const logoName = logoFile.name;
+        fd.append(`logo_image`, logoFile);
+        fd.append(`logo_name`, logoName);
+      } else {
+        fd.append(`${key}`, data[key]);
+      }
+    }
+    return fd;
   };
 
   const onSubmit = async (data) => {

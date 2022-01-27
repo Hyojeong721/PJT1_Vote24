@@ -1,0 +1,8 @@
+.user-survey-list-item {
+  background-color: white;
+  height: 70px;
+}
+
+.user-survey-list-item:hover {
+  background-color: #acd0df;
+}

@@ -2,7 +2,15 @@
   background-color: #84c3dc;
 }
 
+.home-user-survey-button:hover {
+  background-color: #acd0df;
+}
 .home-user-notice-button {
+  background-color: #076c94;
+  height: 100px;
+}
+
+.home-user-notice-button:hover {
   background-color: #03435c;
   height: 100px;
 }

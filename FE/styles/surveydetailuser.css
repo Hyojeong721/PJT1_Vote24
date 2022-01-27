@@ -1,0 +1,11 @@
+.survey-option-box {
+  background-color: #f9eced;
+}
+
+.survey-user-submit-button {
+  background-color: #076c94;
+}
+
+.survey-user-submit-button:hover {
+  background-color: #03435c;
+}

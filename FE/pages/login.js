@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
-import "react-toastify/dist/ReactToastify.css";
 
 const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
 
@@ -46,14 +45,14 @@ function Login() {
             name,
           },
         });
+
+        toast.success("로그인 완료!");
+        router.push("/");
       })
       .catch((err) => {
         toast.error("로그인 실패!");
         console.log(err);
       });
-
-    toast.success("로그인 완료!");
-    router.push("/");
   };
 
   const goSignup = () => {
