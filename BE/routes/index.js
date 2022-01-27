@@ -12,6 +12,7 @@ const option = require("./survey/option");
 const subjective_answer = require("./survey/subjective_answer");
 const score_sum = require("./survey/score_sum");
 const benchmark = require("./survey/benchmark");
+const sendFile = require("./sendFile");
 
 router.use("/api", mainPage_userRouter);
 router.use("/api", eventPage_userRouter);
@@ -24,5 +25,6 @@ router.use("/api", option);
 router.use("/api", subjective_answer);
 router.use("/api", score_sum);
 router.use("/api", benchmark);
+router.use("/api", sendFile);
 
 module.exports = router;

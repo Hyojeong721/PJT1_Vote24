@@ -16,7 +16,9 @@ const router = express.Router();
 router.post("/service", service_upload.single("service_notice_image"), async (req, res) => {
   const { title, context, fixed, attachment } = req.body;
 
-  const rename = Date() + attachment;
+  const rename =
+    new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+    attachment;
   const path = "uploads/service/" + rename;
 
   try {
@@ -113,8 +115,7 @@ router.get("/service/:id", async (req, res) => {
     await pool.query(sqlInc, [id]);
     const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id]);
-    const result = data[0];
-
+    let result = data[0];
     logger.info("GET Service Notice Detail");
     return res.json(result);
   } catch (error) {

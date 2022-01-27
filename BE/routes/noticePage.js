@@ -69,7 +69,9 @@ router.post("/notice/:hospital_id", notice_upload.single("notice_image"), async 
 
   try {
     if (attachment) {
-      const rename = Date() + attachment;
+      const rename =
+        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+        attachment;
       const path = "uploads/notice/" + rename;
       nameParser("uploads/notice", "uploads/notice", attachment, rename);
 
