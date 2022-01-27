@@ -10,8 +10,7 @@ function HomeUser({ hId, name, logo_file, phone }) {
     <div>
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
         <div className="w-100 d-flex flex-column align-items-center">
-          <div className="text-center text-white fw-bold ">
-            <div>{hId}</div>
+          <div className="text-center text-white fw-bold">
             <div>{name}</div>
             <div>{phone}</div>
             <div>{logo_file}</div>

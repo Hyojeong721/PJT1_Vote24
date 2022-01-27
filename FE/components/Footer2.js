@@ -6,13 +6,7 @@ function Footer() {
     <footer className="container-fluid footer-box navbar-fixed-bottom p-3 border-top">
       <div className="container w-50 d-flex justify-content-between align-items-center">
         <div>
-          <Image
-            className="logo"
-            src={Logo}
-            alt="vote24"
-            width="75"
-            height="25"
-          />
+          <Image className="navbar-logo" src={Logo} alt="vote24" />
           <small className="d-block mb-3 text-muted">Vote24 &copy; 2022</small>
         </div>
         <div>
