@@ -14,7 +14,6 @@ const NoticeDetailItem = () => {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}/${id}`;
-  //   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1/${id}`;
 
   useEffect(() => {
     // 게시글 내용 받아오기
@@ -24,8 +23,10 @@ const NoticeDetailItem = () => {
       console.log("data", data);
       setData(data);
     };
-    getPost();
-  }, []);
+    if (id) {
+      getPost();
+    }
+  }, [id]);
 
   return (
     <div className="post-detail">

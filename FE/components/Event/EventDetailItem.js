@@ -13,8 +13,7 @@ const EventDetailItem = () => {
   // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  //   const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}/${post_id}`;
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/1/${id}`;
+  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}/${id}`;
 
   useEffect(() => {
     // 게시글 내용 받아오기
@@ -24,8 +23,10 @@ const EventDetailItem = () => {
       console.log("data", data);
       setData(data);
     };
-    getPost();
-  }, []);
+    if (id) {
+      getPost();
+    }
+  }, [id]);
 
   return (
     <div className="post-detail">
