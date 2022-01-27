@@ -38,19 +38,18 @@ const SurveyList = ({ dataList }) => {
     // 체크할 시 checkList에 id 값 전체 넣기, 체크 해제할 시 checkList에 빈 배열 넣기
     setCheckList(e.target.checked ? idList : []);
   };
-
+  // 개별 선택/해제
   const onChangeEach = (e, id) => {
-    // 체크할 시 CheckList에 id값 넣기
     if (e.target.checked) {
       setCheckList([...checkList, id]);
       console.log(checkList);
       // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
-      // = 지금 id는 체크해제 됐으니까 지금 id가 아닌 애들만 체크된 리스트로 들어가는 것
     } else {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
   };
 
+  // 선택 삭제
   const handleRemove = () => {
     if (checkList.length) {
       checkList.map((surveyId) => {
@@ -99,7 +98,7 @@ const SurveyList = ({ dataList }) => {
           {list
             ? list.map((item) => {
                 return (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} id={item.id}>
                     <input
                       type="checkbox"
                       onChange={(e) => onChangeEach(e, item.id)}
@@ -107,15 +106,14 @@ const SurveyList = ({ dataList }) => {
                     />
                     <TableColumn>{item.id}</TableColumn>
                     <TableColumn>{DateForm(item.created_at)}</TableColumn>
-                    <TableColumn>
-                      <Link href={`/survey/${item.id}`}>{item.title}</Link>
-                    </TableColumn>
+                    <TableColumn>{item.title}</TableColumn>
                     <TableColumn>
                       {DateForm(item.start_at)} ~ {DateForm(item.end_at)}
                     </TableColumn>
                     <TableColumn>{item.count}</TableColumn>
                     <TableColumn>{DateForm(item.end_at)}</TableColumn>
                     <TableColumn>✏</TableColumn>
+                    {/* <Link href={`/survey/${item.id}`}></Link> */}
                   </TableRow>
                 );
               })

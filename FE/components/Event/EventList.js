@@ -58,7 +58,7 @@ const EventList = ({ dataList }) => {
           {dataList
             ? dataList.map((item) => {
                 return (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} children={item}>
                     <input
                       type="checkbox"
                       onChange={(e) => onChangeEach(e, item.id)}
