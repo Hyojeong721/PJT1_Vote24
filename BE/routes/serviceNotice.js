@@ -19,7 +19,7 @@ router.post("/service", service_upload.single("service_notice_image"), async (re
   const rename =
     new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
     attachment;
-  const path = "uploads/service/" + rename;
+  // const path = "uploads/service/" + rename;
 
   try {
     if (req.body.attachment) {
@@ -29,7 +29,7 @@ router.post("/service", service_upload.single("service_notice_image"), async (re
                         context, 
                         fixed, 
                         attachment) VALUES(?, ?, ?, ?);`;
-      const data = await pool.query(sql, [title, context, fixed, path]);
+      const data = await pool.query(sql, [title, context, fixed, rename]);
     } else {
       const sql = `INSERT INTO service_notice ( 
                         title, 
@@ -56,8 +56,10 @@ router.put("/service/:id", service_upload.single("service_notice_image"), async 
   const id = req.params.id;
   const { title, context, fixed, attachment } = req.body;
 
-  const rename = Date() + attachment;
-  const path = "uploads/service/" + rename;
+  const rename =
+    new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+    attachment;
+  // const path = "uploads/service/" + rename;
 
   try {
     if (req.body.attachment) {
@@ -67,7 +69,7 @@ router.put("/service/:id", service_upload.single("service_notice_image"), async 
                       context=?, 
                       fixed=?, 
                       attachment=? WHERE id=?;`;
-      const data = await pool.query(sql, [title, context, fixed, path, id]);
+      const data = await pool.query(sql, [title, context, fixed, rename, id]);
     } else {
       const sql = `UPDATE service_notice SET 
                       title=?, 
@@ -115,7 +117,8 @@ router.get("/service/:id", async (req, res) => {
     await pool.query(sqlInc, [id]);
     const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id]);
-    let result = data[0];
+    let result = data[0][0];
+    result.image = "http://localhost/api/serviceimage/" + result.attachment;
     logger.info("GET Service Notice Detail");
     return res.json(result);
   } catch (error) {

@@ -48,7 +48,8 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
     await pool.query(sqlInc, [id]);
     const sql = `select * from hospital_event where hospital_id =? and id=?`;
     const data = await pool.query(sql, [hospital_id, id]);
-    const result = data[0];
+    let result = data[0][0];
+    result.image = "http://localhost/api/eventimage/" + result.attachment;
 
     logger.info("GET Event Detail");
     return res.json(result);
@@ -69,8 +70,10 @@ router.post("/event/:hospital_id", event_upload.single("event_img"), async (req,
 
   try {
     if (attachment) {
-      const rename = Date() + attachment;
-      const path = "uploads/event/" + rename;
+      const rename =
+        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+        attachment;
+      // const path = "uploads/event/" + rename;
       nameParser("uploads/event", "uploads/event", attachment, rename);
 
       const sql = `insert into hospital_event (
@@ -80,7 +83,7 @@ router.post("/event/:hospital_id", event_upload.single("event_img"), async (req,
                             start_at, 
                             end_at, 
                             attachment) value(?,?,?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+      const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, rename]);
     } else {
       const sql = `insert into hospital_event (
                 hospital_id, 
@@ -88,7 +91,7 @@ router.post("/event/:hospital_id", event_upload.single("event_img"), async (req,
                 context, 
                 start_at, 
                 end_at) value(?,?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, path]);
+      const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at]);
     }
     const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const data_id = await pool.query(LAST_INSERT_ID);
@@ -131,8 +134,10 @@ router.put("/event/:hospital_id/:id", event_upload.single("event_image"), async 
 
   try {
     if (attachment) {
-      const rename = Date() + attachment;
-      const path = "uploads/event/" + rename;
+      const rename =
+        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+        attachment;
+      // const path = "uploads/event/" + rename;
       nameParser("uploads/event", "uploads/event", attachment, rename);
 
       const sql = `update hospital_event set
@@ -141,7 +146,15 @@ router.put("/event/:hospital_id/:id", event_upload.single("event_image"), async 
                             start_at =?, 
                             end_at =?, 
                             attachment =? where id=? AND hospital_id`;
-      const data = await pool.query(sql, [title, context, start_at, end_at, path, id, hospital_id]);
+      const data = await pool.query(sql, [
+        title,
+        context,
+        start_at,
+        end_at,
+        rename,
+        id,
+        hospital_id,
+      ]);
     } else {
       const sql = `update hospital_event set
                             title =?, 
