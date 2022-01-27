@@ -6,7 +6,6 @@ import MainOnLogin from "../components/Main/MainOnLogin";
 
 function Home() {
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
-
   // const MAIN_URL = `http://i6a205.p.ssafy.io:8000/api/main/${userInfo.id}`;
 
   // useEffect(async () => {

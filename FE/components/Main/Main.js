@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import header_image from "../../public/header_image.png";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 function Main() {
-  const [hCode, setHCode] = useState("");
+  const [inputCode, setInputCode] = useState("");
+  const router = useRouter();
+
   const handleCodeChange = (e) => {
-    setHCode(e.target.value);
+    setInputCode(e.target.value);
+  };
+
+  const handleGoButton = async () => {
+    const codeToId_URL = `http://i6a205.p.ssafy.io:8000/api/code/${inputCode}`;
+    await axios.get(codeToId_URL).then((res) => {
+      const { id } = res.data;
+      router.push(`/user/${id}`);
+    });
   };
 
   return (
@@ -23,6 +35,7 @@ function Main() {
             <div className="form-floating">
               <input
                 id="code"
+                name="code"
                 type="text"
                 onChange={handleCodeChange}
                 className="form-control"
@@ -32,7 +45,11 @@ function Main() {
                 <p className="text-secondary">병원 코드 입력</p>
               </label>
             </div>
-            <button type="button" className="btn text-white text-center">
+            <button
+              type="button"
+              className="btn text-white text-center"
+              onClick={handleGoButton}
+            >
               <span className="material-icons fs-1">play_arrow</span>
             </button>
           </div>

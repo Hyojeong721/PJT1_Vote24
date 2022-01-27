@@ -4,8 +4,12 @@ import axios from "axios";
 import QuestionChoice from "./QuestionChoice";
 import QuestionEssay from "./QuestionEssay";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 function SurveyCreateForm() {
+  const router = useRouter();
+  const [nowCategory, setNowCategory] = useState("0");
   const [questions, setQuestions] = useState([]);
   const [benchmarks, setBenchmarks] = useState([]);
   const [qCnt, setQCnt] = useState(1);
@@ -14,16 +18,17 @@ function SurveyCreateForm() {
 
   const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/1`;
 
-  const { register, unregister, handleSubmit } = useForm();
+  const {
+    register,
+    unregister,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const parseInput = (data) => {
     const bList = [];
     const qList = [];
-    const oList = {
-      1: [],
-      2: [],
-      3: [],
-    };
+    const oList = {};
     let qIndex = 1;
     let oIndex = 1;
     console.log(data);
@@ -95,7 +100,13 @@ function SurveyCreateForm() {
       benchmark: bList,
     };
     console.log(result);
-    await axios.post(SURVEY_URL, result).then((res) => console.log(res.data));
+    await axios
+      .post(SURVEY_URL, result)
+      .then((res) => {
+        toast.success("설문 생성 성공");
+        router.push(`/survey/${res.data.surveyID}`);
+      })
+      .catch((err) => toast.error("설문 생성 실패"));
   };
 
   const handleQuestionChoiceAdd = () => {
@@ -185,7 +196,10 @@ function SurveyCreateForm() {
               name="category"
               id="category1"
               value="0"
-              {...register("category")}
+              checked={nowCategory === "0"}
+              {...register("category", {
+                onChange: (e) => setNowCategory(e.target.value),
+              })}
             />
             <label className="form-check-label" htmlFor="category1">
               건강설문
@@ -198,6 +212,7 @@ function SurveyCreateForm() {
               name="category"
               id="category2"
               value="1"
+              checked={nowCategory === "1"}
               {...register("category")}
             />
             <label className="form-check-label" htmlFor="category2">
@@ -211,8 +226,14 @@ function SurveyCreateForm() {
           type="text"
           className="survey-input-box form-control fs-1 mt-2"
           placeholder="설문 제목을 입력해주세요."
-          {...register("title")}
+          {...register("title", { required: true })}
         ></input>
+        {errors.title && errors.title.type === "required" && (
+          <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
+            <span className="material-icons fs-5">priority_high</span>
+            <span>설문 제목 입력은 필수입니다.</span>
+          </div>
+        )}
         <div className="d-flex mt-3">
           <div className="datetime-box">
             <label htmlFor="start_at" className="fw-bold ms-1">
@@ -222,8 +243,14 @@ function SurveyCreateForm() {
               id="start_at"
               type="datetime-local"
               className="form-control"
-              {...register("start_at")}
+              {...register("start_at", { required: true })}
             ></input>
+            {errors.start_at && errors.start_at.type === "required" && (
+              <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
+                <span className="material-icons fs-5">priority_high</span>
+                <span>시작일 입력은 필수입니다.</span>
+              </div>
+            )}
           </div>
 
           <div className="datetime-box">
@@ -234,8 +261,15 @@ function SurveyCreateForm() {
               id="end_at"
               type="datetime-local"
               className="form-control"
-              {...register("end_at")}
+              {...register("end_at", { required: true })}
             ></input>
+
+            {errors.end_at && errors.end_at.type === "required" && (
+              <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
+                <span className="material-icons fs-5">priority_high</span>
+                <span>종료일 입력은 필수입니다.</span>
+              </div>
+            )}
           </div>
         </div>
         <textarea
@@ -244,30 +278,46 @@ function SurveyCreateForm() {
           className="survey-input-box form-control mt-2"
           placeholder="설문에 대한 설명을 작성해주세요."
           rows="10"
-          {...register("context")}
+          {...register("context", { required: true })}
         ></textarea>
-        <div className="mt-2">설문 결과의 기준 점수를 입력하세요.</div>
-        <div>{paintBenchmark}</div>
-        <button
-          type="button"
-          className="btn material-icons p-0"
-          onClick={handleBenchmarkAdd}
-        >
-          add
-        </button>
-        <div className="form-floating">
-          <input
-            id="output_link"
-            name="output_link"
-            type="url"
-            className="survey-input-box form-control mt-2"
-            placeholder=" "
-            {...register("output_link")}
-          ></input>
-          <label htmlFor="output_link" className="text-secondary">
-            출력 링크(설문 후 설문자가 이동할 페이지의 링크)
-          </label>
-        </div>
+        {errors.context && errors.context.type === "required" && (
+          <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
+            <span className="material-icons fs-5">priority_high</span>
+            <span>설문 설명 입력은 필수입니다.</span>
+          </div>
+        )}
+        {nowCategory === "0" && (
+          <>
+            <div className="mt-2">설문 결과의 기준 점수를 입력하세요.</div>
+            <div>{paintBenchmark}</div>
+            <button
+              type="button"
+              className="btn material-icons p-0"
+              onClick={handleBenchmarkAdd}
+            >
+              add
+            </button>
+            <div className="form-floating">
+              <input
+                id="output_link"
+                name="output_link"
+                type="url"
+                className="survey-input-box form-control mt-2"
+                placeholder=" "
+                {...register("output_link", { required: true })}
+              ></input>
+              <label htmlFor="output_link" className="text-secondary">
+                출력 링크(설문 후 설문자가 이동할 페이지의 링크)
+              </label>
+            </div>
+            {errors.output_link && errors.output_link.type === "required" && (
+              <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
+                <span className="material-icons fs-5">priority_high</span>
+                <span>설문 참여자에게 제공되는 링크 입력은 필수입니다.</span>
+              </div>
+            )}
+          </>
+        )}
       </form>
       <div className="w-100 d-flex flex-column survey-form-body mt-3">
         {paintQuestions}

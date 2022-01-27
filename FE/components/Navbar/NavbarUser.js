@@ -1,15 +1,20 @@
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import NavItem from "./NavItem";
 import Logo from "../../public/logo.png";
 
-function Navbar() {
+function Navbar({ currentPage, hId }) {
   return (
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img class="logo" src={Logo} alt="vote24" />
-        </a>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <Link href={`/user/${hId}`}>
+          <a className="navbar-brand navbar-logo">
+            <Image className="navbar-logo" src={Logo} alt="vote24" />
+          </a>
+        </Link>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -17,59 +22,33 @@ function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#">
-                설문조사
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                공지사항
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                이벤트
-              </a>
-            </li>
-            {/* <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Action
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Another action
-                  </a>
-                </li>
-                <li>
-                  <hr class="dropdown-divider" />
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    Something else here
-                  </a>
-                </li>
-              </ul>
-            </li> */}
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <NavItem
+              active={currentPage === `/user/${hId}}/survey/health`}
+              url={`/user/${hId}}/survey/health`}
+              title="건강설문"
+            />
+            <NavItem
+              active={currentPage === `/user/${hId}}/survey/service`}
+              url={`/user/${hId}}/survey/service`}
+              title="병원설문"
+            />
+            <NavItem
+              active={currentPage === `/user/${hId}}/notice`}
+              url={`/user/${hId}}/notice`}
+              title="공지사항"
+            />
+            <NavItem
+              active={currentPage === `/user/${hId}}/event`}
+              url={`/user/${hId}}/event`}
+              title="이벤트"
+            />
           </ul>
         </div>
+        hId: {hId}
       </div>
     </nav>
   );
