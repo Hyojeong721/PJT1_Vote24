@@ -1,8 +1,9 @@
 import axios from "axios";
+import BackButton from "../../../../components/BackButton";
 
 function SurveyDetailUser({ hId, sId, surveyDetail }) {
-  const { title, context, start_at, end_at, question } = surveyDetail;
-  console.log(question);
+  const { title, context, start_at, end_at, question, category } = surveyDetail;
+  const categoryName = category === 0 ? "health" : "service";
 
   const paintOptions = (qId, option) => {
     return option.map(({ id, order, context }) => {
@@ -39,6 +40,7 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="w-75 bg-white form-control mt-3 text-center">
+        <BackButton url={`/user/${hId}/survey/${categoryName}`} />
         <div className="fs-1">{title}</div>
         <div className="my-2">
           <span>{context}</span>

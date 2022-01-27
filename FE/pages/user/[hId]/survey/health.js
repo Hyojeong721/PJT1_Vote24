@@ -1,5 +1,6 @@
 import axios from "axios";
 import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
+import BackButton from "../../../../components/BackButton";
 
 function SurveyHealthUser({ hId, surveyList }) {
   const paintSurveyList = surveyList.map((s, idx) => {
@@ -15,7 +16,8 @@ function SurveyHealthUser({ hId, surveyList }) {
   });
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="mt-5">
+      <header className="mt-3">
+        <BackButton url={`/user/${hId}`} />
         <div className="text-white fs-1">건강 설문 조사</div>
       </header>
       {paintSurveyList}
