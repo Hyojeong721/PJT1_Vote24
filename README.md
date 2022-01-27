@@ -159,7 +159,7 @@ setItems((prevItems) => [...prevItems, ...reviews])
 
 #### * 추가 수정사항
 
-- [ ] hospital_id 불러오는거 undfined뜸...!! => 지후님 로그인 확인
+- [x] hospital_id 불러오는거 undfined뜸...!! => 지후님 로그인 확인 => index.js 수정하심
 
 - [ ] 서버 : 설문 종료일이 현재시간보다 전이면 status값을 0으로 설문 안끝낫응면 status 값을 1로 요청 => 나중에 정렬할때도 status값으로 구분해서 보이는 로직이 있을때 프론트에서 하면 코드 더럽;;
 
@@ -169,9 +169,11 @@ setItems((prevItems) => [...prevItems, ...reviews])
 
   ![image-20220127000937209](README.assets/image-20220127000937209.png)
 
-- [ ] 목록에서 눌러서 디테일로가면 상세내용이 나오는데 / 주소에서 바로 가면 빈배열이 들어옴 ex)28번설문..!
+- [x] 목록에서 눌러서 디테일로가면 상세내용이 나오는데 / 주소에서 바로 가면 빈배열이 들어옴 ex)28번설문..!
 
-  
+아래처럼 코드 수정후 해결
+  ![image](https://user-images.githubusercontent.com/87456091/151275821-14c3b035-aff4-4410-9015-8cef1518a958.png)
+
 
 ### * TIL
 
