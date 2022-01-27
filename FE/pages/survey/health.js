@@ -12,13 +12,14 @@ function Health() {
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
+  // const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
+  const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/1/0`;
 
   // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
       const res = await axios.get(SURVEY_HEALTH_URL);
-      console.log("설문 목록 데이터", res.data);
+      console.log("건강설문 목록 데이터", res.data);
 
       setDataList(res.data);
     };

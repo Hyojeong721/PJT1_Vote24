@@ -1,4 +1,4 @@
-function formatDate(date) {
+function DateForm(date) {
   var d = new Date(date),
     month = "" + (d.getMonth() + 1),
     day = "" + d.getDate(),
@@ -8,4 +8,4 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-export default formatDate;
+export default DateForm;

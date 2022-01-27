@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
-import Table from "../Table/Table";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
 import Link from "next/link";
