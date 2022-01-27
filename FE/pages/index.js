@@ -6,31 +6,18 @@ import MainOnLogin from "../components/Main/MainOnLogin";
 
 function Home() {
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
-  const dispatch = useDispatch();
-  const MAIN_URL = `http://i6a205.p.ssafy.io:8000/api/main/${userInfo.id}`;
 
-  const test1 = () => {
-    dispatch({ type: "LOGIN", userInfo });
-  };
+  // const MAIN_URL = `http://i6a205.p.ssafy.io:8000/api/main/${userInfo.id}`;
 
-  const test2 = () => {
-    dispatch({ type: "LOGOUT" });
-  };
-
-  useEffect(async () => {
-    if (userInfo.id) {
-      await axios.get(MAIN_URL).then((res) => console.log(res.data));
-    }
-  }, []);
+  // useEffect(async () => {
+  //   if (userInfo.id) {
+  //     await axios.get(MAIN_URL).then((res) => console.log(res.data));
+  //   }
+  // }, []);
 
   return (
     <div>
-      <button type="button" onClick={test1}>
-        LOGIN
-      </button>
-      <button type="button" onClick={test2}>
-        LOGOUT
-      </button>
+      isLoggedIn : {`${isLoggedIn}`} / userInfo.id : {userInfo.id}
       {!isLoggedIn ? <Main /> : <MainOnLogin />}
     </div>
   );
