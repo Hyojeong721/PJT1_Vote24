@@ -17,11 +17,11 @@
 #define PIN_ANALOG_X  0
 #define PIN_ANALOG_Y  1
 
-const uint8_t blueTx = 2;
-const uint8_t blueRx = 3;
+const uint8_t blueTx = 1;
+const uint8_t blueRx = 0;
 
 typedef struct xData {
-  uint8_t ch;
+  char ch;
   uint32_t num;
 }xData;
 
@@ -87,27 +87,27 @@ static void vJoyTask(void *pvParameters)
         vTaskPrioritySet(NULL, 1);
       }        
       else if(digitalRead(PIN_BUTTON_B) == LOW){
-        xData data = {'B', 1};
+        xData data = {'B', 2};
         xQueState = xQueueSend(xQueue, &data, xTickToWait);
         vTaskPrioritySet(NULL, 1);
       }
       else if(digitalRead(PIN_BUTTON_C) == LOW){
-        xData data = {'C', 1};
+        xData data = {'C', 3};
         xQueState = xQueueSend(xQueue, &data, xTickToWait);
         vTaskPrioritySet(NULL, 1);
       }
       else if(digitalRead(PIN_BUTTON_D) == LOW){
-        xData data = {'D', 1};
+        xData data = {'D', 4};
         xQueState = xQueueSend(xQueue, &data, xTickToWait);
         vTaskPrioritySet(NULL, 1);
       }
       else if(digitalRead(PIN_BUTTON_E) == LOW){
-        xData data = {'E', 1};
+        xData data = {'E', 5};
         xQueState = xQueueSend(xQueue, &data, xTickToWait);
         vTaskPrioritySet(NULL, 1);
       }
       else if(digitalRead(PIN_BUTTON_F) == LOW){
-        xData data = {'F', 1};
+        xData data = {'F', 6};
         xQueState = xQueueSend(xQueue, &data, xTickToWait);
         if(xQueState == pdPASS){
           vTaskPrioritySet(NULL, 1);
@@ -130,19 +130,13 @@ static void vBlueTask(void * pvParameters)
 {
   xData xReceiveStruct; 
   const TickType_t xTickToWait = pdMS_TO_TICKS(100);
-  
-  for(;;){
+  for(;;)
+  {
     while(xQueueReceive(xQueue, &xReceiveStruct, xTickToWait ) != errQUEUE_EMPTY)
     {
-      Serial.print((char)xReceiveStruct.ch);
-      Serial.print)(
-      if(mySerial.available())
-      {
-        
-        mySerial.write((char)xReceiveStruct.num);
-      }
+        Serial.println(xReceiveStruct.ch);
+        Delay(5);
     }
-    
     vTaskPrioritySet(xJoyTaskHandle, 3 );
   }
 }
