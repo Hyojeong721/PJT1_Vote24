@@ -1,11 +1,5 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
-
-const { pool } = require("../utils/mysql");
-const { logger } = require("../utils/winston");
-const { service_upload } = require("../utils/multer");
-const { nameParser } = require("../utils/nameParser");
 
 const router = express.Router();
 

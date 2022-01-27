@@ -28,7 +28,7 @@ router.post("/id/:id", async (req, res) => {
   try {
     const sql = "SELECT name, phone, logo_image FROM hospital_info WHERE id = ?";
     const data = await pool.query(sql, [code]);
-    const result = data[0];
+    const result = data[0][0];
     logger.info("POST /id/:id");
     return res.json(result);
   } catch (error) {
