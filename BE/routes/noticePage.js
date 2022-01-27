@@ -48,7 +48,8 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
     await pool.query(sqlInc, [id]);
     const sql = `select * from hospital_notice where hospital_id =? and id=?`;
     const data = await pool.query(sql, [hospital_id, id]);
-    const result = data[0];
+    let result = data[0][0];
+    result.image = "http://localhost/api/noticeimage/" + result.attachment;
 
     logger.info("GET Notice Detail");
     return res.json(result);
@@ -72,7 +73,7 @@ router.post("/notice/:hospital_id", notice_upload.single("notice_image"), async 
       const rename =
         new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
         attachment;
-      const path = "uploads/notice/" + rename;
+      // const path = "uploads/notice/" + rename;
       nameParser("uploads/notice", "uploads/notice", attachment, rename);
 
       const sql = `insert into hospital_notice (
@@ -81,7 +82,7 @@ router.post("/notice/:hospital_id", notice_upload.single("notice_image"), async 
                 context, 
                 fixed, 
                 attachment) value(?,?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, fixed, path]);
+      const data = await pool.query(sql, [hospital_id, title, context, fixed, rename]);
     } else {
       const sql = `insert into hospital_notice (
                 hospital_id, 
@@ -131,8 +132,10 @@ router.put("/notice/:hospital_id/:id", notice_upload.single("notice_image"), asy
 
   try {
     if (attachment) {
-      const rename = Date() + attachment;
-      const path = "uploads/notice/" + rename;
+      const rename =
+        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+        attachment;
+      // const path = "uploads/notice/" + rename;
       nameParser("uploads/notice", "uploads/notice", attachment, rename);
 
       const sql = `update hospital_notice set
@@ -140,7 +143,7 @@ router.put("/notice/:hospital_id/:id", notice_upload.single("notice_image"), asy
             context =?, 
             fixed =?, 
             attachment =? where id=? AND hospital_id =?`;
-      const data = await pool.query(sql, [title, context, fixed, path, id, hospital_id]);
+      const data = await pool.query(sql, [title, context, fixed, rename, id, hospital_id]);
     } else {
       const sql = `update hospital_notice set
             title =?, 

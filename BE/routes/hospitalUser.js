@@ -44,8 +44,10 @@ router.post("/id/:id", async (req, res) => {
 router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
   const { email, password, name, business_number, phone } = req.body;
 
-  const logo_rename = Date.now() + req.body.logo_name;
-  const logo_path = "uploads/logo" + logo_rename;
+  const logo_rename =
+    new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+    req.body.logo_name;
+  // const logo_path = "uploads/logo" + logo_rename;
   nameParser("uploads/logo/", "uploads/logo/", req.body.logo_name, logo_rename);
 
   try {
@@ -64,7 +66,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
         name,
         business_number,
         phone,
-        logo_path,
+        logo_rename,
       ]);
     } else {
       const sql = `INSERT INTO hospital_info ( 
