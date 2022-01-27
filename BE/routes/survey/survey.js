@@ -252,7 +252,12 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
     const sql = `SELECT * FROM hospital_survey WHERE hospital_id=?;`;
     const data = await pool.query(sql, [hospital_id]);
     // const result = data[0].slice((page - 1) * 10, page * 10);
-    const result = data[0];
+    let result = data[0];
+    const now = new Date();
+    for (i = 0; i < result.length; i++) {
+      result[i].status = now < result[i].end_at;
+    }
+    console.log(result);
     logger.info("[INFO] GET /survey/list");
     return res.json(result);
   } catch (error) {
@@ -269,7 +274,11 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
     const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=?;`;
     const data = await pool.query(sql, [hospital_id, category]);
     // const result = data[0].slice((page - 1) * 10, page * 10);
-    const result = data[0];
+    let result = data[0];
+    const now = new Date();
+    for (i = 0; i < result.length; i++) {
+      result[i].status = now < result[i].end_at;
+    }
     logger.info("[INFO] GET /survey/list/:hospital_id/:category");
     return res.json(result);
   } catch (error) {

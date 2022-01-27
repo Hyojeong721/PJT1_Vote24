@@ -1,6 +1,9 @@
 node_modules
 dist/*
 *.log
-uploads
+uploads/logo/*
+uploads/event/*
+uploads/notice/*
+uploads/server/*
 server.js
 utils/mysql.js
