@@ -8,7 +8,7 @@ import MedicalImageTwo from "../../../public/medical2.png";
 function HomeUser({ hId, name, logo_file, phone }) {
   return (
     <div>
-      <div className="home-user-bg min-vh-100 d-flex justify-content-center">
+      <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
         <div className="w-100 d-flex flex-column align-items-center">
           <div className="text-center text-white fw-bold ">
             <div>{hId}</div>
@@ -18,25 +18,25 @@ function HomeUser({ hId, name, logo_file, phone }) {
           </div>
           <div className="w-75 d-flex flex-column mt-3">
             <div className="rounded-top w-25 bg-white fs-1">설문조사</div>
-            <div className="rounded-bottom bg-white d-flex justify-content-center">
+            <div className="rounded-bottom bg-white d-flex flex-column justify-content-center flex-sm-row">
               <Link href={`/user/${hId}/survey/health`}>
-                <button className="home-user-survey-button btn border w-50 form-control m-3 d-flex flex-column">
+                <button className="home-user-survey-button btn border form-control m-3 d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <h2>환자 보호자 대상</h2>
                     <span className="material-icons">north_east</span>
                   </div>
-                  <div className="p-5">
+                  <div className="p-md-3">
                     <Image src={MedicalImageOne} width={400} height={431} />
                   </div>
                 </button>
               </Link>
               <Link href={`/user/${hId}/survey/service`}>
-                <button className="home-user-survey-button btn border w-50 form-control m-3 d-flex flex-column">
+                <button className="home-user-survey-button btn border form-control m-3 d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <h2>병원 만족도 조사</h2>
                     <span className="material-icons">north_east</span>
                   </div>
-                  <div className="p-5">
+                  <div className="p-md-3">
                     <Image src={MedicalImageTwo} width={400} height={431} />
                   </div>
                 </button>
