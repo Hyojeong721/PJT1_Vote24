@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import SurveyList from "../../components/Survey/SurveyList";
-
-const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
+import Link from "next/link";
 
 function Survey() {
-  const [dataList, setDataList] = useState([]);
-
-  // 병원 id 받아서 url에 적용
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
-  const SURVEY_LIST_URL = `${SURVEY_URL}/list/${hospital_id}`;
-
-  // 서버에서 이벤트 목록 받아오는 코드
-  useEffect(() => {
-    const getList = async () => {
-      const res = await axios.get(`${SURVEY_LIST_URL}`);
-      const data = res.data;
-      console.log(data);
-      setDataList(data);
-    };
-    getList();
-  }, []);
-
   return (
     <div>
       <Header title="병원 설문조사 목록"></Header>
       <div className="container">
-        <SurveyList dataList={dataList} />
+        <Link href="/survey/health">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title">건강설문</h3>
+              <p className="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+          </div>
+        </Link>
+        <Link href="/survey/service">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title">만족도 조사</h3>
+              <p className="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
