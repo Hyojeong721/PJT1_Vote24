@@ -7,7 +7,6 @@ import QuestionList from "../../components/Survey/QuestionList";
 
 const SurveyDetail = () => {
   const [data, setData] = useState([]);
-
   // 게시글 id 찾기 -> 데이터 가져올 url 선언
   const router = useRouter();
   const { id } = router.query;
@@ -17,13 +16,14 @@ const SurveyDetail = () => {
     // 게시글 내용 받아오기
     const getPost = async () => {
       const res = await axios.get(SURVEY_DETAIL_URL);
-      console.log("ㄱㄷㄴ", res);
       const data = res.data;
       console.log("data", data);
       setData(data);
     };
-    getPost();
-  }, []);
+    if (id) {
+      getPost();
+    }
+  }, [id]);
 
   return (
     <div className="post-detail">
