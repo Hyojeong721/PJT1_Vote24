@@ -49,7 +49,7 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
     const sql = `select * from hospital_notice where hospital_id =? and id=?`;
     const data = await pool.query(sql, [hospital_id, id]);
     let result = data[0];
-    result[0].image = "http://localhost/api/noticeimage/" + result.attachment;
+    result[0].image = "http://localhost/api/noticeimage/" + result[0].attachment;
 
     logger.info("GET Notice Detail");
     return res.json(result);
