@@ -8,9 +8,10 @@ import HospitalSatisfaction from "./HospitalSatisfaction";
 function MainOnLogin() {
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
   const { id, code, name } = userInfo;
+  console.log(userInfo);
   return (
     <>
-      <Header title={name} subtitle={name}></Header>
+      <Header title={id} subtitle={id}></Header>
       <div className="container d-flex flex-column justify-content-center mt-5 gap-5">
         <div className="d-flex gap-5">
           <SimpleCard title="누적 설문 참여자 수" context="60" />

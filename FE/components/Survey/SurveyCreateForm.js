@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import axios from "axios";
 import QuestionChoice from "./QuestionChoice";
 import QuestionEssay from "./QuestionEssay";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 
 function SurveyCreateForm() {
   const router = useRouter();
@@ -15,8 +16,14 @@ function SurveyCreateForm() {
   const [qCnt, setQCnt] = useState(1);
   const [bCnt, setBCnt] = useState(1);
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
+  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
 
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/1`;
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast("로그인이 필요합니다!");
+      router.push("/login");
+    }
+  }, []);
 
   const {
     register,
@@ -186,7 +193,7 @@ function SurveyCreateForm() {
   });
 
   return (
-    <div className="container survey-form-container d-flex flex-column align-items-center">
+    <div className="container survey-form-container rounded d-flex flex-column align-items-center mt-5 pb-5">
       <form className="w-100 survey-form-header">
         <div>
           <div className="form-check form-check-inline mt-3">
@@ -321,7 +328,7 @@ function SurveyCreateForm() {
       </form>
       <div className="w-100 d-flex flex-column survey-form-body mt-3">
         {paintQuestions}
-        <div className="p-2 d-flex justify-content-center gap-2 mt-5">
+        <div className="p-2 d-flex justify-content-center gap-2 mt-3">
           <button
             className="btn btn-primary d-flex align-items-center"
             onClick={handleQuestionChoiceAdd}
@@ -338,11 +345,15 @@ function SurveyCreateForm() {
           </button>
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-5">
+
+      <div className="w-100 d-flex mt-5">
+        <Link href={`/survey`}>
+          <button className="btn btn-secondary">취소</button>
+        </Link>
         <button
           type="button"
           onClick={handleSubmit(onSubmit)}
-          className="submit-button btn btn-primary"
+          className="submit-button btn btn-primary position-absolute start-50 translate-middle"
         >
           서비스 신청
         </button>

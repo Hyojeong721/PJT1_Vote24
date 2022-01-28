@@ -5,6 +5,7 @@
 .home-user-survey-button:hover {
   background-color: #acd0df;
 }
+
 .home-user-notice-button {
   background-color: #076c94;
   height: 100px;
@@ -13,4 +14,25 @@
 .home-user-notice-button:hover {
   background-color: #03435c;
   height: 100px;
+}
+
+.user-header {
+  background-color: #84c3dc;
+  height: 100px;
+}
+
+.user-detail-header {
+  height: 150px;
+}
+
+.user-detail-section {
+  height: 500px;
+}
+
+.user-detail-to-list-button {
+  background-color: #076c94;
+}
+
+.user-detail-to-list-button:hover {
+  background-color: #03435c;
 }

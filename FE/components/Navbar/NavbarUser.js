@@ -48,7 +48,6 @@ function Navbar({ currentPage, hId }) {
             />
           </ul>
         </div>
-        hId: {hId}
       </div>
     </nav>
   );
