@@ -104,7 +104,8 @@ function SurveyCreateForm() {
       .post(SURVEY_URL, result)
       .then((res) => {
         toast.success("설문 생성 성공");
-        router.push(`/survey/${res.data.surveyID}`);
+        console.log(res.data);
+        router.push(`/survey/${res.data.surveyId}`);
       })
       .catch((err) => toast.error("설문 생성 실패"));
   };
