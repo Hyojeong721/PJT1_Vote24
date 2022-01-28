@@ -117,8 +117,8 @@ router.get("/service/:id", async (req, res) => {
     await pool.query(sqlInc, [id]);
     const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id]);
-    let result = data[0];
-    result[0].image = "http://localhost/api/serviceimage/" + result[0].attachment;
+    let result = data[0][0];
+    result.image = "http://localhost/api/serviceimage/" + result.attachment;
     logger.info("GET Service Notice Detail");
     return res.json(result);
   } catch (error) {
