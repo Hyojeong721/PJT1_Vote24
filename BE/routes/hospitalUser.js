@@ -27,8 +27,9 @@ router.post("/id/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const sql = "SELECT name, phone, logo_image FROM hospital_info WHERE id = ?";
-    const data = await pool.query(sql, [code]);
-    const result = data[0][0];
+    const data = await pool.query(sql, [id]);
+    let result = data[0][0];
+    result.image = "http://localhost/api/logoimage/" + result.logo_image;
     logger.info("POST /id/:id");
     return res.json(result);
   } catch (error) {
