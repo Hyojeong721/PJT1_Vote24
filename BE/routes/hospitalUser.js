@@ -98,20 +98,19 @@ router.post("/login", async (req, res) => {
     const sql = `SELECT 
                     id, 
                     email, 
-                    password
+                    password,
                     name,
                     code FROM hospital_info WHERE email=?`;
     const data = await pool.query(sql, [email]);
+    if (!data[0][0]) {
+      logger.error("POST HospitalUser Login Fail : No exist ID");
+      return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
+    }
     const UserId = data[0][0].id;
     const code = data[0][0].code;
     const name = data[0][0].name; // name 추가
     const hashedPassword = await hashPassword(data[0][0].password);
     const compareResult = await comparePassword(password, hashedPassword);
-
-    if (!data[0][0]) {
-      logger.error("POST HospitalUser Login Fail : No exist ID");
-      return res.json({ result: "인증키 발급실패 : 존재하지 않는 아이디 입니다." });
-    }
 
     if (!compareResult) {
       logger.error("POST HospitalUser Login Fail : No exit Password");
