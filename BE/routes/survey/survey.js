@@ -47,10 +47,10 @@ router.post("/survey/:hospital_id", async (req, res) => {
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
         const option_yes_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, `그렇다.`, 0);";
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, '그렇다.', 0);";
         await pool.query(option_yes_sql, [questionID]);
         const option_no_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, `아니다.`, 0);";
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, '아니다.', 0);";
         await pool.query(option_no_sql, [questionID]);
       }
       for (j = 0; j < question[i].option.length; j++) {
@@ -114,10 +114,10 @@ router.put("/survey/:id", async (req, res) => {
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
         const option_yes_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, `그렇다.`, 0);";
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, '그렇다.', 0);";
         await pool.query(option_yes_sql, [questionID]);
         const option_no_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, `아니다.`, 0);";
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, '아니다.', 0);";
         await pool.query(option_no_sql, [questionID]);
       }
       for (j = 0; j < question[i].option.length; j++) {
