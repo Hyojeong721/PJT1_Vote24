@@ -111,6 +111,15 @@ router.put("/survey/:id", async (req, res) => {
       // let questionID_data = await pool.query(LAST_INSERT_ID);
       // let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
+      if (!question[i].option) {
+        // 디폴트 처리(그렇다., 아니다.)
+        const option_yes_sql =
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, `그렇다.`, 0);";
+        await pool.query(option_yes_sql, [questionID]);
+        const option_no_sql =
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, `아니다.`, 0);";
+        await pool.query(option_no_sql, [questionID]);
+      }
       for (j = 0; j < question[i].option.length; j++) {
         option_sql = "UPDATE `option` SET `order`=?, context=?, weight=? WHERE id = ?;";
         await pool.query(option_sql, [
