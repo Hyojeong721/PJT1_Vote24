@@ -44,14 +44,16 @@ router.post("/survey/:hospital_id", async (req, res) => {
       let questionID_data = await pool.query(LAST_INSERT_ID);
       let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
+      console.log(!question[i].option);
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
         const option_yes_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, '그렇다.', 0);";
-        await pool.query(option_yes_sql, [questionID]);
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, ?, ?, ?);";
+        await pool.query(option_yes_sql, [questionID, 1, "그렇다.", 0]);
         const option_no_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, '아니다.', 0);";
-        await pool.query(option_no_sql, [questionID]);
+          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, ?, ?, ?);";
+        await pool.query(option_no_sql, [questionID, 2, "아니다.", 0]);
+        continue;
       }
       for (j = 0; j < question[i].option.length; j++) {
         let weight = 0;
@@ -113,12 +115,11 @@ router.put("/survey/:id", async (req, res) => {
       if (question[i].type == 1) continue;
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
-        const option_yes_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 1, '그렇다.', 0);";
-        await pool.query(option_yes_sql, [questionID]);
-        const option_no_sql =
-          "INSERT INTO `option` ( question_id, `order`, context, weight ) VALUES(?, 2, '아니다.', 0);";
-        await pool.query(option_no_sql, [questionID]);
+        const option_yes_sql = "UPDATE SET `option`  `order`=?, context=?, weight=? WHERE id = ?;";
+        await pool.query(option_yes_sql, [1, "그렇다.", 0, question[i].option[j].id]);
+        const option_no_sql = "UPDATE SET `option`  `order`=?, context=?, weight=? WHERE id = ?;";
+        await pool.query(option_no_sql, [2, "아니다.", 0, question[i].option[j].id]);
+        continue;
       }
       for (j = 0; j < question[i].option.length; j++) {
         option_sql = "UPDATE `option` SET `order`=?, context=?, weight=? WHERE id = ?;";
