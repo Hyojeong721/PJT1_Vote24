@@ -5,6 +5,7 @@ import BackButton from "../../../../components/BackButton";
 function NoticeDetailUser({ hId, noticeDetail }) {
   const { title, context, created_at, updated_at, views, attachment } =
     noticeDetail;
+  console.log("noticeDetail:", noticeDetail);
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
@@ -50,6 +51,7 @@ export async function getServerSideProps({ params }) {
   const nId = params.id;
   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hId}/${nId}`;
   const noticeDetail = await axios.get(NOTICE_DETAIL_URL).then((res) => {
+    console.log(res);
     return res.data;
   });
 
