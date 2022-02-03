@@ -8,7 +8,7 @@ import HospitalSatisfaction from "./HospitalSatisfaction";
 function MainOnLogin() {
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
   const { id, code, name } = userInfo;
-  console.log(userInfo);
+
   return (
     <>
       <Header title={id} subtitle={id}></Header>
