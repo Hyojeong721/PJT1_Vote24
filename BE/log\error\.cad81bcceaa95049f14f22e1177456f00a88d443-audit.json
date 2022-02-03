@@ -41,9 +41,19 @@
             "hash": "90fa7c8221c8abfdd4cc8741838ec64b"
         },
         {
-            "date": 1643177129354,
-            "name": "log/error/2022-01-26.error.log",
-            "hash": "f9e9b1e6e91eea203f1a170421c5b0b0"
+            "date": 1643245702563,
+            "name": "log\\error\\2022-01-27.error.log",
+            "hash": "e3c1440b19bbe7ae038510f2ad223308"
+        },
+        {
+            "date": 1643328593687,
+            "name": "log\\error\\2022-01-28.error.log",
+            "hash": "229e3fa49feb9bc4e6998528a4219d2b"
+        },
+        {
+            "date": 1643595532613,
+            "name": "log/error/2022-01-31.error.log",
+            "hash": "7f9e685b26c6160b1e1f362eceb4df3a"
         }
     ]
 }

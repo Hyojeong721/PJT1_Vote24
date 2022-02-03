@@ -41,9 +41,19 @@
             "hash": "cbe1b6a1cd2f8a5e1b10f1797fc37cf0"
         },
         {
-            "date": 1643177129351,
-            "name": "log/info/2022-01-26.info.log",
-            "hash": "da4e9ec04efc2e687ce4d3f524cd02a7"
+            "date": 1643245702560,
+            "name": "log\\info\\2022-01-27.info.log",
+            "hash": "3a602ebf5da624104f5f48c0ef91acfa"
+        },
+        {
+            "date": 1643328593685,
+            "name": "log\\info\\2022-01-28.info.log",
+            "hash": "89d9e947395237385503921ee352475f"
+        },
+        {
+            "date": 1643595532611,
+            "name": "log/info/2022-01-31.info.log",
+            "hash": "5a378073d878c8c4153a000952a32531"
         }
     ]
 }
