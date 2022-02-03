@@ -225,3 +225,10 @@ setItems((prevItems) => [...prevItems, ...reviews])
 - 이제 map함수 잘 쓸 수 있다.!!! 히히히
 <br>
  
+ 
+ 0223
+ - table 행 눌렀을때 링크이동 코드 작성
+ - 레이아웃 css 적용
+
+해야할일 
+-getServerSideProps vs useffect 공부
