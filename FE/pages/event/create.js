@@ -6,7 +6,7 @@ function EventCreate() {
   return (
     <div>
       <Header title="병원 이벤트 작성"></Header>
-      <div className="container">
+      <div className="container mt-3">
         <EventForm></EventForm>
       </div>
     </div>

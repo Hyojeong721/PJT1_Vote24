@@ -1,12 +1,13 @@
 import axios from "axios";
 import UserPostListItem from "../../../../components/User/UserPostListItem";
+import BackButton from "../../../../components/BackButton";
 
 function EventUser({ hId, eventList }) {
   const paintEventList = eventList.map((n, idx) => {
     return (
       <UserPostListItem
         key={idx}
-        url={`/user/${hId}/survey/${n.id}`}
+        url={`/user/${hId}/event/${n.id}`}
         idx={idx + 1}
         title={n.title}
         start_at={n.start_at}
@@ -17,7 +18,8 @@ function EventUser({ hId, eventList }) {
 
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="mt-5">
+      <header className="w-100 d-flex justify-content-center mt-3">
+        <BackButton url={`/user/${hId}`} />
         <div className="text-white fs-1">이벤트</div>
       </header>
       {paintEventList}

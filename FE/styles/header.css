@@ -2,8 +2,7 @@
   height: 150px;
 }
 
-.title {
-  padding-left: 15px;
+.header-title {
   font-size: 5rem;
   line-height: 1;
 }

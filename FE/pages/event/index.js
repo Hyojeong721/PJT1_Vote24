@@ -35,7 +35,7 @@ function HospitalEvent() {
   return (
     <div>
       <Header title="병원 이벤트"></Header>
-      <div className="container">
+      <div className="container mt-3">
         <EventList dataList={currentPosts} />
 
         <Paging
