@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Logo from "../public/logo.png";
 
 function Footer() {
@@ -13,20 +14,16 @@ function Footer() {
           <h5>About Us</h5>
           <ul className="list-unstyled text-small">
             <li className="mb-1">
-              <a
-                className="link-secondary text-decoration-none"
-                href="/service/info"
-              >
-                Vote 24 소개
-              </a>
+              <Link href="/service/info" passHref>
+                <a className="link-secondary text-decoration-none">
+                  Vote 24 소개
+                </a>
+              </Link>
             </li>
             <li className="mb-1">
-              <a
-                className="link-secondary text-decoration-none"
-                href="/service/info"
-              >
-                이용약관
-              </a>
+              <Link href="/service/info" passHref>
+                <a className="link-secondary text-decoration-none">이용약관</a>
+              </Link>
             </li>
           </ul>
         </div>

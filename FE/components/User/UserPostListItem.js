@@ -2,7 +2,7 @@ import Link from "next/link";
 
 function UserPostListItem({ url, idx, title, fixed, start_at, end_at }) {
   return (
-    <Link href={url}>
+    <Link href={url} passHref>
       <button className="w-75 user-survey-list-item btn d-flex justify-content-between align-items-center mt-3">
         <div className="fs-5">
           {idx}. {title}

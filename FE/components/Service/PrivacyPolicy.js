@@ -3,15 +3,14 @@ import React from "react";
 function PrivacyPolicy() {
   return (
     <div className="content">
-      <script src="//asset.moaform.com/assets/statics/terms-d67c24096f56fdafb40d9875925b5c31431812d59959b1376aa08b5bb3f5925c.js"></script>
       <p>
         <strong>제1조(개인정보의 처리 목적)</strong>
       </p>
       <p>
         주식회사 꿈네트웍스(이하 &ldquo;회사&rdquo;)가 만들고 서비스 하는
-        모아폼(&lsquo;www.moaform.com', 이하 &ldquo;서비스&rdquo;)은 다음의
-        목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는
-        이용하지 않습니다.
+        모아폼(&lsquo;www.moaform.com&lsquo;, 이하 &ldquo;서비스&rdquo;)은
+        다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의
+        용도로는 이용하지 않습니다.
       </p>
       <ol>
         <li>

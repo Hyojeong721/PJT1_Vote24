@@ -33,6 +33,15 @@ const logger = winston.createLogger({
             maxFiles: 30,
             zippedArchive: true,
         }),
+
+        new winstonDaily({
+            level: 'login',
+            datePattern: 'YYYY-MM-DD',
+            dirname: logDir + '/login',
+            filename: '%DATE%.login.log',
+            maxFiles: 30,
+            zippedArchive:true,
+        })
     ],
 });
 

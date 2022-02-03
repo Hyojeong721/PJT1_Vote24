@@ -26,7 +26,7 @@ const NoticeDetailItem = () => {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, NOTICE_DETAIL_URL]);
 
   return (
     <div className="post-detail">

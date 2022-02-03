@@ -30,7 +30,7 @@ function EventDetailUser({ hId, eventDetail }) {
       <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
         <div>{context}</div>
       </div>
-      <Link href={`/user/${hId}/event`}>
+      <Link href={`/user/${hId}/event`} passHref>
         <button
           type="button"
           className=" text-white btn user-detail-to-list-button m-3"
@@ -38,12 +38,12 @@ function EventDetailUser({ hId, eventDetail }) {
           목록
         </button>
       </Link>
-      <Link href={`/user/${hId}/event/`}>
+      <Link href={`/user/${hId}/event/`} passHref>
         <div className="w-75 p-1 border-bottom border-top d-flex flex-column justify-content-center align-items-center">
           <div>이전글</div>
         </div>
       </Link>
-      <Link href={`/user/${hId}/event/`}>
+      <Link href={`/user/${hId}/event/`} passHref>
         <div className="w-75 p-1 border-bottom d-flex flex-column justify-content-center align-items-center">
           <div>다음글</div>
         </div>
