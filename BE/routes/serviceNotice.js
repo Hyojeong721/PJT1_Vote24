@@ -6,6 +6,7 @@ const { pool } = require("../utils/mysql");
 const { logger } = require("../utils/winston");
 const { service_upload } = require("../utils/multer");
 const { nameParser } = require("../utils/nameParser");
+const { verifyToken } = require("../utils/jwt");
 
 const router = express.Router();
 
@@ -15,7 +16,9 @@ const router = express.Router();
  *----------------------------------------------------------------------*/
 router.post("/service", service_upload.single("service_notice_image"), async (req, res) => {
   const { title, context, fixed, attachment } = req.body;
-
+  verifyToken(req, res, () => {
+    console.log("인증");
+  });
   const rename =
     new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
     attachment;

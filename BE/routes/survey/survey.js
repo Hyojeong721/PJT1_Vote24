@@ -322,10 +322,8 @@ router.get("/survey/:id", async (req, res) => {
 router.get("/survey/list/:hospital_id", async (req, res) => {
   try {
     const hospital_id = req.params.hospital_id;
-    // const { page } = req.query;
     const sql = `SELECT * FROM hospital_survey WHERE hospital_id=?;`;
     const data = await pool.query(sql, [hospital_id]);
-    // const result = data[0].slice((page - 1) * 10, page * 10);
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
@@ -345,10 +343,8 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
   try {
     const hospital_id = req.params.hospital_id;
     const category = req.params.category;
-    // const { page } = req.query;
     const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=?;`;
     const data = await pool.query(sql, [hospital_id, category]);
-    // const result = data[0].slice((page - 1) * 10, page * 10);
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
@@ -358,6 +354,34 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
     return res.json(result);
   } catch (error) {
     logger.error("GET /select Error" + error);
+    return res.json(error);
+  }
+});
+
+// survey result
+router.post("/survey/result/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { qustions, score } = req.body;
+    const survey_sql = `UPDATE hospital_survey SET count = count+1 WHERE id = ?;`;
+    await pool.query(survey_sql, [id]);
+
+    for (i = 0; i < qustions.length; i++) {
+      if (qustions[i].select) {
+        const sql = "UPDATE `option` SET count = count+1 WHERE id = ?;";
+        await pool.query(sql, [qustions[i].select]);
+      } else {
+        const sql = "INSERT INTO subjective_answer (question_id, answer) VALUES (?, ?);";
+        await pool.query(sql, [qustions[i].id, qustions[i].answer]);
+      }
+    }
+    const score_sql = "INSERT INTO score_sum (survey_id, score_sum) VALUES (?, ?);";
+    await pool.query(score_sql, [id, score]);
+
+    logger.info("[INFO] POST /survey/result/:id");
+    return res.json({ result: "ok" });
+  } catch (error) {
+    logger.error("POST /result Error" + error);
     return res.json(error);
   }
 });
