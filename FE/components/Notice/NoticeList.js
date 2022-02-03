@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
-import Link from "next/link";
 
 const NoticeList = ({ dataList }) => {
   const [CheckList, setCheckList] = useState([]);
@@ -46,9 +45,9 @@ const NoticeList = ({ dataList }) => {
             />
             {headersName.map((item, index) => {
               return (
-                <td className="table-header-column" key={index}>
+                <th className="table-header-column" key={index}>
                   {item}
-                </td>
+                </th>
               );
             })}
           </tr>
@@ -63,12 +62,19 @@ const NoticeList = ({ dataList }) => {
                       onChange={(e) => onChangeEach(e, item.id)}
                       checked={CheckList.includes(item.id)}
                     ></input>
-                    <TableColumn>{item.id}</TableColumn>
-                    <TableColumn>{DateForm(item.created_at)}</TableColumn>
-                    <TableColumn>
-                      <Link href={`/notice/${item.id}`}>{item.title}</Link>
-                    </TableColumn>
-                    <TableColumn>{item.views}</TableColumn>
+                    <TableColumn content={item.id} id={item.id}></TableColumn>
+                    <TableColumn
+                      content={DateForm(item.created_at)}
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={item.title}
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={item.views}
+                      id={item.id}
+                    ></TableColumn>
                   </TableRow>
                 );
               })

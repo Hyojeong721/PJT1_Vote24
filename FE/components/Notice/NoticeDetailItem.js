@@ -6,6 +6,7 @@ import DateForm from "../DateForm";
 
 const NoticeDetailItem = () => {
   const [data, setData] = useState([]);
+
   // 게시글 id 찾기
   const router = useRouter();
   const { id } = router.query;
@@ -19,8 +20,7 @@ const NoticeDetailItem = () => {
     // 게시글 내용 받아오기
     const getPost = async () => {
       const res = await axios.get(NOTICE_DETAIL_URL);
-      const data = res.data[0];
-      console.log("data", data);
+      const data = res.data;
       setData(data);
     };
     if (id) {
@@ -37,7 +37,7 @@ const NoticeDetailItem = () => {
         <hr></hr>
         <div className="detail-info">
           <p>
-            작성자 : 관리자 | 작성일 : {DateForm(data.created_at)} | 조회수 :{" "}
+            작성자 : 관리자 | 작성일 : {DateForm(data.created_at)} | 조회수 :
             {data.views}
           </p>
         </div>
