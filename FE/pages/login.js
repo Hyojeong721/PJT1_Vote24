@@ -20,7 +20,7 @@ function Login() {
       toast.warning("이미 로그인 된 사용자입니다.");
       router.push("/");
     }
-  }, []);
+  }, [isLoggedIn, router]);
 
   const onSubmit = async (data) => {
     await axios

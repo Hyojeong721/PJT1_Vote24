@@ -7,6 +7,7 @@ import axios from "axios";
 import QuestionChoice from "./QuestionChoice";
 import QuestionEssay from "./QuestionEssay";
 import { toast } from "react-toastify";
+import parseInput from "./ParseInput";
 
 function SurveyCreateForm() {
   const router = useRouter();
@@ -18,13 +19,6 @@ function SurveyCreateForm() {
   const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
   const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      toast("로그인이 필요합니다!");
-      router.push("/login");
-    }
-  }, []);
-
   const {
     register,
     unregister,
@@ -32,67 +26,15 @@ function SurveyCreateForm() {
     handleSubmit,
   } = useForm();
 
-  const parseInput = (data) => {
-    const bList = [];
-    const qList = [];
-    const oList = {};
-    let qIndex = 1;
-    let oIndex = 1;
-    for (let key of Object.keys(data).sort()) {
-      switch (key[0]) {
-        // header case
-        // A == option // B == option score // C == benchmark // D == bench output
-        // QC == q choice // QE == q essay
-        case "A":
-          const [qName, oId] = key.split("-");
-          const qId = qName.slice(1);
-          const option = {
-            order: oIndex,
-            context: data[key],
-            weight: data[key.replace("A", "B")],
-          };
-          if (oList[qId]) {
-            oList[qId].push(option);
-          } else {
-            oList[qId] = [option];
-          }
-
-          oIndex++;
-          break;
-        case "C":
-          bList.push({
-            benchmark: data[key],
-            output_text: data[key.replace("C", "D")],
-          });
-          break;
-        case "Q":
-          const question = {
-            order: qIndex,
-            context: data[key],
-          };
-          if (key.slice(-1) === "E") {
-            qList.push({
-              ...question,
-              type: "1",
-            });
-          } else {
-            qList.push({
-              ...question,
-              type: "0",
-              option: oList[key.slice(1)],
-            });
-          }
-          qIndex++;
-          break;
-        default:
-          break;
-      }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast("로그인이 필요합니다!");
+      router.push("/login");
     }
-
-    return { qList, bList };
-  };
+  }, [isLoggedIn, router]);
 
   const onSubmit = async (data) => {
+    console.log(data);
     const { qList, bList } = parseInput(data);
     const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
@@ -135,8 +77,8 @@ function SurveyCreateForm() {
 
   const handleQuestionDelete = (inputId) => {
     setQuestions(questions.filter((q) => q.id !== inputId));
-    unregister(`QC${inputId}`);
-    unregister(`QE${inputId}`);
+    unregister(`Q${inputId}`);
+    unregister(`Q${inputId}E`);
     setQCnt((state) => state + 1);
   };
 
@@ -349,11 +291,10 @@ function SurveyCreateForm() {
       </div>
 
       <div className="w-100 d-flex mt-5">
-        <Link href={`/survey`}>
-          <button className="btn btn-secondary">취소</button>
+        <Link href={`/survey`} passHref>
+          <a className="btn btn-secondary">취소</a>
         </Link>
         <button
-          type="button"
           onClick={handleSubmit(onSubmit)}
           className="submit-button btn btn-primary position-absolute start-50 translate-middle"
         >

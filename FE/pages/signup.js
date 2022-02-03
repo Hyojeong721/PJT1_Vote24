@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
@@ -13,7 +14,8 @@ const EMAIL_CHECK = "http://i6a205.p.ssafy.io:8000/api/emailCheck";
 const BN_CHECK = "http://i6a205.p.ssafy.io:8000/api/bnNumberCheck";
 
 function Signup() {
-  const [imgBase64, setImgBase64] = useState([]);
+  const [imgBase64, setImgBase64] = useState("");
+  const [imageSelected, setImageSelected] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [bnChecked, setBnChecked] = useState(false);
   const router = useRouter();
@@ -24,7 +26,7 @@ function Signup() {
       toast.warning("이미 로그인 된 사용자입니다.");
       router.push("/");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router]);
 
   const schema = yup.object().shape({
     email: yup.string().email().required("이메일 입력은 필수입니다."),
@@ -67,6 +69,7 @@ function Signup() {
 
   const onFileChange = (e) => {
     const value = e.target.files[0];
+    setImageSelected(true);
 
     if (value) {
       let reader = new FileReader();
@@ -353,7 +356,14 @@ function Signup() {
 
           <div className="w-75 d-flex justify-content-center mt-2">
             미리보기
-            <img className="mw-100 border m-2" src={imgBase64} alt="" />
+            {/* <Image
+              className="mw-100 m-2"
+              src={imageSelected ? imgBase64 : "/notLoaded"}
+              alt=""
+              width="200px"
+              height="300px"
+              objectFit="contain"
+            /> */}
           </div>
 
           <div className="d-flex justify-content-center mt-5">

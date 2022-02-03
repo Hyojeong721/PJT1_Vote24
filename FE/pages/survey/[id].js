@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import DateForm from "../../components/DateForm";
 import QuestionList from "../../components/Survey/QuestionList";
@@ -23,7 +22,7 @@ const SurveyDetail = () => {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, SURVEY_DETAIL_URL]);
 
   return (
     <div className="post-detail">

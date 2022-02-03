@@ -23,7 +23,7 @@ function Service() {
       setDataList(res.data);
     };
     getList();
-  }, []);
+  }, [SURVEY_SERVICE_URL]);
 
   return (
     <div>
