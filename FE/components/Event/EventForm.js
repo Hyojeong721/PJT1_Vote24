@@ -130,7 +130,7 @@ const EventForm = () => {
         ></FileInput>
 
         <div>
-          <Link href="/event/">
+          <Link href="/event/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
 

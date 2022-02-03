@@ -132,7 +132,7 @@ const NoticeForm = () => {
         ></FileInput>
 
         <div>
-          <Link href="/service/notice/">
+          <Link href="/service/notice/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
 

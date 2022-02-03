@@ -26,7 +26,7 @@ const EventDetailItem = () => {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, EVENT_DETAIL_URL]);
 
   return (
     <div className="post-detail">

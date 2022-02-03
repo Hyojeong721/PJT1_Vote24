@@ -24,7 +24,7 @@ function HospitalEvent() {
       setDataList(data);
     };
     getList();
-  }, []);
+  }, [EVENT_URL]);
 
   // 페이징 처리를 위한 계산
   const indexOfLastPost = currentPage * postsPerPage;

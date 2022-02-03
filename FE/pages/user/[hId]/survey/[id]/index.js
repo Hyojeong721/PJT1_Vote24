@@ -1,11 +1,14 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import BackButton from "../../../../components/BackButton";
+import BackButton from "../../../../../components/BackButton";
 
 function SurveyDetailUser({ hId, sId, surveyDetail }) {
-  const { title, context, start_at, end_at, question, category } = surveyDetail;
-  console.log(question);
+  const SURVEY_SUBMIT_URL = `http://i6a205.p.ssafy.io:8000/api/survey/result/${sId}`;
+  const { title, context, start_at, end_at, question, category, output_link } =
+    surveyDetail;
   const categoryName = category === 0 ? "health" : "service";
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -56,15 +59,12 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
     );
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-
+  const onSubmit = async (data) => {
     const questions = [];
     let score = 0;
     for (let key of Object.keys(data)) {
       if (key.slice(0, 2) === "QC") {
         const [optionId, weight] = data[key].split("-");
-        console.log(data[key].split("-"));
         questions.push({ id: key.slice(2), type: "0", select: optionId });
         score += parseInt(weight);
       } else {
@@ -73,7 +73,20 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
     }
 
     const result = { questions, score };
-    console.log("result", result);
+
+    // await axios.post(SURVEY_SUBMIT_URL, result).then((res) => {
+    //   console.log(res);
+    //   // router.push(`/user/${hId}/survey/${sId}/result`);
+    //   router.push({
+    //     pathname: `/user/${hId}/survey/${sId}/result`,
+    //     query: { score: score },
+    //   });
+    // });
+
+    router.push({
+      pathname: `/user/${hId}/survey/${sId}/result`,
+      query: { score },
+    });
   };
 
   return (

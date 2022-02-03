@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 
 import Navbar from "../components/Navbar/Navbar";
 import NavbarUser from "../components/Navbar/NavbarUser";
@@ -50,6 +51,11 @@ function MyApp({ Component, pageProps }) {
         <Footer />
         <ToastContainer autoClose={3000} />
       </div>
+      <Script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossOrigin="anonymous"
+      ></Script>
     </PersistGate>
   );
 }

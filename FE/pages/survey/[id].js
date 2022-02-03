@@ -22,7 +22,7 @@ const SurveyDetail = () => {
     if (id) {
       getPost();
     }
-  }, [id]);
+  }, [id, SURVEY_DETAIL_URL]);
 
   return (
     <div className="post-detail">

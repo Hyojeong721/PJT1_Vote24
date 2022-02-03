@@ -7,7 +7,7 @@ function Survey() {
     <div>
       <Header title="병원 설문조사 목록"></Header>
       <div className="container mt-3">
-        <Link href="/survey/health">
+        <Link href="/survey/health" passHref>
           <div className="card mb-2">
             <div className="card-body">
               <h3 className="card-title">건강설문</h3>
@@ -18,7 +18,7 @@ function Survey() {
             </div>
           </div>
         </Link>
-        <Link href="/survey/service">
+        <Link href="/survey/service" passHref>
           <div className="card">
             <div className="card-body">
               <h3 className="card-title">만족도 조사</h3>
@@ -30,7 +30,7 @@ function Survey() {
           </div>
         </Link>
         <div className="w-100 d-flex flex-row-reverse mt-3">
-          <Link href="/survey/create">
+          <Link href="/survey/create" passHref>
             <button className="btn btn-primary">설문 생성</button>
           </Link>
         </div>

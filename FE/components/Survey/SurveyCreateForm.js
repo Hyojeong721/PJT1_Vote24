@@ -31,7 +31,7 @@ function SurveyCreateForm() {
       toast("로그인이 필요합니다!");
       router.push("/login");
     }
-  }, []);
+  }, [isLoggedIn, router]);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -291,11 +291,10 @@ function SurveyCreateForm() {
       </div>
 
       <div className="w-100 d-flex mt-5">
-        <Link href={`/survey`}>
-          <button className="btn btn-secondary">취소</button>
+        <Link href={`/survey`} passHref>
+          <a className="btn btn-secondary">취소</a>
         </Link>
         <button
-          type="button"
           onClick={handleSubmit(onSubmit)}
           className="submit-button btn btn-primary position-absolute start-50 translate-middle"
         >
