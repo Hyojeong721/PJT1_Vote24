@@ -2,6 +2,7 @@
 const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
+const helmet = require("helmet");
 
 // Utils Function Import
 const { pool } = require("./utils/mysql");
@@ -16,6 +17,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cors());
 server.use("/", routes);
+server.use(helmet());
 
 server.listen(PORT, function () {
   logger.info(`Server listening on port ${PORT}`);

@@ -5,6 +5,7 @@ const { pool } = require("../utils/mysql");
 const { logger } = require("../utils/winston");
 const { event_upload } = require("../utils/multer");
 const { nameParser } = require("../utils/nameParser");
+const { verifyToken } = require("../utils/jwt");
 
 const router = express.Router();
 
