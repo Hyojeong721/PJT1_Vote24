@@ -125,6 +125,7 @@ function Signup() {
         },
       })
       .then((res) => {
+        console.log(res.data);
         toast.success("서비스 신청 완료!");
         router.push("/");
       })
@@ -172,7 +173,10 @@ function Signup() {
     <>
       <Header title="서비스 신청"></Header>
       <div className="container d-flex justify-content-center">
-        <form className="form-box d-flex flex-column">
+        <form
+          className="form-box d-flex flex-column"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div>
             <div className="d-flex justify-content-between">
               <div className="fw-bold">
@@ -353,11 +357,7 @@ function Signup() {
           </div>
 
           <div className="d-flex justify-content-center mt-5">
-            <button
-              type="button"
-              onClick={handleSubmit(onSubmit)}
-              className="submit-button btn btn-primary"
-            >
+            <button type="submit" className="submit-button btn btn-primary">
               서비스 신청
             </button>
           </div>

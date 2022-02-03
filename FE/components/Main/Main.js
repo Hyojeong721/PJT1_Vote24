@@ -16,6 +16,7 @@ function Main() {
     const codeToId_URL = `http://i6a205.p.ssafy.io:8000/api/code/${inputCode}`;
     await axios.get(codeToId_URL).then((res) => {
       const { id } = res.data;
+      console.log(res.data);
       router.push(`/user/${id}`);
     });
   };

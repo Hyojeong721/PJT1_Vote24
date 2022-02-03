@@ -27,6 +27,7 @@ function Login() {
       .post(LOGIN_URL, data)
       .then((res) => {
         const { result, id, code, name, token } = res.data;
+        console.log(res.data);
 
         if (result !== "ok") {
           const reason = result.split(":");

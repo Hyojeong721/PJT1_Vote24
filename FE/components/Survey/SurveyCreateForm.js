@@ -38,7 +38,6 @@ function SurveyCreateForm() {
     const oList = {};
     let qIndex = 1;
     let oIndex = 1;
-    console.log(data);
     for (let key of Object.keys(data).sort()) {
       switch (key[0]) {
         // header case
@@ -110,10 +109,13 @@ function SurveyCreateForm() {
     await axios
       .post(SURVEY_URL, result)
       .then((res) => {
+        console.log(res.data);
         toast.success("설문 생성 성공");
-        router.push(`/survey/${res.data.surveyID}`);
+        // router.push(`/survey/${res.data.surveyID}`);
       })
-      .catch((err) => toast.error("설문 생성 실패"));
+      .catch((err) => {
+        toast.error("설문 생성 실패");
+      });
   };
 
   const handleQuestionChoiceAdd = () => {
@@ -355,7 +357,7 @@ function SurveyCreateForm() {
           onClick={handleSubmit(onSubmit)}
           className="submit-button btn btn-primary position-absolute start-50 translate-middle"
         >
-          서비스 신청
+          설문 생성
         </button>
       </div>
     </div>
