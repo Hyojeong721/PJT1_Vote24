@@ -1,5 +1,16 @@
+.div-table {
+  border-radius: 1em;
+  height: 700px;
+  z-index: 1;
+  position: relative;
+  border: 2px solid;
+  border-color: rgb(0 0 0 / 8%);
+  margin-top: -3rem;
+  background: #ffffff;
+}
+
 .table {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
   text-align: center;
   border-spacing: 0;
@@ -20,4 +31,10 @@
 
 .table-column {
   padding: 10px 5px;
+}
+
+.btn-table {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 1rem 2rem;
 }

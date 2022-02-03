@@ -14,14 +14,16 @@ function HospitalEvent() {
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  console.log(hospital_id);
   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
 
-  // 서버에서 이벤트 목록 받아오는 코드
+  // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
       const res = await axios.get(`${NOTICE_URL}`);
-      const data = res.data;
+      const res_data = res.data;
+      const data = res_data.reverse();
+      console.log("병원 공지 데이터", data);
+
       setDataList(data);
     };
     getList();
@@ -36,7 +38,7 @@ function HospitalEvent() {
   return (
     <div>
       <Header title="병원 공지사항"></Header>
-      <div className="container mt-3">
+      <div className="container div-table">
         <NoticeList dataList={currentPosts} />
 
         <Paging

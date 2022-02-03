@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
-import Link from "next/link";
+import NoticeButton from "./NoticeButton";
 
 const NoticeList = ({ dataList }) => {
   const [CheckList, setCheckList] = useState([]);
   const [IdList, setIdList] = useState([]);
-  const headersName = ["글번호", "생성일", "제목", "조회수"];
+  const headersName = ["번호", "제목", "생성일", "조회수"];
 
   useEffect(() => {
     let ids = [];
@@ -36,19 +36,22 @@ const NoticeList = ({ dataList }) => {
   };
   return (
     <div>
+      <NoticeButton></NoticeButton>
       <table className="table">
         <thead>
           <tr>
-            <input
-              type="checkbox"
-              onChange={onChangeAll}
-              checked={CheckList.length === IdList.length}
-            />
+            <th className="table-header-column">
+              <input
+                type="checkbox"
+                onChange={onChangeAll}
+                checked={CheckList.length === IdList.length}
+              />
+            </th>
             {headersName.map((item, index) => {
               return (
-                <td className="table-header-column" key={index}>
+                <th className="table-header-column" key={index}>
                   {item}
-                </td>
+                </th>
               );
             })}
           </tr>
@@ -58,17 +61,27 @@ const NoticeList = ({ dataList }) => {
             ? dataList.map((item) => {
                 return (
                   <TableRow key={item.id}>
-                    <input
-                      type="checkbox"
-                      onChange={(e) => onChangeEach(e, item.id)}
-                      checked={CheckList.includes(item.id)}
-                    ></input>
-                    <TableColumn>{item.id}</TableColumn>
-                    <TableColumn>{DateForm(item.created_at)}</TableColumn>
-                    <TableColumn>
-                      <Link href={`/notice/${item.id}`}>{item.title}</Link>
-                    </TableColumn>
-                    <TableColumn>{item.views}</TableColumn>
+                    <td className="table-column">
+                      <input
+                        type="checkbox"
+                        onChange={(e) => onChangeEach(e, item.id)}
+                        checked={CheckList.includes(item.id)}
+                      ></input>
+                    </td>
+
+                    <TableColumn content={item.id} id={item.id}></TableColumn>
+                    <TableColumn
+                      content={item.title}
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={DateForm(item.created_at)}
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={item.views}
+                      id={item.id}
+                    ></TableColumn>
                   </TableRow>
                 );
               })
