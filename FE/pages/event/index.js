@@ -9,18 +9,24 @@ function HospitalEvent() {
   const [dataList, setDataList] = useState([]);
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(3);
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  // const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/1`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
 
   // 서버에서 이벤트 목록 받아오는 코드
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+
     const getList = async () => {
-      const res = await axios.get(`${EVENT_URL}`);
-      const data = res.data;
+      const res = await axios.get(`${EVENT_URL}`, {
+        headers: {
+          authorization: jwt,
+        },
+      });
+      const ex_data = res.data;
+      const data = ex_data.reverse();
       setDataList(data);
     };
     getList();
@@ -36,7 +42,7 @@ function HospitalEvent() {
     <div>
       <Header title="병원 이벤트"></Header>
       <div className="container mt-3">
-        <EventList dataList={currentPosts} />
+        <EventList dataList={currentPosts} EVENT_URL={EVENT_URL} />
 
         <Paging
           postsPerPage={postsPerPage}
