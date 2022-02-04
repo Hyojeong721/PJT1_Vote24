@@ -47,9 +47,14 @@ function SurveyCreateForm() {
       question: qList,
       benchmark: bList,
     };
-    console.log(result);
+    const jwt = await localStorage.getItem("jwt");
+
     await axios
-      .post(SURVEY_URL, result)
+      .post(SURVEY_URL, result, {
+        headers: {
+          authorization: jwt,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         toast.success("설문 생성 성공");
@@ -93,7 +98,12 @@ function SurveyCreateForm() {
     return (
       <div key={q.id} className="d-flex align-items-start">
         {q.type === "1" ? (
-          <QuestionChoice unregister={unregister} register={register} q={q} />
+          <QuestionChoice
+            unregister={unregister}
+            register={register}
+            q={q}
+            category={nowCategory}
+          />
         ) : (
           <QuestionEssay unregister={unregister} register={register} q={q} />
         )}
