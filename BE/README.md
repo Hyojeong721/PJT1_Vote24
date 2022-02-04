@@ -1,5 +1,5 @@
 Copy this command for install all dependency Package; 
-` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt helmet`
+` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt helmet crypto`
 
 #[2022/01/17]
 * 서버 오픈
