@@ -3,6 +3,11 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import DateForm from "../DateForm";
+import Prev from "../Prev";
+import Next from "../Next";
+import cn from "classnames";
+import content from "../../styles/detail.module.css";
+import Link from "next/link";
 
 const NoticeDetailItem = () => {
   const [data, setData] = useState([]);
@@ -21,6 +26,7 @@ const NoticeDetailItem = () => {
     const getPost = async () => {
       const res = await axios.get(NOTICE_DETAIL_URL);
       const data = res.data;
+      console.log(data);
       setData(data);
     };
     if (id) {
@@ -29,29 +35,36 @@ const NoticeDetailItem = () => {
   }, [id, NOTICE_DETAIL_URL]);
 
   return (
-    <div className="post-detail">
-      <div className="post-detail-header">
-        <h2 className="detail-title">
-          <div>제목 : {data.title}</div>
+    <div className={cn(content.content)}>
+      <div className={cn(content.contentHeader)}>
+        <h2 className={cn(content.title)}>
+          <div>{data.title}</div>
         </h2>
-        <hr></hr>
-        <div className="detail-info">
-          <p>
-            작성자 : 관리자 | 작성일 : {DateForm(data.created_at)} | 조회수 :
-            {data.views}
-          </p>
+
+        <div className={cn(content.contentInfo)}>
+          <span className={cn(content.item)}>관리자</span>
+          <span className={cn(content.item)}> | </span>
+          <span className={cn(content.item)}>{DateForm(data.created_at)}</span>
+          <span className={cn(content.item)}> | </span>
+          <span className={cn(content.item)}>조회수 : {data.views} </span>
         </div>
       </div>
-      <div className="post-detail-body">
-        <div>
-          {/* 수정사항 첨부파일 있을때만 보이게 만들기  */}
-          {/* <div className="detail-file">첨부파일
-          {data.event_img}</div> */}
-        </div>
-        <hr></hr>
-        <div className="detail-context">내용 : {data.context}</div>
+      <div className={cn(content.contentBody)}>{data.context}</div>
+      <div>
+        <Link href="/notice">
+          <button
+            type="button"
+            className={cn(content.contenBtnList, "btn btn-primary btn-round")}
+          >
+            목록
+          </button>
+        </Link>
       </div>
-      <hr></hr>
+      <ul className={cn(content.contentNav)}>
+        {/* <Prev id={data.prev_id} title={data.prev_title}></Prev> */}
+
+        <Next></Next>
+      </ul>
     </div>
   );
 };

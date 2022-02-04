@@ -4,6 +4,8 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import cn from "classnames";
+import cs from "../../styles/noticecreate.module.css";
 
 const NoticeForm = () => {
   const [values, setValues] = useState({
@@ -17,7 +19,6 @@ const NoticeForm = () => {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
-  //   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/1`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -82,73 +83,73 @@ const NoticeForm = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            제목
+    <form onSubmit={handleSubmit} className={cn(cs.noticeCreate)}>
+      <div>
+        <p>
+          <label className="form-label">
+            <input
+              type="checkbox"
+              name="fixed"
+              value="1"
+              id="input_check"
+              onChange={handleCheckChange}
+            />
+            고정공지
           </label>
+        </p>
+      </div>
+      <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
+        <div className={cn(cs.formLabel)}>
+          <label htmlFor="title">제목</label>
+        </div>
+        <div className={cn(cs.formControl)}>
           <input
-            className="form-control"
+            className={cn(cs.input)}
             name="title"
             value={values.title}
             onChange={handleInputChange}
             id="title"
           ></input>
         </div>
-        <hr></hr>
-        <div>
-          <p>
-            <label className="form-label">
-              <input
-                type="checkbox"
-                name="fixed"
-                value="1"
-                id="input_check"
-                onChange={handleCheckChange}
-              />
-              고정공지
-            </label>
-          </p>
+      </div>
+
+      <div className={cn(cs.formRow, "d-flex")}>
+        <div className={cn(cs.formLabel)}>
+          <label htmlFor="context">내용</label>
         </div>
 
-        <hr></hr>
-        <div className="mb-3">
-          <label htmlFor="context" className="form-label">
-            내용
-          </label>
+        <div className={cn(cs.formControl)}>
           <textarea
-            className="form-control"
+            className={cn(cs.textarea)}
             name="context"
             value={values.context}
             onChange={handleInputChange}
             id="context"
-            rows="5"
           ></textarea>
         </div>
+      </div>
 
+      <div className={cn(cs.formRow)}>
         <FileInput
           name="imgFile"
           value={values.imgFile}
           onChange={handleChange}
         ></FileInput>
+      </div>
 
-        <div>
+      <div className={cn(cs.btns, "d-flex")}>
+        <div className={cn(cs.btn)}>
           <Link href="/notice/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
-
-          <button type="submit" className="btn btn-secondary">
-            작성완료
-          </button>
-
-          {/* <button type="submit" className="btn btn-primary">
-            작성 완료
-          </button>
-          <Link href={`${NOTICE_URL}/${post_id}`}></Link> */}
         </div>
-      </form>
-    </div>
+        <div className={cn(cs.btn)}>
+          <button type="submit" className="btn btn-primary">
+            등록
+          </button>
+        </div>
+      </div>
+    </form>
   );
 };
 

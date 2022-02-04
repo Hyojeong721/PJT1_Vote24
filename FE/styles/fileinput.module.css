@@ -1,0 +1,21 @@
+.formRow {
+  width: 100%;
+}
+
+.formLabel {
+  width: 158px;
+  padding: 15px;
+  border-bottom: 1px solid #e3e7eb;
+  font-size: 15px;
+}
+
+.formControl {
+  width: calc(100% - 150px);
+  padding: 12px 0 12px 20px;
+  border-left: 1px solid #e3e7eb;
+  border-bottom: 1px solid #e3e7eb;
+}
+
+.delete {
+  margin: 5px 0;
+}
