@@ -126,8 +126,13 @@ router.get("/service/:id", async (req, res) => {
   try {
     const sqlInc = `UPDATE service_notice SET views = views+1 WHERE id = ?;`;
     await pool.query(sqlInc, [id]);
-    const sql = `SELECT * FROM service_notice WHERE ID = ?;`;
-    const data = await pool.query(sql, [id]);
+    const sql = `SELECT *
+    ,(SELECT id FROM service_notice WHERE id < ? ORDER BY id DESC LIMIT 1) AS prev_id
+    ,(SELECT title FROM service_notice WHERE id < ? ORDER BY id DESC LIMIT 1) AS prev_title
+    ,(SELECT id FROM service_notice WHERE id > ? ORDER BY id LIMIT 1) AS next_id
+    ,(SELECT title FROM service_notice WHERE id > ? ORDER BY id LIMIT 1) AS next_title
+    FROM service_notice WHERE ID = ?;`;
+    const data = await pool.query(sql, [id, id, id, id, id]);
     let result = data[0][0];
     result.image = "http://localhost/api/serviceimage/" + result.attachment;
     logger.info("GET Service Notice Detail");
