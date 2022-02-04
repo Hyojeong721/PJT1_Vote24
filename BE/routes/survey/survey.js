@@ -1,11 +1,12 @@
 const express = require("express");
 const { pool } = require("../../utils/mysql");
 const { logger } = require("../../utils/winston");
+const { verifyToken } = require("../../utils/jwt");
 const router = express.Router();
 
 // 설문 생성 version 1 for문 사용
 
-router.post("/survey/:hospital_id", async (req, res) => {
+router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
   const hospital_id = req.params.hospital_id;
   const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
@@ -145,7 +146,7 @@ router.post("/survey/:hospital_id", async (req, res) => {
 // });
 
 // survey update.
-router.put("/survey/:id", async (req, res) => {
+router.put("/survey/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
@@ -224,7 +225,7 @@ router.put("/survey/:id", async (req, res) => {
 });
 
 // survey delete
-router.delete("/survey/:id", async (req, res) => {
+router.delete("/survey/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
 
   try {
