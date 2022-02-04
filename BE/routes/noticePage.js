@@ -64,7 +64,7 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
       id,
     ]);
     let result = data[0][0];
-    result.image = "http://localhost/api/noticeimage/" + result.attachment;
+    result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
 
     logger.info("GET Notice Detail");
     return res.json(result);
