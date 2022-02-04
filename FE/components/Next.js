@@ -4,10 +4,13 @@ import content from "../styles/detail.module.css";
 import Link from "next/link";
 
 const Next = ({ id, title }) => {
+  console.log("next", id, title);
   return (
     <li className={cn(content.prev)}>
       <strong>다음글</strong>
-      {/* <Link href={`notice/${id}`}>{title}</Link> */}
+      <Link href={`notice/${id}`} passHref>
+        <a>{title}</a>
+      </Link>
     </li>
   );
 };

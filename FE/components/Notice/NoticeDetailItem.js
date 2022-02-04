@@ -61,9 +61,8 @@ const NoticeDetailItem = () => {
         </Link>
       </div>
       <ul className={cn(content.contentNav)}>
-        {/* <Prev id={data.prev_id} title={data.prev_title}></Prev> */}
-
-        <Next></Next>
+        <Prev id={data.prev_id} title={data.prev_title}></Prev>
+        <Next id={data.next_id} title={data.next_title}></Next>
       </ul>
     </div>
   );

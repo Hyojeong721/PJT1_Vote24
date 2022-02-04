@@ -7,8 +7,6 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-// const NOTICE_URL= "http://i6a205.p.ssafy.io:8000/api/notice";
-
 const NoticeList = ({ dataList, NOTICE_URL }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
@@ -41,9 +39,9 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
   };
+
   // 선택 삭제
   const jwt = localStorage.getItem("jwt");
-
   const handleRemove = () => {
     if (checkList.length) {
       checkList.map((noticeId) => {
@@ -117,7 +115,6 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
                         checked={checkList.includes(item.id)}
                       ></input>
                     </td>
-
                     <TableColumn content={item.id} id={item.id}></TableColumn>
                     <TableColumn
                       content={item.title}
