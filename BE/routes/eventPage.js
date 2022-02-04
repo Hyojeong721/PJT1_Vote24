@@ -47,10 +47,27 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
     const { hospital_id, id } = req.params;
     const sqlInc = `UPDATE hospital_event SET views = views+1 WHERE id = ?;`;
     await pool.query(sqlInc, [id]);
-    const sql = `select * from hospital_event where hospital_id =? and id=?`;
-    const data = await pool.query(sql, [hospital_id, id]);
+    await pool.query(sqlInc, [id]);
+    const sql = `SELECT *
+    ,(SELECT id FROM hospital_event WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_id
+    ,(SELECT title FROM hospital_event WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_title
+    ,(SELECT id FROM hospital_event WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_id
+    ,(SELECT title FROM hospital_event WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_title
+    FROM hospital_event WHERE hospital_id =? and id=?`;
+    const data = await pool.query(sql, [
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+    ]);
     let result = data[0][0];
-    result.image = "http://localhost/api/eventimage/" + result.attachment;
+    result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
 
     logger.info("GET Event Detail");
     return res.json(result);
