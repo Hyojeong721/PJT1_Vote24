@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import cn from "classnames";
+import cs from "../styles/fileinput.module.css";
 
 function FileInput({ name, value, onChange }) {
   const inputRef = useRef();
@@ -17,18 +19,26 @@ function FileInput({ name, value, onChange }) {
   };
 
   return (
-    <div>
-      <label htmlFor="formFile" className="form-label">
-        첨부파일
-      </label>
-      <input
-        className="form-control"
-        type="file"
-        id="formFile"
-        onChange={handleChange}
-        ref={inputRef}
-      ></input>
-      {value && <button onClick={handleClearClick}> X </button>}
+    <div className={cn(cs.formRow, "d-flex")}>
+      <div className={cn(cs.formLabel)}>
+        <label htmlFor="formFile" className="form-label">
+          첨부파일
+        </label>
+      </div>
+      <div className={cn(cs.formControl)}>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={handleChange}
+          ref={inputRef}
+        ></input>
+        {value && (
+          <button className={cn(cs.delete)} onClick={handleClearClick}>
+            삭제
+          </button>
+        )}
+      </div>
     </div>
   );
 }

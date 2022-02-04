@@ -49,6 +49,16 @@
             "date": 1643328593685,
             "name": "log\\info\\2022-01-28.info.log",
             "hash": "89d9e947395237385503921ee352475f"
+        },
+        {
+            "date": 1643852963577,
+            "name": "log\\info\\2022-02-03.info.log",
+            "hash": "af855771994e5ed0f002afda09859e3f"
+        },
+        {
+            "date": 1643937362953,
+            "name": "log\\info\\2022-02-04.info.log",
+            "hash": "be95f2a2d6c4ed6d650d4ea3017adf44"
         }
     ]
 }

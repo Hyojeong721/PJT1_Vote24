@@ -39,7 +39,7 @@ function HospitalEvent() {
     <div>
       <Header title="병원 공지사항"></Header>
       <div className="container div-table">
-        <NoticeList dataList={currentPosts} />
+        <NoticeList dataList={currentPosts} NOTICE_URL={NOTICE_URL} />
 
         <Paging
           postsPerPage={postsPerPage}

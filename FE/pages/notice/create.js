@@ -6,7 +6,7 @@ function NoticeCreate() {
   return (
     <div>
       <Header title="병원 공지사항 작성"></Header>
-      <div className="container mt-3">
+      <div className="container">
         <NoticeForm></NoticeForm>
       </div>
     </div>

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const helmet = require("helmet");
 
 const mainPage_userRouter = require("./mainPage");
 const eventPage_userRouter = require("./eventPage");
@@ -13,6 +14,8 @@ const subjective_answer = require("./survey/subjective_answer");
 const score_sum = require("./survey/score_sum");
 const benchmark = require("./survey/benchmark");
 const sendFile = require("./sendFile");
+
+router.use(helmet());
 
 router.use("/api", mainPage_userRouter);
 router.use("/api", eventPage_userRouter);

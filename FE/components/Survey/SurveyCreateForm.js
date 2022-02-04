@@ -91,7 +91,12 @@ function SurveyCreateForm() {
     return (
       <div key={q.id} className="d-flex align-items-start">
         {q.type === "1" ? (
-          <QuestionChoice unregister={unregister} register={register} q={q} />
+          <QuestionChoice
+            unregister={unregister}
+            register={register}
+            q={q}
+            category={nowCategory}
+          />
         ) : (
           <QuestionEssay unregister={unregister} register={register} q={q} />
         )}
