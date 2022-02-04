@@ -32,11 +32,10 @@ const NoticeForm = () => {
     }));
   };
 
-  // 작성완료 눌렀을때 서버에 보내기
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 보낼 데이터들을 fromdata에 담는 과정
+    // 보낼 데이터들을 fromdata에 담아
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -47,7 +46,6 @@ const NoticeForm = () => {
           fd.append("attachment", imgName);
         }
       } else {
-        console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
@@ -56,17 +54,19 @@ const NoticeForm = () => {
     for (let value of fd.values()) {
       console.log(value);
     }
-
+    const jwt = localStorage.getItem("jwt");
     // 서버에 보내기
     await axios
       .post(NOTICE_URL, fd, {
         headers: {
+          authorization: jwt,
           "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
-        toast("공지사항 등록 성공!");
+        // toast("공지사항 등록 성공!");
         console.log(res.data);
+        return window.location.replace(`/notice/${res.data.id}`);
       })
       .catch((err) => {
         toast.error("공지사항 등록 실패!");
@@ -112,7 +112,6 @@ const NoticeForm = () => {
           ></input>
         </div>
       </div>
-
       <div className={cn(cs.formRow, "d-flex")}>
         <div className={cn(cs.formLabel)}>
           <label htmlFor="context">내용</label>
@@ -128,7 +127,6 @@ const NoticeForm = () => {
           ></textarea>
         </div>
       </div>
-
       <div className={cn(cs.formRow)}>
         <FileInput
           name="imgFile"

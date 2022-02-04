@@ -4,7 +4,9 @@ import Link from "next/link";
 const TableColumn = ({ content, id }) => {
   return (
     <td className="table-column">
-      <a href={`/notice/${id}`}>{content}</a>
+      <Link href={`notice/${id}`} passHref>
+        <a>{content}</a>
+      </Link>
     </td>
   );
 };

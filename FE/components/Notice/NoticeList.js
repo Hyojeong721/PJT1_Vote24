@@ -107,7 +107,7 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
           {list
             ? list.map((item) => {
                 return (
-                  <TableRow key={item.id}>
+                  <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"

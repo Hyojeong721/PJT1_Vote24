@@ -7,7 +7,7 @@ const Next = ({ id, title }) => {
   return (
     <li className={cn(content.prev)}>
       <strong>다음글</strong>
-      <Link href={`notice/${id}`} passHref>
+      <Link href={`notice/`} as={`${id}`} passHref>
         <a>{title}</a>
       </Link>
     </li>

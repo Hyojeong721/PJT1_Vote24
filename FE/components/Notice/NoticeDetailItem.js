@@ -49,7 +49,11 @@ const NoticeDetailItem = () => {
           <span className={cn(content.item)}>조회수 : {data.views} </span>
         </div>
       </div>
-      <div className={cn(content.contentBody)}>{data.context}</div>
+      <div className={cn(content.contentBody)}>
+        <div>{data.attachment}</div>
+        <div>{data.image}</div>
+        <div>{data.context}</div>
+      </div>
       <div>
         <Link href="/notice">
           <button
