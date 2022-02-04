@@ -1,6 +1,7 @@
 const express = require("express");
 const { pool } = require("../../utils/mysql");
 const { logger } = require("../../utils/winston");
+const { verifyToken } = require("../../utils/jwt");
 const router = express.Router();
 
 // benchmark write.
@@ -69,10 +70,13 @@ router.get("/benchmark/list/:survey_id", async (req, res) => {
   try {
     const survey_id = req.params.survey_id;
     // const { page } = req.query;
-    const sql = `SELECT * FROM benchmark WHERE survey_id=?;`;
-    const data = await pool.query(sql, [survey_id]);
+    const output_link_sql = "SELECT id, title, output_link FROM hospital_survey WHERE id=?";
+    const output_link_data = await pool.query(output_link_sql, [survey_id]);
+    const benchmark_sql = `SELECT * FROM benchmark WHERE survey_id=?;`;
+    const benchmark_data = await pool.query(benchmark_sql, [survey_id]);
     // const result = data[0].slice((page - 1) * 10, page * 10);
-    const result = data[0];
+    let result = output_link_data[0][0];
+    result.benchmark = benchmark_data[0];
     logger.info("[INFO] GET /benchmark/list");
     return res.json(result);
   } catch (error) {
