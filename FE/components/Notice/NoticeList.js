@@ -2,16 +2,23 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
-import NoticeButton from "./NoticeButton";
+import axios from "axios";
+import Link from "next/link";
+import cn from "classnames";
+import listbtn from "../../styles/listbtn.module.css";
 
-const NoticeList = ({ dataList }) => {
-  const [CheckList, setCheckList] = useState([]);
-  const [IdList, setIdList] = useState([]);
+// const NOTICE_URL= "http://i6a205.p.ssafy.io:8000/api/notice";
+
+const NoticeList = ({ dataList, NOTICE_URL }) => {
+  const [list, setList] = useState(dataList);
+  const [checkList, setCheckList] = useState([]);
+  const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "생성일", "조회수"];
 
   useEffect(() => {
-    let ids = [];
+    setList(dataList);
 
+    let ids = [];
     dataList.map((item, i) => {
       ids[i] = item.id;
     });
@@ -22,21 +29,63 @@ const NoticeList = ({ dataList }) => {
   // 전체 선택/해제
   const onChangeAll = (e) => {
     // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
-    setCheckList(e.target.checked ? IdList : []);
+    setCheckList(e.target.checked ? idList : []);
   };
 
   const onChangeEach = (e, id) => {
     // 체크할 시 CheckList에 id값 넣기
     if (e.target.checked) {
-      setCheckList([...CheckList, id]);
+      setCheckList([...checkList, id]);
       // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
     } else {
-      setCheckList(CheckList.filter((checkedId) => checkedId !== id));
+      setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
   };
+  // 선택 삭제
+  const jwt = localStorage.getItem("jwt");
+
+  const handleRemove = () => {
+    if (checkList.length) {
+      checkList.map((noticeId) => {
+        axios
+          .delete(`${NOTICE_URL}/${noticeId}`, {
+            headers: {
+              authorization: jwt,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log("dddd", error);
+          });
+        // list 재구성 = 삭제된애들 빼고 나머지 넣기
+        setList(list.filter((data) => data.id !== noticeId));
+      });
+    } else {
+      return alert("삭제할 목록을 선택하세요.");
+    }
+  };
+
   return (
     <div>
-      <NoticeButton></NoticeButton>
+      <div className={cn(listbtn.btns)}>
+        <div>검색</div>
+        <div>
+          <Link href="/notice/create" passHref>
+            <button className={cn(listbtn.createbtn, "btn btn-primary")}>
+              글쓰기
+            </button>
+          </Link>
+
+          <button
+            className={cn(listbtn.deletebtn, "btn btn-secondary")}
+            onClick={handleRemove}
+          >
+            선택 삭제
+          </button>
+        </div>
+      </div>
       <table className="table">
         <thead>
           <tr>
@@ -44,7 +93,7 @@ const NoticeList = ({ dataList }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={CheckList.length === IdList.length}
+                checked={checkList.length === idList.length}
               />
             </th>
             {headersName.map((item, index) => {
@@ -57,15 +106,15 @@ const NoticeList = ({ dataList }) => {
           </tr>
         </thead>
         <tbody>
-          {dataList
-            ? dataList.map((item) => {
+          {list
+            ? list.map((item) => {
                 return (
                   <TableRow key={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
                         onChange={(e) => onChangeEach(e, item.id)}
-                        checked={CheckList.includes(item.id)}
+                        checked={checkList.includes(item.id)}
                       ></input>
                     </td>
 

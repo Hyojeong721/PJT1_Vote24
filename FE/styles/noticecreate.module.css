@@ -1,0 +1,52 @@
+.noticeCreate {
+  margin: 20px 0px;
+}
+.formRowtop {
+  border-top: 1px solid black;
+}
+
+.formRow {
+  width: 100%;
+}
+
+.formLabel {
+  width: 158px;
+  padding: 15px;
+  border-bottom: 1px solid #e3e7eb;
+  font-size: 15px;
+}
+
+.formControl {
+  width: calc(100% - 150px);
+  padding: 12px 0 12px 20px;
+  border-left: 1px solid #e3e7eb;
+  border-bottom: 1px solid #e3e7eb;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #e3e7eb;
+  height: 46px;
+  padding: 5px 18px;
+  font-size: 14px;
+}
+
+.textarea {
+  border: 1px solid #e3e7eb;
+  padding: 16px 14px;
+  background: #fff;
+  width: 100%;
+  min-height: 135px;
+  font-size: 14px;
+  resize: none;
+}
+
+.btns {
+  margin-top: 50px;
+  font-size: 0;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0 10px;
+}
