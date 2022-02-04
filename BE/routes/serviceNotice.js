@@ -134,7 +134,7 @@ router.get("/service/:id", async (req, res) => {
     FROM service_notice WHERE ID = ?;`;
     const data = await pool.query(sql, [id, id, id, id, id]);
     let result = data[0][0];
-    result.image = "http://localhost/api/serviceimage/" + result.attachment;
+    result.image = "http://i6a205.p.ssafy.io:8000/api/serviceimage/" + result.attachment;
     logger.info("GET Service Notice Detail");
     return res.json(result);
   } catch (error) {
