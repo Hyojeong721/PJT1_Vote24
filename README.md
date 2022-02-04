@@ -232,3 +232,15 @@ setItems((prevItems) => [...prevItems, ...reviews])
 
 해야할일 
 -getServerSideProps vs useffect 공부
+
+
+0204
+-게시판 레이아웃 수정중
+-이전페이지 다음페이지 구현중 => 서버에서 조작해서 데이터 넘겨주기로(id/title)
+-삭제 후에 페이지네이션 조작하면 삭제한 이후 리스트로 조작안되고 이전의 껄로 조작됌 
+
+**18시 이후 -> 팀정보작성
+
+TIL
+- classnames 모듈 -> component에서 관련 css파일 직접 import해서 사용하면서 부트스트랩 작성도 편함
+- 
