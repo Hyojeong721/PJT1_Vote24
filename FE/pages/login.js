@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 
 const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
 
 function Login() {
   const { register, handleSubmit } = useForm();
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { isLoggedIn } = useSelector((state) => state.userStatus);
   const dispatch = useDispatch();
@@ -17,7 +18,9 @@ function Login() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      toast.warning("이미 로그인 된 사용자입니다.");
+      if (!submitLoading) {
+        toast.warning("이미 로그인 된 사용자입니다.");
+      }
       router.push("/");
     }
   }, [isLoggedIn, router]);
@@ -27,7 +30,6 @@ function Login() {
       .post(LOGIN_URL, data)
       .then((res) => {
         const { result, id, code, name, token } = res.data;
-        console.log(res.data);
 
         if (result !== "ok") {
           const reason = result.split(":");
@@ -38,6 +40,8 @@ function Login() {
 
         localStorage.setItem("jwt", token);
 
+        setSubmitLoading(true);
+
         dispatch({
           type: "LOGIN",
           userInfo: {
@@ -46,7 +50,8 @@ function Login() {
             name,
           },
         });
-
+      })
+      .then(() => {
         toast.success("로그인 완료!");
         router.push("/");
       })
@@ -59,6 +64,10 @@ function Login() {
   const goSignup = () => {
     router.push("/signup");
   };
+
+  if (isLoggedIn) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -127,5 +136,24 @@ function Login() {
     </>
   );
 }
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) => async (context) => {
+//     const { userStatus } = store.getState();
+//     console.log("serverside", userStatus);
+//     if (userStatus.isLoggedIn) {
+//       // toast.error("이미 로그인 된 유저입니다.");
+//       return {
+//         redirect: {
+//           destination: "/",
+//           permanent: false,
+//         },
+//       };
+//     }
+//     return {
+//       props: {},
+//     };
+//   }
+// );
 
 export default Login;

@@ -18,7 +18,7 @@ const makeStore = () => {
     return makeConfiguredStore(rootReducer);
   } else {
     const store = makeConfiguredStore(persistedReducer);
-    store.__persistor = persistStore(store); // Nasty hack
+    store.__persistor = persistStore(store);
     return store;
   }
 };

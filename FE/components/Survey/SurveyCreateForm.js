@@ -16,7 +16,7 @@ function SurveyCreateForm() {
   const [benchmarks, setBenchmarks] = useState([]);
   const [qCnt, setQCnt] = useState(1);
   const [bCnt, setBCnt] = useState(1);
-  const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
+  const { userInfo } = useSelector((state) => state.userStatus);
   const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
 
   const {
@@ -26,15 +26,7 @@ function SurveyCreateForm() {
     handleSubmit,
   } = useForm();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      toast("로그인이 필요합니다!");
-      router.push("/login");
-    }
-  }, [isLoggedIn, router]);
-
   const onSubmit = async (data) => {
-    console.log(data);
     const { qList, bList } = parseInput(data);
     const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
@@ -47,15 +39,21 @@ function SurveyCreateForm() {
       question: qList,
       benchmark: bList,
     };
-    console.log(result);
+
+    const jwt = localStorage.getItem("jwt");
+    console.log(jwt);
     await axios
-      .post(SURVEY_URL, result)
+      .post(SURVEY_URL, result, {
+        headers: {
+          authorization: jwt,
+        },
+      })
       .then((res) => {
-        console.log(res.data);
         toast.success("설문 생성 성공");
-        // router.push(`/survey/${res.data.surveyID}`);
+        router.push(`/survey/${res.data.surveyID}`);
       })
       .catch((err) => {
+        console.log(err);
         toast.error("설문 생성 실패");
       });
   };

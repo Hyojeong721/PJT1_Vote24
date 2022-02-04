@@ -68,4 +68,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# jihoo backup files
+/backup(not_using)
+
 # End of https://www.toptal.com/developers/gitignore/api/macos
