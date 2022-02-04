@@ -6,7 +6,6 @@ import MedicalImageOne from "../../../public/medical1.png";
 import MedicalImageTwo from "../../../public/medical2.png";
 
 function HomeUser({ hId, name, phone, image }) {
-  console.log(image);
   return (
     <div>
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
