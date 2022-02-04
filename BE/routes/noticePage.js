@@ -62,50 +62,55 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
  * POST Notice Detail
  * Example URL = ../notice/947780
  *----------------------------------------------------------------------*/
-router.post("/notice/:hospital_id", notice_upload.single("notice_image"), async (req, res) => {
-  const { hospital_id } = req.params;
+router.post(
+  "/notice/:hospital_id",
+  verifyToken,
+  notice_upload.single("notice_image"),
+  async (req, res) => {
+    const { hospital_id } = req.params;
 
-  const { title, fixed, context, attachment } = req.body;
+    const { title, fixed, context, attachment } = req.body;
 
-  try {
-    if (attachment) {
-      const rename =
-        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
-        attachment;
-      // const path = "uploads/notice/" + rename;
-      nameParser("uploads/notice", "uploads/notice", attachment, rename);
+    try {
+      if (attachment) {
+        const rename =
+          new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+          attachment;
+        // const path = "uploads/notice/" + rename;
+        nameParser("uploads/notice", "uploads/notice", attachment, rename);
 
-      const sql = `insert into hospital_notice (
+        const sql = `insert into hospital_notice (
                 hospital_id, 
                 title, 
                 context, 
                 fixed, 
                 attachment) value(?,?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, fixed, rename]);
-    } else {
-      const sql = `insert into hospital_notice (
+        const data = await pool.query(sql, [hospital_id, title, context, fixed, rename]);
+      } else {
+        const sql = `insert into hospital_notice (
                 hospital_id, 
                 title, 
                 context, 
                 fixed) value(?,?,?,?)`;
-      const data = await pool.query(sql, [hospital_id, title, context, fixed]);
+        const data = await pool.query(sql, [hospital_id, title, context, fixed]);
+      }
+      const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
+      const data_id = await pool.query(LAST_INSERT_ID);
+      const create_id = data_id[0][0].auto_id;
+      logger.info("POST Event Detail");
+      return res.json({ state: "Success", id: create_id });
+    } catch (error) {
+      logger.error("POST Notice Detail " + error);
+      return res.json(error);
     }
-    const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
-    const data_id = await pool.query(LAST_INSERT_ID);
-    const create_id = data_id[0][0].auto_id;
-    logger.info("POST Event Detail");
-    return res.json({ state: "Success", id: create_id });
-  } catch (error) {
-    logger.error("POST Notice Detail " + error);
-    return res.json(error);
   }
-});
+);
 
 /*----------------------------------------------------------------------*
  * DELETE Notice Detail
  * Example URL = ../notice/947780/1
  *----------------------------------------------------------------------*/
-router.delete("/notice/:hospital_id/:id", async (req, res) => {
+router.delete("/notice/:hospital_id/:id", verifyToken, async (req, res) => {
   try {
     const { hospital_id, id } = req.params;
 
@@ -124,41 +129,46 @@ router.delete("/notice/:hospital_id/:id", async (req, res) => {
  * UPDATE Notice Detail
  * Example URL = ../notice/947780/1
  *----------------------------------------------------------------------*/
-router.put("/notice/:hospital_id/:id", notice_upload.single("notice_image"), async (req, res) => {
-  const { hospital_id, id } = req.query;
+router.put(
+  "/notice/:hospital_id/:id",
+  verifyToken,
+  notice_upload.single("notice_image"),
+  async (req, res) => {
+    const { hospital_id, id } = req.query;
 
-  const { title, fixed, context, attachment } = req.body;
+    const { title, fixed, context, attachment } = req.body;
 
-  try {
-    if (attachment) {
-      const rename =
-        new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
-        attachment;
-      // const path = "uploads/notice/" + rename;
-      nameParser("uploads/notice", "uploads/notice", attachment, rename);
+    try {
+      if (attachment) {
+        const rename =
+          new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+          attachment;
+        // const path = "uploads/notice/" + rename;
+        nameParser("uploads/notice", "uploads/notice", attachment, rename);
 
-      const sql = `update hospital_notice set
+        const sql = `update hospital_notice set
             title =?, 
             context =?, 
             fixed =?, 
             attachment =? where id=? AND hospital_id =?`;
-      const data = await pool.query(sql, [title, context, fixed, rename, id, hospital_id]);
-    } else {
-      const sql = `update hospital_notice set
+        const data = await pool.query(sql, [title, context, fixed, rename, id, hospital_id]);
+      } else {
+        const sql = `update hospital_notice set
             title =?, 
             context =?, 
             fixed =?, 
             where id=? AND hospital_id =?`;
-      const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
-    }
+        const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
+      }
 
-    logger.info("UPDATE Notice Detail");
-    return res.json({ state: "Success" });
-  } catch (error) {
-    logger.error("UPDATE Notice Detail " + error);
-    return res.json(error);
+      logger.info("UPDATE Notice Detail");
+      return res.json({ state: "Success" });
+    } catch (error) {
+      logger.error("UPDATE Notice Detail " + error);
+      return res.json(error);
+    }
   }
-});
+);
 
 /*----------------------------------------------------------------------*
  * GET Notice File Download
