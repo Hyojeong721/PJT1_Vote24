@@ -5,7 +5,7 @@ import Image from "next/image";
 import MedicalImageOne from "../../../public/medical1.png";
 import MedicalImageTwo from "../../../public/medical2.png";
 
-function HomeUser({ hId, name, logo_file, phone }) {
+function HomeUser({ hId, name, phone, image }) {
   return (
     <div>
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
@@ -13,7 +13,7 @@ function HomeUser({ hId, name, logo_file, phone }) {
           <div className="text-center text-white fw-bold">
             <div>{name}</div>
             <div>{phone}</div>
-            <div>{logo_file}</div>
+            <div>{image}</div>
           </div>
           <div className="w-75 d-flex flex-column mt-3">
             <div className="rounded-top w-25 bg-white fs-1">설문조사</div>
@@ -75,20 +75,21 @@ function HomeUser({ hId, name, logo_file, phone }) {
 }
 
 export async function getServerSideProps({ params }) {
-  // const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/code/${params.hId}`;
-  // const { name, phone, logo_file } = await axios.get(GET_HOSPITAL_INFO_URL);
-  const [hId, name, phone, logo_file] = [
-    params.hId,
-    "SSAFY병원",
-    "010-0000-0000",
-    "logo.png",
-  ];
+  const hId = params.hId;
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${hId}`;
+  const { name, phone, image } = await axios
+    .post(GET_HOSPITAL_INFO_URL)
+    .then((res) => {
+      console.log(res.data);
+      return res.data;
+    });
+
   return {
     props: {
       hId,
       name,
-      logo_file,
       phone,
+      image,
     },
   };
 }

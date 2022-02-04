@@ -56,7 +56,7 @@ function HospitalSatisfaction() {
   };
 
   return (
-    <div className="large-card card mb-3">
+    <div className="card w-50 mb-3">
       <div className="card-body">
         <h2 className="card-title">병원 만족도</h2>
         <Radar data={data} />

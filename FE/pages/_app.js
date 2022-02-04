@@ -1,11 +1,13 @@
 import { wrapper } from "../store";
+import { useState, useEffect } from "react";
 import { useStore, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { PersistGate } from "redux-persist/integration/react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 
+import LoginWrapper from "../components/LoginWrapper";
 import Navbar from "../components/Navbar/Navbar";
 import NavbarUser from "../components/Navbar/NavbarUser";
 import Footer from "../components/Footer2";
@@ -14,7 +16,6 @@ import "../styles/globals.css";
 import "../styles/header.css";
 import "../styles/login.css";
 import "../styles/main.css";
-import "../styles/mainonlogin.css";
 import "../styles/navbar.css";
 import "../styles/post.css";
 import "../styles/signup.css";
@@ -29,6 +30,7 @@ import "../styles/surveydetailuser.css";
 
 function MyApp({ Component, pageProps }) {
   const { isLoggedIn } = useSelector((state) => state.userStatus);
+
   const store = useStore();
   const router = useRouter();
 
@@ -46,7 +48,9 @@ function MyApp({ Component, pageProps }) {
           )}
         </div>
         <div className="page_body min-vh-100">
-          <Component {...pageProps} />
+          <LoginWrapper>
+            <Component {...pageProps} />
+          </LoginWrapper>
         </div>
         <Footer />
         <ToastContainer autoClose={3000} />

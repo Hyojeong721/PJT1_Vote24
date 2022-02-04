@@ -1,17 +1,38 @@
 import React from "react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
 import HospitalSatisfaction from "./HospitalSatisfaction";
+import styles from "../../styles/mainonlogin.module.css";
+import cn from "classnames";
 
 function MainOnLogin() {
-  const { isLoggedIn, userInfo } = useSelector((state) => state.userStatus);
+  const { userInfo } = useSelector((state) => state.userStatus);
   const { id, code, name } = userInfo;
 
   return (
     <>
-      <Header title={id} subtitle={id}></Header>
+      <Header title={id} subtitle={`${name} / 코드 :${code}`}>
+        <Link href={`/user/${code}`} passhref>
+          <a
+            className={cn(
+              styles.goButton,
+              "text-white",
+              "d-flex",
+              "align-items-center",
+              "h-75",
+              "border",
+              "rounded",
+              "fs-5",
+              "ms-3"
+            )}
+          >
+            <span className="material-icons fs-1">play_arrow</span>
+          </a>
+        </Link>
+      </Header>
       <div className="container d-flex flex-column justify-content-center mt-5 gap-5">
         <div className="d-flex gap-5">
           <SimpleCard title="누적 설문 참여자 수" context="60" />

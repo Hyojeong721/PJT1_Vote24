@@ -3,6 +3,7 @@ import Image from "next/image";
 import header_image from "../../public/header_image.png";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Link from "next/link";
 
 function Main() {
   const [inputCode, setInputCode] = useState("");
@@ -10,15 +11,6 @@ function Main() {
 
   const handleCodeChange = (e) => {
     setInputCode(e.target.value);
-  };
-
-  const handleGoButton = async () => {
-    const codeToId_URL = `http://i6a205.p.ssafy.io:8000/api/code/${inputCode}`;
-    await axios.get(codeToId_URL).then((res) => {
-      const { id } = res.data;
-      console.log(res.data);
-      router.push(`/user/${id}`);
-    });
   };
 
   return (
@@ -33,7 +25,7 @@ function Main() {
             <Image src={header_image} alt="header" />
           </div>
           <div className="code_input d-flex align-items-center justify-content-between indigo p-2">
-            <div className="form-floating">
+            <div className="form-floating ms-3">
               <input
                 id="code"
                 name="code"
@@ -46,13 +38,11 @@ function Main() {
                 <p className="text-secondary">병원 코드 입력</p>
               </label>
             </div>
-            <button
-              type="button"
-              className="btn text-white text-center"
-              onClick={handleGoButton}
-            >
-              <span className="material-icons fs-1">play_arrow</span>
-            </button>
+            <Link href={`/user/${inputCode}`} passhref>
+              <button type="button" className="btn text-white d-flex">
+                <span className="material-icons fs-1">play_arrow</span>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
