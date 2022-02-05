@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import axios from "axios";
+import { useRouter } from "next/router";
 import DateForm from "../DateForm";
 import Prev from "../Prev";
 import Next from "../Next";
@@ -9,22 +8,16 @@ import cn from "classnames";
 import content from "../../styles/detail.module.css";
 import Link from "next/link";
 
-const NoticeDetailItem = () => {
+const NoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
-
   // 게시글 id 찾기
   const router = useRouter();
   const { id } = router.query;
 
-  // 데이터 보내는 서버 url 작성
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}/${id}`;
-
   useEffect(() => {
     // 게시글 내용 받아오기
     const getPost = async () => {
-      const res = await axios.get(NOTICE_DETAIL_URL);
+      const res = await axios.get(`${url}/${id}`);
       const data = res.data;
       console.log(data);
       setData(data);
@@ -32,7 +25,7 @@ const NoticeDetailItem = () => {
     if (id) {
       getPost();
     }
-  }, [id, NOTICE_DETAIL_URL]);
+  }, [id, url]);
 
   return (
     <div className={cn(content.content)}>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -7,18 +6,13 @@ import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/noticecreate.module.css";
 
-const NoticeForm = () => {
+const NoticeForm = ({ url }) => {
   const [values, setValues] = useState({
     title: "",
     context: "",
     fixed: "0",
     imgFile: null,
   });
-
-  // 데이터 보내는 서버 url 작성
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -50,14 +44,10 @@ const NoticeForm = () => {
       }
     }
 
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log(value);
-    }
     const jwt = localStorage.getItem("jwt");
     // 서버에 보내기
     await axios
-      .post(NOTICE_URL, fd, {
+      .post(url, fd, {
         headers: {
           authorization: jwt,
           "Content-Type": `multipart/form-data`,

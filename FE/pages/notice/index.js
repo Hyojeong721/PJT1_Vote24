@@ -15,6 +15,7 @@ function HospitalEvent() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
+  const CREATE_URL = "/notice/create";
 
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
@@ -39,7 +40,11 @@ function HospitalEvent() {
     <div>
       <Header title="병원 공지사항"></Header>
       <div className="container div-table">
-        <NoticeList dataList={currentPosts} NOTICE_URL={NOTICE_URL} />
+        <NoticeList
+          dataList={currentPosts}
+          url={NOTICE_URL}
+          createUrl={CREATE_URL}
+        />
 
         <Paging
           postsPerPage={postsPerPage}
