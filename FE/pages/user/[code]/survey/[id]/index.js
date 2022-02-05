@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import BackButton from "../../../../../components/BackButton";
 
-function SurveyDetailUser({ hId, sId, surveyDetail }) {
+function SurveyDetailUser({ code, sId, surveyDetail }) {
   const SURVEY_SUBMIT_URL = `http://i6a205.p.ssafy.io:8000/api/survey/result/${sId}`;
   const { title, context, start_at, end_at, question, category, output_link } =
     surveyDetail;
@@ -81,15 +81,15 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
 
     // await axios.post(SURVEY_SUBMIT_URL, result).then((res) => {
     //   console.log(res);
-    //   // router.push(`/user/${hId}/survey/${sId}/result`);
+    //   // router.push(`/user/${code}/survey/${sId}/result`);
     //   router.push({
-    //     pathname: `/user/${hId}/survey/${sId}/result`,
+    //     pathname: `/user/${code}/survey/${sId}/result`,
     //     query: { score: score },
     //   });
     // });
 
     router.push({
-      pathname: `/user/${hId}/survey/${sId}/result`,
+      pathname: `/user/${code}/survey/${sId}/result`,
       query: { score },
     });
   };
@@ -97,7 +97,7 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="w-75 bg-white form-control mt-3 text-center">
-        <BackButton url={`/user/${hId}/survey/${categoryName}`} />
+        <BackButton url={`/user/${code}/survey/${categoryName}`} />
         <div className="fs-1">{title}</div>
         <div className="my-2">
           <span>{context}</span>
@@ -116,7 +116,7 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const hId = params.hId;
+  const code = params.code;
   const sId = params.id;
   const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
   const surveyDetail = await axios.get(SURVEY_DETAIL_URL).then((res) => {
@@ -125,7 +125,7 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
-      hId,
+      code,
       sId,
       surveyDetail,
     },
