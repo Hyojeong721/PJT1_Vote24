@@ -4,6 +4,8 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import cn from "classnames";
+import cs from "../../styles/noticecreate.module.css";
 
 const EventForm = () => {
   const [values, setValues] = useState({
@@ -18,13 +20,13 @@ const EventForm = () => {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
-  //   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/1`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     handleChange(name, value);
   };
+
   const handleChange = (name, value) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -58,16 +60,18 @@ const EventForm = () => {
     // }
 
     // 서버에 보내기
+    const jwt = localStorage.getItem("jwt");
+
     await axios
       .post(EVENT_URL, fd, {
         headers: {
+          authorization: jwt,
           "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
-        toast("이벤트 등록 성공!");
         console.log(res.data);
-        post_id = res.data.id;
+        return window.location.replace(`/event/${res.data.id}`);
       })
       .catch((err) => {
         toast.error("이벤트 등록 실패!");
@@ -76,22 +80,27 @@ const EventForm = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            제목
-          </label>
+    <form onSubmit={handleSubmit} className={cn(cs.noticeCreate)}>
+      <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
+        <div className={cn(cs.formLabel)}>
+          <label htmlFor="title">제목</label>
+        </div>
+        <div className={cn(cs.formControl)}>
           <input
-            className="form-control"
+            className={cn(cs.input)}
             name="title"
             value={values.title}
             onChange={handleInputChange}
             id="title"
           ></input>
         </div>
-        <div className="mb-3">
-          <label htmlFor="start_at">시작일</label>
+      </div>
+      <div className={cn(cs.formRow, "d-flex")}>
+        <div className={cn(cs.formLabel)}>
+          <label htmlFor="start_at">시작일</label> ~{" "}
+          <label htmlFor="end_at">마감일</label>
+        </div>
+        <div className={cn(cs.formControl)}>
           <input
             id="start_at"
             name="start_at"
@@ -99,8 +108,7 @@ const EventForm = () => {
             onChange={handleInputChange}
             value={values.start_at}
           ></input>
-
-          <label htmlFor="end_at">마감일</label>
+          {"  "}~{"  "}
           <input
             id="end_at"
             name="end_at"
@@ -109,12 +117,17 @@ const EventForm = () => {
             value={values.end_at}
           ></input>
         </div>
-        <div className="mb-3">
+      </div>
+
+      <div className={cn(cs.btns, "d-flex")}>
+        <div className={cn(cs.formLabel)}>
           <label htmlFor="context" className="form-label">
             내용
           </label>
+        </div>
+        <div className={cn(cs.formControl)}>
           <textarea
-            className="form-control"
+            className={cn(cs.textarea)}
             name="context"
             value={values.context}
             onChange={handleInputChange}
@@ -122,29 +135,27 @@ const EventForm = () => {
             rows="5"
           ></textarea>
         </div>
-
+      </div>
+      <div className={cn(cs.formRow)}>
         <FileInput
           name="imgFile"
           value={values.imgFile}
           onChange={handleChange}
         ></FileInput>
-
-        <div>
-          <Link href="/event/" passHref>
+      </div>
+      <div className={cn(cs.btns, "d-flex")}>
+        <div className={cn(cs.btn)}>
+          <Link href="/notice/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
-
-          <button type="submit" className="btn btn-secondary">
-            작성완료
-          </button>
-
-          {/* <button type="submit" className="btn btn-primary">
-            작성 완료
-          </button>
-          <Link href={`${EVENT_URL}/${post_id}`}></Link> */}
         </div>
-      </form>
-    </div>
+        <div className={cn(cs.btn)}>
+          <button type="submit" className="btn btn-primary">
+            등록
+          </button>
+        </div>
+      </div>
+    </form>
   );
 };
 

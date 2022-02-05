@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function QuestionChoice({ unregister, register, q }) {
+function QuestionChoice({ unregister, register, q, category }) {
   const [options, setOptions] = useState([]);
   const [oCnt, setOCnt] = useState(1);
 
@@ -30,14 +30,16 @@ function QuestionChoice({ unregister, register, q }) {
           placeholder="선택지 작성"
           {...register(`A${q.id}-${o.id}`)}
         ></input>
-        <input
-          id={`B${q.id}-${o.id}`}
-          name={`B${q.id}-${o.id}`}
-          type="text"
-          className="bench-input form-control form-control-sm"
-          placeholder="점수"
-          {...register(`B${q.id}-${o.id}`)}
-        ></input>
+        {category === "0" && (
+          <input
+            id={`B${q.id}-${o.id}`}
+            name={`B${q.id}-${o.id}`}
+            type="text"
+            className="bench-input form-control form-control-sm"
+            placeholder="점수"
+            {...register(`B${q.id}-${o.id}`)}
+          ></input>
+        )}
         <button
           className="btn material-icons p-0"
           onClick={() => handleOptionDelete(o.id)}

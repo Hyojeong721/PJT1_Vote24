@@ -115,18 +115,21 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
                         checked={checkList.includes(item.id)}
                       ></input>
                     </td>
-                    <TableColumn content={item.id} id={item.id}></TableColumn>
+                    <TableColumn
+                      content={item.id}
+                      url={`notice/${item.id}`}
+                    ></TableColumn>
                     <TableColumn
                       content={item.title}
-                      id={item.id}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
                       content={DateForm(item.created_at)}
-                      id={item.id}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
                       content={item.views}
-                      id={item.id}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                   </TableRow>
                 );

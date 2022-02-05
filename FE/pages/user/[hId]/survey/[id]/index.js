@@ -25,7 +25,7 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
             name={`QC${qId}`}
             id={id}
             value={`${id}- ${weight}`}
-            {...register(`QC${qId}`)}
+            {...register(`QC${qId}`, { required: true })}
           />
           <label className="form-check-label" htmlFor={id}>
             {context}
@@ -55,15 +55,20 @@ function SurveyDetailUser({ hId, sId, surveyDetail }) {
         <div className="survey-option-box p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
+        {errors[`QC${q.id}`] && errors[`QC${q.id}`].type === "required" && (
+          <div>선택이 필요합니다</div>
+        )}
       </div>
     );
   });
 
   const onSubmit = async (data) => {
+    console.log("data", data);
     const questions = [];
     let score = 0;
     for (let key of Object.keys(data)) {
       if (key.slice(0, 2) === "QC") {
+        console.log(key);
         const [optionId, weight] = data[key].split("-");
         questions.push({ id: key.slice(2), type: "0", select: optionId });
         score += parseInt(weight);

@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const { hashPassword, comparePassword } = require("../utils/bcrypt");
 const { logo_upload } = require("../utils/multer");
@@ -29,7 +30,7 @@ router.post("/id/:id", async (req, res) => {
     const sql = "SELECT name, phone, logo_image FROM hospital_info WHERE id = ?";
     const data = await pool.query(sql, [id]);
     let result = data[0][0];
-    result.image = "http://localhost/api/logoimage/" + result.logo_image;
+    result.image = "http://i6a205.p.ssafy.io:8000/api/logoimage/" + result.logo_image;
     logger.info("POST /id/:id");
     return res.json(result);
   } catch (error) {
@@ -38,12 +39,34 @@ router.post("/id/:id", async (req, res) => {
   }
 });
 
+// router.get("/test", async (req, res) => {
+//   // let dupl = 1;
+//   // let code = 0;
+//   // while (dupl == 1) {
+//   //   code = crypto.randomBytes(3).toString("hex");
+//   //   const dupl_sql = "select EXISTS (select * from hospital_info where code=? limit 1) as success;";
+//   //   let dupl_data = await pool.query(dupl_sql, [code]);
+//   //   dupl = dupl_data[0][0].success;
+//   // }
+//   // console.log(code);
+//   // return res.json(dupl);
+//   console.log(router);
+// });
+
 /*----------------------------------------------------------------------*
  * POST HospitalUser Join
  * Example URL = ../join
  *----------------------------------------------------------------------*/
 router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
   const { email, password, name, business_number, phone } = req.body;
+  let dupl = 1;
+  let code = 0;
+  while (dupl == 1) {
+    code = crypto.randomBytes(3).toString("hex");
+    const dupl_sql = "select EXISTS (select * from hospital_info where code=? limit 1) as success;";
+    let dupl_data = await pool.query(dupl_sql, [code]);
+    dupl = dupl_data[0][0].success;
+  }
 
   const logo_rename =
     new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
@@ -58,8 +81,9 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
                         password, 
                         name, 
                         business_number, 
-                        phone, 
-                        logo_image) VALUES(?, ?, ?, ?, ?, ?);`;
+                        phone,
+                        code, 
+                        logo_image) VALUES(?, ?, ?, ?, ?, ?, ?);`;
 
       const data = await pool.query(sql, [
         email,
@@ -67,6 +91,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
         name,
         business_number,
         phone,
+        code,
         logo_rename,
       ]);
     } else {
@@ -74,9 +99,10 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
                         email, 
                         password, 
                         name, 
-                        business_number, 
-                        phone) VALUES(?, ?, ?, ?, ?);`;
-      const data = await pool.query(sql, [email, password, name, business_number, phone]);
+                        business_number,
+                        phone,
+                        code) VALUES(?, ?, ?, ?, ?, ?);`;
+      const data = await pool.query(sql, [email, password, name, business_number, phone, code]);
     }
 
     logger.info("POST HospitalUser Join");

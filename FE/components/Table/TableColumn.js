@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
-const TableColumn = ({ content, id }) => {
+const TableColumn = ({ content, url }) => {
   return (
     <td className="table-column">
-      <Link href={`notice/${id}`} passHref>
+      <Link href={url} passHref>
         <a>{content}</a>
       </Link>
     </td>

@@ -1,5 +1,5 @@
 Copy this command for install all dependency Package; 
-` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt`
+` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt helmet crypto`
 
 #[2022/01/17]
 * 서버 오픈
@@ -54,3 +54,20 @@ Copy this command for install all dependency Package;
 #[2022/01/26]
 * survey create 수정 (category 추가 및 id 반환)
 * survey 상세 구현
+
+#[2022/01/27]
+* survey 결과 저장 쿼리 작성
+* 에러 디버깅
+
+#[2022/01/28]
+* image 파일 업로드 및 다운로드 구현
+* 에러 디버깅
+
+#[2022/02/03]
+* jsonwebtoken 인증 추가
+* helmet 노드 모듈 추가
+
+#[2022/02/04]
+* 설문 결과 benchmark, output_link 추가
+* 회원가입시 code 생성기능 추가
+* 게시글 상세 prev / next 추가
