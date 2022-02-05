@@ -50,3 +50,8 @@
 .btn {
   margin: 0 10px;
 }
+
+.star {
+  color: red;
+  font-weight: bold;
+}
