@@ -6,18 +6,8 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
   const [questions, setQuestions] = useState([]);
   const [qCnt, setQCnt] = useState(1);
 
-  const handleQuestionChoiceAdd = () => {
-    setQuestions([...questions, { id: qCnt, type: "1" }]);
-    setQCnt((state) => state + 1);
-  };
-
-  const handleQuestionChoiceFiveAdd = () => {
-    setQuestions([...questions, { id: qCnt, type: "1" }]);
-    setQCnt((state) => state + 1);
-  };
-
-  const handleQuestionEssayAdd = () => {
-    setQuestions([...questions, { id: qCnt, type: "2" }]);
+  const handleQuestionAdd = (type) => {
+    setQuestions([...questions, { id: qCnt, type: type }]);
     setQCnt((state) => state + 1);
   };
 
@@ -31,7 +21,7 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
   const paintQuestions = questions.map((q) => {
     return (
       <div key={q.id} className="d-flex align-items-start">
-        {q.type === "1" ? (
+        {q.type === 1 || q.type === 0 ? (
           <QuestionChoice
             unregister={unregister}
             register={register}
@@ -57,21 +47,21 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
       <div className="p-2 d-flex justify-content-center gap-2 mt-3">
         <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={handleQuestionChoiceFiveAdd}
+          onClick={() => handleQuestionAdd(0)}
         >
           <span>5지선다</span>
           <span className="material-icons">add_circle_outline</span>
         </button>
         <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={handleQuestionChoiceAdd}
+          onClick={() => handleQuestionAdd(1)}
         >
           <span>객관식</span>
           <span className="material-icons">add_circle_outline</span>
         </button>
         <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={handleQuestionEssayAdd}
+          onClick={() => handleQuestionAdd(2)}
         >
           <span>주관식</span>
           <span className="material-icons">add_circle_outline</span>

@@ -1,8 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import OptionInput from "./OptionInput";
 
 function QuestionChoice({ unregister, register, q, category }) {
   const [options, setOptions] = useState([]);
   const [oCnt, setOCnt] = useState(1);
+
+  const setInitialOptions = () => {
+    if (q.type === 1) {
+      return [];
+    }
+
+    if (q.type === 0) {
+      setOptions([
+        { id: 1, text: "매우 아니다" },
+        { id: 2, text: "아니다" },
+        { id: 3, text: "보통이다" },
+        { id: 4, text: "그렇다" },
+        { id: 5, text: "매우 그렇다" },
+      ]);
+      setOCnt(5);
+    }
+  };
+
+  useEffect(() => {
+    setInitialOptions();
+  }, []);
 
   const handleOptionAdd = () => {
     setOptions([...options, { id: oCnt }]);
@@ -22,14 +44,16 @@ function QuestionChoice({ unregister, register, q, category }) {
   const paintOptions = options.map((o) => {
     return (
       <div key={o.id} className="d-flex">
-        <input
+        {/* <input
           id={`A${q.id}-${o.id}`}
           name={`A${q.id}-${o.id}`}
           type="text"
           className="form-control form-control-sm"
           placeholder="선택지 작성"
+          value={o.text}
           {...register(`A${q.id}-${o.id}`)}
-        ></input>
+        ></input> */}
+        <OptionInput register={register} q={q} o={o} />
         {category === "0" && (
           <input
             id={`B${q.id}-${o.id}`}
