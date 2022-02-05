@@ -244,3 +244,11 @@ setItems((prevItems) => [...prevItems, ...reviews])
 TIL
 - classnames 모듈 -> component에서 관련 css파일 직접 import해서 사용하면서 부트스트랩 작성도 편함
 - 
+
+
+0205
+- 필수 입력해야하는 것들 입력안된경우 경고창 뜨게 작성한 후 바뀐점
+![image](https://user-images.githubusercontent.com/87456091/152646858-af3920f5-5ff2-436b-ab19-453195ea9544.png)
+
+공지사항 작성에서 전에 작성한 적이 있으면 이번에작성한 글의 아이디안뜨고 전에작성한글의 아이디가뜨고
+전에 작성한 적이 없으면 0이뜬다.
