@@ -5,6 +5,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Header from "../components/Header";
+import Link from "next/link";
 
 const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
 
@@ -32,10 +33,9 @@ function Login() {
         const { result, id, code, name, token } = res.data;
 
         if (result !== "ok") {
-          const reason = result.split(":");
-          setErrorMessage(reason[1]);
-          toast.error(`로그인 실패 : ${errorMessage}`);
-          return;
+          const reason = result.split(":")[1];
+          setErrorMessage(reason);
+          throw new Error(`로그인 실패: ${reason} `);
         }
 
         localStorage.setItem("jwt", token);
@@ -56,13 +56,12 @@ function Login() {
         router.push("/");
       })
       .catch((err) => {
-        toast.error("로그인 실패!");
-        console.log(err);
+        toast.error(`${err.message}`);
       });
   };
 
-  const goSignup = () => {
-    router.push("/signup");
+  const onInputChange = () => {
+    setErrorMessage("");
   };
 
   if (isLoggedIn) {
@@ -86,12 +85,15 @@ function Login() {
                   type="email"
                   className="form-control"
                   placeholder=" "
+                  onChange={onInputChange}
                   {...register("email")}
                 />
                 <label htmlFor="email">
                   <p className="text-secondary">you@example.com</p>
                 </label>
-                <span className="error">{errorMessage}</span>
+                <span className="error">
+                  {errorMessage.includes("아이디") && errorMessage}
+                </span>
               </div>
             </div>
           </div>
@@ -104,12 +106,15 @@ function Login() {
                   type="password"
                   className="form-control"
                   placeholder=" "
+                  onChange={onInputChange}
                   {...register("password")}
                 />
                 <label htmlFor="password">
                   <p className="text-secondary">password</p>
                 </label>
-                <span className="error">{errorMessage}</span>
+                <span className="error">
+                  {errorMessage.includes("비밀번호") && errorMessage}
+                </span>
               </div>
             </div>
           </div>
@@ -122,13 +127,9 @@ function Login() {
           <div className="d-flex justify-content-center mt-5">
             <div>
               <p className="text-center">아직 회원이 아니신가요?</p>
-              <button
-                type="button"
-                onClick={goSignup}
-                className="submit-button btn btn-success"
-              >
-                서비스 신청
-              </button>
+              <Link href="/signup" passHref>
+                <a className="submit-button btn btn-success">서비스 신청</a>
+              </Link>
             </div>
           </div>
         </form>

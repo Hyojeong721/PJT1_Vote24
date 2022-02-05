@@ -90,7 +90,7 @@ function Signup() {
     const fd = new FormData();
 
     for (let key in data) {
-      if (key === "logo_image") {
+      if (key === "logo_image" && data[key].length) {
         const logoFile = data[key][0];
         const logoName = logoFile.name;
         fd.append(`logo_image`, logoFile);
@@ -108,18 +108,7 @@ function Signup() {
       return;
     }
 
-    const fd = new FormData();
-
-    for (let key in data) {
-      if (key === "logo_image") {
-        const logoFile = data[key][0];
-        const logoName = logoFile.name;
-        fd.append(`logo_image`, logoFile);
-        fd.append(`logo_name`, logoName);
-      } else {
-        fd.append(`${key}`, data[key]);
-      }
-    }
+    const fd = makeFormData(data);
 
     await axios
       .post(SIGNUP_URL, fd, {
@@ -139,7 +128,12 @@ function Signup() {
   };
 
   const onEmailCheck = async (e) => {
-    const data = { email: getValues("email") };
+    const email = getValues("email");
+    if (email === "") {
+      toast.error("이메일을 입력해주세요!");
+      return;
+    }
+    const data = { email };
 
     await axios
       .post(EMAIL_CHECK, data)
@@ -156,7 +150,12 @@ function Signup() {
   };
 
   const onBnCheck = async (e) => {
-    const data = { business_number: getValues("business_number") };
+    const businessNumber = getValues("business_number");
+    if (businessNumber === "") {
+      toast.error("사업자 등록 번호를 입력해주세요!");
+      return;
+    }
+    const data = { business_number: businessNumber };
 
     await axios
       .post(BN_CHECK, data)
