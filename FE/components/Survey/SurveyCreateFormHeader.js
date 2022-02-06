@@ -1,5 +1,7 @@
 import { useState } from "react";
 import CategoryRadio from "./CategoryRadio";
+import cn from "classnames";
+import styles from "../../styles/surveycreateformheader.module.css";
 
 function SurveyCreateFormHeader({
   register,
@@ -25,13 +27,13 @@ function SurveyCreateFormHeader({
 
   const paintBenchmark = benchmarks.map((b) => {
     return (
-      <div key={b.id} className="d-flex">
+      <div key={b.id} className="d-flex gap-1">
         <input
           id="benchmark"
           name="benchmark"
           type="url"
-          className="bench-input survey-input-box form-control"
-          placeholder="점수"
+          className={cn(styles.benchInput, "form-control")}
+          placeholder="O점 이상일때"
           {...register(`C${b.id}`)}
         ></input>
         <input
@@ -59,22 +61,26 @@ function SurveyCreateFormHeader({
         nowCategory={nowCategory}
         setNowCategory={setNowCategory}
       />
-      <input
-        id="title"
-        name="title"
-        type="text"
-        className="survey-input-box form-control fs-1 mt-2"
-        placeholder="설문 제목을 입력해주세요."
-        {...register("title", { required: true })}
-      ></input>
+      <div className={cn(styles.inputBox)}>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          className={cn(styles.inputTag, "fs-1")}
+          placeholder="설문 제목을 입력해주세요."
+          autoComplete="off"
+          {...register("title", { required: true })}
+        ></input>
+        <div className={cn(styles.inputLabel)}></div>
+      </div>
       {errors.title && errors.title.type === "required" && (
         <div className="error d-flex align-items-center mt-1 bg-danger text-white p-1 rounded">
           <span className="material-icons fs-5">priority_high</span>
           <span>설문 제목 입력은 필수입니다.</span>
         </div>
       )}
-      <div className="d-flex mt-3">
-        <div className="datetime-box">
+      <div className="d-flex mt-3 gap-3">
+        <div className={cn(styles.datetimeBox)}>
           <label htmlFor="start_at" className="fw-bold ms-1">
             시작일
           </label>
@@ -92,7 +98,7 @@ function SurveyCreateFormHeader({
           )}
         </div>
 
-        <div className="datetime-box">
+        <div className={cn(styles.datetimeBox)}>
           <label htmlFor="end_at" className="fw-bold ms-1">
             종료일
           </label>
@@ -126,23 +132,26 @@ function SurveyCreateFormHeader({
         </div>
       )}
       {nowCategory === "0" && (
-        <>
-          <div className="mt-2">설문 결과의 기준 점수를 입력하세요.</div>
-          <div>{paintBenchmark}</div>
-          <button
-            type="button"
-            className="btn material-icons p-0"
-            onClick={handleBenchmarkAdd}
-          >
-            add
-          </button>
+        <div>
+          <div className="form-control mt-2">
+            <div className="my-1">설문 결과의 기준 점수를 입력하세요.</div>
+            <div>{paintBenchmark}</div>
+            <button
+              type="button"
+              className="btn material-icons p-0"
+              onClick={handleBenchmarkAdd}
+            >
+              add
+            </button>
+          </div>
           <div className="form-floating">
             <input
               id="output_link"
               name="output_link"
               type="url"
-              className="survey-input-box form-control mt-2"
+              className={cn("form-control", "mt-2")}
               placeholder=" "
+              autoComplete="off"
               {...register("output_link", { required: true })}
             ></input>
             <label htmlFor="output_link" className="text-secondary">
@@ -155,7 +164,7 @@ function SurveyCreateFormHeader({
               <span>설문 참여자에게 제공되는 링크 입력은 필수입니다.</span>
             </div>
           )}
-        </>
+        </div>
       )}
     </form>
   );

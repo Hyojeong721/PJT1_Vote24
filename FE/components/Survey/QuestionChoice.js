@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import OptionInput from "./OptionInput";
+import cn from "classnames";
+import styles from "../../styles/questionchoice.module.css";
 
 function QuestionChoice({ unregister, register, q, category }) {
   const [options, setOptions] = useState([]);
@@ -18,7 +19,7 @@ function QuestionChoice({ unregister, register, q, category }) {
         { id: 4, text: "그렇다" },
         { id: 5, text: "매우 그렇다" },
       ]);
-      setOCnt(5);
+      setOCnt(6);
     }
   };
 
@@ -43,8 +44,8 @@ function QuestionChoice({ unregister, register, q, category }) {
   // B == option score
   const paintOptions = options.map((o) => {
     return (
-      <div key={o.id} className="d-flex">
-        {/* <input
+      <div key={o.id} className="d-flex gap-1 mt-1">
+        <input
           id={`A${q.id}-${o.id}`}
           name={`A${q.id}-${o.id}`}
           type="text"
@@ -52,14 +53,13 @@ function QuestionChoice({ unregister, register, q, category }) {
           placeholder="선택지 작성"
           value={o.text}
           {...register(`A${q.id}-${o.id}`)}
-        ></input> */}
-        <OptionInput register={register} q={q} o={o} />
+        ></input>
         {category === "0" && (
           <input
             id={`B${q.id}-${o.id}`}
             name={`B${q.id}-${o.id}`}
             type="text"
-            className="bench-input form-control form-control-sm"
+            className={cn(styles.scoreInput, "form-control", "form-control-sm")}
             placeholder="점수"
             {...register(`B${q.id}-${o.id}`)}
           ></input>
@@ -75,7 +75,7 @@ function QuestionChoice({ unregister, register, q, category }) {
   });
 
   return (
-    <div className="w-100 mt-3 p-1">
+    <div className="w-100 mt-3 p-1 border rounded shadow-sm bg-white">
       <div className="d-flex form-floating">
         <input
           id={`Q${q.id}`}
@@ -85,7 +85,9 @@ function QuestionChoice({ unregister, register, q, category }) {
           placeholder=" "
           {...register(`Q${q.id}`)}
         ></input>
-        <label htmlFor={`Q${q.id}`}>객관식 질문</label>
+        <label htmlFor={`Q${q.id}`} className="text-secondary">
+          객관식 질문
+        </label>
       </div>
       <div className="ms-3 mt-1">
         {paintOptions}

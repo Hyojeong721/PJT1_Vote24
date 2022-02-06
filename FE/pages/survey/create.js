@@ -7,10 +7,10 @@ function SurveyCreate() {
   return (
     <div>
       <Header title="설문 생성"></Header>
-      <div>
+      <div className="mb-3">
         <BackButton url={`/survey`} />
+        <SurveyCreateForm />
       </div>
-      <SurveyCreateForm />
     </div>
   );
 }

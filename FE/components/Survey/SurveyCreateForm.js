@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import parseInput from "./ParseInput";
 import SurveyCreateFormHeader from "./SurveyCreateFormHeader";
 import SurveyCreateFormBody from "./SurveyCreateFormBody";
+import cn from "classnames";
+import styles from "../../styles/surveycreateform.module.css";
 
 function SurveyCreateForm() {
   const router = useRouter();
@@ -58,7 +60,21 @@ function SurveyCreateForm() {
   };
 
   return (
-    <div className="container survey-form-container rounded d-flex flex-column align-items-center mt-5 pb-5">
+    <div
+      className={cn(
+        styles.surveyFormBox,
+        "container",
+        "border",
+        "border-2",
+        "shadow",
+        "rounded",
+        "d-flex",
+        "flex-column",
+        "align-items-center",
+        "mt-5",
+        "pb-5"
+      )}
+    >
       <SurveyCreateFormHeader
         register={register}
         unregister={unregister}
