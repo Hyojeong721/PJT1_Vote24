@@ -17,17 +17,7 @@ function MainOnLogin() {
       <Header title={id} subtitle={`${name} / 코드 :${code}`}>
         <Link href={`/user/${code}`} passhref>
           <a
-            className={cn(
-              styles.goButton,
-              "text-white",
-              "d-flex",
-              "align-items-center",
-              "h-75",
-              "border",
-              "rounded",
-              "fs-5",
-              "ms-3"
-            )}
+            className={cn(styles.goButton, "border", "rounded", "fs-5", "ms-3")}
           >
             <span className="material-icons fs-1">play_arrow</span>
           </a>

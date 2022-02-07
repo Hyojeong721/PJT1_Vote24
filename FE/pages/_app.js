@@ -33,16 +33,16 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   const currentPage = router.pathname;
-  const hId = router.query.hId;
+  const code = router.query.code;
 
   return (
     <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
       <div>
         <div className="navbar">
-          {!hId ? (
+          {!currentPage.includes("user") ? (
             <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
           ) : (
-            <NavbarUser currentPage={currentPage} hId={hId} />
+            <NavbarUser currentPage={currentPage} code={code} />
           )}
         </div>
         <div className="page_body min-vh-100">
