@@ -320,11 +320,11 @@ router.get("/survey/:id", async (req, res) => {
 });
 
 // survey list all
-router.get("/survey/list/:hospital_id", async (req, res) => {
+router.get("/survey/list/:code", async (req, res) => {
   try {
-    const hospital_id = req.params.hospital_id;
-    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=?;`;
-    const data = await pool.query(sql, [hospital_id]);
+    const code = req.params.code;
+    const sql = `SELECT * FROM hospital_survey WHERE code=?;`;
+    const data = await pool.query(sql, [code]);
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
@@ -340,12 +340,12 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
 });
 
 // survey list category
-router.get("/survey/list/:hospital_id/:category", async (req, res) => {
+router.get("/survey/list/:code/:category", async (req, res) => {
   try {
-    const hospital_id = req.params.hospital_id;
+    const code = req.params.code;
     const category = req.params.category;
-    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=?;`;
-    const data = await pool.query(sql, [hospital_id, category]);
+    const sql = `SELECT * FROM hospital_survey WHERE code=? and category=?;`;
+    const data = await pool.query(sql, [code, category]);
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
