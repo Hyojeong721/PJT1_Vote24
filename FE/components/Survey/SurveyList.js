@@ -4,6 +4,8 @@ import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
 import Link from "next/link";
 import axios from "axios";
+import cn from "classnames";
+import listbtn from "../../styles/listbtn.module.css";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
@@ -13,12 +15,11 @@ const SurveyList = ({ dataList }) => {
   const [idList, setIdList] = useState([]);
   const headersName = [
     "번호",
-    "작성일",
     "제목",
     "설문기한",
     "참여자수",
+    "작성일",
     "status",
-    "편집",
   ];
 
   // 설문 목록의 모든 설문id값을 idList에 넣는다.
@@ -71,20 +72,31 @@ const SurveyList = ({ dataList }) => {
 
   return (
     <div>
-      <div>
-        <button>
-          <Link href="/survey/create">+ 설문 생성 </Link>
-        </button>
-        <button onClick={handleRemove}> - 선택 삭제 </button>
+      <div className={cn(listbtn.btns)}>
+        <div>검색</div>
+        <div>
+          <Link href={"create"} passHref>
+            <a className={cn(listbtn.createbtn, "btn btn-primary")}>설문작성</a>
+          </Link>
+
+          <button
+            className={cn(listbtn.deletebtn, "btn btn-secondary")}
+            onClick={handleRemove}
+          >
+            선택삭제
+          </button>
+        </div>
       </div>
       <table className="table">
         <thead>
           <tr>
-            <input
-              type="checkbox"
-              onChange={onChangeAll}
-              checked={checkList.length === idList.length}
-            />
+            <th className="table-header-column">
+              <input
+                type="checkbox"
+                onChange={onChangeAll}
+                checked={checkList.length === idList.length}
+              />
+            </th>
             {headersName.map((item, index) => {
               return (
                 <th className="table-header-column" key={index}>
@@ -96,24 +108,35 @@ const SurveyList = ({ dataList }) => {
         </thead>
         <tbody>
           {list
-            ? list.map((item) => {
+            ? list.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
-                    <input
-                      type="checkbox"
-                      onChange={(e) => onChangeEach(e, item.id)}
-                      checked={checkList.includes(item.id)}
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={(e) => onChangeEach(e, item.id)}
+                        checked={checkList.includes(item.id)}
+                      />
+                    </td>
+
+                    <TableColumn content={index + 1} url={`${item.id}`} />
+                    <TableColumn content={item.title} url={`${item.id}`} />
+                    <TableColumn
+                      content={`${DateForm(item.start_at)} ~ ${DateForm(
+                        item.end_at
+                      )}`}
+                      url={`${item.id}`}
                     />
-                    <TableColumn>{item.id}</TableColumn>
-                    <TableColumn>{DateForm(item.created_at)}</TableColumn>
-                    <TableColumn>{item.title}</TableColumn>
-                    <TableColumn>
-                      {DateForm(item.start_at)} ~ {DateForm(item.end_at)}
-                    </TableColumn>
-                    <TableColumn>{item.count}</TableColumn>
-                    <TableColumn>{DateForm(item.end_at)}</TableColumn>
-                    <TableColumn>✏</TableColumn>
-                    {/* <Link href={`/survey/${item.id}`}></Link> */}
+                    {/* {DateForm(item.start_at)} ~ {DateForm(item.end_at)} */}
+                    <TableColumn
+                      content={DateForm(item.created_at)}
+                      url={`${item.id}`}
+                    />
+                    <TableColumn content={item.count} url={`${item.id}`} />
+                    <TableColumn
+                      content={item.status ? "진행중" : "종료"}
+                      url={`${item.id}`}
+                    />
                   </TableRow>
                 );
               })

@@ -12,7 +12,7 @@ const EventList = ({ dataList, EVENT_URL }) => {
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "기한", "조회수", "status"];
-
+  console.log(dataList);
   useEffect(() => {
     setList(dataList);
 
