@@ -252,3 +252,27 @@ TIL
 
 공지사항 작성에서 전에 작성한 적이 있으면 이번에작성한 글의 아이디안뜨고 전에작성한글의 아이디가뜨고
 전에 작성한 적이 없으면 0이뜬다.
+
+**0207**
+router.push -> 클라이언트 렌더링
+-> 버튼안에 onclick해서 거기서 router.push
+Link -> 서버사이드 렌더링
+->link태그안에 버튼태그를 넣는다.
+**Routing관련 참고자료
+https://salgum1114.github.io/nextjs/2019-05-24-nextjs-static-website-4/
+
+
+
+///////////
+   <Link href={"create"} passHref>
+            <a className={cn(listbtn.createbtn, "btn btn-primary")}>설문작성</a>
+          </Link>
+
+href에서 "create" 치면 해당페이지에서 앞에 주소에 플러스만된다
+=>http://localhost:3000/survey/create
+href=("/create") 라고 작성하면
+=>http://localhost:3000/create
+href=("/survey/create") 라고 작성하면
+=>http://localhost:3000/survey/create
+
+/////////////////
