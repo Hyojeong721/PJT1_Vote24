@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -8,6 +9,8 @@ import cn from "classnames";
 import cs from "../../styles/noticecreate.module.css";
 
 const EventForm = () => {
+  const router = useRouter();
+
   const [values, setValues] = useState({
     title: "",
     context: "",
@@ -71,7 +74,7 @@ const EventForm = () => {
       })
       .then((res) => {
         console.log(res.data);
-        return window.location.replace(`/event/${res.data.id}`);
+        router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
         toast.error("이벤트 등록 실패!");
