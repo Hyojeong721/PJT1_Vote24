@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import BackButton from "../../../../../components/BackButton";
 
-function SurveyDetailUser({ hId, sId, score, outputText, outputLink }) {
+function SurveyDetailUser({ code, sId, score, outputText, outputLink }) {
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="text-white fs-1 mt-3">설문 결과</div>
@@ -24,12 +24,12 @@ function SurveyDetailUser({ hId, sId, score, outputText, outputLink }) {
         )}
       </div>
       <div className="d-flex justify-content-center gap-3">
-        <Link href={`/user/${hId}/survey/${sId}`}>
+        <Link href={`/user/${code}/survey/${sId}`}>
           <a className="btn survey-user-submit-button text-white my-3">
             다시하기
           </a>
         </Link>
-        <Link href={`/user/${hId}`}>
+        <Link href={`/user/${code}`}>
           <a className="btn survey-user-submit-button text-white my-3">
             홈으로 이동
           </a>
@@ -40,7 +40,7 @@ function SurveyDetailUser({ hId, sId, score, outputText, outputLink }) {
 }
 
 export async function getServerSideProps({ query }) {
-  const { hId, id, score } = query;
+  const { code, id, score } = query;
   const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/${id}`;
   const benchmarks = await axios.get(GET_BENCHMARK_URL).then((res) => {
     return res.data;
@@ -55,7 +55,7 @@ export async function getServerSideProps({ query }) {
 
   return {
     props: {
-      hId,
+      code,
       sId: id,
       score,
       outputText,

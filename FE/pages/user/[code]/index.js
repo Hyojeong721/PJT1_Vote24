@@ -5,7 +5,7 @@ import Image from "next/image";
 import MedicalImageOne from "../../../public/medical1.png";
 import MedicalImageTwo from "../../../public/medical2.png";
 
-function HomeUser({ hId, name, phone, image }) {
+function HomeUser({ code, name, phone, image }) {
   return (
     <div>
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
@@ -18,7 +18,7 @@ function HomeUser({ hId, name, phone, image }) {
           <div className="w-75 d-flex flex-column mt-3">
             <div className="rounded-top w-25 bg-white fs-1">설문조사</div>
             <div className="rounded-bottom bg-white d-flex flex-column justify-content-center flex-sm-row">
-              <Link href={`/user/${hId}/survey/health`} passHref>
+              <Link href={`/user/${code}/survey/health`} passHref>
                 <a className="home-user-survey-button btn border form-control m-3 d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <h2>환자 보호자 대상</h2>
@@ -34,7 +34,7 @@ function HomeUser({ hId, name, phone, image }) {
                   </div>
                 </a>
               </Link>
-              <Link href={`/user/${hId}/survey/service`} passHref>
+              <Link href={`/user/${code}/survey/service`} passHref>
                 <a className="home-user-survey-button btn border form-control m-3 d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <h2>병원 만족도 조사</h2>
@@ -52,7 +52,7 @@ function HomeUser({ hId, name, phone, image }) {
               </Link>
             </div>
           </div>
-          <Link href={`/user/${hId}/notice`} passHref>
+          <Link href={`/user/${code}/notice`} passHref>
             <a
               type="button"
               className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
@@ -60,7 +60,7 @@ function HomeUser({ hId, name, phone, image }) {
               <h2 className="text-white">병원 공지사항</h2>
             </a>
           </Link>
-          <Link href={`/user/${hId}/event`} passHref>
+          <Link href={`/user/${code}/event`} passHref>
             <a
               type="button"
               className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
@@ -75,8 +75,8 @@ function HomeUser({ hId, name, phone, image }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const hId = params.hId;
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${hId}`;
+  const code = params.code;
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${code}`;
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
     .then((res) => {
@@ -86,7 +86,7 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
-      hId,
+      code,
       name,
       phone,
       image,

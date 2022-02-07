@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import header_image from "../../public/header_image.png";
-import { useRouter } from "next/router";
-import axios from "axios";
 import Link from "next/link";
 
 function Main() {
   const [inputCode, setInputCode] = useState("");
-  const router = useRouter();
 
   const handleCodeChange = (e) => {
     setInputCode(e.target.value);

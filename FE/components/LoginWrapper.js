@@ -13,7 +13,6 @@ function LoginWrapper({ children }) {
   const isPublicPage = !notPublicPages.includes(pageRootName);
 
   useEffect(() => {
-    console.log("Hello", isPublicPage, isLoggedIn);
     if (!isPublicPage && !isLoggedIn) {
       toast.warning("로그인이 필요합니다.");
       router.push("/login");
