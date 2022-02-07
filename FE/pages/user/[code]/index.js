@@ -53,18 +53,12 @@ function HomeUser({ code, name, phone, image }) {
             </div>
           </div>
           <Link href={`/user/${code}/notice`} passHref>
-            <a
-              type="button"
-              className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
-            >
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
               <h2 className="text-white">병원 공지사항</h2>
             </a>
           </Link>
           <Link href={`/user/${code}/event`} passHref>
-            <a
-              type="button"
-              className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
-            >
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
               <h2 className="text-white">병원 이벤트</h2>
             </a>
           </Link>
@@ -76,12 +70,15 @@ function HomeUser({ code, name, phone, image }) {
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${code}`;
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
     .then((res) => {
       console.log(res.data);
       return res.data;
+    })
+    .catch((err) => {
+      console.log(err);
     });
 
   return {

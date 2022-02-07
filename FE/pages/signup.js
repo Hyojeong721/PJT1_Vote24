@@ -347,6 +347,7 @@ function Signup() {
                 id="logo_image"
                 type="file"
                 className="form-control"
+                accept="image/*"
                 {...register("logo_image")}
                 onChange={onFileChange}
               />
