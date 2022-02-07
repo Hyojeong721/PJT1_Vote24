@@ -35,7 +35,7 @@ const EventDetailItem = () => {
   }, [id, EVENT_DETAIL_URL]);
 
   return (
-    <div className="post-detail">
+    <div className={cn(content.content)}>
       <div className={cn(content.contentHeader)}>
         <h2 className={cn(content.title)}>
           <div>{data.title}</div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -7,18 +6,13 @@ import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/noticecreate.module.css";
 
-const NoticeForm = () => {
+const NoticeForm = ({ url }) => {
   const [values, setValues] = useState({
     title: "",
     context: "",
     fixed: "0",
     imgFile: null,
   });
-
-  // 데이터 보내는 서버 url 작성
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -35,43 +29,46 @@ const NoticeForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 보낼 데이터들을 fromdata에 담아
-    const fd = new FormData();
-    for (let key in values) {
-      if (key === "imgFile") {
-        if (values[key] != null) {
-          const imgFile = values[key];
-          const imgName = imgFile.name;
-          fd.append("notice_image", imgFile);
-          fd.append("attachment", imgName);
+    if (values.title == "") {
+      alert("제목을 입력하세요.");
+    } else if (values.context == "") {
+      alert("내용을 입력하세요.");
+    } else {
+      console.log("success");
+      // 보낼 데이터들을 fromdata에 담아
+      const fd = new FormData();
+      for (let key in values) {
+        if (key === "imgFile") {
+          if (values[key] != null) {
+            const imgFile = values[key];
+            const imgName = imgFile.name;
+            fd.append("notice_image", imgFile);
+            fd.append("attachment", imgName);
+          }
+        } else {
+          fd.append(`${key}`, values[key]);
         }
-      } else {
-        fd.append(`${key}`, values[key]);
       }
+      const jwt = localStorage.getItem("jwt");
+      // 서버에 보내기
+      await axios
+        .post(url, fd, {
+          headers: {
+            authorization: jwt,
+            "Content-Type": `multipart/form-data`,
+          },
+        })
+        .then((res) => {
+          // toast("공지사항 등록 성공!");
+          console.log(res.data);
+          console.log(res.data.id);
+          // return window.location.replace(`/notice/${res.data.id}`);
+        })
+        .catch((err) => {
+          toast.error("공지사항 등록 실패!");
+          console.log(err);
+        });
     }
-
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log(value);
-    }
-    const jwt = localStorage.getItem("jwt");
-    // 서버에 보내기
-    await axios
-      .post(NOTICE_URL, fd, {
-        headers: {
-          authorization: jwt,
-          "Content-Type": `multipart/form-data`,
-        },
-      })
-      .then((res) => {
-        // toast("공지사항 등록 성공!");
-        console.log(res.data);
-        return window.location.replace(`/notice/${res.data.id}`);
-      })
-      .catch((err) => {
-        toast.error("공지사항 등록 실패!");
-        console.log(err);
-      });
   };
 
   const handleCheckChange = () => {
@@ -100,7 +97,9 @@ const NoticeForm = () => {
       </div>
       <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
         <div className={cn(cs.formLabel)}>
-          <label htmlFor="title">제목</label>
+          <label htmlFor="title">
+            <span className={cn(cs.star)}>*{"  "}</span>제목
+          </label>
         </div>
         <div className={cn(cs.formControl)}>
           <input
@@ -114,7 +113,9 @@ const NoticeForm = () => {
       </div>
       <div className={cn(cs.formRow, "d-flex")}>
         <div className={cn(cs.formLabel)}>
-          <label htmlFor="context">내용</label>
+          <label htmlFor="context">
+            <span className={cn(cs.star)}>*{"  "}</span>내용
+          </label>
         </div>
 
         <div className={cn(cs.formControl)}>

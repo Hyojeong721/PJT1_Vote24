@@ -7,7 +7,7 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const NoticeList = ({ dataList, NOTICE_URL }) => {
+const NoticeList = ({ dataList, url, createUrl }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -46,7 +46,7 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
     if (checkList.length) {
       checkList.map((noticeId) => {
         axios
-          .delete(`${NOTICE_URL}/${noticeId}`, {
+          .delete(`${url}/${noticeId}`, {
             headers: {
               authorization: jwt,
             },
@@ -70,7 +70,7 @@ const NoticeList = ({ dataList, NOTICE_URL }) => {
       <div className={cn(listbtn.btns)}>
         <div>검색</div>
         <div>
-          <Link href="/notice/create" passHref>
+          <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
               글쓰기
             </button>
