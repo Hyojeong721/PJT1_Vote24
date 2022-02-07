@@ -39,7 +39,6 @@ function Login() {
         }
 
         localStorage.setItem("jwt", token);
-
         setSubmitLoading(true);
 
         dispatch({

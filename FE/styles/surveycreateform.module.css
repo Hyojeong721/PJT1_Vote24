@@ -1,0 +1,7 @@
+.surveyFormBox {
+  min-width: 400px;
+  min-height: 100vh;
+  max-width: 800px;
+  background-color: #f8f9fa;
+  /* background-color: #ffc107; */
+}

@@ -6,11 +6,13 @@ function QuestionEssay({ register, q }) {
           id={`Q${q.id}E`}
           name={`Q${q.id}E`}
           type="text"
-          className="form-control"
+          className="form-control shadow-sm"
           placeholder=" "
           {...register(`Q${q.id}E`)}
         ></input>
-        <label htmlFor={`Q${q.id}E`}>주관식 질문</label>
+        <label htmlFor={`Q${q.id}E`} className="text-secondary">
+          주관식 질문
+        </label>
       </div>
     </div>
   );

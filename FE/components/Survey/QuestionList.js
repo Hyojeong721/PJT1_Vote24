@@ -1,5 +1,4 @@
 import React from "react";
-import Question from "./Question";
 
 const QuestionList = ({ dataList }) => {
   console.log("dataList", dataList);
