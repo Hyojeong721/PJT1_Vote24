@@ -56,7 +56,10 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
         {errors[`QC${q.id}`] && errors[`QC${q.id}`].type === "required" && (
-          <div>선택이 필요합니다</div>
+          <div className="error d-flex align-items-center mt-1 bg-warning text-white p-1 rounded">
+            <span className="material-icons fs-5">priority_high</span>
+            <span>선택이 필요합니다.</span>
+          </div>
         )}
       </div>
     );
@@ -79,19 +82,16 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 
     const result = { questions, score };
 
-    // await axios.post(SURVEY_SUBMIT_URL, result).then((res) => {
-    //   console.log(res);
-    //   // router.push(`/user/${code}/survey/${sId}/result`);
-    //   router.push({
-    //     pathname: `/user/${code}/survey/${sId}/result`,
-    //     query: { score: score },
-    //   });
-    // });
-
-    router.push({
-      pathname: `/user/${code}/survey/${sId}/result`,
-      query: { score },
-    });
+    await axios
+      .post(SURVEY_SUBMIT_URL, result)
+      .then((res) => {
+        console.log(res);
+        router.push({
+          pathname: `/user/${code}/survey/${sId}/result`,
+          query: { score },
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

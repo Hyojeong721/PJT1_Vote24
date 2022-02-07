@@ -11,12 +11,14 @@ function HomeUser({ code, name, phone, image }) {
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
         <div className="w-100 d-flex flex-column align-items-center">
           <div className="text-center text-white fw-bold">
-            <div>{name}</div>
+            <div className="d-flex fs-1">
+              <Image src={image} width="50px" height="50px" priority></Image>
+              <div>{name}</div>
+            </div>
             <div>{phone}</div>
-            <div>{image}</div>
           </div>
           <div className="w-75 d-flex flex-column mt-3">
-            <div className="rounded-top w-25 bg-white fs-1">설문조사</div>
+            <div className="rounded-top w-25 bg-white">설문조사</div>
             <div className="rounded-bottom bg-white d-flex flex-column justify-content-center flex-sm-row">
               <Link href={`/user/${code}/survey/health`} passHref>
                 <a className="home-user-survey-button btn border form-control m-3 d-flex flex-column">
@@ -76,13 +78,15 @@ function HomeUser({ code, name, phone, image }) {
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+
+  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => {
+    return res.data.id;
+  });
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${hId}`;
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
-    .then((res) => {
-      console.log(res.data);
-      return res.data;
-    });
+    .then((res) => res.data);
 
   return {
     props: {
