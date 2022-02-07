@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import SurveyList from "../../components/Survey/SurveyList";
 import Paging from "../../components/Paging";
+import Link from "next/link";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
@@ -17,6 +18,7 @@ function Health() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
+  console.log(SURVEY_HEALTH_URL);
 
   // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
@@ -39,6 +41,9 @@ function Health() {
     <div>
       <Header title="건강설문"></Header>
       <div className="container">
+        <Link href={"service"}>
+          <a>만족도 설문</a>
+        </Link>
         <SurveyList dataList={currentPosts}></SurveyList>
         <Paging
           postsPerPage={postsPerPage}

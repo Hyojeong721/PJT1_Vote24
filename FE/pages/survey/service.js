@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import SurveyList from "../../components/Survey/SurveyList";
+import Link from "next/link";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
@@ -29,6 +30,9 @@ function Service() {
     <div>
       <Header title="서비스 만족도"></Header>
       <div className="container">
+        <Link href={"health"}>
+          <a>건강설문</a>
+        </Link>
         <SurveyList dataList={dataList}></SurveyList>
       </div>
     </div>
