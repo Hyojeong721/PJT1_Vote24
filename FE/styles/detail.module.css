@@ -40,6 +40,15 @@
   border-bottom: 1px solid #e6e6e6;
 }
 
+.btns {
+  float: right;
+  /* justify-content: flex-end; */
+}
+
+.btn {
+  margin-right: 4px;
+}
+
 .item {
   font-size: 16px;
   padding-right: 12px;
@@ -56,4 +65,38 @@
   margin: auto;
   display: block;
   margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.surveyInfo {
+  padding: 30px 15px;
+  border-bottom: 2px solid #e6e6e6;
+}
+
+.questionListResult {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.questionList {
+  border-bottom: 1px solid #888;
+}
+
+.question {
+  font-size: 20px;
+  margin: 20px;
+}
+
+.option {
+  display: flex;
+  margin: 10px 60px;
+}
+
+.optionContext {
+  width: 200px;
+}
+
+.optionCnt {
+  font-weight: bold;
 }

@@ -55,18 +55,12 @@ function HomeUser({ code, name, phone, image }) {
             </div>
           </div>
           <Link href={`/user/${code}/notice`} passHref>
-            <a
-              type="button"
-              className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
-            >
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
               <h2 className="text-white">병원 공지사항</h2>
             </a>
           </Link>
           <Link href={`/user/${code}/event`} passHref>
-            <a
-              type="button"
-              className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center"
-            >
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
               <h2 className="text-white">병원 이벤트</h2>
             </a>
           </Link>
