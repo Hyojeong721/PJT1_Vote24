@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import styles from "../../styles/questionchoice.module.css";
 
-function QuestionChoice({ unregister, register, q, category }) {
+function QuestionChoice({ unregister, register, q, category, index }) {
   const [options, setOptions] = useState([]);
   const [oCnt, setOCnt] = useState(1);
 
@@ -76,6 +76,7 @@ function QuestionChoice({ unregister, register, q, category }) {
 
   return (
     <div className="w-100 mt-3 p-1 border rounded shadow-sm bg-white">
+      <div className="ms-1">{index + 1}.</div>
       <div className="d-flex form-floating">
         <input
           id={`Q${q.id}`}

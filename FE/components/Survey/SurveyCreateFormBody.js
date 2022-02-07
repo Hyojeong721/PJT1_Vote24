@@ -18,18 +18,24 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
     setQCnt((state) => state + 1);
   };
 
-  const paintQuestions = questions.map((q) => {
+  const paintQuestions = questions.map((q, index) => {
     return (
       <div key={q.id} className="d-flex align-items-start">
         {q.type === 1 || q.type === 0 ? (
           <QuestionChoice
+            index={index}
             unregister={unregister}
             register={register}
             q={q}
             category={nowCategory}
           />
         ) : (
-          <QuestionEssay unregister={unregister} register={register} q={q} />
+          <QuestionEssay
+            index={index}
+            unregister={unregister}
+            register={register}
+            q={q}
+          />
         )}
         <button
           className="btn material-icons p-0"

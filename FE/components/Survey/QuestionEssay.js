@@ -1,6 +1,7 @@
-function QuestionEssay({ register, q }) {
+function QuestionEssay({ register, q, index }) {
   return (
-    <div className="w-100 mt-3 p-1">
+    <div className="w-100 mt-3 p-1 border rounded shadow-sm bg-white">
+      <div className="ms-1">{index + 1}.</div>
       <div className="form-floating">
         <input
           id={`Q${q.id}E`}
