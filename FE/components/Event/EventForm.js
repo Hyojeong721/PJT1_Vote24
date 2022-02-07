@@ -40,7 +40,6 @@ const EventForm = () => {
   // 작성완료 눌렀을때 서버에 보내기
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // 보낼 데이터들을 fromdata에 담는 과정
     const fd = new FormData();
     for (let key in values) {
@@ -86,7 +85,9 @@ const EventForm = () => {
     <form onSubmit={handleSubmit} className={cn(cs.noticeCreate)}>
       <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
         <div className={cn(cs.formLabel)}>
-          <label htmlFor="title">제목</label>
+          <label htmlFor="title">
+            <span className={cn(cs.star)}>*{"  "}</span>제목
+          </label>
         </div>
         <div className={cn(cs.formControl)}>
           <input
@@ -100,8 +101,10 @@ const EventForm = () => {
       </div>
       <div className={cn(cs.formRow, "d-flex")}>
         <div className={cn(cs.formLabel)}>
-          <label htmlFor="start_at">시작일</label> ~{" "}
-          <label htmlFor="end_at">마감일</label>
+          <label htmlFor="start_at">
+            <span className={cn(cs.star)}>*{"  "}</span>시작일
+          </label>{" "}
+          ~ <label htmlFor="end_at">마감일</label>
         </div>
         <div className={cn(cs.formControl)}>
           <input
@@ -125,7 +128,7 @@ const EventForm = () => {
       <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.formLabel)}>
           <label htmlFor="context" className="form-label">
-            내용
+            <span className={cn(cs.star)}>*{"  "}</span>내용
           </label>
         </div>
         <div className={cn(cs.formControl)}>
