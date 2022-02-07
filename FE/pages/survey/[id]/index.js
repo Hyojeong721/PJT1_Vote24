@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-import Header from "../../components/Header";
-import SurveyDetailItem from "../../components/Survey/SurveyDetailItem";
+import Header from "../../../components/Header";
+import SurveyDetailItem from "../../../components/Survey/SurveyDetailItem";
 
 function SurveyDetail() {
   const router = useRouter();
