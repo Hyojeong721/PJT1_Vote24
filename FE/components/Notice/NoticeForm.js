@@ -2,11 +2,14 @@ import { useState } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/noticecreate.module.css";
 
 const NoticeForm = ({ url }) => {
+  const router = useRouter();
+
   const [values, setValues] = useState({
     title: "",
     context: "",
@@ -62,10 +65,12 @@ const NoticeForm = ({ url }) => {
           // toast("공지사항 등록 성공!");
           console.log(res.data);
           console.log(res.data.id);
-          // return window.location.replace(`/notice/${res.data.id}`);
+          router.push(`/notice/${res.data.id}`);
         })
         .catch((err) => {
-          toast.error("공지사항 등록 실패!");
+          toast.error("공지사항 등록 실패!", {
+            autoClose: 3000,
+          });
           console.log(err);
         });
     }
