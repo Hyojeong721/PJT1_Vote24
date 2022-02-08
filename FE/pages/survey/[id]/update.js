@@ -10,7 +10,7 @@ function SurveyUpdate({ sId, surveyDetail }) {
       <Header title="설문 수정"></Header>
       <div className="position-relative my-3">
         <BackButton url={`/survey/${sId}`} />
-        <SurveyUpdateForm surveyDetail={surveyDetail} />
+        <SurveyUpdateForm surveyDetail={surveyDetail} sId={sId} />
       </div>
     </div>
   );
