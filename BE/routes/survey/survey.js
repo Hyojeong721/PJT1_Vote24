@@ -88,6 +88,12 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
   try {
+    const hospital_id_data = await pool.query(
+      "SELECT hospital_id FROM hospital_survey WHERE id = ?",
+      [id]
+    );
+    console.log(hospital_id_data);
+    const hospital_id = hospital_id_data[0][0].hospital_id;
     await pool.query("DELETE FROM hospital_survey WHERE id = ?", [id]);
     if (req.body.end_at) {
       const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, start_at, end_at ) VALUES(?, ?, ?, ?, ?, ?, ?);`;
@@ -301,17 +307,17 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
 router.post("/survey/result/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const { qustions, score } = req.body;
+    const { questions, score } = req.body;
     const survey_sql = `UPDATE hospital_survey SET count = count+1 WHERE id = ?;`;
     await pool.query(survey_sql, [id]);
 
-    for (i = 0; i < qustions.length; i++) {
-      if (qustions[i].select) {
+    for (i = 0; i < questions.length; i++) {
+      if (questions[i].select) {
         const sql = "UPDATE `option` SET count = count+1 WHERE id = ?;";
-        await pool.query(sql, [qustions[i].select]);
+        await pool.query(sql, [questions[i].select]);
       } else {
         const sql = "INSERT INTO subjective_answer (question_id, answer) VALUES (?, ?);";
-        await pool.query(sql, [qustions[i].id, qustions[i].answer]);
+        await pool.query(sql, [questions[i].id, questions[i].answer]);
       }
     }
     const score_sql = "INSERT INTO score_sum (survey_id, score_sum) VALUES (?, ?);";
