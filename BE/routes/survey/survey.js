@@ -83,68 +83,6 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
   }
 });
 
-// // survey update.
-// router.put("/survey/:id", async (req, res) => {
-//   const id = req.params.id;
-//   const { category, title, context, output_link, start_at, end_at, question, benchmark } = req.body;
-//   try {
-//     if (req.body.end_at) {
-//       const survey_sql = `UPDATE hospital_survey SET category=?, title=?, context=?, output_link=?, start_at=?, end_at=? WHERE id = ?;`;
-//       await pool.query(survey_sql, [category, title, context, output_link, start_at, end_at, id]);
-//     } else {
-//       const survey_sql = `UPDATE hospital_survey SET category=?, title=?, context=?, output_link=?, start_at=? WHERE id = ?;`;
-//       await pool.query(survey_sql, [category, title, context, output_link, start_at, id]);
-//     }
-
-//     let question_sql = ``;
-//     let option_sql = ``;
-//     let benchmark_sql = ``;
-
-//     for (i = 0; i < question.length; i++) {
-//       question_sql = "UPDATE question SET `order`=?, context=?, type=? WHERE id = ?;";
-//       await pool.query(question_sql, [
-//         question[i].order,
-//         question[i].context,
-//         question[i].type,
-//         question[i].id,
-//       ]);
-
-//       if (question[i].type == 1) continue;
-//       if (!question[i].option) {
-//         // 디폴트 처리(그렇다., 아니다.)
-//         const option_yes_sql = "UPDATE SET `option`  `order`=?, context=?, weight=? WHERE id = ?;";
-//         await pool.query(option_yes_sql, [1, "그렇다.", 0, question[i].option[j].id]);
-//         const option_no_sql = "UPDATE SET `option`  `order`=?, context=?, weight=? WHERE id = ?;";
-//         await pool.query(option_no_sql, [2, "아니다.", 0, question[i].option[j].id]);
-//         continue;
-//       }
-//       for (j = 0; j < question[i].option.length; j++) {
-//         option_sql = "UPDATE `option` SET `order`=?, context=?, weight=? WHERE id = ?;";
-//         await pool.query(option_sql, [
-//           question[i].option[j].order,
-//           question[i].option[j].context,
-//           question[i].option[j].weight,
-//           question[i].option[j].id,
-//         ]);
-//       }
-//     }
-//     for (i = 0; i < benchmark.length; i++) {
-//       benchmark_sql = "UPDATE benchmark SET benchmark=?, output_text=? WHERE id = ?;";
-//       await pool.query(benchmark_sql, [
-//         benchmark[i].benchmark,
-//         benchmark[i].output_text,
-//         benchmark[i].id,
-//       ]);
-//     }
-
-//     logger.info("[INFO] POST /survey/update");
-//     return res.json({ result: "ok", surveyID: id });
-//   } catch (error) {
-//     logger.error("POST /insert Error" + error);
-//     return res.json(error);
-//   }
-// });
-
 // survey update.
 router.put("/survey/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
@@ -323,7 +261,7 @@ router.get("/survey/:id", async (req, res) => {
 router.get("/survey/list/:hospital_id", async (req, res) => {
   try {
     const hospital_id = req.params.hospital_id;
-    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=?;`;
+    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? order by end_at desc, created_at desc;`;
     const data = await pool.query(sql, [hospital_id]);
     let result = data[0];
     const now = new Date();
@@ -344,7 +282,7 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
   try {
     const hospital_id = req.params.hospital_id;
     const category = req.params.category;
-    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=?;`;
+    const sql = `SELECT * FROM hospital_survey WHERE hospital_id=? and category=? order by end_at desc, created_at desc;`;
     const data = await pool.query(sql, [hospital_id, category]);
     let result = data[0];
     const now = new Date();

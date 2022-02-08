@@ -23,7 +23,7 @@ router.get("/notice/:hospital_id", async (req, res) => {
                         title, 
                         views,
                         fixed
-                        from hospital_notice where hospital_id =?`;
+                        from hospital_notice where hospital_id =? order by fixed desc, created_at desc`;
 
     const data = await pool.query(sql, [hospital_id]);
     const result = data[0];

@@ -25,7 +25,7 @@ router.get("/event/:hospital_id", async (req, res) => {
                         start_at,
                         end_at,
                         views
-                        from hospital_event where hospital_id =?`;
+                        from hospital_event where hospital_id =? order by end_at desc, created_at desc`;
 
     const data = await pool.query(sql, [hospital_id]);
     const result = data[0];
