@@ -32,7 +32,6 @@
 
 .prev {
   border-top: 1px solid #e6e6e6;
-
   border-bottom: 1px solid #e6e6e6;
 }
 
@@ -42,7 +41,6 @@
 
 .btns {
   float: right;
-  /* justify-content: flex-end; */
 }
 
 .btn {
@@ -56,7 +54,7 @@
 }
 
 .contentInfo {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .contenBtnList {
@@ -69,8 +67,9 @@
 }
 
 .surveyInfo {
-  padding: 30px 15px;
-  border-bottom: 2px solid #e6e6e6;
+  padding: 30px;
+  margin: 20px 0;
+  background-color: #f9f9f9;
 }
 
 .questionListResult {
@@ -80,7 +79,7 @@
 }
 
 .questionList {
-  border-bottom: 1px solid #888;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .question {
@@ -99,4 +98,17 @@
 
 .optionCnt {
   font-weight: bold;
+  margin-right: 15px;
+}
+
+.benchbox {
+  border: 1px solid #e6e6e6;
+  padding: 20px 30px;
+  margin: 50px;
+}
+.bench {
+  margin: 15px 0;
+}
+.blue {
+  color: blue;
 }
