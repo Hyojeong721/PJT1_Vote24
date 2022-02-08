@@ -276,3 +276,13 @@ href=("/survey/create") 라고 작성하면
 =>http://localhost:3000/survey/create
 
 /////////////////
+
+0208
+- 설문결과 상세페이지 (일반상세 / 더보기상세)
+
+TIL
+- useEffect VS  getServerSideProps
+참고: https://steadily-worked.tistory.com/m/849
+https://cpro95.tistory.com/492
+-ssr VS csr
+참고: https://onlyfor-me-blog.tistory.com/387
