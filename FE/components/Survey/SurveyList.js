@@ -9,7 +9,7 @@ import listbtn from "../../styles/listbtn.module.css";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
-const SurveyList = ({ dataList }) => {
+const SurveyList = ({ category, dataList }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -21,7 +21,7 @@ const SurveyList = ({ dataList }) => {
     "작성일",
     "status",
   ];
-
+  console.log(category);
   const statusicon = (status) => {
     if (status) {
       return <div>진행중</div>;
@@ -82,10 +82,9 @@ const SurveyList = ({ dataList }) => {
       <div className={cn(listbtn.btns)}>
         <div>검색</div>
         <div>
-          <Link href={"create"} passHref>
+          <Link href={`create?category=${category}`} passHref>
             <a className={cn(listbtn.createbtn, "btn btn-primary")}>설문작성</a>
           </Link>
-
           <button
             className={cn(listbtn.deletebtn, "btn btn-secondary")}
             onClick={handleRemove}
