@@ -13,11 +13,10 @@ const router = express.Router();
 router.post("/code/:code", async (req, res) => {
   const code = req.params.code;
   try {
-    const sql = "SELECT name, phone, logo_image FROM hospital_info WHERE code = ?";
+    const sql = "SELECT id FROM hospital_info WHERE code = ?";
     const data = await pool.query(sql, [code]);
-    let result = data[0][0];
-    result.image = "http://i6a205.p.ssafy.io:8000/api/logoimage/" + result.logo_image;
-    return res.json({ id: id });
+    const id = data[0][0].id;
+    return res.json(id);
   } catch (error) {
     logger.error("POST /code/:code " + error);
     return res.json(error);
