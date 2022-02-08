@@ -22,6 +22,13 @@ const SurveyList = ({ dataList }) => {
     "status",
   ];
 
+  const statusicon = (status) => {
+    if (status) {
+      return <div>진행중</div>;
+    } else {
+      return <div>마감</div>;
+    }
+  };
   // 설문 목록의 모든 설문id값을 idList에 넣는다.
   useEffect(() => {
     // 이 화면에서 이용할 list변수에 부모한테 받아온 data들 다 넣어주기
@@ -127,14 +134,13 @@ const SurveyList = ({ dataList }) => {
                       )}`}
                       url={`${item.id}`}
                     />
-                    {/* {DateForm(item.start_at)} ~ {DateForm(item.end_at)} */}
                     <TableColumn
                       content={DateForm(item.created_at)}
                       url={`${item.id}`}
                     />
                     <TableColumn content={item.count} url={`${item.id}`} />
                     <TableColumn
-                      content={item.status ? "진행중" : "종료"}
+                      content={statusicon(item.status)}
                       url={`${item.id}`}
                     />
                   </TableRow>
