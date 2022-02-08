@@ -2,30 +2,39 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import styles from "../../styles/questionchoice.module.css";
 
-function QuestionChoice({ unregister, register, q, category, index }) {
+function QuestionChoice({
+  unregister,
+  register,
+  q,
+  category,
+  index,
+  setValue,
+}) {
   const [options, setOptions] = useState([]);
   const [oCnt, setOCnt] = useState(1);
+  const initialOptions = q.initialOptions;
 
-  const setInitialOptions = () => {
-    if (q.type === 1) {
-      return [];
-    }
+  const addInitialOptions = (initialOptions) => {
+    initialOptions.forEach((o, idx) => {
+      setOptions((state) => [...state, { id: idx + 1 }]);
+    });
+    setOCnt(initialOptions.length + 1);
+  };
 
-    if (q.type === 0) {
-      setOptions([
-        { id: 1, text: "매우 아니다" },
-        { id: 2, text: "아니다" },
-        { id: 3, text: "보통이다" },
-        { id: 4, text: "그렇다" },
-        { id: 5, text: "매우 그렇다" },
-      ]);
-      setOCnt(6);
-    }
+  const setInitialQuestionsandOptions = (initialOptions) => {
+    setValue(`Q${q.id}`, q.context);
+    initialOptions.forEach((o, idx) => {
+      setValue(`A${q.id}-${idx + 1}`, o.context);
+      setValue(`B${q.id}-${idx + 1}`, o.weight);
+    });
   };
 
   useEffect(() => {
-    setInitialOptions();
-  }, []);
+    if (initialOptions) {
+      addInitialOptions(initialOptions);
+      setInitialQuestionsandOptions(initialOptions);
+    }
+  }, [initialOptions]);
 
   const handleOptionAdd = () => {
     setOptions([...options, { id: oCnt }]);
@@ -51,6 +60,7 @@ function QuestionChoice({ unregister, register, q, category, index }) {
           type="text"
           className="form-control form-control-sm"
           placeholder="선택지 작성"
+          autoComplete="off"
           value={o.text}
           {...register(`A${q.id}-${o.id}`)}
         ></input>
@@ -58,9 +68,11 @@ function QuestionChoice({ unregister, register, q, category, index }) {
           <input
             id={`B${q.id}-${o.id}`}
             name={`B${q.id}-${o.id}`}
-            type="text"
+            type="number"
+            min="0"
             className={cn(styles.scoreInput, "form-control", "form-control-sm")}
             placeholder="점수"
+            autoComplete="off"
             {...register(`B${q.id}-${o.id}`)}
           ></input>
         )}
@@ -84,6 +96,7 @@ function QuestionChoice({ unregister, register, q, category, index }) {
           type="text"
           className="form-control"
           placeholder=" "
+          autoComplete="off"
           {...register(`Q${q.id}`)}
         ></input>
         <label htmlFor={`Q${q.id}`} className="text-secondary">

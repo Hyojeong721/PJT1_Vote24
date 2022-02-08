@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -11,21 +11,42 @@ import SurveyCreateFormBody from "./SurveyCreateFormBody";
 import cn from "classnames";
 import styles from "../../styles/surveycreateform.module.css";
 
-function SurveyCreateForm({ surveyDetail }) {
+function SurveyUpdateForm({ surveyDetail, sId }) {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
-
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
-
+  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
   const {
     register,
     unregister,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
 
+  const { benchmark, question } = surveyDetail;
+
+  const setFormData = ({
+    category,
+    title,
+    context,
+    start_at,
+    end_at,
+    output_link,
+  }) => {
+    setNowCategory(`${category}`);
+    setValue("title", title);
+    setValue("context", context);
+    setValue("start_at", start_at.slice(0, 16));
+    setValue("end_at", end_at.slice(0, 16));
+    setValue("output_link", output_link);
+  };
+
+  useEffect(() => {
+    setFormData(surveyDetail);
+  }, [surveyDetail]);
+
   const onSubmit = async (data) => {
+    console.log(data);
     const { qList, bList } = parseInput(data);
     const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
@@ -38,24 +59,22 @@ function SurveyCreateForm({ surveyDetail }) {
       question: qList,
       benchmark: bList,
     };
-    console.log("data", data);
+
     const jwt = localStorage.getItem("jwt");
-
-    console.log("result", result);
-
+    console.log("@@@@@@", result);
     await axios
-      .post(SURVEY_URL, result, {
+      .put(SURVEY_URL, result, {
         headers: {
           authorization: jwt,
         },
       })
       .then((res) => {
-        toast.success("설문 생성 성공");
+        toast.success("설문 수정 완료");
         router.push(`/survey/${res.data.surveyID}`);
       })
       .catch((err) => {
         console.log(err);
-        toast.error("설문 생성 실패");
+        toast.error("설문 수정 실패");
       });
   };
 
@@ -81,11 +100,15 @@ function SurveyCreateForm({ surveyDetail }) {
         errors={errors}
         nowCategory={nowCategory}
         setNowCategory={setNowCategory}
+        initialBenchmarks={benchmark}
+        setValue={setValue}
       />
       <SurveyCreateFormBody
         register={register}
         unregister={unregister}
         nowCategory={nowCategory}
+        initialQuestions={question}
+        setValue={setValue}
       />
 
       <div className="w-100 d-flex mt-5">
@@ -96,11 +119,11 @@ function SurveyCreateForm({ surveyDetail }) {
           onClick={handleSubmit(onSubmit)}
           className="submit-button btn btn-primary position-absolute start-50 translate-middle"
         >
-          설문 생성
+          수정 완료
         </button>
       </div>
     </div>
   );
 }
 
-export default SurveyCreateForm;
+export default SurveyUpdateForm;

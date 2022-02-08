@@ -7,7 +7,7 @@ import BackButton from "../../../components/BackButton";
 function SurveyUpdate({ sId, surveyDetail }) {
   return (
     <div>
-      <Header title="설문 생성"></Header>
+      <Header title="설문 수정"></Header>
       <div className="position-relative my-3">
         <BackButton url={`/survey/${sId}`} />
         <SurveyUpdateForm surveyDetail={surveyDetail} />

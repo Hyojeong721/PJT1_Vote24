@@ -38,10 +38,7 @@ function SurveyCreateForm() {
       question: qList,
       benchmark: bList,
     };
-    console.log("data", data);
     const jwt = localStorage.getItem("jwt");
-
-    console.log("result", result);
 
     await axios
       .post(SURVEY_URL, result, {
