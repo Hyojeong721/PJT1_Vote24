@@ -32,7 +32,6 @@ export async function getServerSideProps({ params }) {
   const code = params.code;
   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${code}`;
   const noticeList = await axios.get(NOTICE_URL).then((res) => {
-    console.log(res.data);
     return res.data;
   });
 
