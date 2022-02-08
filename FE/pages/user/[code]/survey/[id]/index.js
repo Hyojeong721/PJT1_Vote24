@@ -66,12 +66,10 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   });
 
   const onSubmit = async (data) => {
-    console.log("data", data);
     const questions = [];
     let score = 0;
     for (let key of Object.keys(data)) {
       if (key.slice(0, 2) === "QC") {
-        console.log(key);
         const [optionId, weight] = data[key].split("-");
         questions.push({ id: key.slice(2), type: "0", select: optionId });
         score += parseInt(weight);
@@ -81,11 +79,12 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     }
 
     const result = { questions, score };
-
+    console.log("##", question);
+    console.log("@@@", result);
     await axios
       .post(SURVEY_SUBMIT_URL, result)
       .then((res) => {
-        console.log(res);
+        console.log("res", res.data);
         router.push({
           pathname: `/user/${code}/survey/${sId}/result`,
           query: { score },

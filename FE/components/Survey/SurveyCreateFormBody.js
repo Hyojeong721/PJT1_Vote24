@@ -1,13 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuestionChoice from "./QuestionChoice";
 import QuestionEssay from "./QuestionEssay";
 
-function SurveyCreateFormBody({ register, unregister, nowCategory }) {
+function SurveyCreateFormBody({
+  register,
+  unregister,
+  nowCategory,
+  initialQuestions,
+  setValue,
+}) {
   const [questions, setQuestions] = useState([]);
   const [qCnt, setQCnt] = useState(1);
+  // const fiveOptions = [
+  //   { id: 1, text: "매우 아니다" },
+  //   { id: 2, text: "아니다" },
+  //   { id: 3, text: "보통이다" },
+  //   { id: 4, text: "그렇다" },
+  //   { id: 5, text: "매우 그렇다" },
+  // ];
 
-  const handleQuestionAdd = (type) => {
-    setQuestions([...questions, { id: qCnt, type: type }]);
+  const addInitialQuestions = (initialQuestions) => {
+    initialQuestions.forEach((q, idx) => {
+      setQuestions((state) => [
+        ...state,
+        {
+          id: idx + 1,
+          type: q.type,
+          initialOptions: q.option,
+          context: q.context,
+        },
+      ]);
+    });
+    setQCnt(initialQuestions.length + 1);
+  };
+
+  useEffect(() => {
+    if (initialQuestions) {
+      addInitialQuestions(initialQuestions);
+    }
+  }, [initialQuestions]);
+
+  const handleQuestionAdd = (type, initialOptions) => {
+    setQuestions((state) => [
+      ...state,
+      { id: qCnt, type: type, initialOptions },
+    ]);
     setQCnt((state) => state + 1);
   };
 
@@ -15,19 +52,19 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
     setQuestions(questions.filter((q) => q.id !== inputId));
     unregister(`Q${inputId}`);
     unregister(`Q${inputId}E`);
-    setQCnt((state) => state + 1);
   };
 
   const paintQuestions = questions.map((q, index) => {
     return (
       <div key={q.id} className="d-flex align-items-start">
-        {q.type === 1 || q.type === 0 ? (
+        {q.type === 0 ? (
           <QuestionChoice
             index={index}
             unregister={unregister}
             register={register}
             q={q}
             category={nowCategory}
+            setValue={setValue}
           />
         ) : (
           <QuestionEssay
@@ -35,6 +72,7 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
             unregister={unregister}
             register={register}
             q={q}
+            setValue={setValue}
           />
         )}
         <button
@@ -51,23 +89,23 @@ function SurveyCreateFormBody({ register, unregister, nowCategory }) {
     <div className="w-100 d-flex flex-column survey-form-body mt-3">
       {paintQuestions}
       <div className="p-2 d-flex justify-content-center gap-2 mt-3">
-        <button
+        {/* <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={() => handleQuestionAdd(0)}
+          onClick={() => handleQuestionAdd(0, fiveOptions)}
         >
           <span>5지선다</span>
           <span className="material-icons">add_circle_outline</span>
-        </button>
+        </button> */}
         <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={() => handleQuestionAdd(1)}
+          onClick={() => handleQuestionAdd(0)}
         >
           <span>객관식</span>
           <span className="material-icons">add_circle_outline</span>
         </button>
         <button
           className="btn btn-primary d-flex align-items-center"
-          onClick={() => handleQuestionAdd(2)}
+          onClick={() => handleQuestionAdd(1)}
         >
           <span>주관식</span>
           <span className="material-icons">add_circle_outline</span>

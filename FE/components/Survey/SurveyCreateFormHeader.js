@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryRadio from "./CategoryRadio";
 import cn from "classnames";
 import styles from "../../styles/surveycreateformheader.module.css";
@@ -9,12 +9,35 @@ function SurveyCreateFormHeader({
   errors,
   nowCategory,
   setNowCategory,
+  initialBenchmarks,
+  setValue,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
 
+  const addInitialBenchmarks = (initialBenchmarks) => {
+    initialBenchmarks.forEach((b, idx) => {
+      setBenchmarks((state) => [...state, { id: idx + 1 }]);
+    });
+    setBCnt(initialBenchmarks.length + 1);
+  };
+
+  const setInitialBenchmarks = (initialBenchmarks) => {
+    initialBenchmarks.forEach((b, idx) => {
+      setValue(`C${idx + 1}`, b.benchmark);
+      setValue(`D${idx + 1}`, b.output_text);
+    });
+  };
+
+  useEffect(() => {
+    if (initialBenchmarks) {
+      addInitialBenchmarks(initialBenchmarks);
+      setInitialBenchmarks(initialBenchmarks);
+    }
+  }, [initialBenchmarks]);
+
   const handleBenchmarkAdd = () => {
-    setBenchmarks([...benchmarks, { id: bCnt }]);
+    setBenchmarks((state) => [...state, { id: bCnt }]);
     setBCnt((state) => state + 1);
   };
 
@@ -31,17 +54,20 @@ function SurveyCreateFormHeader({
         <input
           id="benchmark"
           name="benchmark"
-          type="url"
+          type="number"
+          min="0"
           className={cn(styles.benchInput, "form-control")}
           placeholder="O점 이상일때"
+          autoComplete="off"
           {...register(`C${b.id}`)}
         ></input>
         <input
           id="benchmark"
           name="benchmark"
-          type="url"
+          type="text"
           className="survey-input-box form-control"
           placeholder="점수에 해당하는 문구를 작성하세요"
+          autoComplete="off"
           {...register(`D${b.id}`)}
         ></input>
         <button
@@ -148,7 +174,7 @@ function SurveyCreateFormHeader({
             <input
               id="output_link"
               name="output_link"
-              type="url"
+              type="text"
               className={cn("form-control", "mt-2")}
               placeholder=" "
               autoComplete="off"

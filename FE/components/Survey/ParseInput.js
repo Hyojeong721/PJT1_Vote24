@@ -32,7 +32,6 @@ const parseInput = (data) => {
         });
         break;
       case "Q":
-        console.log(key, qIndex);
         const question = {
           order: qIndex,
           context: data[key],
