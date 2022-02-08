@@ -27,23 +27,23 @@ function Navbar({ currentPage, code }) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <NavItem
-              active={currentPage === `/user/${code}}/survey/health`}
-              url={`/user/${code}}/survey/health`}
+              active={currentPage === `/user/${code}/survey/health`}
+              url={`/user/${code}/survey/health`}
               title="건강설문"
             />
             <NavItem
-              active={currentPage === `/user/${code}}/survey/service`}
-              url={`/user/${code}}/survey/service`}
+              active={currentPage === `/user/${code}/survey/service`}
+              url={`/user/${code}/survey/service`}
               title="병원설문"
             />
             <NavItem
-              active={currentPage === `/user/${code}}/notice`}
-              url={`/user/${code}}/notice`}
+              active={currentPage === `/user/${code}/notice`}
+              url={`/user/${code}/notice`}
               title="공지사항"
             />
             <NavItem
-              active={currentPage === `/user/${code}}/event`}
-              url={`/user/${code}}/event`}
+              active={currentPage === `/user/${code}/event`}
+              url={`/user/${code}/event`}
               title="이벤트"
             />
           </ul>
