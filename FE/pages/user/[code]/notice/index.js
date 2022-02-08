@@ -8,9 +8,8 @@ function NoticeUser({ code, noticeList }) {
       <UserPostListItem
         key={idx}
         url={`/user/${code}/notice/${n.id}`}
+        post={n}
         idx={idx + 1}
-        title={n.title}
-        fixed={n.fixed}
       />
     );
   });
@@ -30,7 +29,10 @@ export default NoticeUser;
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+
+  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hId}`;
   const noticeList = await axios.get(NOTICE_URL).then((res) => {
     return res.data;
   });

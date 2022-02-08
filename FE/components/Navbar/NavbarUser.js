@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import NavItem from "./NavItem";
+import NavItemUser from "./NavItemUser";
 import Logo from "../../public/logo.png";
 
-function Navbar({ currentPage, code }) {
+function NavbarUser({ currentPage, code }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -26,24 +26,24 @@ function Navbar({ currentPage, code }) {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <NavItem
-              active={currentPage === `/user/${code}}/survey/health`}
-              url={`/user/${code}}/survey/health`}
+            <NavItemUser
+              active={currentPage === `/user/[code]/survey/health`}
+              url={`/user/${code}/survey/health`}
               title="건강설문"
             />
-            <NavItem
-              active={currentPage === `/user/${code}}/survey/service`}
-              url={`/user/${code}}/survey/service`}
+            <NavItemUser
+              active={currentPage === `/user/[code]/survey/service`}
+              url={`/user/${code}/survey/service`}
               title="병원설문"
             />
-            <NavItem
-              active={currentPage === `/user/${code}}/notice`}
-              url={`/user/${code}}/notice`}
+            <NavItemUser
+              active={currentPage === `/user/[code]/notice`}
+              url={`/user/${code}/notice`}
               title="공지사항"
             />
-            <NavItem
-              active={currentPage === `/user/${code}}/event`}
-              url={`/user/${code}}/event`}
+            <NavItemUser
+              active={currentPage === `/user/[code]/event`}
+              url={`/user/${code}/event`}
               title="이벤트"
             />
           </ul>
@@ -53,4 +53,4 @@ function Navbar({ currentPage, code }) {
   );
 }
 
-export default Navbar;
+export default NavbarUser;

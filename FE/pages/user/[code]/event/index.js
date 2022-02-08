@@ -3,15 +3,13 @@ import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 
 function EventUser({ code, eventList }) {
-  const paintEventList = eventList.map((n, idx) => {
+  const paintEventList = eventList.map((e, idx) => {
     return (
       <UserPostListItem
         key={idx}
-        url={`/user/${code}/event/${n.id}`}
+        url={`/user/${code}/event/${e.id}`}
         idx={idx + 1}
-        title={n.title}
-        start_at={n.start_at}
-        end_at={n.end_at}
+        post={e}
       />
     );
   });
@@ -31,7 +29,11 @@ export default EventUser;
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${code}`;
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hId}`;
   const eventList = await axios.get(EVENT_URL).then((res) => {
     return res.data;
   });

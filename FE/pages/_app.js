@@ -1,9 +1,9 @@
 import { wrapper } from "../store";
-import { useState, useEffect } from "react";
 import { useStore, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { PersistGate } from "redux-persist/integration/react";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import cn from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 
@@ -34,12 +34,13 @@ function MyApp({ Component, pageProps }) {
 
   const currentPage = router.pathname;
   const code = router.query.code;
+  const isUserPage = currentPage.includes("user");
 
   return (
     <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
-      <div>
+      <div className={isUserPage ? "halfPage" : ""}>
         <div className="navbar">
-          {!currentPage.includes("user") ? (
+          {!isUserPage ? (
             <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
           ) : (
             <NavbarUser currentPage={currentPage} code={code} />
