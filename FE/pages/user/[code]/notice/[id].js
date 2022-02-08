@@ -49,7 +49,11 @@ export default NoticeDetailUser;
 export async function getServerSideProps({ params }) {
   const code = params.code;
   const nId = params.id;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${code}/${nId}`;
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+
+  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hId}/${nId}`;
   const noticeDetail = await axios.get(NOTICE_DETAIL_URL).then((res) => {
     console.log(res);
     return res.data;

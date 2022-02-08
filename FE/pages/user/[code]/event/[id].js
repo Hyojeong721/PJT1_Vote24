@@ -57,7 +57,11 @@ export default EventDetailUser;
 export async function getServerSideProps({ params }) {
   const code = params.code;
   const nId = params.id;
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${code}/${nId}`;
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+
+  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hId}/${nId}`;
   const eventDetail = await axios.get(EVENT_DETAIL_URL).then((res) => {
     console.log(res.data);
     return res.data;

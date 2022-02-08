@@ -18,3 +18,8 @@ a {
 .navbar {
   width: 100%;
 }
+
+.halfPage {
+  margin: auto;
+  max-width: 820px;
+}
