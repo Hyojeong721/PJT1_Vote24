@@ -12,9 +12,9 @@ const router = express.Router();
  * GET Notice List
  * Example URL = ../notice/947780
  *----------------------------------------------------------------------*/
-router.get("/notice/:code", async (req, res) => {
+router.get("/notice/:hospital_id", async (req, res) => {
   try {
-    const code = req.params.code;
+    const hospital_id = req.params.hospital_id;
     //const { filter } = req.query;
 
     const sql = `select
@@ -23,9 +23,9 @@ router.get("/notice/:code", async (req, res) => {
                         title, 
                         views,
                         fixed
-                        from hospital_notice where code =? order by fixed desc, created_at desc`;
+                        from hospital_notice where hospital_id =? order by fixed desc, created_at desc`;
 
-    const data = await pool.query(sql, [code]);
+    const data = await pool.query(sql, [hospital_id]);
     const result = data[0];
 
     logger.info("GET Notice List");
