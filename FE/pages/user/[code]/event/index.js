@@ -33,7 +33,6 @@ export async function getServerSideProps({ params }) {
   const code = params.code;
   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${code}`;
   const eventList = await axios.get(EVENT_URL).then((res) => {
-    console.log(res.data);
     return res.data;
   });
 
