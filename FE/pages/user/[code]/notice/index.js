@@ -8,9 +8,8 @@ function NoticeUser({ code, noticeList }) {
       <UserPostListItem
         key={idx}
         url={`/user/${code}/notice/${n.id}`}
+        post={n}
         idx={idx + 1}
-        title={n.title}
-        fixed={n.fixed}
       />
     );
   });

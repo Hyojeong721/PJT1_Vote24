@@ -1,6 +1,5 @@
 import React from "react";
-import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Image from "next/image";
@@ -96,17 +95,17 @@ function Navbar({ isLoggedIn, currentPage }) {
                   title="서비스 공지사항"
                 />
                 <NavDropdown
-                  active={currentPage.includes("survey")}
+                  active={currentPage.split("/")[1] === "survey"}
                   title="설문"
                   subtitles={surveyDropdown}
                 />
                 <NavDropdown
-                  active={currentPage.includes("notice")}
+                  active={currentPage.split("/")[1] === "notice"}
                   title="병원 공지"
                   subtitles={hNoticeDropdown}
                 />
                 <NavDropdown
-                  active={currentPage.includes("event")}
+                  active={currentPage.split("/")[1] === "event"}
                   title="병원 이벤트"
                   subtitles={hEventDropdown}
                 />

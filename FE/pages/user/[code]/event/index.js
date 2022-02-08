@@ -3,15 +3,13 @@ import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 
 function EventUser({ code, eventList }) {
-  const paintEventList = eventList.map((n, idx) => {
+  const paintEventList = eventList.map((e, idx) => {
     return (
       <UserPostListItem
         key={idx}
-        url={`/user/${code}/event/${n.id}`}
+        url={`/user/${code}/event/${e.id}`}
         idx={idx + 1}
-        title={n.title}
-        start_at={n.start_at}
-        end_at={n.end_at}
+        post={e}
       />
     );
   });

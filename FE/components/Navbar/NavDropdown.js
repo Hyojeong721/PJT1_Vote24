@@ -1,9 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import cn from "classnames";
+import styles from "../../styles/navitem.module.css";
 
 function NavDropdown({ active, title, subtitles }) {
+  const className = active
+    ? cn("nav-item", "dropdown", styles.navItem)
+    : cn("nav-item", "dropdown");
+
   return (
-    <li className={`nav-item dropdown ${active ? "active" : ""}`}>
+    <li className={className}>
       <a
         className="nav-link dropdown-toggle"
         href="#"

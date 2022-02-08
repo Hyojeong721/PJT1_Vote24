@@ -4,7 +4,9 @@ import cn from "classnames";
 import styles from "../../styles/navitem.module.css";
 
 function NavItem({ active, url, title }) {
-  const className = active ? cn("nav-item", styles.navItem) : cn("nav-item");
+  const className = active
+    ? cn("nav-item", styles.navItemUser)
+    : cn("nav-item");
 
   return (
     <li className={className}>

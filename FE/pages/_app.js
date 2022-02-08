@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
-      <div className={isUserPage && "halfPage"}>
+      <div className={isUserPage ? "halfPage" : ""}>
         <div className="navbar">
           {!isUserPage ? (
             <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
