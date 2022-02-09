@@ -79,8 +79,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     }
 
     const result = { questions, score };
-    console.log("##", question);
-    console.log("@@@", result);
+
     await axios
       .post(SURVEY_SUBMIT_URL, result)
       .then((res) => {
@@ -94,7 +93,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   };
 
   return (
-    <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
+    <div className="home-user-bg position-relative min-vh-100 d-flex flex-column align-items-center">
       <div className="w-75 bg-white form-control mt-3 text-center">
         <BackButton url={`/user/${code}/survey/${categoryName}`} />
         <div className="fs-1">{title}</div>
