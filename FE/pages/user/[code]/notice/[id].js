@@ -5,7 +5,19 @@ import BackButton from "../../../../components/BackButton";
 import ISODateFormatter from "../../../../components/ISODateFormatter";
 
 function NoticeDetailUser({ code, noticeDetail }) {
-  const { title, context, created_at, updated_at, views, image } = noticeDetail;
+  const {
+    title,
+    context,
+    created_at,
+    updated_at,
+    views,
+    image,
+    prev_id,
+    prev_title,
+    next_id,
+    next_title,
+  } = noticeDetail;
+  console.log(noticeDetail);
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
@@ -31,16 +43,20 @@ function NoticeDetailUser({ code, noticeDetail }) {
           목록
         </button>
       </Link>
-      <Link href={`/user/${code}/notice/`} passHref>
-        <div className="w-75 p-1 border-bottom border-top d-flex flex-column justify-content-center align-items-center">
-          <div>이전글</div>
-        </div>
-      </Link>
-      <Link href={`/user/${code}/notice/`} passHref>
-        <div className="w-75 p-1 border-bottom d-flex flex-column justify-content-center align-items-center">
-          <div>다음글</div>
-        </div>
-      </Link>
+      {prev_id && (
+        <Link href={`/user/${code}/notice/${prev_id}`} passHref>
+          <div className="w-75 p-1 border-bottom border-top d-flex flex-column justify-content-center align-items-center">
+            <div>이전글: {prev_title}</div>
+          </div>
+        </Link>
+      )}
+      {next_id && (
+        <Link href={`/user/${code}/notice/${next_id}`} passHref>
+          <div className="w-75 p-1 border-bottom d-flex flex-column justify-content-center align-items-center">
+            <div>다음글: {next_title}</div>
+          </div>
+        </Link>
+      )}
     </div>
   );
 }
