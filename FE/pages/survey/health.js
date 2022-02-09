@@ -18,7 +18,7 @@ function Health() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
-  // console.log(SURVEY_HEALTH_URL);
+  console.log(SURVEY_HEALTH_URL);
 
   // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
@@ -44,7 +44,11 @@ function Health() {
         <Link href={"service"}>
           <a>만족도 설문으로 가기</a>
         </Link>
-        <SurveyList dataList={currentPosts} category={"0"}></SurveyList>
+        <SurveyList
+          setDataList={setDataList}
+          dataList={currentPosts}
+          category={"0"}
+        ></SurveyList>
         <Paging
           postsPerPage={postsPerPage}
           totalPosts={dataList.length}

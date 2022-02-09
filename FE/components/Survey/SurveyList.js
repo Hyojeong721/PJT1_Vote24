@@ -9,7 +9,7 @@ import listbtn from "../../styles/listbtn.module.css";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
-const SurveyList = ({ category, dataList }) => {
+const SurveyList = ({ setDataList, category, dataList }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -21,7 +21,6 @@ const SurveyList = ({ category, dataList }) => {
     "작성일",
     "status",
   ];
-  console.log(category);
   const statusicon = (status) => {
     if (status) {
       return <div>진행중</div>;
@@ -57,23 +56,28 @@ const SurveyList = ({ category, dataList }) => {
     }
   };
 
-  // 선택 삭제
+  const jwt = localStorage.getItem("jwt");
   const handleRemove = () => {
     if (checkList.length) {
       checkList.map((surveyId) => {
         axios
-          .delete(`${SURVEY_URL}/${surveyId}`)
+          .delete(`${url}/${surveyId}`, {
+            headers: {
+              authorization: jwt,
+            },
+          })
           .then((response) => {
-            console.log(response);
+            console.log("삭제성공", response);
           })
           .catch((error) => {
             console.log(error);
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== surveyId));
+        setDataList((state) => state.filter((data) => data.id !== surveyId));
       });
     } else {
-      return alert("삭제할 설문을 선택하세요.");
+      return alert("삭제할 목록을 선택하세요.");
     }
   };
 
@@ -133,11 +137,11 @@ const SurveyList = ({ category, dataList }) => {
                       )}`}
                       url={`${item.id}`}
                     />
+                    <TableColumn content={item.count} url={`${item.id}`} />
                     <TableColumn
                       content={DateForm(item.created_at)}
                       url={`${item.id}`}
                     />
-                    <TableColumn content={item.count} url={`${item.id}`} />
                     <TableColumn
                       content={statusicon(item.status)}
                       url={`${item.id}`}

@@ -7,7 +7,7 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const NoticeList = ({ dataList, url, createUrl }) => {
+const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -59,6 +59,7 @@ const NoticeList = ({ dataList, url, createUrl }) => {
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== noticeId));
+        setDataList((state) => state.filter((data) => data.id !== noticeId));
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");

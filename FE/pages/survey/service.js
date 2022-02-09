@@ -31,9 +31,18 @@ function Service() {
       <Header title="서비스 만족도"></Header>
       <div className="container">
         <Link href={"health"}>
-          <a>건강설문</a>
+          <a>건강 설문으로 가기</a>
         </Link>
-        <SurveyList dataList={dataList}></SurveyList>
+        <SurveyList
+          setDataList={setDataList}
+          dataList={currentPosts}
+          category={"1"}
+        ></SurveyList>
+        <Paging
+          postsPerPage={postsPerPage}
+          totalPosts={dataList.length}
+          paginate={paginate}
+        />
       </div>
     </div>
   );

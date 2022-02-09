@@ -41,6 +41,7 @@ function HospitalEvent() {
       <Header title="병원 공지사항"></Header>
       <div className="container div-table">
         <NoticeList
+          setDataList={setDataList}
           dataList={currentPosts}
           url={NOTICE_URL}
           createUrl={CREATE_URL}
