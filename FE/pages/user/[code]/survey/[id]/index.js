@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import BackButton from "../../../../../components/BackButton";
+import UserSurveyAgeGender from "../../../../../components/User/UserSurveyAgeGender";
 
 function SurveyDetailUser({ code, sId, surveyDetail }) {
   const SURVEY_SUBMIT_URL = `http://i6a205.p.ssafy.io:8000/api/survey/result/${sId}`;
@@ -51,7 +52,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     const { order, context, option } = q;
     return (
       <div key={order} className="border rounded-3 my-3">
-        <div className="fs-2 p-1">{context}</div>
+        <div className="fs-2 ps-3 p-2">{context}</div>
         <div className="survey-option-box p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
@@ -78,7 +79,13 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
       }
     }
 
+<<<<<<< HEAD
     const result = { questions, score };
+=======
+    const { age, gender } = data;
+
+    const result = { questions, score, age, gender };
+>>>>>>> ce7820b5ba50a6299fdcfcb571d0290216e69c83
 
     await axios
       .post(SURVEY_SUBMIT_URL, result)
@@ -101,7 +108,10 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
           <span>{context}</span>
         </div>
       </div>
-      <div className="w-75 bg-white form-control my-3">{paintQuestions}</div>
+      <div className="w-75 bg-white form-control my-3">
+        <UserSurveyAgeGender register={register} />
+        <div>{paintQuestions}</div>
+      </div>
       <button
         type="button"
         className="btn survey-user-submit-button text-white mb-3"
