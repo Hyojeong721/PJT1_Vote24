@@ -48,6 +48,7 @@ function SurveyCreateForm() {
       })
       .then((res) => {
         toast.success("설문 생성 성공");
+        console.log(res.data);
         router.push(`/survey/${res.data.surveyID}`);
       })
       .catch((err) => {
