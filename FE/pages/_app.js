@@ -10,7 +10,6 @@ import LoginWrapper from "../components/LoginWrapper";
 import Navbar from "../components/Navbar/Navbar";
 import NavbarUser from "../components/Navbar/NavbarUser";
 import Footer from "../components/Footer";
-import "../styles/footer.css";
 import "../styles/globals.css";
 import "../styles/header.css";
 import "../styles/login.css";
@@ -38,13 +37,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
       <div className={isUserPage ? "halfPage" : ""}>
-        <div className="navbar">
-          {!isUserPage ? (
-            <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
-          ) : (
-            <NavbarUser currentPage={currentPage} code={code} />
-          )}
-        </div>
+        {!isUserPage ? (
+          <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
+        ) : (
+          <NavbarUser currentPage={currentPage} code={code} />
+        )}
         <div className="page_body min-vh-100">
           <LoginWrapper>
             <Component {...pageProps} />

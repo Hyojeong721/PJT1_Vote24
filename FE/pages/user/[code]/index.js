@@ -11,7 +11,7 @@ function HomeUser({ code, name, phone, image }) {
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
         <div className="w-100 d-flex flex-column align-items-center">
           <div className="text-center fw-bold">
-            <div className="d-flex align-items-center fs-1 mt-3 gap-1">
+            <div className="d-flex align-items-center mt-3 gap-1">
               <Image
                 src={image}
                 width="30px"
@@ -19,7 +19,7 @@ function HomeUser({ code, name, phone, image }) {
                 layout="fixed"
                 priority
               ></Image>
-              <div>{name}</div>
+              <div className="hospitalName">{name}</div>
             </div>
           </div>
           <div className="w-75 d-flex flex-column align-items-center mt-3 bg-white rounded shadow">
@@ -27,7 +27,7 @@ function HomeUser({ code, name, phone, image }) {
             <div className="d-flex flex-column justify-content-center flex-sm-row">
               <Link href={`/user/${code}/survey/health`} passHref>
                 <a className="home-user-survey-button btn border m-3 d-flex flex-column">
-                  <div className="d-flex justify-content-center align-items-center">
+                  <div className="d-flex justify-content-center align-items-center border-bottom pb-1">
                     <div className="fs-3">환자 보호자 대상</div>
                     <span className="material-icons">north_east</span>
                   </div>
@@ -43,7 +43,7 @@ function HomeUser({ code, name, phone, image }) {
               </Link>
               <Link href={`/user/${code}/survey/service`} passHref>
                 <a className="home-user-survey-button btn border m-3 d-flex flex-column">
-                  <div className="d-flex justify-content-center align-items-center">
+                  <div className="d-flex justify-content-center align-items-center border-bottom pb-1">
                     <div className="fs-3">병원 만족도 조사</div>
                     <span className="material-icons">north_east</span>
                   </div>
@@ -60,12 +60,12 @@ function HomeUser({ code, name, phone, image }) {
             </div>
           </div>
           <Link href={`/user/${code}/notice`} passHref>
-            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center shadow-lg">
               <h2 className="text-white">병원 공지사항</h2>
             </a>
           </Link>
           <Link href={`/user/${code}/event`} passHref>
-            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center">
+            <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center shadow-lg">
               <h2 className="text-white">병원 이벤트</h2>
             </a>
           </Link>
