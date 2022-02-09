@@ -59,6 +59,11 @@
             "date": 1644287447104,
             "name": "log\\login\\2022-02-08.login.log",
             "hash": "b1ee4d0980ca0c9609bccc4a7f6626e9"
+        },
+        {
+            "date": 1644367310967,
+            "name": "log\\login\\2022-02-09.login.log",
+            "hash": "08f05ab9e452dfc55e77c015f6020688"
         }
     ]
 }
