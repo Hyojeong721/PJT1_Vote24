@@ -15,12 +15,12 @@ class CustomDocument extends Document {
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
           />
-          <body>
-            <Main />
-            <NextScript />
-            <noscript>Vote24 병원 설문조사 플랫폼</noscript>
-          </body>
         </Head>
+        <body>
+          <Main />
+          <NextScript />
+          <noscript>Vote24 병원 설문조사 플랫폼</noscript>
+        </body>
       </Html>
     );
   }
