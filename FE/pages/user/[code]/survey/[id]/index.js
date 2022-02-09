@@ -79,13 +79,9 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
       }
     }
 
-<<<<<<< HEAD
-    const result = { questions, score };
-=======
     const { age, gender } = data;
 
     const result = { questions, score, age, gender };
->>>>>>> ce7820b5ba50a6299fdcfcb571d0290216e69c83
 
     await axios
       .post(SURVEY_SUBMIT_URL, result)
