@@ -2,7 +2,9 @@ import { useEffect } from "react";
 
 function QuestionEssay({ register, q, index, setValue }) {
   useEffect(() => {
-    setValue(`Q${q.id}E`, q.context);
+    if (setValue) {
+      setValue(`Q${q.id}E`, q.context);
+    }
   }, []);
   return (
     <div className="w-100 mt-3 p-1 border rounded shadow-sm bg-white">
