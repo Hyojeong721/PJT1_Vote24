@@ -27,6 +27,7 @@ router.post(
       attachment;
 
     try {
+      let a;
       if (req.body.attachment) {
         nameParser("uploads/service", "uploads/service", attachment, rename);
         const sql = `INSERT INTO service_notice ( 
@@ -42,7 +43,7 @@ router.post(
                         fixed) VALUES(?, ?, ?);`;
         const data = await pool.query(sql, [title, context, fixed]);
       }
-      const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
+      const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM service_notice;`;
       const data_id = await pool.query(LAST_INSERT_ID);
       const create_id = data_id[0][0].auto_id;
       logger.info("POST Event Detail");
