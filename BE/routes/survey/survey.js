@@ -278,7 +278,8 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
-      result[i].status = now < result[i].end_at;
+      if (now < result[i].start_at) result[i].status = 0;
+      else result[i].status = now < result[i].end_at ? 1 : 2;
     }
     console.log(result);
     logger.info("[INFO] GET /survey/list");
