@@ -5,8 +5,8 @@ import Logo from "../public/logo.png";
 function Footer() {
   return (
     <footer className="container-fluid footer-box navbar-fixed-bottom p-3 border-top">
-      <div className="container w-50 d-flex justify-content-between align-items-center">
-        <div>
+      <div className="container w-75 d-flex justify-content-between align-items-center">
+        <div className="d-flex flex-column justify-content-center align-items-center">
           <Image className="navbar-logo" src={Logo} alt="vote24" />
           <small className="d-block mb-3 text-muted">Vote24 &copy; 2022</small>
         </div>

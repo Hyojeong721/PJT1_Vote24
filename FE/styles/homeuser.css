@@ -1,5 +1,5 @@
 .home-user-bg {
-  background-color: #84c3dc;
+  background-color: #c4f9ff;
 }
 
 .home-user-survey-button:hover {
@@ -17,7 +17,8 @@
 }
 
 .user-header {
-  background-color: #84c3dc;
+  background-color: #c4f9ff;
+  font-weight: bold;
   height: 100px;
 }
 

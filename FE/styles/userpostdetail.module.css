@@ -1,0 +1,11 @@
+.prevnextButton {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.prevnextButton:hover {
+  background-color: #dcf5ff;
+}

@@ -9,16 +9,20 @@ const { verifyToken } = require("../utils/jwt");
 const today = new Date();
 
 // 매일 업데이트 되는 sum.txt 파일
-schedule.scheduleJob("0 0 0 * *", function () {
-  const total = pool.query(`SELECT SUM(count) FROM hospital_survey`);
-  console.log(total);
-  try {
-    fs.writeFile("../data/sum.txt", `${total[0]}`);
-    logger.info("Update Total Count Success");
-  } catch (error) {
-    logger.error("Update Total Count Fail " + error);
-  }
-});
+// schedule.scheduleJob("0 0 0 * * *", function () {
+//   console.log("schedule");
+//   const total = pool.query(`SELECT SUM(count) FROM hospital_survey`);
+//   console.log(total);
+//   try {
+//     fs.writeFile("../data/sum.txt", `${total[0]}`);
+//     logger.info("Update Total Count Success");
+//   } catch (error) {
+//     logger.error("Update Total Count Fail " + error);
+//   }
+// });
+// schedule.scheduleJob("10 * * * * *", function () {
+//   console.log("매 10초에 실행");
+// });
 
 /*----------------------------------------------------------------------*
  * GET Main Detail

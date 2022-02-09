@@ -1,4 +1,5 @@
 import axios from "axios";
+import UserHeader from "../../../../components/User/UserHeader";
 import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 
@@ -16,9 +17,9 @@ function NoticeUser({ code, noticeList }) {
 
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="w-100 d-flex justify-content-center mt-3">
+      <header className="position-relative w-100 d-flex justify-content-center mt-3">
         <BackButton url={`/user/${code}`} />
-        <div className="text-white fs-1">공지사항</div>
+        <UserHeader title="공지사항" />
       </header>
       {paintNoticeList}
     </div>
