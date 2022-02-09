@@ -27,14 +27,23 @@ function SurveyCreateForm() {
 
   const onSubmit = async (data) => {
     const { qList, bList } = parseInput(data);
-    const { category, title, context, output_link, start_at, end_at } = data;
+    const {
+      category,
+      title,
+      context,
+      start_at,
+      end_at,
+      output_link,
+      reservation_link,
+    } = data;
     const result = {
       category,
       title,
       context,
-      output_link,
       start_at,
       end_at,
+      output_link,
+      reservation_link,
       question: qList,
       benchmark: bList,
     };
