@@ -1,6 +1,8 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import cn from "classnames";
+import styles from "../../../../styles/userpostdetail.module.css";
 import BackButton from "../../../../components/BackButton";
 import ISODateFormatter from "../../../../components/ISODateFormatter";
 
@@ -25,11 +27,11 @@ function NoticeDetailUser({ code, noticeDetail }) {
         <BackButton url={`/user/${code}/notice`} />
         <div>공지사항</div>
       </header>
-      <div className="w-75 user-detail-header border-bottom d-flex flex-column justify-content-center align-items-center">
-        <div className="fs-1">제목 {title}</div>
-        <div>
-          {ISODateFormatter(updated_at)} | 조회수 {views}
-        </div>
+      <div className="w-75 user-detail-header d-flex flex-column justify-content-center align-items-center">
+        <div className="fs-1">{title}</div>
+      </div>
+      <div className="w-100 d-flex justify-content-end  border-bottom ">
+        {ISODateFormatter(updated_at)} | 조회수 {views}
       </div>
       <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
         <div>{context}</div>
@@ -45,16 +47,23 @@ function NoticeDetailUser({ code, noticeDetail }) {
       </Link>
       {prev_id && (
         <Link href={`/user/${code}/notice/${prev_id}`} passHref>
-          <div className="w-75 p-1 border-bottom border-top d-flex flex-column justify-content-center align-items-center">
+          <a
+            className={cn(
+              styles.prevnextButton,
+              "p-1",
+              "border-bottom",
+              "border-top"
+            )}
+          >
             <div>이전글: {prev_title}</div>
-          </div>
+          </a>
         </Link>
       )}
       {next_id && (
         <Link href={`/user/${code}/notice/${next_id}`} passHref>
-          <div className="w-75 p-1 border-bottom d-flex flex-column justify-content-center align-items-center">
+          <a className={cn(styles.prevnextButton, "p-1", "border-bottom")}>
             <div>다음글: {next_title}</div>
-          </div>
+          </a>
         </Link>
       )}
     </div>

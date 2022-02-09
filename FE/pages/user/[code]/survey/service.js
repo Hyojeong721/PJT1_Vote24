@@ -18,10 +18,15 @@ function SurveyServiceUser({ code, surveyList }) {
   });
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="mt-3">
+      <header className="position-relative w-100 d-flex justify-content-center mt-3">
         <BackButton url={`/user/${code}`} />
         <div className="text-white fs-1">병원 설문 조사</div>
       </header>
+      {surveyList.length ? (
+        paintSurveyList
+      ) : (
+        <div>설문이 존재하지 않습니다.</div>
+      )}
       {paintSurveyList}
     </div>
   );
