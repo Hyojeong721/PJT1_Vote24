@@ -1,6 +1,7 @@
 import axios from "axios";
 import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
+import UserHeader from "../../../../components/User/UserHeader";
 
 function SurveyServiceUser({ code, surveyList }) {
   console.log("surveyList:", surveyList);
@@ -20,7 +21,7 @@ function SurveyServiceUser({ code, surveyList }) {
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
       <header className="position-relative w-100 d-flex justify-content-center mt-3">
         <BackButton url={`/user/${code}`} />
-        <div className="text-white fs-1">병원 설문 조사</div>
+        <UserHeader title="병원 설문 조사" />
       </header>
       {surveyList.length ? (
         paintSurveyList

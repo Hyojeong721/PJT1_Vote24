@@ -2,23 +2,39 @@ import axios from "axios";
 import Link from "next/link";
 import BackButton from "../../../../../components/BackButton";
 
-function SurveyDetailUser({ code, sId, score, outputText, outputLink }) {
+function SurveyDetailUser({
+  code,
+  sId,
+  score,
+  outputText,
+  outputLink,
+  reservationLink,
+}) {
+  console.log(outputText);
+  console.log("@@@@");
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
-      <div className="text-white fs-1 mt-3">설문 결과</div>
+      <div className="fs-1 mt-3">설문 결과</div>
       <div className="w-75 bg-white form-control mt-3 text-center gap-3">
-        <div className="fs-1 mt-3">
-          <p>{outputText || "설문에 참여해주셔서 감사합니다."}</p>
+        <div className="fs-1 my-3 border-bottom">
+          <p>설문에 참여해주셔서 감사합니다.</p>
         </div>
-        <div className="fs-3">
-          <p>{score === "0" || ""}</p>
-          <p>{outputText}</p>
+        <div className="fs-3 my-3 border-bottom ">
+          <p>{score === "0" || `결사결과: ${score}점 (${outputText})`}</p>
         </div>
         {score === "0" || (
-          <div className="fs-3">
-            <p>건강 정보 더보기 / 병원 예약</p>
-            <Link href={outputLink}>
-              <a>{outputLink}</a>
+          <div className="d-flex flex-column justify-content-center align-items-center fs-3 my-3 gap-3">
+            <Link href={`https://${outputLink}`} passHref>
+              <a>
+                건강 정보 더보기{" "}
+                <span className="material-icons">north_east</span>
+              </a>
+            </Link>
+            <Link href={`https://${outputLink}`} passHref>
+              <a>
+                진료예약 바로가기{" "}
+                <span className="material-icons">north_east</span>
+              </a>
             </Link>
           </div>
         )}
@@ -41,15 +57,18 @@ function SurveyDetailUser({ code, sId, score, outputText, outputLink }) {
 
 export async function getServerSideProps({ query }) {
   const { code, id, score } = query;
-  const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/${id}`;
-  const benchmarks = await axios.get(GET_BENCHMARK_URL).then((res) => {
-    return res.data;
-  });
+  const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/list/${id}`;
+  const { title, output_link, reservation_link, benchmark } = await axios
+    .get(GET_BENCHMARK_URL)
+    .then((res) => {
+      return res.data;
+    });
 
   let outputText = "";
-  for (let i = 0; i < benchmarks.length; i++) {
-    if (score > benchmarks[i].benchmarks) {
-      outputText = benchmarks[i].output_text;
+  for (let i = 0; i < benchmark.length; i++) {
+    if (score > benchmark[i].benchmark) {
+      console.log("here", score, benchmark[i].benchmark);
+      outputText = benchmark[i].output_text;
     }
   }
 
@@ -58,8 +77,10 @@ export async function getServerSideProps({ query }) {
       code,
       sId: id,
       score,
+      title,
       outputText,
-      outputLink: "naver.com",
+      outputLink: output_link,
+      reservationLink: reservation_link,
     },
   };
 }

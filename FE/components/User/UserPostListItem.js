@@ -23,7 +23,7 @@ function UserPostListItem({ url, idx, post }) {
 
   return (
     <Link href={url} passHref>
-      <a className="w-75 user-survey-list-item btn d-flex justify-content-between align-items-center mt-3">
+      <a className="w-75 user-survey-list-item shadow-sm btn d-flex justify-content-between align-items-center mt-3">
         <div className="d-flex">
           {fixed === 1 && <div className="btn btn-primary">고정</div>}
           <div className="fs-5 ms-3">

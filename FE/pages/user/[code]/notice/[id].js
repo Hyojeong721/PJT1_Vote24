@@ -23,7 +23,7 @@ function NoticeDetailUser({ code, noticeDetail }) {
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="w-100 user-header d-flex flex-column justify-content-center align-items-center text-white fs-1">
+      <header className="position-relative w-100 user-header d-flex flex-column justify-content-center align-items-center fs-1">
         <BackButton url={`/user/${code}/notice`} />
         <div>공지사항</div>
       </header>

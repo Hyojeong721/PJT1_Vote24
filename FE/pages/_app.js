@@ -3,14 +3,13 @@ import { useStore, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
-import cn from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 
 import LoginWrapper from "../components/LoginWrapper";
 import Navbar from "../components/Navbar/Navbar";
 import NavbarUser from "../components/Navbar/NavbarUser";
-import Footer from "../components/Footer2";
+import Footer from "../components/Footer";
 import "../styles/footer.css";
 import "../styles/globals.css";
 import "../styles/header.css";
