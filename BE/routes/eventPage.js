@@ -115,7 +115,7 @@ router.post(
                 end_at) value(?,?,?,?,?)`;
         const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at]);
       }
-      const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
+      const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_event;`;
       const data_id = await pool.query(LAST_INSERT_ID);
       const create_id = data_id[0][0].auto_id;
       logger.info("POST Event Detail");
