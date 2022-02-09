@@ -7,9 +7,7 @@ import axios from "axios";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
-
-const SurveyList = ({ setDataList, category, dataList }) => {
+const SurveyList = ({ url, setDataList, category, dataList }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -30,7 +28,6 @@ const SurveyList = ({ setDataList, category, dataList }) => {
   };
   // 설문 목록의 모든 설문id값을 idList에 넣는다.
   useEffect(() => {
-    // 이 화면에서 이용할 list변수에 부모한테 받아온 data들 다 넣어주기
     setList(dataList);
 
     let ids = [];
@@ -42,15 +39,14 @@ const SurveyList = ({ setDataList, category, dataList }) => {
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    // 체크할 시 checkList에 id 값 전체 넣기, 체크 해제할 시 checkList에 빈 배열 넣기
     setCheckList(e.target.checked ? idList : []);
   };
+
   // 개별 선택/해제
   const onChangeEach = (e, id) => {
     if (e.target.checked) {
       setCheckList([...checkList, id]);
       console.log(checkList);
-      // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
     } else {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }

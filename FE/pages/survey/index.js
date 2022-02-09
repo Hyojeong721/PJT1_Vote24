@@ -10,7 +10,7 @@ function Survey() {
     <div>
       <Header title="병원 설문조사 목록"></Header>
       <div className="container mt-3">
-        <Link href={`/survey/health?hospital_id=${hospital_id}`} passHref>
+        <Link href="/survey/health" passHref>
           <a>
             <div className="card mb-2">
               <div className="card-body">
