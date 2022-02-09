@@ -25,7 +25,7 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
       const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?, ?);`;
       await pool.query(survey_sql, [hospital_id, category, title, context, output_link, start_at]);
     }
-    const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_survey;`;
+    const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const surveyID_data = await pool.query(LAST_INSERT_ID);
     const surveyID = surveyID_data[0][0].auto_id;
     console.log(surveyID);
@@ -33,9 +33,6 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
     let option_sql = ``;
     let benchmark_sql = ``;
 
-    const LAST_INSERT_ID_Q = `SELECT MAX(id) as auto_id FROM question;`;
-    let questionID_data;
-    let questionID;
     for (i = 0; i < question.length; i++) {
       question_sql =
         "INSERT INTO question ( survey_id, `order`, context, type ) VALUES(?, ?, ?, ?);";
@@ -45,8 +42,8 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
         question[i].context,
         question[i].type,
       ]);
-      questionID_data = await pool.query(LAST_INSERT_ID_Q);
-      questionID = questionID_data[0][0].auto_id;
+      let questionID_data = await pool.query(LAST_INSERT_ID);
+      let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
       console.log(!question[i].option);
       if (!question[i].option) {
@@ -113,7 +110,7 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
       const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, start_at ) VALUES(?, ?, ?, ?, ?, ?);`;
       await pool.query(survey_sql, [hospital_id, category, title, context, output_link, start_at]);
     }
-    const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_survey;`;
+    const LAST_INSERT_ID = `SELECT LAST_INSERT_ID() as auto_id;`;
     const surveyID_data = await pool.query(LAST_INSERT_ID);
     const surveyID = surveyID_data[0][0].auto_id;
     console.log(surveyID);
@@ -121,9 +118,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     let option_sql = ``;
     let benchmark_sql = ``;
 
-    const LAST_INSERT_ID_Q = `SELECT MAX(id) as auto_id FROM question;`;
-    let questionID_data;
-    let questionID;
     for (i = 0; i < question.length; i++) {
       question_sql =
         "INSERT INTO question ( survey_id, `order`, context, type ) VALUES(?, ?, ?, ?);";
@@ -133,8 +127,8 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         question[i].context,
         question[i].type,
       ]);
-      questionID_data = await pool.query(LAST_INSERT_ID_Q);
-      questionID = questionID_data[0][0].auto_id;
+      let questionID_data = await pool.query(LAST_INSERT_ID);
+      let questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
       console.log(!question[i].option);
       if (!question[i].option) {
