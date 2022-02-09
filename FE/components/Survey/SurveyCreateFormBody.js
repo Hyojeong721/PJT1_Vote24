@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import QuestionChoice from "./QuestionChoice";
 import QuestionEssay from "./QuestionEssay";
+import cn from "classnames";
+import styles from "../../styles/surveycreateformbody.module.css";
 
 function SurveyCreateFormBody({
   register,
@@ -56,7 +58,10 @@ function SurveyCreateFormBody({
 
   const paintQuestions = questions.map((q, index) => {
     return (
-      <div key={q.id} className="d-flex align-items-start">
+      <div
+        key={q.id}
+        className="position-relative d-flex align-items-start mt-3"
+      >
         {q.type === 0 ? (
           <QuestionChoice
             index={index}
@@ -75,12 +80,12 @@ function SurveyCreateFormBody({
             setValue={setValue}
           />
         )}
-        <button
-          className="btn material-icons p-0"
+        <i
+          className={cn(styles.deleteButton, "btn", "material-icons", "p-0")}
           onClick={() => handleQuestionDelete(q.id)}
         >
           highlight_off
-        </button>
+        </i>
       </div>
     );
   });
