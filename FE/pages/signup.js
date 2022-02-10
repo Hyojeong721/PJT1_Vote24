@@ -176,7 +176,7 @@ function Signup() {
       <Header title="서비스 신청"></Header>
       <div className="container d-flex justify-content-center">
         <form
-          className="form-box d-flex flex-column"
+          className="form-box d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div>

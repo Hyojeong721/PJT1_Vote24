@@ -79,7 +79,7 @@ function Navbar({ isLoggedIn, currentPage }) {
                 <NavItem
                   active={currentPage === "/service/info"}
                   url="/service/info"
-                  title="서비스 소개"
+                  title="이용 안내"
                 />
                 <NavItem
                   active={currentPage === "/service/notice"}

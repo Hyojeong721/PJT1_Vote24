@@ -18,7 +18,7 @@ function Main() {
             <div>Vote24</div>
             <div>설문조사 플랫폼</div>
           </div>
-          <div className="absolute header_image">
+          <div className="container header_image">
             <Image src={header_image} alt="header" />
           </div>
           <div className="code_input d-flex align-items-center justify-content-between indigo p-2">

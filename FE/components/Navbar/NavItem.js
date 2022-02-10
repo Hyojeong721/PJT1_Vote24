@@ -4,10 +4,8 @@ import cn from "classnames";
 import styles from "../../styles/navitem.module.css";
 
 function NavItem({ active, url, title }) {
-  const className = active ? cn("nav-item", styles.navItem) : cn("nav-item");
-
   return (
-    <li className={className}>
+    <li className="nav-item">
       <Link href={url}>
         <a className="nav-link">{title}</a>
       </Link>

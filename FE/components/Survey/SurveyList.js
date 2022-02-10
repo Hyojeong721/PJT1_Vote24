@@ -82,7 +82,13 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
       <div className={cn(listbtn.btns)}>
         <div>검색</div>
         <div>
-          <Link href={`create?category=${category}`} passHref>
+          <Link
+            href={{
+              pathname: "/survey/create",
+              query: { category },
+            }}
+            passHref
+          >
             <a className={cn(listbtn.createbtn, "btn btn-primary")}>설문작성</a>
           </Link>
           <button

@@ -12,10 +12,9 @@ const BenchBox = ({ benchmark }) => {
               return (
                 <div key={b.id} className={cn(ct.bench)}>
                   <p>
-                    {" "}
                     총점 <span className={cn(ct.blue)}>~ {b.benchmark}점 </span>
                   </p>
-                  <p> => {b.output_text}</p>
+                  <p> =&gt; {b.output_text}</p>
                 </div>
               );
             })
