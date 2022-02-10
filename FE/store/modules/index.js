@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 
 import userStatus from "./userStatus";
+import hospitalInfo from "./hospitalInfo";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +14,7 @@ const rootReducer = (state, action) => {
     default: {
       const combineReducer = combineReducers({
         userStatus,
+        hospitalInfo,
       });
       return combineReducer(state, action);
     }

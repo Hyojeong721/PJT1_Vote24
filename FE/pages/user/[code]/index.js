@@ -1,27 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
 import MedicalImageOne from "../../../public/medical1.png";
 import MedicalImageTwo from "../../../public/medical2.png";
 
-function HomeUser({ code, name, phone, image }) {
+function HomeUser({ code, hId, name, phone, image }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_INFO",
+      hospitalInfo: {
+        hId,
+        name,
+        phone,
+        image,
+      },
+    });
+  }, []);
+
   return (
     <div>
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
-        <div className="w-100 d-flex flex-column align-items-center">
-          <div className="text-center fw-bold">
-            <div className="d-flex align-items-center mt-3 gap-1">
-              <Image
-                src={image}
-                width="30px"
-                height="30px"
-                layout="fixed"
-                priority
-              ></Image>
-              <div className="hospitalName">{name}</div>
-            </div>
-          </div>
+        <div className="w-100 d-flex flex-column align-items-center mt-5">
           <div className="w-75 d-flex flex-column align-items-center mt-3 bg-white rounded shadow">
             <div className="fs-2 mt-1">설문조사</div>
             <div className="d-flex flex-column justify-content-center flex-sm-row">
@@ -37,6 +40,7 @@ function HomeUser({ code, name, phone, image }) {
                       alt="button-illust"
                       width={400}
                       height={431}
+                      priority
                     />
                   </div>
                 </a>
@@ -53,6 +57,7 @@ function HomeUser({ code, name, phone, image }) {
                       alt="button-illust"
                       width={400}
                       height={431}
+                      priority
                     />
                   </div>
                 </a>
@@ -77,6 +82,7 @@ function HomeUser({ code, name, phone, image }) {
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
+
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
   const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
 
@@ -88,6 +94,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       code,
+      hId,
       name,
       phone,
       image,

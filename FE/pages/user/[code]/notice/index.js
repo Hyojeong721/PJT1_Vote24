@@ -21,7 +21,16 @@ function NoticeUser({ code, noticeList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="공지사항" />
       </header>
-      {paintNoticeList}
+      {noticeList.length ? (
+        paintNoticeList
+      ) : (
+        <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
+          <span className="material-icons fs-1 d-flex align-items-center">
+            priority_high
+          </span>
+          작성된 공지사항이 없습니다.
+        </div>
+      )}
     </div>
   );
 }
