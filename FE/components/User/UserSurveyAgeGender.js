@@ -9,7 +9,7 @@ function UserSurveyAgeGender({ register }) {
         <div className="d-flex align-items-center ps-3 p-2">
           <div>연령</div>
           <select
-            class={cn(styles.selectInput, "form-select")}
+            className={cn(styles.selectInput, "form-select")}
             aria-label="age"
             {...register("age", { required: true })}
           >
@@ -24,7 +24,7 @@ function UserSurveyAgeGender({ register }) {
         <div className="d-flex align-items-center">
           <div>성별</div>
           <select
-            class={cn(styles.selectInput2, "form-select")}
+            className={cn(styles.selectInput2, "form-select")}
             aria-label="gender"
             {...register("gender", { required: true })}
           >
