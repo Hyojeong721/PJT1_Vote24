@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Header from "../../components/Header";
-import NoticeDetailItem from "../../components/Notice/NoticeDetailItem";
+import Header from "../../../components/Header";
+import NoticeDetailItem from "../../../components/Notice/NoticeDetailItem";
 
 function NoticeDetail() {
   const { userInfo } = useSelector((state) => state.userStatus);

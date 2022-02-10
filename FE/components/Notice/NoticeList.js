@@ -106,7 +106,7 @@ const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
         </thead>
         <tbody>
           {list
-            ? list.map((item) => {
+            ? list.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -117,7 +117,8 @@ const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={item.id}
+                      content={index + 1}
+                      fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
