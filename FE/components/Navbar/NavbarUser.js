@@ -6,7 +6,7 @@ import Logo from "../../public/logo.png";
 
 function NavbarUser({ currentPage, code }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div className="container-fluid">
         <Link href={`/user/${code}`}>
           <a className="navbar-brand navbar-logo">

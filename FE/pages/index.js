@@ -14,12 +14,7 @@ function Home() {
   //   }
   // }, []);
 
-  return (
-    <div>
-      isLoggedIn : {`${isLoggedIn}`} / userInfo.id : {userInfo.id}
-      {!isLoggedIn ? <Main /> : <MainOnLogin />}
-    </div>
-  );
+  return <div>{!isLoggedIn ? <Main /> : <MainOnLogin />}</div>;
 }
 
 export default Home;

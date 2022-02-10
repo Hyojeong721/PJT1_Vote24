@@ -1,20 +1,35 @@
-import React from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Link from "next/link";
+import axios from "axios";
 import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
 import HospitalSatisfaction from "./HospitalSatisfaction";
-import styles from "../../styles/mainonlogin.module.css";
 import cn from "classnames";
+import styles from "../../styles/mainonlogin.module.css";
 
 function MainOnLogin() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const { id, code, name } = userInfo;
+  const [image, setImage] = useState("");
+
+  const fetchImage = async () => {
+    const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${id}`;
+    const { image } = await axios
+      .post(GET_HOSPITAL_INFO_URL)
+      .then((res) => res.data);
+
+    setImage(image);
+  };
+
+  useEffect(() => {
+    fetchImage();
+  }, []);
 
   return (
     <>
-      <Header title={name} subtitle={`코드 :${code}`}>
+      <Header title={name} subtitle={`코드 :${code}`} image={image}>
         <Link href={`/user/${code}`} passhref>
           <a
             className={cn(styles.goButton, "border", "rounded", "fs-5", "ms-3")}

@@ -1,10 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../public/logo.png";
+import cn from "classnames";
+import styles from "../styles/footer.module.css";
 
 function Footer() {
   return (
-    <footer className="container-fluid footer-box navbar-fixed-bottom p-3 border-top">
+    <footer
+      className={cn(
+        styles.footerBox,
+        "container-fluid",
+        "navbar-fixed-bottom",
+        "p-3",
+        "border-top"
+      )}
+    >
       <div className="container w-75 d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column justify-content-center align-items-center">
           <Image className="navbar-logo" src={Logo} alt="vote24" />

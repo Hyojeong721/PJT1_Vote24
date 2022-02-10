@@ -87,9 +87,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
         "border-2",
         "shadow",
         "rounded",
-        "d-flex",
-        "flex-column",
-        "align-items-center",
         "mt-5",
         "pb-5"
       )}
