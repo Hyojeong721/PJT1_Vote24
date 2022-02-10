@@ -21,8 +21,8 @@ function HospitalEvent() {
   useEffect(() => {
     const getList = async () => {
       const res = await axios.get(`${NOTICE_URL}`);
-      const res_data = res.data;
-      const data = res_data.reverse();
+      const data = res.data;
+
       console.log("병원 공지 데이터", data);
 
       setDataList(data);
