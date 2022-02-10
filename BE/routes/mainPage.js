@@ -6,20 +6,22 @@ const router = express.Router();
 const { pool } = require("../utils/mysql");
 const { logger } = require("../utils/winston");
 const { verifyToken } = require("../utils/jwt");
+const { count } = require("console");
 const today = new Date();
 
 // 매일 업데이트 되는 sum.txt 파일
-// schedule.scheduleJob("0 0 0 * * *", function () {
-//   console.log("schedule");
-//   const total = pool.query(`SELECT SUM(count) FROM hospital_survey`);
-//   console.log(total);
-//   try {
-//     fs.writeFile("../data/sum.txt", `${total[0]}`);
-//     logger.info("Update Total Count Success");
-//   } catch (error) {
-//     logger.error("Update Total Count Fail " + error);
-//   }
-// });
+schedule.scheduleJob("0 0 0 * * *", async function () {
+  console.log("schedule");
+  const total = await pool.query(`SELECT SUM(count) as last_total FROM hospital_survey`);
+  try {
+    fs.writeFile("data/sum.txt", `${total[0][0].last_total}`, (err) => {
+      if (err) console.log("err : " + err);
+    });
+    logger.info("Update Total Count Success");
+  } catch (error) {
+    logger.error("Update Total Count Fail " + error);
+  }
+});
 // schedule.scheduleJob("10 * * * * *", function () {
 //   console.log("매 10초에 실행");
 // });
@@ -35,6 +37,7 @@ router.get("/main/:hospital_id", async (req, res) => {
     "0" +
     (today.getDate() + 1)
   ).slice(-2)}'`;
+  console.log(date);
   try {
     const available_eventCnt = await pool.query(
       `SELECT COUNT(id) AS cnt FROM hospital_event WHERE start_at <= ${date} AND end_at > ${date}`
