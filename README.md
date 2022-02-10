@@ -296,4 +296,5 @@ front : nginx와 함께 docker에서 배포
 back 
 mysql
 docker-compose로 합침
+- 개인작업 : 수정로직 작성중
 
