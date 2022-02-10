@@ -50,26 +50,26 @@ function SurveyDetailItem({ sId, surveyDetail }) {
           <div>{title}</div>
         </h2>
 
-        <div className={cn(ct.contentInfo)}>
-          <span className={cn(ct.item)}>작성일 : {DateForm(created_at)}</span>
-          <span className={cn(ct.item)}> | </span>
-          <span className={cn(ct.item)}>
-            설문기한 : {DateForm(start_at)} ~ {DateForm(end_at)}
-          </span>
-          <span className={cn(ct.item)}> | </span>
-          <span className={cn(ct.item)}> 총 참여자수 : {count} </span>
-          <div className={cn(ct.btns)}>
-            <div name="rightbtn">
-              <Link href={`/survey/${sId}/update`} passHref>
-                <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
-              </Link>
-              <button
-                onClick={(e) => handleRemove({ category }, e)}
-                className={cn(ct.btn, "btn btn-danger")}
-              >
-                삭제
-              </button>
-            </div>
+        <div className={cn(ct.contentInfo, "d-flex justify-content-between")}>
+          <div>
+            <span className={cn(ct.item)}>작성일 : {DateForm(created_at)}</span>
+            <span className={cn(ct.item)}> | </span>
+            <span className={cn(ct.item)}>
+              설문기한 : {DateForm(start_at)} ~ {DateForm(end_at)}
+            </span>
+            <span className={cn(ct.item)}> | </span>
+            <span className={cn(ct.item)}> 총 참여자수 : {count} </span>
+          </div>
+          <div>
+            <Link href={`/survey/${sId}/update`} passHref>
+              <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
+            </Link>
+            <button
+              onClick={(e) => handleRemove({ category }, e)}
+              className={cn(ct.btn, "btn btn-danger")}
+            >
+              삭제
+            </button>
           </div>
         </div>
       </div>
