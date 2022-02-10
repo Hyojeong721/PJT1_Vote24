@@ -286,3 +286,14 @@ TIL
 https://cpro95.tistory.com/492
 -ssr VS csr
 참고: https://onlyfor-me-blog.tistory.com/387
+//////
+0209
+chart.js 도입 설문 결과 통계 차트로 보여주기
+////
+0210 
+배포 ->
+front : nginx와 함께 docker에서 배포
+back 
+mysql
+docker-compose로 합침
+
