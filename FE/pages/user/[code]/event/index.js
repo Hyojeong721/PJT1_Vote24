@@ -21,7 +21,16 @@ function EventUser({ code, eventList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="이벤트" />
       </header>
-      {paintEventList}
+      {eventList.length ? (
+        paintEventList
+      ) : (
+        <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
+          <span className="material-icons fs-1 d-flex align-items-center">
+            priority_high
+          </span>
+          작성된 이벤트가 없습니다.
+        </div>
+      )}
     </div>
   );
 }

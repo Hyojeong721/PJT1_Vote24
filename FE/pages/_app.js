@@ -1,5 +1,7 @@
 import { wrapper } from "../store";
 import { useStore, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
