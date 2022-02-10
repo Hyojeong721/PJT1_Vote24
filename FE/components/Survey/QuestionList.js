@@ -14,9 +14,7 @@ const QuestionList = ({ total, dataList }) => {
         <PieChart total={total} dataList={dataList}></PieChart>
         <PieChart total={total} dataList={dataList}></PieChart>
       </div>
-      {/* <div>
-        <BarChart total={total} dataList={dataList}></BarChart>
-      </div> */}
+
       <div className={cn(ct.questionListResult)}>문항별 응답현황</div>
       {dataList
         ? dataList.map((item) => {
@@ -41,9 +39,11 @@ const QuestionList = ({ total, dataList }) => {
                           <div className={cn(ct.optionCnt)}>
                             <span>선택횟수 : </span>
                             <span>{opt.count} </span>
-                            <span>
-                              ({Math.round((opt.count / total) * 100)}%)
-                            </span>
+                            {opt.count != 0 && (
+                              <span>
+                                ({Math.round((opt.count / total) * 100)}%)
+                              </span>
+                            )}
                           </div>
                         </div>
                       );
