@@ -74,8 +74,10 @@ function SurveyDetailItem({ sId, surveyDetail }) {
         </div>
       </div>
       <div className={cn(ct.surveyInfo)}>{context}</div>
-      <QuestionList dataList={question}></QuestionList>
-      <Benchbox benchmark={benchmark} />
+      <div name="surveyBody">
+        <QuestionList total={count} dataList={question}></QuestionList>
+        <Benchbox benchmark={benchmark} />
+      </div>
     </div>
   );
 }
