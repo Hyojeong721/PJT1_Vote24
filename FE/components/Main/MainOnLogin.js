@@ -29,7 +29,7 @@ function MainOnLogin() {
 
   return (
     <>
-      <Header title={name} subtitle={`코드 :${code}`} image={image}>
+      <Header title={name} subtitle={`코드: ${code}`} image={image}>
         <Link href={`/user/${code}`} passhref>
           <a
             className={cn(styles.goButton, "border", "rounded", "fs-5", "ms-3")}
