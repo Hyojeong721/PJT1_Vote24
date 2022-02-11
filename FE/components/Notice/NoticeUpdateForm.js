@@ -60,7 +60,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         }
       }
       const jwt = localStorage.getItem("jwt");
-      // 서버에 보내기
+
       await axios
         .put(url, fd, {
           headers: {
@@ -69,13 +69,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           },
         })
         .then((res) => {
-          // toast("공지사항 등록 성공!");
-          console.log(res.data);
-          console.log(res.data.id);
+          console.log("병원공지 수정 성공", res.data);
           router.push(`/notice/${noticeId}`);
         })
         .catch((err) => {
-          toast.error("공지사항 수정 실패!", {
+          toast.error("병원공지 수정 실패!", {
             autoClose: 3000,
           });
           console.log(err);
@@ -161,7 +159,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
 
       <div name="취소등록버튼" className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href="/notice/" passHref>
+          <Link href={`/notice/${noticeId}`} passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>
