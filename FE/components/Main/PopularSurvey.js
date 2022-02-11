@@ -1,22 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function PopularSurvery() {
-  const [surveyList, setSurveyList] = useState([]);
-  const GET_SURVEY_URL = "https://jsonplaceholder.typicode.com/posts";
-
-  const getSurvey = async () => {
-    await axios
-      .get(GET_SURVEY_URL)
-      .then((res) => {
-        setSurveyList(res.data.slice(0, 5));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getSurvey();
-  }, []);
+function PopularSurvery({ popularSurveys }) {
+  const [surveyList, setSurveyList] = useState(popularSurveys);
 
   return (
     <div className="card mb-3 col-12 col-lg-5">
@@ -32,13 +17,14 @@ function PopularSurvery() {
             </tr>
           </thead>
           <tbody>
-            {surveyList.map((el) => (
-              <tr key={el.id}>
-                <th scope="row">{el.id}</th>
-                <td>{el.title}</td>
-                <td>{el.userId}</td>
-              </tr>
-            ))}
+            {surveyList.length &&
+              surveyList.map((el) => (
+                <tr key={el.id}>
+                  <th scope="row">{el.id}</th>
+                  <td>{el.title}</td>
+                  <td>{el.userId}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
