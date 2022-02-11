@@ -32,6 +32,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     }));
   };
 
+  // 고정 체크 박스 수정
+  const handlefixed = (e) => {
+    handleChange("fixed", e.target.value);
+  };
+
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,11 +82,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         });
     }
   };
-  // 고정 체크 박스
-  const handlefixed = (e) => {
-    console.log(e.target);
-    handleChange("fixed", e.target.value);
-  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -109,7 +109,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           </div>
           <div className={cn(cs.formControl)}>
             <span className="form-label me-3">
-              <label htmlFor="fixed" />
               <input
                 id="fixed"
                 type="radio"
@@ -118,10 +117,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
                 checked={values.fixed == 1}
                 onChange={handlefixed}
               />
-              {"  "}
-              고정공지
+              {"  "} <label htmlFor="fixed">고정공지</label>
             </span>
-            <label htmlFor="no_fixed" className="form-label" />
             <input
               id="no_fixed"
               type="radio"
@@ -131,7 +128,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               onChange={handlefixed}
             />
             {"  "}
-            일반공지
+            <label htmlFor="no_fixed">일반공지</label>
           </div>
         </div>
 
