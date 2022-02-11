@@ -29,7 +29,10 @@ function Signup() {
   }, [isLoggedIn, router]);
 
   const schema = yup.object().shape({
-    email: yup.string().email().required("이메일 입력은 필수입니다."),
+    email: yup
+      .string()
+      .email("유효하지 않은 이메일입니다.")
+      .required("이메일 입력은 필수입니다."),
     password: yup
       .string()
       .required("비밀번호 입력은 필수입니다.")
@@ -129,8 +132,8 @@ function Signup() {
 
   const onEmailCheck = async (e) => {
     const email = getValues("email");
-    if (email === "") {
-      toast.error("이메일을 입력해주세요!");
+    if (email === "" || errors.email?.message) {
+      toast.error("유효하지 않은 이메일입니다!");
       return;
     }
     const data = { email };
@@ -176,7 +179,7 @@ function Signup() {
       <Header title="서비스 신청"></Header>
       <div className="container d-flex justify-content-center">
         <form
-          className="form-box d-flex flex-column"
+          className="form-box d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div>
@@ -202,7 +205,7 @@ function Signup() {
               <div className="input-box form-floating ">
                 <input
                   id="email"
-                  type="email"
+                  type="text"
                   className="form-control"
                   placeholder=" "
                   {...register("email", {

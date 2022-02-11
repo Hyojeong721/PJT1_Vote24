@@ -1,5 +1,5 @@
-.simple-card {
-  width: 25%;
+.card {
+  min-width: 190px;
 }
 
 .red {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,12 @@ import styles from "../../styles/surveycreateform.module.css";
 function SurveyCreateForm() {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
+
+  useEffect(() => {
+    if (router.query.category) {
+      setNowCategory(router.query.category);
+    }
+  }, []);
 
   const { userInfo } = useSelector((state) => state.userStatus);
   const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;

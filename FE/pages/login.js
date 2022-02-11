@@ -68,12 +68,12 @@ function Login() {
   }
 
   return (
-    <>
+    <div className="min-vh-100">
       <Header title="로그인"></Header>
-      <div className="container d-flex justify-content-center">
+      <div className="container h-100 d-flex justify-content-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-50 d-flex flex-column"
+          className="w-50 d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
         >
           <div className="mt-5">
             <div className="fw-bold">이메일</div>
@@ -118,22 +118,20 @@ function Login() {
             </div>
           </div>
 
-          <div className="d-flex justify-content-center mt-3">
+          <div className="d-flex justify-content-center mt-5">
             <button type="submit" className="submit-button btn btn-primary">
               로그인
             </button>
           </div>
-          <div className="d-flex justify-content-center mt-5">
-            <div>
-              <p className="text-center">아직 회원이 아니신가요?</p>
-              <Link href="/signup" passHref>
-                <a className="submit-button btn btn-success">서비스 신청</a>
-              </Link>
-            </div>
+          <div className="d-flex flex-column justify-content-center align-items-center mt-3">
+            <p className="text-center mb-0">아직 회원이 아니신가요?</p>
+            <Link href="/signup" passHref>
+              <a className="submit-button btn btn-success">서비스 신청</a>
+            </Link>
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

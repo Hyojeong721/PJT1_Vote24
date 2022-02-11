@@ -12,6 +12,11 @@ class CustomDocument extends Document {
             crossOrigin="anonymous"
           />
           <link
+            href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+            rel="stylesheet"
+            type="text/css"
+          />
+          <link
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
           />

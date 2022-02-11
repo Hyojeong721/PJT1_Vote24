@@ -17,7 +17,7 @@ function Footer() {
     >
       <div className="container w-75 d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <Image className="navbar-logo" src={Logo} alt="vote24" />
+          <Image src={Logo} alt="vote24" width={100} height={27} />
           <small className="d-block mb-3 text-muted">Vote24 &copy; 2022</small>
         </div>
         <div>
