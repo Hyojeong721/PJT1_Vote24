@@ -70,7 +70,8 @@ router.get("/benchmark/list/:survey_id", async (req, res) => {
   try {
     const survey_id = req.params.survey_id;
     // const { page } = req.query;
-    const output_link_sql = "SELECT id, title, output_link FROM hospital_survey WHERE id=?";
+    const output_link_sql =
+      "SELECT id, title, output_link, reservation_link FROM hospital_survey WHERE id=?";
     const output_link_data = await pool.query(output_link_sql, [survey_id]);
     const benchmark_sql = `SELECT * FROM benchmark WHERE survey_id=?;`;
     const benchmark_data = await pool.query(benchmark_sql, [survey_id]);
