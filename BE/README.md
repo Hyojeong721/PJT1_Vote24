@@ -1,5 +1,5 @@
 Copy this command for install all dependency Package; 
-` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt helmet crypto`
+` npm i express mysql2 cors fs winston winston-daily-rotate-file multer jsonwebtoken path bctypt helmet crypto node-schedule`
 
 #[2022/01/17]
 * 서버 오픈
@@ -71,3 +71,24 @@ Copy this command for install all dependency Package;
 * 설문 결과 benchmark, output_link 추가
 * 회원가입시 code 생성기능 추가
 * 게시글 상세 prev / next 추가
+
+#[2022/02/07]
+* 공지, 이벤트, 설문 리스트 출력 순서 변경
+* /code/:code 요청 추가
+
+#[2022/02/08]
+* mainPage.js 작성
+* 에러 디버깅
+
+#[2022/02/09]
+* 이벤트, 설문 status(0,1,2) 추가
+* 에러 디버깅
+
+#[2022/02/10]
+* survey_result 테이블 추가
+* 설문 결과 입출력 시 survey_result.age, survey_result.gender 입출력 처리 추가.
+* 에러 디버깅
+
+#[2022/02/11]
+* mainPage.js 기능 추가 및 마무리.
+* 에러 디버깅
