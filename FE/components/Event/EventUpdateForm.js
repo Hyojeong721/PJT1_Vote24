@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
-const NoticeUpdateForm = ({ noticeId, url }) => {
+const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
+
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
@@ -32,11 +33,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     }));
   };
 
-  // 고정 체크 박스 수정
-  const handlefixed = (e) => {
-    handleChange("fixed", e.target.value);
-  };
-
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,21 +40,24 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       alert("제목을 입력하세요.");
     } else if (values.context == "") {
       alert("내용을 입력하세요.");
+    } else if (values.start_at == "" || values.end_at == "") {
+      alert("이벤트 날짜를 입력하시오!!");
     } else {
-      console.log("수정 성공");
       const fd = new FormData();
       for (let key in values) {
         if (key === "imgFile") {
           if (values[key] != null) {
             const imgFile = values[key];
             const imgName = imgFile.name;
-            fd.append("notice_image", imgFile);
+            fd.append("event_img", imgFile);
             fd.append("attachment", imgName);
           }
         } else {
+          console.log(key, values[key]);
           fd.append(`${key}`, values[key]);
         }
       }
+      // 서버에 보내기
       const jwt = localStorage.getItem("jwt");
 
       await axios
@@ -69,11 +68,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           },
         })
         .then((res) => {
-          console.log("병원공지 수정 성공", res.data);
-          router.push(`/notice/${noticeId}`);
+          console.log("이벤트 수정 성공", res.data);
+          router.push(`/event/${eventId}`);
         })
         .catch((err) => {
-          toast.error("병원공지 수정 실패!", {
+          toast.error("이벤트 수정 실패!", {
             autoClose: 3000,
           });
           console.log(err);
@@ -94,43 +93,43 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
             <input
               className={cn(cs.input)}
               name="title"
-              onChange={handleInputChange}
               id="title"
               value={values.title}
+              onChange={handleInputChange}
+              required
             ></input>
           </div>
         </div>
 
-        <div name="체크박스" className={cn(cs.formRow, "d-flex")}>
+        <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
-            <span className={cn(cs.star)}>*{"  "}</span>TYPE
+            <label htmlFor="start_at">
+              <span className={cn(cs.star)}>*{"  "}</span>시작일
+            </label>{" "}
+            ~ <label htmlFor="end_at">마감일</label>
           </div>
           <div className={cn(cs.formControl)}>
-            <span className="form-label me-3">
-              <input
-                id="fixed"
-                type="radio"
-                name="fixed"
-                defaultValue={1}
-                checked={values.fixed == 1}
-                onChange={handlefixed}
-              />
-              {"  "} <label htmlFor="fixed">고정공지</label>
-            </span>
             <input
-              id="no_fixed"
-              type="radio"
-              name="fixed"
-              defaultValue={0}
-              checked={values.fixed == 0}
-              onChange={handlefixed}
-            />
-            {"  "}
-            <label htmlFor="no_fixed">일반공지</label>
+              id="start_at"
+              name="start_at"
+              type="datetime-local"
+              onChange={handleInputChange}
+              value={values.start_at}
+              required
+            ></input>
+            {"  "}~{"  "}
+            <input
+              id="end_at"
+              name="end_at"
+              type="datetime-local"
+              onChange={handleInputChange}
+              value={values.end_at}
+              required
+            ></input>
           </div>
         </div>
 
-        <div name="내용" className={cn(cs.formRow, "d-flex")}>
+        <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
               <span className={cn(cs.star)}>*{"  "}</span>내용
@@ -140,15 +139,16 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           <div className={cn(cs.formControl)}>
             <textarea
               className={cn(cs.textarea)}
+              id="context"
               name="context"
               value={values.context}
               onChange={handleInputChange}
-              id="context"
+              required
             ></textarea>
           </div>
         </div>
 
-        <div name="첨부파일" className={cn(cs.formRow)}>
+        <div className={cn(cs.formRow)}>
           <FileInput
             name="imgFile"
             value={values.imgFile}
@@ -156,10 +156,9 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           ></FileInput>
         </div>
       </div>
-
-      <div name="취소등록버튼" className={cn(cs.btns, "d-flex")}>
+      <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href={`/notice/${noticeId}`} passHref>
+          <Link href="/notice/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>
@@ -173,4 +172,4 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   );
 };
 
-export default NoticeUpdateForm;
+export default EventUpdateForm;
