@@ -1,8 +1,11 @@
 .noticeCreate {
-  margin: 20px 0px;
+  margin: 0px 0px;
 }
-.formRowtop {
+.form {
   border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-top: 50px;
+  padding: 10px;
 }
 
 .formRow {
@@ -42,7 +45,7 @@
 }
 
 .btns {
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 0;
   justify-content: center;
 }
