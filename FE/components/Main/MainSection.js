@@ -20,7 +20,7 @@ function MainSection() {
         </div>
         <div className="row">
           <div className="col-lg-12">
-            <div className={cn(styles.card, "p-2", "rounded")}>
+            <div className={cn(styles.card, "card", "p-2", "rounded")}>
               <div className={(styles.cardImage, "rounded")}>
                 <Image className="img-fluid" src={mainImage1} />
               </div>
@@ -35,7 +35,7 @@ function MainSection() {
               </div>
             </div>
 
-            <div className={cn(styles.card, "p-2", "rounded")}>
+            <div className={cn(styles.card, "card", "p-2", "rounded")}>
               <div className={(styles.cardImage, "rounded")}>
                 <Image className="img-fluid" src={mainImage2} />
               </div>
@@ -49,7 +49,7 @@ function MainSection() {
               </div>
             </div>
 
-            <div className={cn(styles.card, "p-2", "rounded")}>
+            <div className={cn(styles.card, "card", "p-2", "rounded")}>
               <div className={(styles.cardImage, "rounded")}>
                 <Image className="img-fluid" src={mainImage3} />
               </div>
