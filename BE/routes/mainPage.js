@@ -32,17 +32,6 @@ schedule.scheduleJob("0 0 0 * * *", async function () {
  *----------------------------------------------------------------------*/
 router.get("/main/:hospital_id", async (req, res) => {
   const hospital_id = req.params.hospital_id;
-
-  // const date = `'${today.getFullYear()}-${("0" + today.getMonth() + 1).slice(-2)}-${(
-  //   "0" +
-  //   (today.getDate() + 1)
-  // ).slice(-2)}'`;
-  // const date = new Date(+new Date() + 3240 * 10000)
-  //   .toISOString()
-  //   .replace("T", " ")
-  //   .replace(/\..*/, "");
-  // const date = new Date();
-  // console.log(date);
   try {
     const available_eventCnt = await pool.query(
       `SELECT COUNT(id) AS cnt FROM hospital_event WHERE start_at <= now() AND end_at > now()`
@@ -79,7 +68,7 @@ router.get("/main/:hospital_id", async (req, res) => {
       `select r.age , r.gender  from survey_result r join hospital_survey s on r.survey_id = s.id where s.hospital_id = ${hospital_id};`
     );
 
-    const populartVotes = await pool.query(
+    const popularVotes = await pool.query(
       `SELECT id, title, count FROM hospital_survey WHERE hospital_id = ${hospital_id} AND start_at <= now() AND end_at > now() ORDER BY count DESC`
     );
 
@@ -92,7 +81,7 @@ router.get("/main/:hospital_id", async (req, res) => {
       totalMyVote: totalMyVote[0][0].cnt,
       todayVote: todayVote,
       result_Mysurvey: result_Mysurvey[0],
-      populartVotes: populartVotes[0],
+      popularVotes: popularVotes[0],
     };
 
     logger.info("GET Main Success");
