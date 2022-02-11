@@ -306,6 +306,7 @@ docker-compose로 합침
 참고자료 : https://velog.io/@oseo/React-state%EC%99%80-useState
 state vs useState
 -체크박스 데이터 수정
+참고자료 : https://note.redgoose.me/article/1848/
 기존 데이터를 받아온 상태로 radio 체킹되어있고 누를때마다 value값 변경으로  변화 / 
 ```
 const handlefixed = (e) => {
