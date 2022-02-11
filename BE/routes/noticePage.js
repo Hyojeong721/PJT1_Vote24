@@ -150,7 +150,7 @@ router.put(
   verifyToken,
   notice_upload.single("notice_image"),
   async (req, res) => {
-    const { hospital_id, id } = req.query;
+    const { hospital_id, id } = req.params;
 
     const { title, fixed, context, attachment } = req.body;
 
@@ -172,7 +172,7 @@ router.put(
         const sql = `update hospital_notice set
             title =?, 
             context =?, 
-            fixed =?, 
+            fixed =? 
             where id=? AND hospital_id =?`;
         const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
       }

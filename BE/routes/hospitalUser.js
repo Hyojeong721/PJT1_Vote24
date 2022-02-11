@@ -16,7 +16,7 @@ router.post("/code/:code", async (req, res) => {
     const sql = "SELECT id FROM hospital_info WHERE code = ?";
     const data = await pool.query(sql, [code]);
     const id = data[0][0].id;
-    return res.json(id);
+    return res.json({ id: id });
   } catch (error) {
     logger.error("POST /code/:code " + error);
     return res.json(error);
@@ -125,7 +125,8 @@ router.post("/login", async (req, res) => {
                     email, 
                     password,
                     name,
-                    code FROM hospital_info WHERE email=?`;
+                    code,
+                    logo_image FROM hospital_info WHERE email=?`;
     const data = await pool.query(sql, [email]);
     if (!data[0][0]) {
       logger.error("POST HospitalUser Login Fail : No exist ID");
@@ -134,6 +135,7 @@ router.post("/login", async (req, res) => {
     const UserId = data[0][0].id;
     const code = data[0][0].code;
     const name = data[0][0].name; // name 추가
+    const image = "http://i6a205.p.ssafy.io:8000/api/logoimage/" + data[0][0].logo_image;
     const hashedPassword = await hashPassword(data[0][0].password);
     const compareResult = await comparePassword(password, hashedPassword);
 
@@ -151,7 +153,14 @@ router.post("/login", async (req, res) => {
     );
 
     logger.info("POST HospitalUser login");
-    return res.json({ result: "ok", id: UserId, name: name, code: code, token: token });
+    return res.json({
+      result: "ok",
+      id: UserId,
+      name: name,
+      code: code,
+      token: token,
+      image: image,
+    });
   } catch (error) {
     logger.info("POST HospitalUser login " + error);
     return res.json(error);
