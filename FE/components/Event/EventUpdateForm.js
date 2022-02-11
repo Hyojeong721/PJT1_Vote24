@@ -61,7 +61,7 @@ const EventUpdateForm = ({ eventId, url }) => {
       const jwt = localStorage.getItem("jwt");
 
       await axios
-        .post(url, fd, {
+        .put(url, fd, {
           headers: {
             authorization: jwt,
             "Content-Type": `multipart/form-data`,
@@ -96,6 +96,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               id="title"
               value={values.title}
               onChange={handleInputChange}
+              required
             ></input>
           </div>
         </div>
@@ -111,17 +112,19 @@ const EventUpdateForm = ({ eventId, url }) => {
             <input
               id="start_at"
               name="start_at"
-              type="date"
+              type="datetime-local"
               onChange={handleInputChange}
               value={values.start_at}
+              required
             ></input>
             {"  "}~{"  "}
             <input
               id="end_at"
               name="end_at"
-              type="date"
+              type="datetime-local"
               onChange={handleInputChange}
               value={values.end_at}
+              required
             ></input>
           </div>
         </div>
@@ -136,10 +139,11 @@ const EventUpdateForm = ({ eventId, url }) => {
           <div className={cn(cs.formControl)}>
             <textarea
               className={cn(cs.textarea)}
+              id="context"
               name="context"
               value={values.context}
               onChange={handleInputChange}
-              id="context"
+              required
             ></textarea>
           </div>
         </div>

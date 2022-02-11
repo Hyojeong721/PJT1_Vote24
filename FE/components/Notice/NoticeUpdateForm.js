@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
-import cs from "../../styles/noticecreate.module.css";
+import cs from "../../styles/postcreate.module.css";
 
 const NoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);

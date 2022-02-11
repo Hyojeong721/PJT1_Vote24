@@ -40,122 +40,121 @@ const EventForm = () => {
   // 작성완료 눌렀을때 서버에 보내기
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (values.title == "") {
-      alert("제목을 입력하세요.");
-    } else if (values.context == "") {
-      alert("내용을 입력하세요.");
-    } else if (values.start_at == "" || values.end_at == "") {
-      alert("이벤트 날짜를 입력하시오!!");
-    } else {
-      const fd = new FormData();
-      for (let key in values) {
-        if (key === "imgFile") {
-          if (values[key] != null) {
-            const imgFile = values[key];
-            const imgName = imgFile.name;
-            fd.append("event_img", imgFile);
-            fd.append("attachment", imgName);
-          }
-        } else {
-          console.log(key, values[key]);
-          fd.append(`${key}`, values[key]);
+    // if (values.title == "") {
+    //   alert("제목을 입력하세요.");
+    // } else if (values.context == "") {
+    //   alert("내용을 입력하세요.");
+    // } else {
+    const fd = new FormData();
+    for (let key in values) {
+      if (key === "imgFile") {
+        if (values[key] != null) {
+          const imgFile = values[key];
+          const imgName = imgFile.name;
+          fd.append("event_img", imgFile);
+          fd.append("attachment", imgName);
         }
+      } else {
+        console.log(key, values[key]);
+        fd.append(`${key}`, values[key]);
       }
-
-      // // formData 안에 값들 확인할 때
-      // for (let value of fd.values()) {
-      //   console.log(value);
-      // }
-
-      // 서버에 보내기
-      const jwt = localStorage.getItem("jwt");
-
-      await axios
-        .post(EVENT_URL, fd, {
-          headers: {
-            authorization: jwt,
-            "Content-Type": `multipart/form-data`,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          router.push(`/event/${res.data.id}`);
-        })
-        .catch((err) => {
-          toast.error("이벤트 등록 실패!");
-          console.log(err);
-        });
     }
+
+    const jwt = localStorage.getItem("jwt");
+
+    await axios
+      .post(EVENT_URL, fd, {
+        headers: {
+          authorization: jwt,
+          "Content-Type": `multipart/form-data`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        router.push(`/event/${res.data.id}`);
+      })
+      .catch((err) => {
+        toast.error("이벤트 등록 실패!");
+        console.log(err);
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn(cs.noticeCreate)}>
-      <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="title">
-            <span className={cn(cs.star)}>*{"  "}</span>제목
-          </label>
+    <form onSubmit={handleSubmit}>
+      <div name="form" className={cn(cs.form)}>
+        <div name="제목" className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="title">
+              <span className={cn(cs.star)}>*{"  "}</span>제목
+            </label>
+          </div>
+
+          <div className={cn(cs.formControl)}>
+            <input
+              className={cn(cs.input)}
+              name="title"
+              value={values.title}
+              onChange={handleInputChange}
+              id="title"
+              required
+            ></input>
+          </div>
         </div>
-        <div className={cn(cs.formControl)}>
-          <input
-            className={cn(cs.input)}
-            name="title"
-            value={values.title}
-            onChange={handleInputChange}
-            id="title"
-          ></input>
+
+        <div className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="start_at">
+              <span className={cn(cs.star)}>*{"  "}</span>시작일
+            </label>{" "}
+            ~ <label htmlFor="end_at">마감일</label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            <input
+              id="start_at"
+              name="start_at"
+              type="date"
+              onChange={handleInputChange}
+              value={values.start_at}
+              required
+            ></input>
+            {"  "}~{"  "}
+            <input
+              id="end_at"
+              name="end_at"
+              type="date"
+              onChange={handleInputChange}
+              value={values.end_at}
+              required
+            ></input>
+          </div>
         </div>
-      </div>
-      <div className={cn(cs.formRow, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="start_at">
-            <span className={cn(cs.star)}>*{"  "}</span>시작일
-          </label>{" "}
-          ~ <label htmlFor="end_at">마감일</label>
+
+        <div className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="context">
+              <span className={cn(cs.star)}>*{"  "}</span>내용
+            </label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            <textarea
+              className={cn(cs.textarea)}
+              name="context"
+              value={values.context}
+              onChange={handleInputChange}
+              id="context"
+              required
+            ></textarea>
+          </div>
         </div>
-        <div className={cn(cs.formControl)}>
-          <input
-            id="start_at"
-            name="start_at"
-            type="date"
-            onChange={handleInputChange}
-            value={values.start_at}
-          ></input>
-          {"  "}~{"  "}
-          <input
-            id="end_at"
-            name="end_at"
-            type="date"
-            onChange={handleInputChange}
-            value={values.end_at}
-          ></input>
+        <div className={cn(cs.formRow)}>
+          <FileInput
+            name="imgFile"
+            value={values.imgFile}
+            onChange={handleChange}
+          ></FileInput>
         </div>
       </div>
 
-      <div className={cn(cs.btns, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="context" className="form-label">
-            <span className={cn(cs.star)}>*{"  "}</span>내용
-          </label>
-        </div>
-        <div className={cn(cs.formControl)}>
-          <textarea
-            className={cn(cs.textarea)}
-            name="context"
-            value={values.context}
-            onChange={handleInputChange}
-            id="context"
-            rows="5"
-          ></textarea>
-        </div>
-      </div>
-      <div className={cn(cs.formRow)}>
-        <FileInput
-          name="imgFile"
-          value={values.imgFile}
-          onChange={handleChange}
-        ></FileInput>
-      </div>
       <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
           <Link href="/notice/" passHref>
