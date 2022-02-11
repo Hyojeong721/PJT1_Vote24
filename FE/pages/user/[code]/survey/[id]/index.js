@@ -120,19 +120,17 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const code = params.code;
-  const sId = params.id;
-  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
-  const surveyDetail = await axios.get(SURVEY_DETAIL_URL).then((res) => {
-    return res.data;
-  });
-
-  console.log(surveyDetail);
+  const { code, id } = params;
+  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${id}`;
+  const surveyDetail = await axios
+    .get(SURVEY_DETAIL_URL)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {
       code,
-      sId,
+      sId: id,
       surveyDetail,
     },
   };

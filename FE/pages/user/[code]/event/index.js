@@ -2,8 +2,12 @@ import axios from "axios";
 import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
+import SearchBar from "../../../../components/SearchBar";
+import { useState } from "react";
 
-function EventUser({ code, eventList }) {
+function EventUser({ code, eventListProp }) {
+  const [eventList, setEventList] = useState(eventListProp);
+
   const paintEventList = eventList.map((e, idx) => {
     return (
       <UserPostListItem
@@ -21,6 +25,9 @@ function EventUser({ code, eventList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="이벤트" />
       </header>
+      <div className="w-75 d-flex justify-content-end">
+        <SearchBar setPostList={setEventList} postListProp={eventListProp} />
+      </div>
       {eventList.length ? (
         paintEventList
       ) : (
@@ -41,18 +48,22 @@ export async function getServerSideProps({ params }) {
   const code = params.code;
 
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
-  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+  const { id } = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
-  if (!hId.length) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/404",
-      },
-    };
-  }
+  // id 는 hospital_id
+  // if (!id) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/404",
+  //     },
+  //   };
+  // }
 
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hId}`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${1}`;
   const eventList = await axios.get(EVENT_URL).then((res) => {
     return res.data;
   });
@@ -60,7 +71,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       code,
-      eventList,
+      eventListProp: eventList,
     },
   };
 }

@@ -79,9 +79,13 @@ export async function getServerSideProps({ params }) {
   const eId = params.id;
 
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
-  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
 
-  if (!hId.length) {
+  const { id } = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+  // id 는 hospital_id
+  if (!id) {
     return {
       redirect: {
         permanent: false,
@@ -90,7 +94,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hId}/${eId}`;
+  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${id}/${eId}`;
   const eventDetail = await axios.get(EVENT_DETAIL_URL).then((res) => {
     return res.data;
   });

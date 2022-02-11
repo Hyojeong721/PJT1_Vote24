@@ -25,7 +25,9 @@ function NoticeUser({ code, noticeListProp }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="공지사항" />
       </header>
-      <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
+      <div className="w-75 d-flex justify-content-end">
+        <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
+      </div>
       {noticeList.length ? (
         paintNoticeList
       ) : (
@@ -47,8 +49,10 @@ export async function getServerSideProps({ params }) {
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
+  // id 는 hospital_id
   // if (!id) {
   //   return {
   //     redirect: {

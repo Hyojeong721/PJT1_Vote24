@@ -83,11 +83,13 @@ function HomeUser({ code, hId, name, phone, image }) {
 export async function getServerSideProps({ params }) {
   const code = params.code;
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
     .catch((err) => console.log(err));
 
+  // id 는 hospital_id
   // if (!id) {
   //   return {
   //     redirect: {
@@ -97,7 +99,7 @@ export async function getServerSideProps({ params }) {
   //   };
   // }
 
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${1}`;
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${1}`; // 1 => id 로 수정 필요
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
     .then((res) => res.data)
