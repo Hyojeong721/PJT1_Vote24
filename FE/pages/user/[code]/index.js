@@ -82,19 +82,31 @@ function HomeUser({ code, hId, name, phone, image }) {
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
-  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+  const { id } = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${hId}`;
+  // if (!id) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/404",
+  //     },
+  //   };
+  // }
+
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${1}`;
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {
       code,
-      hId,
+      hId: 1,
       name,
       phone,
       image,

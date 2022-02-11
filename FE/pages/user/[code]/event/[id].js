@@ -81,6 +81,15 @@ export async function getServerSideProps({ params }) {
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
   const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
 
+  if (!hId.length) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
   const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hId}/${eId}`;
   const eventDetail = await axios.get(EVENT_DETAIL_URL).then((res) => {
     return res.data;

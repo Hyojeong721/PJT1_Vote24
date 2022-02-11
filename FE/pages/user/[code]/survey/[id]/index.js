@@ -127,6 +127,8 @@ export async function getServerSideProps({ params }) {
     return res.data;
   });
 
+  console.log(surveyDetail);
+
   return {
     props: {
       code,
