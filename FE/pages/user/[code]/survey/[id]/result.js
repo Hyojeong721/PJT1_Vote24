@@ -10,8 +10,6 @@ function SurveyDetailUser({
   outputLink,
   reservationLink,
 }) {
-  console.log(outputText);
-  console.log("@@@@");
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="fs-1 mt-3">설문 결과</div>
@@ -61,9 +59,10 @@ export async function getServerSideProps({ query }) {
   const { title, output_link, reservation_link, benchmark } = await axios
     .get(GET_BENCHMARK_URL)
     .then((res) => {
+      console.log("here", res.data);
       return res.data;
     });
-
+  console.log(reservation_link);
   let outputText = "";
   for (let i = 0; i < benchmark.length; i++) {
     if (score > benchmark[i].benchmark) {

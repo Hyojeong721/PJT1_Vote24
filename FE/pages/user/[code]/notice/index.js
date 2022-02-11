@@ -2,8 +2,12 @@ import axios from "axios";
 import UserHeader from "../../../../components/User/UserHeader";
 import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
+import SearchBar from "../../../../components/SearchBar";
+import { useState } from "react";
 
-function NoticeUser({ code, noticeList }) {
+function NoticeUser({ code, noticeListProp }) {
+  const [noticeList, setNoticeList] = useState(noticeListProp);
+
   const paintNoticeList = noticeList.map((n, idx) => {
     return (
       <UserPostListItem
@@ -21,6 +25,7 @@ function NoticeUser({ code, noticeList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="공지사항" />
       </header>
+      <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
       {noticeList.length ? (
         paintNoticeList
       ) : (
@@ -40,9 +45,20 @@ export default NoticeUser;
 export async function getServerSideProps({ params }) {
   const code = params.code;
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
-  const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+  const { id } = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data);
 
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hId}`;
+  // if (!id) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/404",
+  //     },
+  //   };
+  // }
+
+  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${1}`;
   const noticeList = await axios.get(NOTICE_URL).then((res) => {
     return res.data;
   });
@@ -50,7 +66,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       code,
-      noticeList,
+      noticeListProp: noticeList,
     },
   };
 }

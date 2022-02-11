@@ -3,7 +3,6 @@ import axios from "axios";
 import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
-import SearchBar from "../../../../components/SearchBar";
 
 function SurveyHealthUser({ code, surveyList }) {
   const paintSurveyList = surveyList.map((s, idx) => {
@@ -23,7 +22,6 @@ function SurveyHealthUser({ code, surveyList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="건강 설문 조사" />
       </header>
-      <SearchBar />
       {surveyList.length ? (
         paintSurveyList
       ) : (
@@ -43,6 +41,15 @@ export async function getServerSideProps({ params }) {
 
   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
   const hId = await axios.post(GET_HOSPITAL_ID_BY_CODE).then((res) => res.data);
+
+  if (!hId.length) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
   const SURVEY_HEALTH_URL = `http://i6a205.p.ssafy.io:8000/api/survey/list/${hId}/0`;
   const surveyList = await axios.get(SURVEY_HEALTH_URL).then((res) => {
