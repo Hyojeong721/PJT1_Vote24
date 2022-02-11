@@ -58,11 +58,9 @@ export async function getServerSideProps({ query }) {
   const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/list/${id}`;
   const { title, output_link, reservation_link, benchmark } = await axios
     .get(GET_BENCHMARK_URL)
-    .then((res) => {
-      console.log("here", res.data);
-      return res.data;
-    });
-  console.log(reservation_link);
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
+
   let outputText = "";
   for (let i = 0; i < benchmark.length; i++) {
     if (score > benchmark[i].benchmark) {
