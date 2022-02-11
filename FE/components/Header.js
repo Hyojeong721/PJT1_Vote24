@@ -20,8 +20,8 @@ function Header({ title, subtitle, image, children }) {
             <div className="me-2">
               <Image
                 src={image}
-                width="30px"
-                height="30px"
+                width="40px"
+                height="40px"
                 layout="fixed"
                 priority
               ></Image>
