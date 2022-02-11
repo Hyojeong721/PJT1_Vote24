@@ -6,7 +6,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
-import cs from "../../styles/noticecreate.module.css";
+import cs from "../../styles/postcreate.module.css";
 
 const EventForm = () => {
   const router = useRouter();
@@ -40,45 +40,52 @@ const EventForm = () => {
   // 작성완료 눌렀을때 서버에 보내기
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 보낼 데이터들을 fromdata에 담는 과정
-    const fd = new FormData();
-    for (let key in values) {
-      if (key === "imgFile") {
-        if (values[key] != null) {
-          const imgFile = values[key];
-          const imgName = imgFile.name;
-          fd.append("event_img", imgFile);
-          fd.append("attachment", imgName);
+    if (values.title == "") {
+      alert("제목을 입력하세요.");
+    } else if (values.context == "") {
+      alert("내용을 입력하세요.");
+    } else if (values.start_at == "" || values.end_at == "") {
+      alert("이벤트 날짜를 입력하시오!!");
+    } else {
+      const fd = new FormData();
+      for (let key in values) {
+        if (key === "imgFile") {
+          if (values[key] != null) {
+            const imgFile = values[key];
+            const imgName = imgFile.name;
+            fd.append("event_img", imgFile);
+            fd.append("attachment", imgName);
+          }
+        } else {
+          console.log(key, values[key]);
+          fd.append(`${key}`, values[key]);
         }
-      } else {
-        console.log(key, values[key]);
-        fd.append(`${key}`, values[key]);
       }
+
+      // // formData 안에 값들 확인할 때
+      // for (let value of fd.values()) {
+      //   console.log(value);
+      // }
+
+      // 서버에 보내기
+      const jwt = localStorage.getItem("jwt");
+
+      await axios
+        .post(EVENT_URL, fd, {
+          headers: {
+            authorization: jwt,
+            "Content-Type": `multipart/form-data`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          router.push(`/event/${res.data.id}`);
+        })
+        .catch((err) => {
+          toast.error("이벤트 등록 실패!");
+          console.log(err);
+        });
     }
-
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log(value);
-    // }
-
-    // 서버에 보내기
-    const jwt = localStorage.getItem("jwt");
-
-    await axios
-      .post(EVENT_URL, fd, {
-        headers: {
-          authorization: jwt,
-          "Content-Type": `multipart/form-data`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        router.push(`/event/${res.data.id}`);
-      })
-      .catch((err) => {
-        toast.error("이벤트 등록 실패!");
-        console.log(err);
-      });
   };
 
   return (
