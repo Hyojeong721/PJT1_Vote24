@@ -40,6 +40,6 @@
   width: 630px;
 }
 
-.header .imageContainer .imgWrapper .image:hover {
+.header .imageContainer .imgWrapper:hover {
   transform: scale(1.1);
 }
