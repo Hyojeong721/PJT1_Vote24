@@ -303,3 +303,24 @@ docker-compose로 합침
 -데이터 수정
 참고자료 : https://gaemi606.tistory.com/entry/React-update-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-onChange
 배운거 - props는 readonly라는 사실..!! 대박적.. 그래서 state에 담아서 수정하라는..!!!
+참고자료 : https://velog.io/@oseo/React-state%EC%99%80-useState
+state vs useState
+-체크박스 데이터 수정
+기존 데이터를 받아온 상태로 radio 체킹되어있고 누를때마다 value값 변경으로  변화 / 
+```
+const handlefixed = (e) => {
+    console.log(e.target);
+    handleChange("fixed", e.target.value);
+  };
+  
+<input
+              id="no_fixed"
+              type="radio"
+              name="fixed"
+              defaultValue={0}  //value로 넣으면 경고뜸: input안에서 onchange랑 value 값이 동시에 있기때문에
+              checked={values.fixed == 0} // 바뀌는 데이터에 따라서 체킹상태 곧바로 적용
+              onChange={handlefixed} // 누르면 defaultvalue값이 전달되어 data 수정됌
+            />
+```
+![image](https://user-images.githubusercontent.com/87456091/153540076-00adca58-9770-4d4e-8af3-4dc6b5c8df7d.png)
+
