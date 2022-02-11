@@ -7,8 +7,19 @@ import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/noticecreate.module.css";
 
-const NoticeUpdateForm = ({ url, data, setData }) => {
-  const [values, setValues] = useState([data]);
+const NoticeUpdateForm = ({ noticeId, url }) => {
+  const [values, setValues] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const getPost = async () => {
+      const res = await axios.get(`${url}/`);
+      const data = res.data;
+      setValues(data);
+    };
+    getPost();
+  }, [url]);
+
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +34,7 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(values);
     if (values.title == "") {
       alert("제목을 입력하세요.");
     } else if (values.context == "") {
@@ -47,7 +58,7 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
       const jwt = localStorage.getItem("jwt");
       // 서버에 보내기
       await axios
-        .post(url, fd, {
+        .put(url, fd, {
           headers: {
             authorization: jwt,
             "Content-Type": `multipart/form-data`,
@@ -57,13 +68,14 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
           // toast("공지사항 등록 성공!");
           console.log(res.data);
           console.log(res.data.id);
-          router.push(`/notice/${res.data.id}`);
+          router.push(`/notice/${noticeId}`);
         })
         .catch((err) => {
-          toast.error("공지사항 등록 실패!", {
+          toast.error("공지사항 수정 실패!", {
             autoClose: 3000,
           });
           console.log(err);
+          console.log(url, fd);
         });
     }
   };
@@ -104,7 +116,7 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
             name="title"
             onChange={handleInputChange}
             id="title"
-            value={data.title}
+            value={values.title}
           ></input>
         </div>
       </div>
@@ -119,7 +131,7 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
           <textarea
             className={cn(cs.textarea)}
             name="context"
-            value={data.context}
+            value={values.context}
             onChange={handleInputChange}
             id="context"
           ></textarea>
@@ -128,7 +140,7 @@ const NoticeUpdateForm = ({ url, data, setData }) => {
       <div className={cn(cs.formRow)}>
         <FileInput
           name="imgFile"
-          value={data.imgFile}
+          value={values.imgFile}
           onChange={handleChange}
         ></FileInput>
       </div>
