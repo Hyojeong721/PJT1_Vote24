@@ -25,7 +25,13 @@ function UserPostListItem({ url, idx, post }) {
           {fixed === 1 ? (
             <div className="btn btn-primary">고정</div>
           ) : (
-            <div className={cn("btn", statusColor)}>{eventStatus}</div>
+            <div>
+              {fixed === 0 ? (
+                ""
+              ) : (
+                <div className={cn("btn", statusColor)}>{eventStatus}</div>
+              )}
+            </div>
           )}
           <div className="fs-5 ms-3 my-auto">
             {idx}. {title}
