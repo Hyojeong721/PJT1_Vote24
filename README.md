@@ -298,3 +298,8 @@ mysql
 docker-compose로 합침
 - 개인작업 : 수정로직 작성중
 
+/////
+0211
+-데이터 수정
+참고자료 : https://gaemi606.tistory.com/entry/React-update-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-onChange
+배운거 - props는 readonly라는 사실..!! 대박적.. 그래서 state에 담아서 수정하라는..!!!
