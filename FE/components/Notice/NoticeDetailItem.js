@@ -54,7 +54,7 @@ const NoticeDetailItem = ({ url }) => {
           <div>
             <span className={cn(ct.item)}>관리자</span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}>{DateForm(data.created_at)}</span>
+            <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
