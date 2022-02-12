@@ -129,6 +129,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="context"
               value={values.context}
               onChange={handleInputChange}
+              rows="20"
               required
             ></textarea>
           </div>
