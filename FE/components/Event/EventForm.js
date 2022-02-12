@@ -51,7 +51,6 @@ const EventForm = () => {
           fd.append("attachment", imgName);
         }
       } else {
-        console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
@@ -66,7 +65,7 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("이벤트 등록 성공!", res.data);
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
