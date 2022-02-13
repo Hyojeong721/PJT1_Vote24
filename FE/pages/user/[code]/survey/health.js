@@ -3,8 +3,11 @@ import axios from "axios";
 import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
+import SearchBar from "../../../../components/SearchBar";
 
-function SurveyHealthUser({ code, surveyList }) {
+function SurveyHealthUser({ code, surveyListProp }) {
+  const [surveyList, setSurveyList] = useState(surveyListProp);
+
   const paintSurveyList = surveyList.map((s, idx) => {
     return (
       <UserSurveyListItem
@@ -22,6 +25,9 @@ function SurveyHealthUser({ code, surveyList }) {
         <BackButton url={`/user/${code}`} />
         <UserHeader title="건강 설문 조사" />
       </header>
+      <div className="w-75 d-flex justify-content-end">
+        <SearchBar setPostList={setSurveyList} postListProp={surveyListProp} />
+      </div>
       {surveyList.length ? (
         paintSurveyList
       ) : (
@@ -63,7 +69,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       code,
-      surveyList,
+      surveyListProp: surveyList,
     },
   };
 }
