@@ -15,11 +15,15 @@ function HospitalEvent() {
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(`${SERVICE_URL}`);
-      const res_data = res.data;
-      const data = res_data.reverse();
-      console.log("서비스 공지 데이터", data);
-      setDataList(data);
+      await axios
+        .get(SERVICE_URL)
+        .then((res) => {
+          const data = res.data;
+          setDataList(data);
+        })
+        .catch((error) => {
+          console.log("vote24 공지 리스트 get실패", error);
+        });
     };
     getList();
   }, [SERVICE_URL]);

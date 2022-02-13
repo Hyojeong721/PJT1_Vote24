@@ -2,22 +2,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DateForm from "../DateForm";
 import Image from "next/image";
-
 import Prev from "../Prev";
 import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const EventDetailItem = ({ id, url }) => {
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(url);
-      const data = res.data;
-      console.log("data", data);
-      setData(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setData(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 상세 get 실패", err);
+          router.push("/404");
+        });
     };
     if (id) {
       getPost();

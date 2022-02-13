@@ -13,9 +13,16 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`${url}/`);
-      const data = res.data;
-      setValues(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setValues(data);
+        })
+        .catch((err) => {
+          console.log("병원공지 원본data get 실패", err);
+          router.push("/404");
+        });
     };
     getPost();
   }, [url]);
