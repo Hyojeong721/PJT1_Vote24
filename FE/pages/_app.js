@@ -23,6 +23,7 @@ import "../styles/paging.css";
 import "../styles/homeuser.css";
 import "../styles/userlistitem.css";
 import "../styles/surveydetailuser.css";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   const { isLoggedIn } = useSelector((state) => state.userStatus);
@@ -35,27 +36,33 @@ function MyApp({ Component, pageProps }) {
   const isUserPage = currentPage.includes("user");
 
   return (
-    <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
-      <div className={isUserPage ? "halfPage" : ""}>
-        {!isUserPage ? (
-          <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
-        ) : (
-          <NavbarUser currentPage={currentPage} code={code} />
-        )}
-        <div className="page_body min-vh-100">
-          <LoginWrapper>
-            <Component {...pageProps} />
-          </LoginWrapper>
+    <>
+      <Head>
+        <link href="/public/favi.png" ref="logo" />
+        <title>Vote 24</title>
+      </Head>
+      <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
+        <div className={isUserPage ? "halfPage" : ""}>
+          {!isUserPage ? (
+            <Navbar currentPage={currentPage} isLoggedIn={isLoggedIn} />
+          ) : (
+            <NavbarUser currentPage={currentPage} code={code} />
+          )}
+          <div className="page_body min-vh-100">
+            <LoginWrapper>
+              <Component {...pageProps} />
+            </LoginWrapper>
+          </div>
+          <Footer />
+          <ToastContainer autoClose={3000} />
         </div>
-        <Footer />
-        <ToastContainer autoClose={3000} />
-      </div>
-      <Script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossOrigin="anonymous"
-      ></Script>
-    </PersistGate>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossOrigin="anonymous"
+        ></Script>
+      </PersistGate>
+    </>
   );
 }
 
