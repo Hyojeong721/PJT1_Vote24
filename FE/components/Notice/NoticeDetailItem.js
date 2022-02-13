@@ -17,10 +17,16 @@ const NoticeDetailItem = ({ url }) => {
   // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`${url}/${id}`);
-      const data = res.data;
-      console.log(data);
-      setData(data);
+      await axios
+        .get(`${url}/${id}`)
+        .then((res) => {
+          const data = res.data;
+          setData(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 상세 get 실패", err);
+          router.push("/404");
+        });
     };
     if (id) {
       getPost();

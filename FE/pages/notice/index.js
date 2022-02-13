@@ -19,13 +19,17 @@ function HospitalEvent() {
 
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
-    const getList = async () => {
-      const res = await axios.get(`${NOTICE_URL}`);
-      const data = res.data;
-
-      console.log("병원 공지 데이터", data);
-
-      setDataList(data);
+    const getPost = async () => {
+      await axios
+        .get(NOTICE_URL)
+        .then((res) => {
+          const data = res.data;
+          setDataList(data);
+        })
+        .catch((err) => {
+          console.log("병원 공지 목록 get 실패", err);
+          router.push("/404");
+        });
     };
     getList();
   }, [NOTICE_URL]);

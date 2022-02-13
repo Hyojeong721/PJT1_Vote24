@@ -13,9 +13,16 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`${url}/`);
-      const data = res.data;
-      setValues(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setValues(data);
+        })
+        .catch((err) => {
+          console.log("병원공지 원본data get 실패", err);
+          router.push("/404");
+        });
     };
     getPost();
   }, [url]);
@@ -40,45 +47,43 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (values.title == "") {
-      alert("제목을 입력하세요.");
-    } else if (values.context == "") {
-      alert("내용을 입력하세요.");
-    } else {
-      console.log("수정 성공");
-      const fd = new FormData();
-      for (let key in values) {
-        if (key === "imgFile") {
-          if (values[key] != null) {
-            const imgFile = values[key];
-            const imgName = imgFile.name;
-            fd.append("notice_image", imgFile);
-            fd.append("attachment", imgName);
-          }
-        } else {
-          fd.append(`${key}`, values[key]);
-        }
-      }
-      const jwt = localStorage.getItem("jwt");
 
-      await axios
-        .put(url, fd, {
-          headers: {
-            authorization: jwt,
-            "Content-Type": `multipart/form-data`,
-          },
-        })
-        .then((res) => {
-          console.log("병원공지 수정 성공", res.data);
-          router.push(`/notice/${noticeId}`);
-        })
-        .catch((err) => {
-          toast.error("병원공지 수정 실패!", {
-            autoClose: 3000,
-          });
-          console.log(err);
-        });
+    const fd = new FormData();
+    for (let key in values) {
+      if (key === "imgFile") {
+        if (values[key] != null) {
+          const imgFile = values[key];
+          const imgName = imgFile.name;
+          fd.append("notice_image", imgFile);
+          fd.append("attachment", imgName);
+        }
+      } else {
+        fd.append(`${key}`, values[key]);
+      }
     }
+    // formData 안에 값들 확인할 때
+    for (let value of fd.values()) {
+      console.log("form값들", value);
+    }
+
+    const jwt = localStorage.getItem("jwt");
+    await axios
+      .put(url, fd, {
+        headers: {
+          authorization: jwt,
+          "Content-Type": `multipart/form-data`,
+        },
+      })
+      .then((res) => {
+        console.log("병원공지 수정 성공", res.data);
+        router.push(`/notice/${noticeId}`);
+      })
+      .catch((err) => {
+        toast.error("병원공지 수정 실패!", {
+          autoClose: 3000,
+        });
+        console.log(err);
+      });
   };
 
   return (
@@ -97,6 +102,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               onChange={handleInputChange}
               id="title"
               value={values.title}
+              required
             ></input>
           </div>
         </div>
@@ -144,6 +150,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               value={values.context}
               onChange={handleInputChange}
               id="context"
+              rows="20"
+              required
             ></textarea>
           </div>
         </div>

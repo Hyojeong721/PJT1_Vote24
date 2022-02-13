@@ -14,10 +14,16 @@ const EventUpdateForm = ({ eventId, url }) => {
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`${url}/`);
-      const data = res.data;
-      console.log("수정 전 기존 데이터", data);
-      setValues(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setValues(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 원본데이터 get 실패", err);
+          router.push("/404");
+        });
     };
     getPost();
   }, [url]);

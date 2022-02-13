@@ -22,10 +22,15 @@ function Health() {
   // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(SURVEY_HEALTH_URL);
-      console.log("건강설문 목록 데이터", res.data);
-
-      setDataList(res.data);
+      await axios
+        .get(SURVEY_HEALTH_URL)
+        .then((res) => {
+          const data = res.data;
+          setDataList(res.data);
+        })
+        .catch((error) => {
+          console.log("건강설문 get 실패", error);
+        });
     };
     getList();
   }, [SURVEY_HEALTH_URL]);
