@@ -6,21 +6,27 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
+import DateTimeForm from "../DateTimeForm";
 
 const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
-
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(`${url}/`);
-      const data = res.data;
-      setValues(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setValues(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 원본데이터 get 실패", err);
+          router.push("/404");
+        });
     };
     getPost();
   }, [url]);
-
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,61 +38,50 @@ const EventUpdateForm = ({ eventId, url }) => {
       [name]: value,
     }));
   };
-
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (values.title == "") {
-      alert("제목을 입력하세요.");
-    } else if (values.context == "") {
-      alert("내용을 입력하세요.");
-    } else if (values.start_at == "" || values.end_at == "") {
-      alert("이벤트 날짜를 입력하시오!!");
-    } else {
-      const fd = new FormData();
-      for (let key in values) {
-        if (key === "imgFile") {
-          if (values[key] != null) {
-            const imgFile = values[key];
-            const imgName = imgFile.name;
-            fd.append("event_img", imgFile);
-            fd.append("attachment", imgName);
-          }
-        } else {
-          console.log(key, values[key]);
-          fd.append(`${key}`, values[key]);
+    const fd = new FormData();
+    for (let key in values) {
+      if (key === "imgFile") {
+        if (values[key] != null) {
+          const imgFile = values[key];
+          const imgName = imgFile.name;
+          fd.append("event_img", imgFile);
+          fd.append("attachment", imgName);
         }
+      } else {
+        console.log(key, values[key]);
+        fd.append(`${key}`, values[key]);
       }
-      // 서버에 보내기
-      const jwt = localStorage.getItem("jwt");
-
-      await axios
-        .put(url, fd, {
-          headers: {
-            authorization: jwt,
-            "Content-Type": `multipart/form-data`,
-          },
-        })
-        .then((res) => {
-          console.log("이벤트 수정 성공", res.data);
-          router.push(`/event/${eventId}`);
-        })
-        .catch((err) => {
-          toast.error("이벤트 수정 실패!", {
-            autoClose: 3000,
-          });
-          console.log(err);
-        });
     }
+    // 서버에 보내기
+    const jwt = localStorage.getItem("jwt");
+    await axios
+      .put(url, fd, {
+        headers: {
+          authorization: jwt,
+          "Content-Type": `multipart/form-data`,
+        },
+      })
+      .then((res) => {
+        console.log("이벤트 수정 성공", res.data);
+        router.push(`/event/${eventId}`);
+      })
+      .catch((err) => {
+        toast.error("이벤트 수정 실패!", {
+          autoClose: 3000,
+        });
+        console.log(err);
+      });
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <div name="form" className={cn(cs.form)}>
         <div name="제목" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="title">
-              <span className={cn(cs.star)}>*{"  "}</span>제목
+              <span className={cn(cs.star)}>* </span>제목
             </label>
           </div>
           <div className={cn(cs.formControl)}>
@@ -100,7 +95,6 @@ const EventUpdateForm = ({ eventId, url }) => {
             ></input>
           </div>
         </div>
-
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="start_at">
@@ -114,7 +108,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="start_at"
               type="datetime-local"
               onChange={handleInputChange}
-              value={values.start_at}
+              value={DateTimeForm(values.start_at)}
               required
             ></input>
             {"  "}~{"  "}
@@ -123,19 +117,17 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="end_at"
               type="datetime-local"
               onChange={handleInputChange}
-              value={values.end_at}
+              value={DateTimeForm(values.end_at)}
               required
             ></input>
           </div>
         </div>
-
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
               <span className={cn(cs.star)}>*{"  "}</span>내용
             </label>
           </div>
-
           <div className={cn(cs.formControl)}>
             <textarea
               className={cn(cs.textarea)}
@@ -143,11 +135,11 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="context"
               value={values.context}
               onChange={handleInputChange}
+              rows="20"
               required
             ></textarea>
           </div>
         </div>
-
         <div className={cn(cs.formRow)}>
           <FileInput
             name="imgFile"
@@ -171,5 +163,4 @@ const EventUpdateForm = ({ eventId, url }) => {
     </form>
   );
 };
-
 export default EventUpdateForm;

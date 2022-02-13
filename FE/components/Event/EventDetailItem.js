@@ -2,22 +2,31 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DateForm from "../DateForm";
 import Image from "next/image";
-
+import { useRouter } from "next/router";
 import Prev from "../Prev";
 import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const EventDetailItem = ({ id, url }) => {
+  const router = useRouter();
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get(url);
-      const data = res.data;
-      console.log("data", data);
-      setData(data);
+      await axios
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          setData(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 상세 get 실패", err);
+          router.push("/404");
+        });
     };
     if (id) {
       getPost();
@@ -28,14 +37,14 @@ const EventDetailItem = ({ id, url }) => {
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`${url}/${id}`, {
+      .delete(`${url}`, {
         headers: {
           authorization: jwt,
         },
       })
       .then((res) => {
         console.log("delete성공", res);
-        router.push("/notice");
+        router.push("/event");
       })
       .catch((error) => {
         console.log("delete실패", error);
@@ -53,7 +62,7 @@ const EventDetailItem = ({ id, url }) => {
           <div>
             <span className={cn(ct.item)}>관리자</span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}>{DateForm(data.created_at)}</span>
+            <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
@@ -67,6 +76,15 @@ const EventDetailItem = ({ id, url }) => {
             >
               삭제
             </button>
+          </div>
+        </div>
+        <div>
+          <div className={cn(ct.contentInfo)}>
+            <span className={cn(ct.item)}>이벤트 기간 : </span>
+            <span className={cn(ct.item)}> : </span>
+            <span className={cn(ct.item)}>
+              {DateForm(data.start_at)} ~ {DateForm(data.end_at)}
+            </span>
           </div>
         </div>
       </div>

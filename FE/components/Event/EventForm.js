@@ -37,14 +37,10 @@ const EventForm = () => {
     }));
   };
 
-  // 작성완료 눌렀을때 서버에 보내기
+  //작성완료
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (values.title == "") {
-    //   alert("제목을 입력하세요.");
-    // } else if (values.context == "") {
-    //   alert("내용을 입력하세요.");
-    // } else {
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -55,7 +51,6 @@ const EventForm = () => {
           fd.append("attachment", imgName);
         }
       } else {
-        console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
@@ -70,11 +65,13 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("이벤트 등록 성공!", res.data);
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
-        toast.error("이벤트 등록 실패!");
+        toast.error("이벤트 등록 실패!", {
+          autoClose: 3000,
+        });
         console.log(err);
       });
   };
@@ -112,7 +109,7 @@ const EventForm = () => {
             <input
               id="start_at"
               name="start_at"
-              type="date"
+              type="datetime-local"
               onChange={handleInputChange}
               value={values.start_at}
               required
@@ -121,7 +118,7 @@ const EventForm = () => {
             <input
               id="end_at"
               name="end_at"
-              type="date"
+              type="datetime-local"
               onChange={handleInputChange}
               value={values.end_at}
               required
@@ -142,6 +139,7 @@ const EventForm = () => {
               value={values.context}
               onChange={handleInputChange}
               id="context"
+              rows="20"
               required
             ></textarea>
           </div>
@@ -157,7 +155,7 @@ const EventForm = () => {
 
       <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href="/notice/" passHref>
+          <Link href="/event/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>

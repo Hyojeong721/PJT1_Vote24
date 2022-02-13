@@ -52,7 +52,7 @@ function SurveyDetailItem({ sId, surveyDetail }) {
 
         <div className={cn(ct.contentInfo, "d-flex justify-content-between")}>
           <div>
-            <span className={cn(ct.item)}>작성일 : {DateForm(created_at)}</span>
+            <span className={cn(ct.item)}>작성일 : {DateForm(updated_at)}</span>
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>
               설문기한 : {DateForm(start_at)} ~ {DateForm(end_at)}
