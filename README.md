@@ -325,3 +325,28 @@ const handlefixed = (e) => {
 ```
 ![image](https://user-images.githubusercontent.com/87456091/153540076-00adca58-9770-4d4e-8af3-4dc6b5c8df7d.png)
 
+/////
+0213
+- textarea에서 엔터값이 db에는 \n\r로 저장된다. => div안에 출력시 <pre>라는 태그를 사용해도 엔터가 적용되지만 이는 보안에 취약하다고 하여
+  아래 코드를 추가하였다.
+  ```
+  {data.context &&
+            data.context.split("\n").map((line) => {
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+  ```
+  
+  - get요청실패시 router.push('404') => url로 접근했을때 병원코드가 들어가지 않아서 404페이지를 보여준다.
+  - 사이트 타이틀 바꾸기
+  ```
+  <HEAD>
+  <link href="favicon.io" ref="icon"/>
+  <title>Vote 24</title>
+  </HEAD>
+  ```
+  
