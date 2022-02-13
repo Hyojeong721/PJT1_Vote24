@@ -355,3 +355,11 @@ const handlefixed = (e) => {
 처음엔 map, foreach를 쓰면서 그안에 if문으로 구분하려해도 들어가질 않았다. ㅠㅠ 그래서 찾아보고
 참고: https://jaeheon.kr/166
 filter를 사용해볼 생각이다.
+- 고정 공지를 포함한 페이지네이션.... 계산하는거 왜케 머리안굴러가.. ㅠ 오래걸렸지만 성공.
+고정공지를 제외한 남은 목록의 전체 번호 계산
+현 페이지번호에 들어온 데이터들의 전체목록에서의 인덱스 값 전달 = indexlst
+현 페이지에서 나타나는 인덱스 = index (한페이지당 6개게시글만 보인다면 index =0~5)
+postsperpage = 한페이지당 게시글 수
+fixedCnt = 고정게시글 수
+==> 고정공지를 제외한 게시글들의 번호 = indexlst[Math.abs(index-postsPerPage)-1]-fixedCnt+1
+[Math.abs(index-postsPerPage)-1] : 현재 페이지 인덱스가 위에서부터 아래로 0 1 2 3 4 5 인데 고정글이 4개라면 4, 5가 0, 1 돼야함 
