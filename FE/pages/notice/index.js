@@ -9,7 +9,7 @@ function HospitalEvent() {
   const [dataList, setDataList] = useState([]);
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(6);
 
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
@@ -23,8 +23,7 @@ function HospitalEvent() {
       await axios
         .get(NOTICE_URL)
         .then((res) => {
-          const data = res.data;
-          setDataList(data);
+          setDataList(res.data);
         })
         .catch((err) => {
           console.log("병원 공지 목록 get 실패", err);
