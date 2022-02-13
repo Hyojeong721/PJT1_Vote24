@@ -50,6 +50,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     const { qList, bList } = parseInput(data);
     const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
+      created_at: surveyDetail.created_at,
       category,
       title,
       context,
