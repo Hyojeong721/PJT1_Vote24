@@ -86,7 +86,7 @@ const EventDetailItem = ({ id, url }) => {
           </div>
         </div>
       </div>
-      <div name="내용" className={cn(ct.contentBody)}>
+      <div name="내용" className={(cn(ct.contentBody), "m-3")}>
         <div>
           {data.attachment && (
             <Image
