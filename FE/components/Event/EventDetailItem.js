@@ -102,7 +102,7 @@ const EventDetailItem = ({ id, url }) => {
           {data.context &&
             data.context.split("\n").map((line) => {
               return (
-                <span>
+                <span key={data.id}>
                   {line}
                   <br />
                 </span>
