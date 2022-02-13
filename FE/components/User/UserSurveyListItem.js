@@ -20,11 +20,8 @@ function UserSurveyListItem({ url, idx, survey }) {
       <button className="w-75 user-survey-list-item shadow-sm btn d-flex justify-content-between align-items-center mt-3">
         <div className="d-flex">
           <div className={cn("btn", statusColor)}>{surveyStatus}</div>
-          <div className="fs-5 ms-3 my-auto">
-            {idx}. {title}
-          </div>
+          <div className="fs-6 ms-3 my-auto">{title}</div>
         </div>
-        <div>참여자수 {count}</div>
       </button>
     </Link>
   );

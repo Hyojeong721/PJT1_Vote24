@@ -4,21 +4,19 @@ import cn from "classnames";
 import styles from "../../styles/navitem.module.css";
 
 function NavDropdown({ active, title, subtitles }) {
-  const className = active
-    ? cn("nav-item", "dropdown", styles.navItem)
-    : cn("nav-item", "dropdown");
+  const className = active ? cn(styles.navItem) : cn("");
 
   return (
-    <li className={className}>
+    <li className="nav-item dropdown">
       <a
-        className="nav-link dropdown-toggle"
+        className="nav-link dropdown-toggle d-flex align-items-center"
         href="#"
         id="navbarDropdown"
         role="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        {title}
+        <div className={className}>{title}</div>
       </a>
       <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
         {subtitles

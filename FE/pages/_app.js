@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }) {
         ) : (
           <NavbarUser currentPage={currentPage} code={code} />
         )}
-        <div className="page_body min-vh-100">
+        <div className="page_body">
           <LoginWrapper>
             <Component {...pageProps} />
           </LoginWrapper>

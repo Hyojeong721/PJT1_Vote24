@@ -26,12 +26,12 @@ function HomeUser({ code, hId, name, phone, image }) {
       <div className="home-user-bg min-vh-100 d-flex justify-content-center pb-5">
         <div className="w-100 d-flex flex-column align-items-center mt-5">
           <div className="w-75 d-flex flex-column align-items-center mt-3 bg-white rounded shadow">
-            <div className="fs-2 mt-1">설문조사</div>
+            <div className="fs-2 mt-3">설문조사</div>
             <div className="d-flex flex-column justify-content-center flex-sm-row">
               <Link href={`/user/${code}/survey/health`} passHref>
                 <a className="home-user-survey-button btn border m-3 d-flex flex-column">
                   <div className="d-flex justify-content-center align-items-center border-bottom pb-1">
-                    <div className="fs-3">환자 보호자 대상</div>
+                    <div className="fs-3">건강 자가진단 설문</div>
                     <span className="material-icons">north_east</span>
                   </div>
                   <div className="p-md-3">
@@ -48,7 +48,7 @@ function HomeUser({ code, hId, name, phone, image }) {
               <Link href={`/user/${code}/survey/service`} passHref>
                 <a className="home-user-survey-button btn border m-3 d-flex flex-column">
                   <div className="d-flex justify-content-center align-items-center border-bottom pb-1">
-                    <div className="fs-3">병원 만족도 조사</div>
+                    <div className="fs-3">서비스 만족도 설문</div>
                     <span className="material-icons">north_east</span>
                   </div>
                   <div className="p-md-3">
@@ -64,14 +64,14 @@ function HomeUser({ code, hId, name, phone, image }) {
               </Link>
             </div>
           </div>
-          <Link href={`/user/${code}/notice`} passHref>
+          <Link href={`/user/${code}/notice`} passHref className="shadow">
             <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center shadow-lg">
-              <h2 className="text-white">병원 공지사항</h2>
+              <h2 className="m-0">병원 공지사항</h2>
             </a>
           </Link>
           <Link href={`/user/${code}/event`} passHref>
             <a className="btn w-75 home-user-notice-button mt-5 d-flex justify-content-center align-items-center shadow-lg">
-              <h2 className="text-white">병원 이벤트</h2>
+              <h2 className="m-0">병원 이벤트</h2>
             </a>
           </Link>
         </div>

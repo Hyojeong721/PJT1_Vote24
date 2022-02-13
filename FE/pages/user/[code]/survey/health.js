@@ -23,7 +23,7 @@ function SurveyHealthUser({ code, surveyListProp }) {
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
       <header className="position-relative w-100 d-flex justify-content-center my-3">
         <BackButton url={`/user/${code}`} />
-        <UserHeader title="건강 설문 조사" />
+        <UserHeader title="건강 자가진단 설문" />
       </header>
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setSurveyList} postListProp={surveyListProp} />

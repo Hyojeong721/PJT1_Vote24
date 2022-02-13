@@ -20,8 +20,8 @@ function UserPostListItem({ url, idx, post }) {
 
   return (
     <Link href={url} passHref>
-      <a className="w-75 user-survey-list-item shadow-sm btn d-flex justify-content-between align-items-center mt-3">
-        <div className="d-flex">
+      <a className="w-75 position-relative user-survey-list-item shadow-sm btn d-flex justify-content-between align-items-center mt-3">
+        <div className="d-flex ">
           {fixed === 1 ? (
             <div className="btn btn-primary">고정</div>
           ) : (
@@ -33,21 +33,21 @@ function UserPostListItem({ url, idx, post }) {
               )}
             </div>
           )}
-          <div className="fs-5 ms-3 my-auto">
-            {idx}. {title}
-          </div>
+          <div className="ms-3 my-auto">{title}</div>
         </div>
 
         {start_at && (
           <div className="d-flex flex-column justify-content-center align-items-center">
-            <div className={styles.dateFont}>
-              {ISODateFormatter(start_at)} ~ {ISODateFormatter(end_at)}
+            <div className={cn(styles.dateFont, "text-secondary")}>
+              {start_at.slice(0, 10)} ~ {end_at.slice(0, 10)}
             </div>
           </div>
         )}
 
         {!start_at && created_at && (
-          <div className={styles.dateFont}>{ISODateFormatter(created_at)}</div>
+          <div className={cn(styles.dateFont, "text-secondary")}>
+            {created_at.slice(0, 10)}
+          </div>
         )}
       </a>
     </Link>

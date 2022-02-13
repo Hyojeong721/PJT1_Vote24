@@ -72,7 +72,7 @@ function Navbar({ isLoggedIn, currentPage }) {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav links */}
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <NavItem active={currentPage === "/"} url="/" title="Home" />
             {!isLoggedIn ? (
               <>

@@ -3,17 +3,23 @@
 }
 
 .home-user-survey-button:hover {
-  background-color: #acd0df;
+  background-color: #c4f9ff;
 }
 
-.home-user-notice-button {
+/* .home-user-notice-button {
   background-color: #076c94;
+  height: 100px;
+} */
+
+.home-user-notice-button {
+  background-color: #03435c;
+  color: white;
   height: 100px;
 }
 
 .home-user-notice-button:hover {
-  background-color: #03435c;
-  height: 100px;
+  background-color: #1fdff5;
+  color: black;
 }
 
 .user-header {

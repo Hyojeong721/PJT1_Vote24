@@ -30,7 +30,7 @@ function SearchBar({ setPostList, postListProp }) {
       <input
         type="text"
         className="form-control"
-        placeholder="Search..."
+        placeholder="검색..."
         aria-label="Search"
         value={searchInput}
         onChange={(e) => handleOnChange(e.target.value)}

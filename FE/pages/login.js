@@ -68,12 +68,12 @@ function Login() {
   }
 
   return (
-    <div className="min-vh-100">
+    <div className="min-vh-80">
       <Header title="로그인"></Header>
       <div className="container h-100 d-flex justify-content-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-50 d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
+          className="min-w-50 d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
         >
           <div className="mt-5">
             <div className="fw-bold">이메일</div>

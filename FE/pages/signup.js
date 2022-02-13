@@ -233,7 +233,7 @@ function Signup() {
                   {...register("password")}
                 />
                 <label htmlFor="password">
-                  <p className="text-secondary">
+                  <p className="text-secondary fs-0">
                     비밀번호는 8 ~ 16자 사이이며, 특수문자 1개를 포함해야
                     합니다.
                   </p>
@@ -256,7 +256,7 @@ function Signup() {
                   {...register("passwordConfirm")}
                 />
                 <label htmlFor="passwordConfirm">
-                  <p className="text-secondary">
+                  <p className="text-secondary fs-0">
                     위 비밀번호와 동일한 비밀번호를 입력해주세요.
                   </p>
                 </label>
@@ -341,7 +341,7 @@ function Signup() {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-between mt-3">
+          <div className="d-flex flex-column justify-content-between mt-3">
             <div className="label-box">
               <label htmlFor="logo_image">병원 로고</label>
             </div>
@@ -357,17 +357,17 @@ function Signup() {
             </div>
           </div>
 
-          <div className="w-75 d-flex justify-content-center mt-2">
+          {/* <div className="w-75 d-flex justify-content-center mt-2">
             미리보기
-            {/* <Image
+            <Image
               className="mw-100 m-2"
               src={imageSelected ? imgBase64 : "/notLoaded"}
               alt=""
               width="200px"
               height="300px"
               objectFit="contain"
-            /> */}
-          </div>
+            />
+          </div> */}
 
           <div className="d-flex justify-content-center mt-5">
             <button type="submit" className="submit-button btn btn-primary">

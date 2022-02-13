@@ -8,25 +8,6 @@ import { useSelector } from "react-redux";
 function NavbarUser({ currentPage, code }) {
   const { hospitalInfo } = useSelector((state) => state.hospitalInfo);
   const { name, phone, image } = hospitalInfo;
-  // const [hInfo, setHInfo] = useState("");
-  // const fetchInfo = async () => {
-  //   const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
-  //   const hId = await axios
-  //     .post(GET_HOSPITAL_ID_BY_CODE)
-  //     .then((res) => res.data);
-
-  //   const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${hId}`;
-  //   const { name, phone, image } = await axios
-  //     .post(GET_HOSPITAL_INFO_URL)
-  //     .then((res) => res.data);
-  //   setHInfo({ name, phone, image });
-  // };
-
-  // useEffect(() => {
-  //   if (code) {
-  //     fetchInfo();
-  //   }
-  // }, [code]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -58,7 +39,7 @@ function NavbarUser({ currentPage, code }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <NavItemUser
               active={currentPage === `/user/[code]/survey/health`}
               url={`/user/${code}/survey/health`}

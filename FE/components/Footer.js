@@ -17,14 +17,18 @@ function Footer() {
     >
       <div className="container w-75 d-flex justify-content-between align-items-center">
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <Image src={Logo} alt="vote24" width={100} height={27} />
+          <Link href="/" passHref>
+            <a>
+              <Image src={Logo} alt="vote24" width={100} height={27} />
+            </a>
+          </Link>
           <small className="d-block mb-3 text-muted">Vote24 &copy; 2022</small>
         </div>
         <div>
           <h5>About Us</h5>
           <ul className="list-unstyled text-small">
             <li className="mb-1">
-              <Link href="/service/info" passHref>
+              <Link href="/" passHref>
                 <a className="link-secondary text-decoration-none">
                   Vote 24 소개
                 </a>

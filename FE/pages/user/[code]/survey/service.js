@@ -1,9 +1,13 @@
+import { useState } from "react";
 import axios from "axios";
 import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
+import SearchBar from "../../../../components/SearchBar";
 
-function SurveyServiceUser({ code, surveyList }) {
+function SurveyServiceUser({ code, surveyListProp }) {
+  const [surveyList, setSurveyList] = useState(surveyListProp);
+
   const paintSurveyList = surveyList.map((s, idx) => {
     return (
       <UserSurveyListItem
@@ -16,10 +20,13 @@ function SurveyServiceUser({ code, surveyList }) {
   });
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="position-relative w-100 d-flex justify-content-center mt-3">
+      <header className="position-relative w-100 d-flex justify-content-center my-3">
         <BackButton url={`/user/${code}`} />
-        <UserHeader title="병원 설문 조사" />
+        <UserHeader title="병원 서비스 만족도 설문" />
       </header>
+      <div className="w-75 d-flex justify-content-end">
+        <SearchBar setPostList={setSurveyList} postListProp={surveyListProp} />
+      </div>
       {surveyList.length ? (
         paintSurveyList
       ) : (
@@ -61,7 +68,7 @@ export async function getServerSideProps({ params }) {
   return {
     props: {
       code,
-      surveyList,
+      surveyListProp: surveyList,
     },
   };
 }
