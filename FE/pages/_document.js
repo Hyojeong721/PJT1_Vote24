@@ -6,7 +6,6 @@ class CustomDocument extends Document {
       <Html>
         <Head>
           <link href="/favi.png" ref="logo" />
-          <title>Vote 24</title>
           <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
