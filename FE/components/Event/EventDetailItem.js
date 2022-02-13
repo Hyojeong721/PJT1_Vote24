@@ -8,12 +8,10 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 const EventDetailItem = ({ id, url }) => {
   const router = useRouter();
   const [data, setData] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
     const getPost = async () => {
@@ -100,7 +98,17 @@ const EventDetailItem = ({ id, url }) => {
             ></Image>
           )}
         </div>
-        <div>{data.context}</div>
+        <div>
+          {data.context &&
+            data.context.split("\n").map((line) => {
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+        </div>
       </div>
       <div>
         <Link href="/event">
