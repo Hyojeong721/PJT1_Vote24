@@ -18,16 +18,21 @@ function HospitalEvent() {
   // 서버에서 이벤트 목록 받아오는 코드
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-
-    const getList = async () => {
-      const res = await axios.get(`${EVENT_URL}`, {
-        headers: {
-          authorization: jwt,
-        },
-      });
-      const ex_data = res.data;
-      const data = ex_data.reverse();
-      setDataList(data);
+    const getPost = async () => {
+      await axios
+        .get(EVENT_URL, {
+          headers: {
+            authorization: jwt,
+          },
+        })
+        .then((res) => {
+          const data = res.data;
+          setDataList(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 리스트 get 실패", err);
+          router.push("/404");
+        });
     };
     getList();
   }, [EVENT_URL]);

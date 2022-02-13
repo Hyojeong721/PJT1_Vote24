@@ -5,6 +5,7 @@ import axios from "axios";
 import SurveyList from "../../components/Survey/SurveyList";
 import Paging from "../../components/Paging";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
@@ -13,6 +14,7 @@ function Service() {
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
+  const router = useRouter();
 
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
@@ -22,10 +24,15 @@ function Service() {
   // 서버에서 서비스 만족도 조사 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(SURVEY_SERVICE_URL);
-      console.log("만족도설문 데이터", res.data);
-
-      setDataList(res.data);
+      await axios
+        .get(SURVEY_SERVICE_URL)
+        .then((res) => {
+          setDataList(res.data);
+        })
+        .catch((error) => {
+          router.push("/404");
+          console.log("만족도 설문 목록 get 실패", error);
+        });
     };
     getList();
   }, [SURVEY_SERVICE_URL]);
