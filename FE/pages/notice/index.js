@@ -19,7 +19,7 @@ function HospitalEvent() {
 
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
-    const getPost = async () => {
+    const getList = async () => {
       await axios
         .get(NOTICE_URL)
         .then((res) => {

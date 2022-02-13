@@ -18,7 +18,7 @@ function HospitalEvent() {
   // 서버에서 이벤트 목록 받아오는 코드
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    const getPost = async () => {
+    const getList = async () => {
       await axios
         .get(EVENT_URL, {
           headers: {
