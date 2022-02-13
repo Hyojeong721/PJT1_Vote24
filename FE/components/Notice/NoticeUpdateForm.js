@@ -95,6 +95,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               onChange={handleInputChange}
               id="title"
               value={values.title}
+              required
             ></input>
           </div>
         </div>
@@ -143,6 +144,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               onChange={handleInputChange}
               id="context"
               rows="20"
+              required
             ></textarea>
           </div>
         </div>

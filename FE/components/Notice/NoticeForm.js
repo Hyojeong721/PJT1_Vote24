@@ -88,6 +88,7 @@ const NoticeForm = ({ url }) => {
               value={values.title}
               onChange={handleInputChange}
               id="title"
+              required
             ></input>
           </div>
         </div>
@@ -135,6 +136,7 @@ const NoticeForm = ({ url }) => {
               onChange={handleInputChange}
               id="context"
               rows="20"
+              required
             ></textarea>
           </div>
         </div>
