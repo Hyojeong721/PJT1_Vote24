@@ -349,4 +349,9 @@ const handlefixed = (e) => {
   <title>Vote 24</title>
   </HEAD>
   ```
-  
+///////
+0214
+- 고정공지를 페이지네이션에 붙여서 갈려고 공지 get data에서 fixed==1인것만 useEffect안에서 따로 뽑으려고 하는데 
+처음엔 map, foreach를 쓰면서 그안에 if문으로 구분하려해도 들어가질 않았다. ㅠㅠ 그래서 찾아보고
+참고: https://jaeheon.kr/166
+filter를 사용해볼 생각이다.
