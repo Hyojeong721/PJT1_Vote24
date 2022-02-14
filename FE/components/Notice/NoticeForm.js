@@ -2,6 +2,7 @@ import { useState } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
