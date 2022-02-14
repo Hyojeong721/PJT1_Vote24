@@ -127,6 +127,15 @@ export async function getServerSideProps({ params }) {
     .then((res) => res.data)
     .catch((err) => console.log(err));
 
+  if (Object.keys(surveyDetail).length === 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
   return {
     props: {
       code,

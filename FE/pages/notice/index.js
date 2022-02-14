@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import NoticeList from "../../components/Notice/NoticeList";
-import Paging from "../../components/Paging";
+import PagingFixed from "../../components/PagingFixed";
 
 function HospitalNotice() {
   const [dataList, setDataList] = useState([]);
@@ -12,7 +12,7 @@ function HospitalNotice() {
 
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(8);
+  const [postsPerPage] = useState(5);
 
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
@@ -72,7 +72,7 @@ function HospitalNotice() {
           url={NOTICE_URL}
           createUrl={CREATE_URL}
         />
-        <Paging
+        <PagingFixed
           postsPerPage={postsPerPage}
           totalPosts={dataList.length}
           paginate={paginate}

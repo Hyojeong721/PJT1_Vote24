@@ -92,16 +92,16 @@ export async function getServerSideProps({ params }) {
     .catch((err) => console.log(err));
 
   // id 는 hospital_id
-  // if (!id) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: "/404",
-  //     },
-  //   };
-  // }
+  if (!id) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
-  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${1}`; // 1 => id 로 수정 필요
+  const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${id}`; // 1 => id 로 수정 필요
   const { name, phone, image } = await axios
     .post(GET_HOSPITAL_INFO_URL)
     .then((res) => res.data)

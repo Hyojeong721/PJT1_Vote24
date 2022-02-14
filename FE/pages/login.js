@@ -55,6 +55,7 @@ function Login() {
         router.push("/");
       })
       .catch((err) => {
+        toast.dismiss();
         toast.error(`${err.message}`);
       });
   };
