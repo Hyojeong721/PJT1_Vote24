@@ -29,7 +29,7 @@ function SurveyCreateForm() {
     unregister,
     formState: { errors },
     handleSubmit,
-    reset,
+    setValue,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -92,7 +92,7 @@ function SurveyCreateForm() {
         errors={errors}
         nowCategory={nowCategory}
         setNowCategory={setNowCategory}
-        reset={reset}
+        setValue={setValue}
       />
       <SurveyCreateFormBody
         register={register}

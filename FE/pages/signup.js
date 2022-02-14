@@ -106,6 +106,7 @@ function Signup() {
 
   const onSubmit = async (data) => {
     if (!(emailChecked && bnChecked)) {
+      toast.dismiss();
       toast.warning("중복 확인이 필요합니다.");
       return;
     }
@@ -124,6 +125,7 @@ function Signup() {
         router.push("/");
       })
       .catch((err) => {
+        toast.dismiss();
         toast.error("서비스 신청 실패!");
         console.log(err);
       });
@@ -132,6 +134,7 @@ function Signup() {
   const onEmailCheck = async (e) => {
     const email = getValues("email");
     if (email === "" || errors.email?.message) {
+      toast.dismiss();
       toast.error("유효하지 않은 이메일입니다!");
       return;
     }
@@ -141,6 +144,7 @@ function Signup() {
       .post(EMAIL_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
+          toast.dismiss();
           toast.error("이미 존재하는 이메일입니다!");
           setEmailChecked(false);
           return;
@@ -153,7 +157,7 @@ function Signup() {
 
   const onBnCheck = async (e) => {
     const businessNumber = getValues("business_number");
-    if (businessNumber === "") {
+    if (businessNumber === "" || errors.business_number?.message) {
       toast.error("사업자 등록 번호를 입력해주세요!");
       return;
     }
@@ -163,6 +167,7 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
+          toast.dismiss();
           toast.error("이미 존재하는 사업자 번호입니다!");
           setBnChecked(false);
           return;
@@ -309,7 +314,10 @@ function Signup() {
                 <label htmlFor="business_number">사업자 등록 번호</label>
               </div>
               {bnChecked ? (
-                <button className="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary d-flex justify-content-center align-items-center"
+                >
                   <span className="material-icons">check_circle</span>
                 </button>
               ) : (

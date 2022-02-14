@@ -62,7 +62,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     };
 
     const jwt = localStorage.getItem("jwt");
-    console.log("@@@@@@", result);
+
     await axios
       .put(SURVEY_URL, result, {
         headers: {

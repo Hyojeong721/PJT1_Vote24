@@ -10,7 +10,7 @@ function SurveyCreateFormHeader({
   nowCategory,
   setNowCategory,
   initialBenchmarks,
-  reset,
+  setValue,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
