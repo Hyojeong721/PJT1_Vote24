@@ -137,8 +137,8 @@ function SurveyCreateFormHeader({
         <div className={cn(styles.inputLabel)}></div>
       </div>
       {errors.title && errors.title.type === "required" && (
-        <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-          <span className="material-icons fs-5">priority_high</span>
+        <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+          <span className="material-icons fs-6">priority_high</span>
           <span>설문 제목 입력은 필수입니다.</span>
         </div>
       )}
@@ -154,8 +154,8 @@ function SurveyCreateFormHeader({
             {...register("start_at", { required: true })}
           ></input>
           {errors.start_at && errors.start_at.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>시작일 입력은 필수입니다.</span>
             </div>
           )}
@@ -173,8 +173,8 @@ function SurveyCreateFormHeader({
           ></input>
 
           {errors.end_at && errors.end_at.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>종료일 입력은 필수입니다.</span>
             </div>
           )}
@@ -189,8 +189,8 @@ function SurveyCreateFormHeader({
         {...register("context", { required: true })}
       ></textarea>
       {errors.context && errors.context.type === "required" && (
-        <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-          <span className="material-icons fs-5">priority_high</span>
+        <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+          <span className="material-icons fs-0">priority_high</span>
           <span>설문 설명 입력은 필수입니다.</span>
         </div>
       )}
@@ -201,7 +201,7 @@ function SurveyCreateFormHeader({
             <div className="my-1">설문 결과의 기준 점수를 입력하세요.</div>
             <div>{paintBenchmark}</div>
             {benchScoreERR && benchmarks.length ? (
-              <div className="fs-0 d-flex align-items-center mt-1 bg-secondary text-white p-1 rounded">
+              <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
                 <span className="material-icons fs-6">priority_high</span>
                 <span>점수에 숫자를 입력해주세요.</span>
               </div>
@@ -231,8 +231,8 @@ function SurveyCreateFormHeader({
             </label>
           </div>
           {errors.output_link && errors.output_link.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>
                 설문 참여자에게 제공되는 건강 정보 링크 입력은 필수입니다.
               </span>
@@ -254,8 +254,8 @@ function SurveyCreateFormHeader({
           </div>
           {errors.reservation_link &&
             errors.reservation_link.type === "required" && (
-              <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-                <span className="material-icons fs-5">priority_high</span>
+              <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+                <span className={"material-icons fs-6"}>priority_high</span>
                 <span>
                   설문 참여자에게 제공되는 진료 예약 링크 입력은 필수입니다.
                 </span>

@@ -45,3 +45,12 @@
 .benchInput {
   width: 20%;
 }
+
+.submitError {
+  display: flex;
+  align-items: center;
+  background-color: #0d6dfd;
+  color: white;
+  margin-top: 1px;
+}
+/* ffc107 ff448d */
