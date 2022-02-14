@@ -19,21 +19,19 @@ const QuestionList = ({ total, dataList }) => {
       {dataList
         ? dataList.map((item) => {
             return (
-              <div className={cn(ct.questionList)} key={item.id}>
+              <div name="질문" className={cn(ct.questionList)} key={item.id}>
                 <div className={cn(ct.question)}>
                   {item.order}. {item.context}
                 </div>
-                <div>
-                  {item.type == 0 && <BarChart total={total} item={item} />}
-                  {item.type == 1 && <div>예비 주관식 답 더보기</div>}
-                </div>
+                {item.type == 0 && <BarChart total={total} item={item} />}
+                {item.type == 1 && <div>예비 주관식 답 더보기</div>}
                 {item.option
-                  ? item.option.map((opt, index) => {
+                  ? item.option.map((opt) => {
                       return (
                         <div key={opt.id} className={cn(ct.option)}>
-                          <div className={cn(ct.optionContext)}>
-                            - {opt.context} [<span> 배점 : </span>
-                            <span>{opt.weight}</span> ]
+                          <div>
+                            - {opt.context}
+                            <span> [배점 : {opt.weight}]</span>
                           </div>
 
                           <div className={cn(ct.optionCnt)}>
