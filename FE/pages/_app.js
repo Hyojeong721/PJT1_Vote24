@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <link href="/public/favi.ico" rel="logo" />
+        <link href="/public/favicon.ico" rel="logo" />
         <title>Vote 24</title>
       </Head>
       <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}>
