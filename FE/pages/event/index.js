@@ -49,7 +49,11 @@ function HospitalEvent() {
         <div></div>
       </Header>
       <div className="container mt-3">
-        <EventList dataList={currentPosts} EVENT_URL={EVENT_URL} />
+        <EventList
+          setDataList={setDataList}
+          dataList={currentPosts}
+          EVENT_URL={EVENT_URL}
+        />
 
         <Paging
           postsPerPage={postsPerPage}
