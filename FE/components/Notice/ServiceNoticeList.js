@@ -4,11 +4,9 @@ import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
-import cn from "classnames";
-import listbtn from "../../styles/listbtn.module.css";
 
 const ServiceNoticeList = ({
-  name,
+  userId,
   indexlst,
   fixedCnt,
   postsPerPage,
@@ -21,7 +19,7 @@ const ServiceNoticeList = ({
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "생성일", "조회수"];
   const jwt = localStorage.getItem("jwt");
-  console.log(name);
+
   useEffect(() => {
     setList(dataList);
 
@@ -76,7 +74,7 @@ const ServiceNoticeList = ({
 
   return (
     <div>
-      <Vote24NoticeBtn name={name} handleRemove={handleRemove} />
+      <Vote24NoticeBtn userId={userId} handleRemove={handleRemove} />
       <table className="table">
         <thead>
           <tr>

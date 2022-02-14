@@ -7,21 +7,16 @@ import ServiceNoticeList from "../../../components/Notice/ServiceNoticeList";
 import Paging from "../../../components/Paging";
 
 const NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
-const CREATE_URL = "service/notice/create";
 
 function ServiceNotice() {
   const [dataList, setDataList] = useState([]);
   const [fixed, setFixed] = useState([]);
-
-  // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(8);
 
-  // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
-  const name = userInfo.name;
-  console.log("info", userInfo.name);
-  // 서버에서 notice 목록 받아오는 코드
+  const userId = userInfo.id;
+
   useEffect(() => {
     const getList = async () => {
       await axios
@@ -66,14 +61,13 @@ function ServiceNotice() {
       </Header>
       <div className="container div-table">
         <ServiceNoticeList
-          name={name}
+          userId={userId}
           indexlst={indexlst}
           fixedCnt={fixedCnt}
           postsPerPage={postsPerPage}
           setDataList={setDataList}
           dataList={currentPosts}
           url={NOTICE_URL}
-          createUrl={CREATE_URL}
         />
         <Paging
           postsPerPage={postsPerPage}
