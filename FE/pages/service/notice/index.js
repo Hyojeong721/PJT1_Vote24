@@ -1,59 +1,83 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import router from "next/router";
 import Header from "../../../components/Header";
 import axios from "axios";
-import NoticeList from "../../../components/Notice/NoticeList";
+import ServiceNoticeList from "../../../components/Notice/ServiceNoticeList";
 import Paging from "../../../components/Paging";
 
-function HospitalEvent() {
-  const [dataList, setDataList] = useState([]);
-  // 페이징 처리를 위한
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+const NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
 
-  const SERVICE_URL = `http://i6a205.p.ssafy.io:8000/api/service`;
-  const CREATE_URL = "/service/notice/create";
-  // 서버에서 notice 목록 받아오는 코드
+function ServiceNotice() {
+  const [dataList, setDataList] = useState([]);
+  const [fixed, setFixed] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
+
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const userId = userInfo.id;
+
   useEffect(() => {
     const getList = async () => {
       await axios
-        .get(SERVICE_URL)
+        .get(NOTICE_URL)
         .then((res) => {
-          const data = res.data;
-          setDataList(data);
+          setDataList(res.data);
+          console.log("공지목록", res.data);
+          setFixed(res.data.filter((data) => data.fixed == 1));
+          console.log(
+            "fixed data",
+            res.data.filter((data) => data.fixed == 1)
+          );
         })
-        .catch((error) => {
-          console.log("vote24 공지 리스트 get실패", error);
+        .catch((err) => {
+          console.log("서비스 공지 목록 get 실패", err);
+          router.push("/404");
         });
     };
     getList();
-  }, [SERVICE_URL]);
+  }, [NOTICE_URL]);
 
   // 페이징 처리를 위한 계산
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = dataList.slice(indexOfFirstPost, indexOfLastPost);
+  const fixedCnt = fixed.length;
+  const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+  const currentPosts = [
+    ...dataList.slice(0, fixedCnt),
+    ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+  ];
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  var indexlst = [];
+  let i = 0;
+  for (i = indexOfLastPost; indexOfFirstPost < i; i--) {
+    indexlst.push(i - 1);
+  }
 
   return (
     <div>
-      <Header title="Vote24 공지사항">
+      <Header title="서비스 공지사항">
         <div></div>
       </Header>
       <div className="container div-table">
-        <NoticeList
+        <ServiceNoticeList
+          userId={userId}
+          indexlst={indexlst}
+          fixedCnt={fixedCnt}
+          postsPerPage={postsPerPage}
+          setDataList={setDataList}
           dataList={currentPosts}
-          url={SERVICE_URL}
-          createUrl={CREATE_URL}
+          url={NOTICE_URL}
         />
-
         <Paging
           postsPerPage={postsPerPage}
           totalPosts={dataList.length}
           paginate={paginate}
+          fixedCnt={fixedCnt}
         />
       </div>
     </div>
   );
 }
 
-export default HospitalEvent;
+export default ServiceNotice;
