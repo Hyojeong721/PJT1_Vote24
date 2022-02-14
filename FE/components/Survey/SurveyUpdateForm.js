@@ -20,7 +20,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     formState: { errors },
     handleSubmit,
     setValue,
-    reset,
   } = useForm();
 
   const { benchmark, question } = surveyDetail;
@@ -32,6 +31,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     start_at,
     end_at,
     output_link,
+    reservation_link,
   }) => {
     setNowCategory(`${category}`);
     setValue("title", title);
@@ -39,6 +39,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     setValue("start_at", start_at.slice(0, 16));
     setValue("end_at", end_at.slice(0, 16));
     setValue("output_link", output_link);
+    setValue("reservation_link", reservation_link);
   };
 
   useEffect(() => {
