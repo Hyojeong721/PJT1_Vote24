@@ -37,15 +37,12 @@ const NoticeList = ({
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
     setCheckList(e.target.checked ? idList : []);
   };
 
   const onChangeEach = (e, id) => {
-    // 체크할 시 CheckList에 id값 넣기
     if (e.target.checked) {
       setCheckList([...checkList, id]);
-      // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
     } else {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
@@ -128,11 +125,12 @@ const NoticeList = ({
                       ></input>
                     </td>
                     <TableColumn
-                      content={
-                        indexlst[Math.abs(index - postsPerPage) - 1] -
-                        fixedCnt +
-                        1
-                      }
+                      // content={
+                      //   indexlst[Math.abs(index - postsPerPage) - 1] -
+                      //   fixedCnt +
+                      //   1
+                      // }
+                      content={index + 1 + fixedCnt}
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>

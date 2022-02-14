@@ -7,7 +7,7 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const EventList = ({ dataList, EVENT_URL }) => {
+const EventList = ({ setDataList, dataList, EVENT_URL }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -65,8 +65,9 @@ const EventList = ({ dataList, EVENT_URL }) => {
           .catch((error) => {
             console.log(error);
           });
-        // list 재구성 = 삭제된애들 빼고 나머지 넣기
+        // list 재구성 = 삭제된 애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== eventId));
+        setDataList((state) => state.filter((data) => data.id !== eventId));
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -112,7 +113,7 @@ const EventList = ({ dataList, EVENT_URL }) => {
         </thead>
         <tbody>
           {list
-            ? list.map((item) => {
+            ? list.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -123,7 +124,7 @@ const EventList = ({ dataList, EVENT_URL }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={item.id}
+                      content={index + 1}
                       url={`event/${item.id}`}
                     ></TableColumn>
                     <TableColumn

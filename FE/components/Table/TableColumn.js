@@ -6,7 +6,7 @@ const TableColumn = ({ fixed, content, url }) => {
     return (
       <td className="table-column">
         <Link href={url} passHref>
-          <a>고정</a>
+          <a>[고정]</a>
         </Link>
       </td>
     );
