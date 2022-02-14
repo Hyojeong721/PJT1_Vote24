@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import router from "next/router";
 import Header from "../../../components/Header";
 import axios from "axios";
-import NoticeList from "../../../components/Notice/NoticeList";
+import ServiceNoticeList from "../../../components/Notice/ServiceNoticeList";
 import Paging from "../../../components/Paging";
 
 const NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
@@ -16,6 +17,10 @@ function ServiceNotice() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(8);
 
+  // 병원 id 받아서 url에 적용
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const name = userInfo.name;
+  console.log("info", userInfo.name);
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
@@ -60,7 +65,8 @@ function ServiceNotice() {
         <div></div>
       </Header>
       <div className="container div-table">
-        <NoticeList
+        <ServiceNoticeList
+          name={name}
           indexlst={indexlst}
           fixedCnt={fixedCnt}
           postsPerPage={postsPerPage}
