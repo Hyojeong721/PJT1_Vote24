@@ -61,7 +61,7 @@ int WINAPI WinMain(
 	WndClass.lpfnWndProc	= (WNDPROC)WndProc;						// 프로시저의 함수명
 	WndClass.lpszClassName	= lpszClass;							// 구조체로 만들어질 클래스명
 	WndClass.lpszMenuName	= NULL;									// 메뉴 이름
-	WndClass.style = CS_HREDRAW | CS_VREDRAW;			// 윈도우 스타일
+	WndClass.style = CS_HREDRAW | CS_VREDRAW;						// 윈도우 스타일
 
 	RegisterClass(&WndClass);										// 여기서 윈도우 클래스를 등록
 
@@ -159,24 +159,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_USER + 1:
-		if (flags == 0)
-		{
-			hThreadArray[1] = CreateThread(
-				NULL, 0, VirtualKeyboardOpen, &flags, 0, &dwThreadIdArray[1]
-			);
-			if (hThreadArray[1] == NULL) {
-				ExitProcess(3);
-			}
-		}
-		else if (flags == 1){
-			//hThreadArray[2] = CreateThread(
-			//	NULL, 0, VirtualKeyboardClose, &flags, 0, &dwThreadIdArray[2]
-			//);
-			//if (hThreadArray[2] == NULL) {
-			//	ExitProcess(3);
-			//}
-			LPVOID* HEL = NULL;
-			VirtualKeyboardClose(HEL);
+		hThreadArray[1] = CreateThread(
+			NULL, 0, VirtualKeyboardOpen, &flags, 0, &dwThreadIdArray[1]
+		);
+		if (hThreadArray[1] == NULL) {
+			ExitProcess(3);
 		}
 		return 0;
 	case WM_DESTROY:
