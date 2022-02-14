@@ -25,14 +25,6 @@ const BarChart = ({ total, item }) => {
     responsive: true,
     indexAxis: "y",
     scales: {
-      y: {
-        ticks: {
-          font: {
-            size: 20,
-            weight: "bold",
-          },
-        },
-      },
       x: {
         min: 0,
         max: 100,
@@ -66,9 +58,7 @@ const BarChart = ({ total, item }) => {
   };
 
   return (
-    <div>
-      <Bar data={data} options={options} />
-    </div>
+    <Bar id="myChart" width="100" height="100" data={data} options={options} />
   );
 };
 
