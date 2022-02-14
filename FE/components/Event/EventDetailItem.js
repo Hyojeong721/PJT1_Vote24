@@ -60,7 +60,13 @@ const EventDetailItem = ({ id, url }) => {
           <div>
             <span className={cn(ct.item)}>관리자</span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
+            <span className={cn(ct.item)}>
+              작성 : {DateForm(data.created_at)}
+            </span>
+            수정 :
+            {updated_at && (
+              <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
+            )}
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
