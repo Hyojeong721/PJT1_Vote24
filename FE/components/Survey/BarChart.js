@@ -22,7 +22,7 @@ ChartJS.register(
 const BarChart = ({ total, item }) => {
   console.log(item);
   const options = {
-    responsive: false,
+    responsive: true,
     indexAxis: "y",
     scales: {
       x: {
