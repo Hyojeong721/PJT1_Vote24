@@ -64,7 +64,8 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
       id,
     ]);
     let result = data[0][0];
-    result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
 
     logger.info("GET Notice Detail");
     return res.json(result);
@@ -175,6 +176,7 @@ router.put(
             title =?, 
             context =?, 
             fixed =?,
+            attachment = null,
             updated_at = now() where id=? AND hospital_id =?`;
         const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
       }

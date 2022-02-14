@@ -72,7 +72,8 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
       id,
     ]);
     let result = data[0][0];
-    result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
 
     logger.info("GET Event Detail");
     return res.json(result);
@@ -196,6 +197,7 @@ router.put(
                             context =?, 
                             start_at =?, 
                             end_at =?,
+                            attachment = null,
                             updated_at = now() where id=? AND hospital_id=?`;
         const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
       }
