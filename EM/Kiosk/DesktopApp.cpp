@@ -21,7 +21,7 @@ extern DWORD WINAPI SerialThread(LPVOID IpParam);
 extern DWORD WINAPI VirtualKeyboardOpen(LPVOID IpParam);
 extern DWORD WINAPI VirtualKeyboardClose(LPVOID IpParam);
 
-// ---------- À¥ºä ¼³Á¤ ---------- //
+// ---------- ì›¹ë·° ì„¤ì • ---------- //
 using namespace Microsoft::WRL;
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
@@ -33,12 +33,12 @@ static wil::com_ptr<ICoreWebView2> webviewWindow;
 static int x, y;
 int flags = 0;
 
-// ---------- À©µµ¿ì È­¸é ±¸¼º À§ÇÑ Àü¿ª º¯¼ö ---------- //
+// ---------- ìœˆë„ìš° í™”ë©´ êµ¬ì„± ìœ„í•œ ì „ì—­ ë³€ìˆ˜ ---------- //
 HWND	hWndMain;
 MSG		Message;
 LPCTSTR lpszClass = TEXT("Vote24");
 
-// ---------- ¾²·¹µå ±¸¼º À§ÇÑ Àü¿ª º¯¼ö ---------- //
+// ---------- ì“°ë ˆë“œ êµ¬ì„± ìœ„í•œ ì „ì—­ ë³€ìˆ˜ ---------- //
 DWORD   dwThreadIdArray[MAX_THREADS];
 HANDLE  hThreadArray[MAX_THREADS];
 
@@ -52,18 +52,18 @@ int WINAPI WinMain(
 {
 	WNDCLASS WndClass;			
 	HINSTANCE g_hInst =  hInstance;
-	WndClass.cbClsExtra		= 0;									// Å¬·¡½º ¿©ºĞ ¹ÙÀÌÆ® ¼ö
-	WndClass.cbWndExtra		= 0;									// À©µµ¿ì ¿©ºĞ ¹ÙÀÌÆ® ¼ö
-	WndClass.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);	// À©µµ¿ì ¹è°æ »ö
-	WndClass.hCursor		= LoadCursor(NULL, IDC_ARROW);			// ÇÁ·Î±×·¥¿¡¼­ »ç¿ëÇÒ Ä¿¼­
-	WndClass.hIcon			= LoadIcon(NULL, IDI_APPLICATION);		// ÇÁ·Î±×·¥¿¡¼­ »ç¿ëÇÒ ¾ÆÀÌÄÜ
-	WndClass.hInstance		= hInstance;							// ÇÁ·Î±×·¥ÀÇ ÀÎ½ºÅÏ½º ÇÚµé
-	WndClass.lpfnWndProc	= (WNDPROC)WndProc;						// ÇÁ·Î½ÃÀúÀÇ ÇÔ¼ö¸í
-	WndClass.lpszClassName	= lpszClass;							// ±¸Á¶Ã¼·Î ¸¸µé¾îÁú Å¬·¡½º¸í
-	WndClass.lpszMenuName	= NULL;									// ¸Ş´º ÀÌ¸§
-	WndClass.style = CS_HREDRAW | CS_VREDRAW;			// À©µµ¿ì ½ºÅ¸ÀÏ
+	WndClass.cbClsExtra		= 0;									// í´ë˜ìŠ¤ ì—¬ë¶„ ë°”ì´íŠ¸ ìˆ˜
+	WndClass.cbWndExtra		= 0;									// ìœˆë„ìš° ì—¬ë¶„ ë°”ì´íŠ¸ ìˆ˜
+	WndClass.hbrBackground	= (HBRUSH)GetStockObject(WHITE_BRUSH);	// ìœˆë„ìš° ë°°ê²½ ìƒ‰
+	WndClass.hCursor		= LoadCursor(NULL, IDC_ARROW);			// í”„ë¡œê·¸ë¨ì—ì„œ ì‚¬ìš©í•  ì»¤ì„œ
+	WndClass.hIcon			= LoadIcon(NULL, IDI_APPLICATION);		// í”„ë¡œê·¸ë¨ì—ì„œ ì‚¬ìš©í•  ì•„ì´ì½˜
+	WndClass.hInstance		= hInstance;							// í”„ë¡œê·¸ë¨ì˜ ì¸ìŠ¤í„´ìŠ¤ í•¸ë“¤
+	WndClass.lpfnWndProc	= (WNDPROC)WndProc;						// í”„ë¡œì‹œì €ì˜ í•¨ìˆ˜ëª…
+	WndClass.lpszClassName	= lpszClass;							// êµ¬ì¡°ì²´ë¡œ ë§Œë“¤ì–´ì§ˆ í´ë˜ìŠ¤ëª…
+	WndClass.lpszMenuName	= NULL;									// ë©”ë‰´ ì´ë¦„
+	WndClass.style = CS_HREDRAW | CS_VREDRAW;			// ìœˆë„ìš° ìŠ¤íƒ€ì¼
 
-	RegisterClass(&WndClass);										// ¿©±â¼­ À©µµ¿ì Å¬·¡½º¸¦ µî·Ï
+	RegisterClass(&WndClass);										// ì—¬ê¸°ì„œ ìœˆë„ìš° í´ë˜ìŠ¤ë¥¼ ë“±ë¡
 
 	HWND hWnd = CreateWindow(
 		lpszClass, 
@@ -82,11 +82,11 @@ int WINAPI WinMain(
 		return 1;
 	}
 
-	// ---------- À©µµ¿ì È­¸éÀ» ¶ç¿î´Ù ---------- //
+	// ---------- ìœˆë„ìš° í™”ë©´ì„ ë„ìš´ë‹¤ ---------- //
 	ShowWindow(hWnd, SW_SHOWMAXIMIZED);
 	hWndMain = hWnd;
 
-	// ---------- À¥ºä ¼³Á¤ ---------- //
+	// ---------- ì›¹ë·° ì„¤ì • ---------- //
 	CreateCoreWebView2EnvironmentWithOptions(nullptr, nullptr, nullptr,
 		Callback<ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
 			[hWnd](HRESULT result, ICoreWebView2Environment* env) -> HRESULT {
@@ -115,7 +115,7 @@ int WINAPI WinMain(
 		return S_OK;
 	}).Get());
 
-	// ---------- ¸Ş½ÃÁö ÀÀ´ä ---------- //
+	// ---------- ë©”ì‹œì§€ ì‘ë‹µ ---------- //
 	while (GetMessage(&Message, 0, 0, 0)) {
 		TranslateMessage(&Message);
 		DispatchMessage(&Message);
@@ -132,7 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	
 	switch (iMessage) {
 	case WM_CREATE:
-		// ---------- ¾²·¹µå »ı¼º ---------- //
+		// ---------- ì“°ë ˆë“œ ìƒì„± ---------- //
 		hThreadArray[0] = CreateThread(
 			NULL, 0, SerialThread, NULL, 0, &dwThreadIdArray[0]
 		);
