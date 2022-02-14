@@ -1,11 +1,8 @@
 import React from "react";
 import Header from "../../components/Header";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 
 function Survey() {
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const hospital_id = userInfo.id;
   return (
     <div>
       <Header title="병원 설문조사 목록"></Header>
