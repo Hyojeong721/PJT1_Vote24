@@ -1,7 +1,14 @@
 import { useState } from "react";
 
 function PopularSurvery({ popularSurveys }) {
-  const [surveyList, setSurveyList] = useState(popularSurveys);
+  const paintPopularSurveys = popularSurveys.map((s, idx) => (
+    <tr key={s.id}>
+      <th scope="row">{idx + 1}</th>
+      <td>{s.title}</td>
+      <td>{s.userId}</td>
+      <td>{s.count}</td>
+    </tr>
+  ));
 
   return (
     <div className="card mb-3 col-12 col-lg-5">
@@ -16,16 +23,7 @@ function PopularSurvery({ popularSurveys }) {
               <th scope="col">조회수</th>
             </tr>
           </thead>
-          <tbody>
-            {surveyList.length &&
-              surveyList.map((el) => (
-                <tr key={el.id}>
-                  <th scope="row">{el.id}</th>
-                  <td>{el.title}</td>
-                  <td>{el.userId}</td>
-                </tr>
-              ))}
-          </tbody>
+          <tbody>{popularSurveys.length ? paintPopularSurveys : ""}</tbody>
         </table>
       </div>
     </div>

@@ -72,9 +72,8 @@ function MainOnLogin() {
           />
         </div>
         <div className="row justify-content-md-center gap-3">
-          {data.populartVotes && (
-            <PopularSurvey popularSurveys={data.populartVotes} />
-          )}
+          {data && <PopularSurvey popularSurveys={data.popularVotes} />}
+
           <AgeGenderGraph data={data.result_Mysurvey} />
         </div>
       </div>
