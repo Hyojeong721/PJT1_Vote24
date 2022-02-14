@@ -5,7 +5,7 @@ import listbtn from "../../styles/listbtn.module.css";
 const CREATE_URL = "service/notice/create";
 
 const Vote24NoticeBtn = ({ userId, handleRemove }) => {
-  if (userId == 0) {
+  if (userId == 24) {
     return (
       <div className={cn(listbtn.btns)}>
         <div></div>
