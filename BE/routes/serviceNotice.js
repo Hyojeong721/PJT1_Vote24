@@ -20,8 +20,11 @@ router.post(
   verifyToken,
   service_upload.single("service_notice_image"),
   async (req, res) => {
-    const { title, context, fixed, attachment } = req.body;
-
+    const { id, title, context, fixed, attachment } = req.body;
+    if (id != 0) {
+      logger.info("POST Service Notice");
+      return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
+    }
     const rename =
       new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
       attachment;
@@ -48,10 +51,10 @@ router.post(
       const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM service_notice;`;
       const data_id = await pool.query(LAST_INSERT_ID);
       const create_id = data_id[0][0].auto_id;
-      logger.info("POST Event Detail");
+      logger.info("POST Service Notice");
       return res.json({ state: "Success", id: create_id });
     } catch (error) {
-      logger.error("POST Service Notice Detail " + error);
+      logger.error("POST Service Notice " + error);
       return res.json({ state: "Fail" });
     }
   }
@@ -67,6 +70,10 @@ router.put(
   service_upload.single("service_notice_image"),
   async (req, res) => {
     const id = req.params.id;
+    if (id != 0) {
+      logger.info("POST Service Notice");
+      return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
+    }
     const { title, context, fixed, attachment } = req.body;
 
     const rename =
@@ -93,10 +100,10 @@ router.put(
         const data = await pool.query(sql, [title, context, fixed, id]);
       }
 
-      logger.info("PUT Service Notice Detail");
+      logger.info("PUT Service Notice");
       return res.json({ result: "Success" });
     } catch (error) {
-      logger.error("PUT Service Notice Detail " + error);
+      logger.error("PUT Service Notice" + error);
       return res.json(error);
     }
   }
@@ -108,7 +115,10 @@ router.put(
  *----------------------------------------------------------------------*/
 router.delete("/service/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
-
+  if (id != 0) {
+    logger.info("POST Service Notice");
+    return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
+  }
   try {
     const sql = `DELETE FROM service_notice WHERE id=?;`;
     const data = await pool.query(sql, [id]);

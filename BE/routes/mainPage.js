@@ -70,9 +70,7 @@ router.get("/main/:hospital_id", async (req, res) => {
       `SELECT COUNT(id) AS cnt FROM hospital_survey WHERE hospital_id = ${hospital_id} AND start_at <= now() AND end_at > now();`
     );
     // 전체 설문 참여 인원
-    const totalVote = await pool.query(
-      `SELECT SUM(count) AS cnt FROM hospital_survey WHERE start_at <= now();`
-    );
+    const totalVote = await pool.query(`SELECT SUM(count) AS cnt FROM hospital_survey;`);
     if (totalVote[0][0].cnt == null) {
       totalVote[0][0].cnt = 0;
     }

@@ -195,7 +195,8 @@ router.put(
                             title =?, 
                             context =?, 
                             start_at =?, 
-                            end_at =? where id=? AND hospital_id=?`;
+                            end_at =?,
+                            updated_at = now() where id=? AND hospital_id=?`;
         const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
       }
 
