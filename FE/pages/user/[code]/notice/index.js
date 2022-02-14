@@ -53,16 +53,16 @@ export async function getServerSideProps({ params }) {
     .catch((err) => console.log(err));
 
   // id 는 hospital_id
-  // if (!id) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: "/404",
-  //     },
-  //   };
-  // }
+  if (!id) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${1}`;
+  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${id}`;
   const noticeList = await axios.get(NOTICE_URL).then((res) => {
     return res.data;
   });
