@@ -67,7 +67,7 @@ const NoticeDetailItem = ({ url }) => {
 
             {data.updated_at && (
               <span className={cn(ct.item)}>
-                수정 :{DateForm(data.updated_at)}
+                수정 : {DateForm(data.updated_at)}
               </span>
             )}
             <span className={cn(ct.item)}> | </span>

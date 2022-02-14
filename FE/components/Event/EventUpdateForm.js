@@ -150,7 +150,7 @@ const EventUpdateForm = ({ eventId, url }) => {
       </div>
       <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href="/notice/" passHref>
+          <Link href="/event/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>

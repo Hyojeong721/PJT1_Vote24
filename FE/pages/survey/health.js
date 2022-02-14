@@ -12,7 +12,7 @@ const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 function HealthSurvey() {
   const [dataList, setDataList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(3);
 
   const router = useRouter();
 
