@@ -36,7 +36,7 @@ function Signup() {
       .string()
       .required("비밀번호 입력은 필수입니다.")
       .matches(
-        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
+        /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
         "비밀번호는 반드시 8 ~ 16자이며, 한 개의 특수문자를 반드시 포함한 영어 숫자 조합이어야 합니다."
       ),
     passwordConfirm: yup
@@ -134,8 +134,7 @@ function Signup() {
     const email = getValues("email");
     const emailREGEX =
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-    // /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
-    console.log("here", emailREGEX.test(email));
+
     if (!emailREGEX.test(email) || errors.email?.message) {
       toast.dismiss();
       toast.error("이메일 형식에 맞게 입력해주세요.");
