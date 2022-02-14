@@ -51,14 +51,35 @@ function SurveyCreateFormHeader({
     }
   };
 
-  const handleBenchmarkScoreKeyDown = (e, b) => {
-    if (e.key === "Backspace") {
-      return;
-    } else if (0 <= e.key && e.key <= 9) {
-      setBenchScoreERR(false);
-    } else {
+  // const handleBenchmarkScoreKeyDown = (e, b) => {
+  //   if (e.key === "Backspace") {
+  //     return;
+  //   } else if (0 <= e.key && e.key <= 9) {
+  //     setBenchScoreERR(false);
+  //   } else {
+  //     setBenchScoreERR(true);
+  //   }
+  // };
+  // const handleBenchmarScoreKey = (e) => {
+  //   const regExp = /[^0-9]/g;
+  //   const ele = e.target;
+  //   if (regExp.test(ele.value)) {
+  //     ele.value = ele.value.replace(regExp, "");
+  //     setBenchScoreERR(true);
+  //   }
+  // };
+
+  const handleBenchmarScoreKey = (e) => {
+    const regExp = /[^0-9]/g;
+    if (regExp.test(e.target.value)) {
       setBenchScoreERR(true);
+    } else {
+      setBenchScoreERR(false);
     }
+
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*)\./g, "$1");
   };
 
   const paintBenchmark = benchmarks.map((b) => {
@@ -68,14 +89,12 @@ function SurveyCreateFormHeader({
           <input
             id="benchmark"
             name="benchmark"
-            type="number"
+            type="text"
             min="0"
             className={cn(styles.benchInput, "form-control", "fs-0")}
             placeholder="O점 이상일때"
             autoComplete="off"
-            onKeyDown={(e) => {
-              handleBenchmarkScoreKeyDown(e, b);
-            }}
+            onInput={(e) => handleBenchmarScoreKey(e)}
             {...register(`C${b.id}`)}
           ></input>
           <input
@@ -182,8 +201,8 @@ function SurveyCreateFormHeader({
             <div className="my-1">설문 결과의 기준 점수를 입력하세요.</div>
             <div>{paintBenchmark}</div>
             {benchScoreERR && benchmarks.length ? (
-              <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-                <span className="material-icons fs-5">priority_high</span>
+              <div className="fs-0 d-flex align-items-center mt-1 bg-secondary text-white p-1 rounded">
+                <span className="material-icons fs-6">priority_high</span>
                 <span>점수에 숫자를 입력해주세요.</span>
               </div>
             ) : (

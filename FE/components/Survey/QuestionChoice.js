@@ -12,6 +12,7 @@ function QuestionChoice({
 }) {
   const [options, setOptions] = useState([]);
   const [oCnt, setOCnt] = useState(1);
+  const [optionScoreERR, setOptionScoreERR] = useState(false);
   const initialOptions = q.initialOptions;
 
   const addInitialOptions = (initialOptions) => {
@@ -47,6 +48,19 @@ function QuestionChoice({
     unregister(`B${q.id}-${inputId}`); // B == option score
   };
 
+  const handleOptionScoreKey = (e) => {
+    const regExp = /[^0-9]/g;
+    if (regExp.test(e.target.value)) {
+      setOptionScoreERR(true);
+    } else {
+      setOptionScoreERR(false);
+    }
+
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*)\./g, "$1");
+  };
+
   // header
   // A == option
   // B == option score
@@ -67,11 +81,12 @@ function QuestionChoice({
           <input
             id={`B${q.id}-${o.id}`}
             name={`B${q.id}-${o.id}`}
-            type="number"
+            type="text"
             min="0"
             className={cn(styles.scoreInput, "form-control", "form-control-sm")}
             placeholder="점수"
             autoComplete="off"
+            onInput={(e) => handleOptionScoreKey(e)}
             {...register(`B${q.id}-${o.id}`)}
           ></input>
         )}
@@ -104,6 +119,14 @@ function QuestionChoice({
       </div>
       <div className="ms-3 mt-1">
         {paintOptions}
+        {optionScoreERR && options.length ? (
+          <div className="fs-0 d-flex align-items-center mt-1 bg-secondary text-white p-1 rounded">
+            <span className="material-icons fs-6">priority_high</span>
+            <span>점수에 숫자를 입력해주세요.</span>
+          </div>
+        ) : (
+          <></>
+        )}
         <button className="btn material-icons p-0" onClick={handleOptionAdd}>
           add
         </button>
