@@ -37,7 +37,7 @@ function Signup() {
       .required("비밀번호 입력은 필수입니다.")
       .matches(
         /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
-        "비밀번호는 반드시 8 ~ 16자이며, 한 개의 특수문자를 반드시 포함한 영어 숫자 조합이어야 합니다."
+        "비밀번호는 반드시 8~16자이며, 영문, 숫자, 특수문자를 포함해야 합니다."
       ),
     passwordConfirm: yup
       .string()
@@ -185,7 +185,7 @@ function Signup() {
   return (
     <>
       <Header title="서비스 신청"></Header>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex flex-column justify-content-center align-items-center">
         <form
           className="form-box d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
           onSubmit={handleSubmit(onSubmit)}
@@ -223,7 +223,9 @@ function Signup() {
                 <label htmlFor="email">
                   <p className="text-secondary">you@example.com</p>
                 </label>
-                <span className="error">{errors.email?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.email?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -242,11 +244,12 @@ function Signup() {
                 />
                 <label htmlFor="password">
                   <p className="text-secondary fs-0">
-                    비밀번호는 8 ~ 16자 사이이며, 특수문자 1개를 포함해야
-                    합니다.
+                    8~16자 영문, 숫자, 특수문자를 포함해야 합니다.
                   </p>
                 </label>
-                <span className="error">{errors.password?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.password?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -268,7 +271,9 @@ function Signup() {
                     위 비밀번호와 동일한 비밀번호를 입력해주세요.
                   </p>
                 </label>
-                <span className="error">{errors.passwordConfirm?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.passwordConfirm?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -288,7 +293,9 @@ function Signup() {
                 <label htmlFor="name">
                   <p className="text-secondary">병원명을 입력해주세요.</p>
                 </label>
-                <span className="error">{errors.name?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.name?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -308,7 +315,9 @@ function Signup() {
                 <label htmlFor="phone">
                   <p className="text-secondary">전화번호를 입력해주세요.</p>
                 </label>
-                <span className="error">{errors.phone?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.phone?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -348,7 +357,9 @@ function Signup() {
                 <label htmlFor="business_number">
                   <p className="text-secondary">OOO-OO-OOOOO</p>
                 </label>
-                <span className="error">{errors.business_number?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.business_number?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -379,8 +390,7 @@ function Signup() {
               objectFit="contain"
             />
           </div> */}
-
-          <div className="d-flex justify-content-center mt-5">
+          <div className="d-flex justify-content-center mt-3 mb-5">
             <button type="submit" className="submit-button btn btn-primary">
               서비스 신청
             </button>

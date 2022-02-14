@@ -91,7 +91,7 @@ function Login() {
                 <label htmlFor="email">
                   <p className="text-secondary">you@example.com</p>
                 </label>
-                <span className="error">
+                <span className="fs-0 text-danger ms-1">
                   {errorMessage.includes("아이디") && errorMessage}
                 </span>
               </div>
@@ -112,14 +112,14 @@ function Login() {
                 <label htmlFor="password">
                   <p className="text-secondary">password</p>
                 </label>
-                <span className="error">
+                <span className="fs-0 text-danger ms-1">
                   {errorMessage.includes("비밀번호") && errorMessage}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="d-flex justify-content-center mt-5">
+          <div className="d-flex justify-content-center mt-4">
             <button type="submit" className="submit-button btn btn-primary">
               로그인
             </button>
