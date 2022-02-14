@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
 import NavItemUser from "./NavItemUser";
 import { useSelector } from "react-redux";
+import styles from "../../styles/navbaruser.module.css";
 
 function NavbarUser({ currentPage, code }) {
   const { hospitalInfo } = useSelector((state) => state.hospitalInfo);
@@ -13,16 +13,16 @@ function NavbarUser({ currentPage, code }) {
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div className="container-fluid">
         {name && (
-          <Link href={`/user/${code}`}>
-            <a className="navbar-brand d-flex align-items-center gap-1 me-3">
-              <Image
-                className="navbar-logo "
-                src={image}
-                width="40px"
-                height="30px"
-                layout="fixed"
-                priority
-              ></Image>
+          <Link href={`/user/${code}`} passHref>
+            <a className="d-flex align-items-center gap-1 me-3">
+              <div className={styles.logoImageContainer}>
+                <Image
+                  src={image}
+                  layout="fill"
+                  objectFit="contain"
+                  priority
+                ></Image>
+              </div>
               <div className="fs-3">{name}</div>
             </a>
           </Link>

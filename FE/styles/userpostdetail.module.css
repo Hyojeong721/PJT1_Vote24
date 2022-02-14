@@ -10,3 +10,9 @@
   color: black;
   background-color: #fff8e6;
 }
+
+.imageContainer {
+  position: relative;
+  width: 50%;
+  height: auto;
+}
