@@ -3,43 +3,42 @@ import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
 import axios from "axios";
-import Link from "next/link";
-import cn from "classnames";
-import listbtn from "../../styles/listbtn.module.css";
+import Vote24NoticeBtn from "./Vote24NoticeBtn";
 
-const EventList = ({ setDataList, dataList, EVENT_URL }) => {
+const ServiceNoticeList = ({
+  userId,
+  indexlst,
+  fixedCnt,
+  postsPerPage,
+  setDataList,
+  dataList,
+  url,
+}) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
-  const headersName = ["번호", "제목", "기한", "조회수", "status"];
-  console.log(dataList);
+  const headersName = ["번호", "제목", "생성일", "조회수"];
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
     setList(dataList);
 
     let ids = [];
-    dataList.map((item, i) => {
-      ids[i] = item.id;
-    });
+    {
+      dataList &&
+        dataList.map((item, i) => {
+          ids[i] = item.id;
+        });
+    }
 
     setIdList(ids);
   }, [dataList]);
-
-  const onStatus = (status) => {
-    if (status == 0) {
-      return "예정";
-    } else if (status == 1) {
-      return "진행중";
-    } else {
-      return "마감";
-    }
-  };
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
     setCheckList(e.target.checked ? idList : []);
   };
-  // 개별 선택/해제
+
   const onChangeEach = (e, id) => {
     if (e.target.checked) {
       setCheckList([...checkList, id]);
@@ -49,12 +48,12 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
   };
 
   // 선택 삭제
-  const jwt = localStorage.getItem("jwt");
+
   const handleRemove = () => {
     if (checkList.length) {
-      checkList.map((eventId) => {
+      checkList.map((noticeId) => {
         axios
-          .delete(`${EVENT_URL}/${eventId}`, {
+          .delete(`${url}/${noticeId}`, {
             headers: {
               authorization: jwt,
             },
@@ -63,11 +62,10 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
             console.log(response);
           })
           .catch((error) => {
-            console.log(error);
+            console.log("dddd", error);
           });
-        // list 재구성 = 삭제된 애들 빼고 나머지 넣기
-        setList(list.filter((data) => data.id !== eventId));
-        setDataList((state) => state.filter((data) => data.id !== eventId));
+        setList(list.filter((data) => data.id !== noticeId));
+        setDataList((state) => state.filter((data) => data.id !== noticeId));
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -76,22 +74,7 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
 
   return (
     <div>
-      <div className={cn(listbtn.btns)}>
-        <div>검색</div>
-        <div>
-          <Link href="/event/create" passHref>
-            <button className={cn(listbtn.createbtn, "btn btn-primary")}>
-              글쓰기
-            </button>
-          </Link>
-          <button
-            className={cn(listbtn.deletebtn, "btn btn-secondary")}
-            onClick={handleRemove}
-          >
-            선택 삭제
-          </button>
-        </div>
-      </div>
+      <Vote24NoticeBtn userId={userId} handleRemove={handleRemove} />
       <table className="table">
         <thead>
           <tr>
@@ -104,9 +87,9 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
             </th>
             {headersName.map((item, index) => {
               return (
-                <td className="table-header-column" key={index}>
+                <th className="table-header-column" key={index}>
                   {item}
-                </td>
+                </th>
               );
             })}
           </tr>
@@ -124,26 +107,25 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={index + 1}
-                      url={`event/${item.id}`}
+                      content={
+                        indexlst[Math.abs(index - postsPerPage) - 1] -
+                        fixedCnt +
+                        1
+                      }
+                      fixed={item.fixed}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
                       content={item.title}
-                      url={`event/${item.id}`}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
-                      content={`${DateForm(item.start_at)}~${DateForm(
-                        item.end_at
-                      )}`}
-                      url={`event/${item.id}`}
+                      content={DateForm(item.created_at)}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
                       content={item.views}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={onStatus(item.status)}
-                      url={`event/${item.id}`}
+                      url={`notice/${item.id}`}
                     ></TableColumn>
                   </TableRow>
                 );
@@ -155,4 +137,4 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
   );
 };
 
-export default EventList;
+export default ServiceNoticeList;

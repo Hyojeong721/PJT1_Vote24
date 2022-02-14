@@ -118,6 +118,8 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     end_at,
     question,
     benchmark,
+    created_at,
+    count,
   } = req.body;
   try {
     const hospital_id_data = await pool.query(
@@ -128,7 +130,7 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     const hospital_id = hospital_id_data[0][0].hospital_id;
     await pool.query("DELETE FROM hospital_survey WHERE id = ?", [id]);
     if (req.body.end_at) {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link,, reservation_link start_at, end_at, created_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, end_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -136,11 +138,13 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
+        count,
         start_at,
         end_at,
+        created_at,
       ]);
     } else {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, start_at, created_at ) VALUES(?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -148,7 +152,9 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
+        count,
         start_at,
+        created_at,
       ]);
     }
     const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_survey;`;
@@ -238,7 +244,11 @@ router.get("/survey/:id", async (req, res) => {
     const question_sql = "SELECT * FROM question WHERE survey_id = ? order by `order`;";
     const question_data = await pool.query(question_sql, [id]);
     let option_sql = "select * from `option` where question_id in (";
-
+    console.log(survey_data[0][0]);
+    if (survey_data[0][0] == null) {
+      logger.info("[INFO] GET /survey/detail");
+      return res.json({});
+    }
     for (i = 0; i < question_data[0].length; i++) {
       option_sql += `${question_data[0][i].id}`;
       if (i == question_data[0].length - 1) option_sql += ")";

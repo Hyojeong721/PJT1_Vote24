@@ -2,6 +2,7 @@ import { useState } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
@@ -11,11 +12,15 @@ const NoticeForm = ({ url }) => {
   const router = useRouter();
 
   const [values, setValues] = useState({
+    userId: "",
     title: "",
     context: "",
     fixed: "0",
     imgFile: null,
   });
+
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const userId = userInfo.id;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -42,12 +47,15 @@ const NoticeForm = ({ url }) => {
           fd.append("notice_image", imgFile);
           fd.append("attachment", imgName);
         }
+      } else if (key === "userId") {
+        if (userId == 0) {
+          fd.append("userId", 0);
+        }
       } else {
         fd.append(`${key}`, values[key]);
       }
     }
     const jwt = localStorage.getItem("jwt");
-    // 서버에 보내기
     await axios
       .post(url, fd, {
         headers: {
