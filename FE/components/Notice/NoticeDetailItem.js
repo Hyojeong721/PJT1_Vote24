@@ -101,9 +101,9 @@ const NoticeDetailItem = ({ url }) => {
         </div>
         <div>
           {data.context &&
-            data.context.split("\n").map((line) => {
+            data.context.split("\n").map((line, idx) => {
               return (
-                <span>
+                <span key={idx}>
                   {line}
                   <br />
                 </span>
