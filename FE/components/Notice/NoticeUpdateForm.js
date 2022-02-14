@@ -10,14 +10,14 @@ import cs from "../../styles/postcreate.module.css";
 const NoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
+
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(url)
         .then((res) => {
-          const data = res.data;
-          setValues(data);
+          setValues(res.data);
         })
         .catch((err) => {
           console.log("병원공지 원본data get 실패", err);
@@ -47,7 +47,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -61,10 +60,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         fd.append(`${key}`, values[key]);
       }
     }
+
     // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log("form값들", value);
-    }
+    // for (let value of fd.values()) {
+    //   console.log("form값들", value);
+    // }
 
     const jwt = localStorage.getItem("jwt");
     await axios
@@ -76,6 +76,9 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       })
       .then((res) => {
         console.log("병원공지 수정 성공", res.data);
+        for (let value of fd.values()) {
+          console.log("form값들", value);
+        }
         router.push(`/notice/${noticeId}`);
       })
       .catch((err) => {

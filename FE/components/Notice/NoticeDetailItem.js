@@ -11,20 +11,20 @@ import Link from "next/link";
 
 const NoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
-  // 게시글 id 찾기
   const router = useRouter();
   const { id } = router.query;
+
   // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(`${url}/${id}`)
         .then((res) => {
-          const data = res.data;
-          setData(data);
+          console.log(res.data);
+          setData(res.data);
         })
         .catch((err) => {
-          console.log("이벤트 상세 get 실패", err);
+          console.log("공지 상세 get 실패", err);
           router.push("/404");
         });
     };
@@ -90,7 +90,17 @@ const NoticeDetailItem = ({ url }) => {
             ></Image>
           )}
         </div>
-        <div>{data.context}</div>
+        <div>
+          {data.context &&
+            data.context.split("\n").map((line) => {
+              return (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+        </div>
       </div>
       <div>
         <Link href="/notice">
