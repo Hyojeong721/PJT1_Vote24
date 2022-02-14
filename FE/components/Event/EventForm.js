@@ -11,11 +11,15 @@ import cs from "../../styles/postcreate.module.css";
 const EventForm = () => {
   const router = useRouter();
 
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+
   const [values, setValues] = useState({
     title: "",
     context: "",
     start_at: "",
-    end_at: "",
+    end_at: new Date(8640000000000000),
     imgFile: null,
   });
 
@@ -35,6 +39,10 @@ const EventForm = () => {
       ...prevValues,
       [name]: value,
     }));
+
+    if (name === "start_at") {
+      setStartDate(value);
+    }
   };
 
   //작성완료
@@ -109,18 +117,21 @@ const EventForm = () => {
             <input
               id="start_at"
               name="start_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
               value={values.start_at}
+              min={startDate}
+              max={values.end_at}
               required
             ></input>
             {"  "}~{"  "}
             <input
               id="end_at"
               name="end_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
               value={values.end_at}
+              min={startDate}
               required
             ></input>
           </div>

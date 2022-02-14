@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
-import DateTimeForm from "../DateTimeForm";
+import DateForm from "../DateForm";
 
 const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
@@ -50,8 +50,13 @@ const EventUpdateForm = ({ eventId, url }) => {
           fd.append("event_img", imgFile);
           fd.append("attachment", imgName);
         }
+      } else if (
+        key === "created_at" ||
+        key === "start_at" ||
+        key == "end_at"
+      ) {
+        fd.append(`${key}`, values[key].slice(0, -5).replace("T", " "));
       } else {
-        console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
@@ -106,18 +111,22 @@ const EventUpdateForm = ({ eventId, url }) => {
             <input
               id="start_at"
               name="start_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
-              value={DateTimeForm(values.start_at)}
+              value={DateForm(values.start_at)}
+              min={new Date().toISOString().slice(0, 10)}
+              max={DateForm(values.end_at)}
               required
             ></input>
             {"  "}~{"  "}
             <input
               id="end_at"
               name="end_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
-              value={DateTimeForm(values.end_at)}
+              value={DateForm(values.end_at)}
+              min={DateForm(values.start_at)}
+              max={new Date(8640000000000000)}
               required
             ></input>
           </div>

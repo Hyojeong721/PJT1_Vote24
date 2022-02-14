@@ -26,17 +26,26 @@
 }
 
 .user-detail-header {
+  background-color: #ffeecb;
+}
+
+.user-detail-title {
+  background-color: #fff8e6;
+  width: 100%;
   height: 150px;
 }
 
 .user-detail-section {
+  width: 100%;
   height: 500px;
 }
 
 .user-detail-to-list-button {
-  background-color: #076c94;
+  color: white;
+  background-color: #ffc107;
 }
 
 .user-detail-to-list-button:hover {
-  background-color: #03435c;
+  background-color: #ffeecb;
+  color: black;
 }

@@ -19,29 +19,29 @@ function NoticeDetailUser({ code, noticeDetail }) {
     next_id,
     next_title,
   } = noticeDetail;
-  console.log(noticeDetail);
+  console.log(updated_at);
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="position-relative w-100 user-header d-flex flex-column justify-content-center align-items-center fs-1">
+      <header className="position-relative user-detail-header w-100 d-flex flex-column justify-content-center align-items-center fs-1">
         <BackButton url={`/user/${code}/notice`} />
         <div>공지사항</div>
       </header>
-      <div className="w-75 user-detail-header d-flex flex-column justify-content-center align-items-center">
+      <div className="position-relative w-100 user-detail-title d-flex flex-column justify-content-center align-items-center">
         <div className="fs-1">{title}</div>
-      </div>
-      <div className="w-100 d-flex justify-content-end  border-bottom ">
-        {ISODateFormatter(updated_at)} | 조회수 {views}
+        <div className="position-absolute bottom-0 w-100 d-flex justify-content-end border-bottom text-secondary">
+          {updated_at
+            ? ISODateFormatter(updated_at)
+            : ISODateFormatter(created_at)}{" "}
+          | 조회수 {views}
+        </div>
       </div>
       <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
         <div>{context}</div>
         <Image src={image} width="100%" height="100%" />
       </div>
       <Link href={`/user/${code}/notice`} passHref>
-        <button
-          type="button"
-          className=" text-white btn user-detail-to-list-button m-3"
-        >
+        <button type="button" className="btn user-detail-to-list-button m-3">
           목록
         </button>
       </Link>

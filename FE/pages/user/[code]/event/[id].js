@@ -23,18 +23,18 @@ function EventDetailUser({ code, eventDetail }) {
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
-      <header className="position-relative w-100 user-header d-flex flex-column justify-content-center align-items-center fs-1">
+      <header className="position-relative user-detail-header w-100 d-flex flex-column justify-content-center align-items-center fs-1">
         <BackButton url={`/user/${code}/event`} />
         <div>이벤트</div>
       </header>
-      <div className="w-75 user-detail-header d-flex flex-column justify-content-center align-items-center">
-        <div className="fs-1 mb-2">{title}</div>
-        <div>
-          이벤트 기간 {ISODateFormatter(start_at)} ~ {ISODateFormatter(end_at)}
+      <div className="position-relative w-100 user-detail-title d-flex flex-column justify-content-center align-items-center">
+        <div className="fs-1">{title}</div>
+        <div className="position-absolute bottom-0 w-100 d-flex justify-content-end border-bottom text-secondary">
+          {updated_at
+            ? ISODateFormatter(updated_at)
+            : ISODateFormatter(created_at)}{" "}
+          | 조회수 {views}
         </div>
-      </div>
-      <div className="w-100 d-flex justify-content-end  border-bottom ">
-        {ISODateFormatter(updated_at)} | 조회수 {views}
       </div>
       <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
         <div>{context}</div>

@@ -16,9 +16,8 @@ function SurveyCreateFormHeader({
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
   const [benchScoreERR, setBenchScoreERR] = useState(false);
-  const [nowDate, setNowDate] = useState(new Date().toISOString().slice(0, -8));
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().slice(0, -8)
+    new Date().toISOString().slice(0, 10)
   );
   const [endDate, setEndDate] = useState(new Date(8640000000000000));
 
@@ -155,9 +154,9 @@ function SurveyCreateFormHeader({
           </label>
           <input
             id="start_at"
-            type="datetime-local"
+            type="date"
             className="form-control"
-            min={nowDate}
+            min={new Date().toISOString().slice(0, 10)}
             max={endDate}
             onSelect={(e) => {
               setStartDate(e.target.value);
@@ -177,7 +176,7 @@ function SurveyCreateFormHeader({
           </label>
           <input
             id="end_at"
-            type="datetime-local"
+            type="date"
             className="form-control"
             min={startDate}
             onSelect={(e) => {

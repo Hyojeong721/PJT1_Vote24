@@ -120,7 +120,6 @@ function Signup() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         toast.success("서비스 신청 완료!");
         router.push("/");
       })

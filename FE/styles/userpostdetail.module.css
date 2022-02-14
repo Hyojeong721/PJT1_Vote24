@@ -7,5 +7,6 @@
 }
 
 .prevnextButton:hover {
-  background-color: #dcf5ff;
+  color: black;
+  background-color: #fff8e6;
 }
