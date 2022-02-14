@@ -36,7 +36,7 @@ function Signup() {
       .string()
       .required("비밀번호 입력은 필수입니다.")
       .matches(
-        /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
+        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
         "비밀번호는 반드시 8 ~ 16자이며, 한 개의 특수문자를 반드시 포함한 영어 숫자 조합이어야 합니다."
       ),
     passwordConfirm: yup
@@ -132,9 +132,13 @@ function Signup() {
 
   const onEmailCheck = async (e) => {
     const email = getValues("email");
-    if (email === "" || errors.email?.message) {
+    const emailREGEX =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+    // /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
+    console.log("here", emailREGEX.test(email));
+    if (!emailREGEX.test(email) || errors.email?.message) {
       toast.dismiss();
-      toast.error("유효하지 않은 이메일입니다!");
+      toast.error("이메일 형식에 맞게 입력해주세요.");
       return;
     }
     const data = { email };
@@ -156,8 +160,10 @@ function Signup() {
 
   const onBnCheck = async (e) => {
     const businessNumber = getValues("business_number");
-    if (businessNumber === "" || errors.business_number?.message) {
-      toast.error("사업자 등록 번호를 입력해주세요!");
+    const bnREGEX = /^01([0-9]{3})-?([0-9]{2})-?([0-9]{5})$/;
+    if (!bnREGEX.test(businessNumber) || errors.business_number?.message) {
+      toast.dismiss();
+      toast.error("사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO");
       return;
     }
     const data = { business_number: businessNumber };
