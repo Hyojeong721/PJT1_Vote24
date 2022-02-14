@@ -1,8 +1,12 @@
-.user-survey-list-item {
+.user-post-list-item {
   background-color: white;
   height: 70px;
 }
 
-.user-survey-list-item:hover {
-  background-color: #acd0df;
+/* .user-post-list-item:hover {
+  background-color: #fff8e6;
+} */
+
+.user-post-list-item:hover {
+  background-color: #c2fcf3;
 }

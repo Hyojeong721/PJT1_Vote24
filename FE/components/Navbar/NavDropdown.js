@@ -4,7 +4,9 @@ import cn from "classnames";
 import styles from "../../styles/navitem.module.css";
 
 function NavDropdown({ active, title, subtitles }) {
-  const className = active ? cn(styles.navItem) : cn("");
+  const className = active
+    ? cn(styles.navItem, styles.navItemHover)
+    : cn(styles.navItemHover);
 
   return (
     <li className="nav-item dropdown">

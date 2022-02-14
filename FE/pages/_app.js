@@ -48,12 +48,12 @@ function MyApp({ Component, pageProps }) {
           ) : (
             <NavbarUser currentPage={currentPage} code={code} />
           )}
-          <div className="page_body min-vh-100">
+          <div className="min-vh-100">
             <LoginWrapper>
               <Component {...pageProps} />
             </LoginWrapper>
           </div>
-          <Footer />
+          <Footer currentPage={currentPage} />
           <ToastContainer autoClose={3000} />
         </div>
         <Script

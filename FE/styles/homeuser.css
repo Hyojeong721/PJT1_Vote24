@@ -1,10 +1,13 @@
 .home-user-bg {
-  background-color: #c4f9ff;
+  background-color: #fff8e6;
 }
 
 .home-user-survey-button:hover {
-  background-color: #c4f9ff;
+  background-color: #ffeecb;
 }
+/* .border-user-theme {
+  border-bottom: 1px solid #0f7197;
+} */
 
 /* .home-user-notice-button {
   background-color: #076c94;
@@ -12,20 +15,14 @@
 } */
 
 .home-user-notice-button {
-  background-color: #03435c;
+  background-color: #ffc107;
   color: white;
   height: 100px;
 }
 
 .home-user-notice-button:hover {
-  background-color: #1fdff5;
+  background-color: #ffeecb;
   color: black;
-}
-
-.user-header {
-  background-color: #c4f9ff;
-  font-weight: bold;
-  height: 100px;
 }
 
 .user-detail-header {

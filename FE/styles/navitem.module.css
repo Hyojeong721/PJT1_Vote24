@@ -1,7 +1,15 @@
-.navItemUser {
+.navItem {
   color: #5f4dee !important;
 }
 
-.navItem {
+.navItemHover:hover {
   color: #5f4dee !important;
+}
+
+.navItemUser {
+  color: #ffc107 !important;
+}
+
+.navItemUserHover:hover {
+  color: #ffc107 !important;
 }

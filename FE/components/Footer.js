@@ -4,11 +4,18 @@ import Logo from "../public/logo.png";
 import cn from "classnames";
 import styles from "../styles/footer.module.css";
 
-function Footer() {
+function Footer({ currentPage }) {
+  const isUserPage = currentPage.includes("user");
+
+  let footerColorClass = styles.footerColor;
+  if (isUserPage) {
+    footerColorClass = styles.footerUser2;
+  }
+
   return (
     <footer
       className={cn(
-        styles.footerBox,
+        footerColorClass,
         "container-fluid",
         "navbar-fixed-bottom",
         "p-3",

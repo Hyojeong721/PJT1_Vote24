@@ -51,9 +51,9 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const paintQuestions = question.map((q) => {
     const { order, context, option } = q;
     return (
-      <div key={order} className="border rounded-3 my-3">
+      <div key={order} className="border rounded-3 shadow-sm my-3">
         <div className="fs-2 ps-3 p-2">{context}</div>
-        <div className="survey-option-box p-3">
+        <div className="border-top bg-light p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
         {errors[`QC${q.id}`] && errors[`QC${q.id}`].type === "required" && (
@@ -97,14 +97,14 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 
   return (
     <div className="home-user-bg position-relative min-vh-100 d-flex flex-column align-items-center">
-      <div className="w-75 bg-white form-control mt-3 text-center">
+      <div className="w-75 bg-white form-control mt-3 text-center shadow border-0 border-bottom border-3 border-warning">
         <BackButton url={`/user/${code}/survey/${categoryName}`} />
-        <div className="fs-1">{title}</div>
+        <div className="fs-1 border-bottom mb-3">{title}</div>
         <div className="my-2">
           <span>{context}</span>
         </div>
       </div>
-      <div className="w-75 bg-white form-control my-3">
+      <div className="w-75 bg-white form-control my-3 shadow border-0">
         <UserSurveyAgeGender register={register} />
         <div>{paintQuestions}</div>
       </div>

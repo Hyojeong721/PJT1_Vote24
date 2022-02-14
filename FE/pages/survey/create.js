@@ -8,7 +8,7 @@ function SurveyCreate() {
   return (
     <div>
       <Header title="설문 생성"></Header>
-      <div className="position-relative my-3">
+      <div className="position-relative my-5">
         <div className={styles.backButtonBox}>
           <BackButton url={`/survey`} />
         </div>
