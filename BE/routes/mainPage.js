@@ -18,6 +18,7 @@ schedule.scheduleJob("0 0 0 * * *", async function () {
         `SELECT sum(s.count) as today FROM hospital_survey s JOIN hospital_info i ON s.hospital_id = i.id WHERE i.id = ?;`,
         [hospital_cnt[0][i].id]
       );
+      if (todayCnt[0][0].today == null) todayCnt[0][0].today = 0;
       await pool.query("UPDATE hospital_info SET todayCnt = ? WHERE id = ?", [
         todayCnt[0][0].today,
         hospital_cnt[0][i].id,
