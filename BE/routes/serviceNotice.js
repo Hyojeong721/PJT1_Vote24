@@ -20,8 +20,8 @@ router.post(
   verifyToken,
   service_upload.single("service_notice_image"),
   async (req, res) => {
-    const { id, title, context, fixed, attachment } = req.body;
-    if (id != 0) {
+    const { hospital_id, title, context, fixed, attachment } = req.body;
+    if (hospital_id != 0) {
       logger.info("POST Service Notice");
       return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
     }
@@ -70,12 +70,11 @@ router.put(
   service_upload.single("service_notice_image"),
   async (req, res) => {
     const id = req.params.id;
-    if (id != 0) {
+    const { hospital_id, title, context, fixed, attachment } = req.body;
+    if (hospital_id != 0) {
       logger.info("POST Service Notice");
       return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
     }
-    const { title, context, fixed, attachment } = req.body;
-
     const rename =
       new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
       attachment;
@@ -116,7 +115,8 @@ router.put(
  *----------------------------------------------------------------------*/
 router.delete("/service/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
-  if (id != 0) {
+  const { hospital_id } = req.body;
+  if (hospital_id != 0) {
     logger.info("POST Service Notice");
     return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
   }
