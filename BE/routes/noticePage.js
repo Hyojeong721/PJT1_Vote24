@@ -100,14 +100,16 @@ router.post(
                 title, 
                 context, 
                 fixed, 
-                attachment) value(?,?,?,?,?)`;
+                attachment,
+                created_at) value(?,?,?,?,?,now())`;
         const data = await pool.query(sql, [hospital_id, title, context, fixed, rename]);
       } else {
         const sql = `insert into hospital_notice (
                 hospital_id, 
                 title, 
                 context, 
-                fixed) value(?,?,?,?)`;
+                fixed,
+                created_at) value(?,?,?,?,now())`;
         const data = await pool.query(sql, [hospital_id, title, context, fixed]);
       }
       const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_notice;`;
@@ -153,7 +155,6 @@ router.put(
     const { hospital_id, id } = req.params;
 
     const { title, fixed, context, attachment } = req.body;
-
     try {
       if (attachment) {
         const rename =
@@ -166,14 +167,15 @@ router.put(
             title =?, 
             context =?, 
             fixed =?, 
-            attachment =? where id=? AND hospital_id =?`;
+            attachment =?,
+            updated_at = now() where id=? AND hospital_id =?`;
         const data = await pool.query(sql, [title, context, fixed, rename, id, hospital_id]);
       } else {
         const sql = `update hospital_notice set
             title =?, 
             context =?, 
-            fixed =? 
-            where id=? AND hospital_id =?`;
+            fixed =?,
+            updated_at = now() where id=? AND hospital_id =?`;
         const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
       }
 
