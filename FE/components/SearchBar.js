@@ -1,4 +1,5 @@
 import { useState } from "react";
+import cn from "classnames";
 import styles from "../styles/searchbar.module.css";
 
 function SearchBar({ setPostList, postListProp }) {
@@ -26,7 +27,7 @@ function SearchBar({ setPostList, postListProp }) {
   };
 
   return (
-    <div className={styles.searchBox}>
+    <div className={cn(styles.searchBox, "shadow-sm")}>
       <input
         type="text"
         className="form-control"

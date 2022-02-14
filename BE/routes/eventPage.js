@@ -109,7 +109,8 @@ router.post(
                             context, 
                             start_at, 
                             end_at, 
-                            attachment) value(?,?,?,?,?,?)`;
+                            attachment,
+                            created_at) value(?,?,?,?,?,?, now())`;
         const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at, rename]);
       } else {
         const sql = `insert into hospital_event (
@@ -117,7 +118,8 @@ router.post(
                 title, 
                 context, 
                 start_at, 
-                end_at) value(?,?,?,?,?)`;
+                end_at,
+                created_at) value(?,?,?,?,?, now())`;
         const data = await pool.query(sql, [hospital_id, title, context, start_at, end_at]);
       }
       const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_event;`;
@@ -177,7 +179,8 @@ router.put(
                             context =?, 
                             start_at =?, 
                             end_at =?, 
-                            attachment =? where id=? AND hospital_id`;
+                            attachment =?,
+                            updated_at = now() where id=? AND hospital_id=?`;
         const data = await pool.query(sql, [
           title,
           context,
@@ -192,16 +195,8 @@ router.put(
                             title =?, 
                             context =?, 
                             start_at =?, 
-                            end_at =? where id=? AND hospital_id`;
-        const data = await pool.query(sql, [
-          title,
-          context,
-          start_at,
-          end_at,
-          attachment,
-          id,
-          hospital_id,
-        ]);
+                            end_at =? where id=? AND hospital_id=?`;
+        const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
       }
 
       logger.info("UPDATE Event Detail");

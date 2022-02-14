@@ -52,7 +52,7 @@ function MainOnLogin() {
           </a>
         </Link>
       </Header>
-      <div className="container d-flex flex-column justify-content-center mt-5 gap-5 border rounded shadow p-5">
+      <div className="container d-flex flex-column justify-content-center my-5 gap-5 border rounded shadow p-5">
         <div className="d-flex flex-column flex-lg-row justify-content-center gap-5">
           <SimpleCard title="누적 설문 참여자 수" context={data.totalMyVote} />
           <SimpleCard

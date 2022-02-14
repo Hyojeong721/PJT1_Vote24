@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -21,6 +20,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     formState: { errors },
     handleSubmit,
     setValue,
+    reset,
   } = useForm();
 
   const { benchmark, question } = surveyDetail;
@@ -50,6 +50,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     const { qList, bList } = parseInput(data);
     const { category, title, context, output_link, start_at, end_at } = data;
     const result = {
+      created_at: surveyDetail.created_at,
       category,
       title,
       context,

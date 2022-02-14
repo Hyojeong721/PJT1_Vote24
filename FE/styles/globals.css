@@ -20,6 +20,10 @@ a {
   min-height: 80vh;
 }
 
+.min-vh-90 {
+  min-height: 90vh;
+}
+
 .min-w-50 {
   min-width: 50%;
 }
@@ -31,10 +35,6 @@ a {
 .navbar {
   width: 100%;
   min-height: 70px;
-}
-
-.nav-link:hover {
-  color: #5f4dee !important;
 }
 
 .halfPage {

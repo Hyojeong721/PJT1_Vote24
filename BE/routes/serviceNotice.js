@@ -34,13 +34,15 @@ router.post(
                         title, 
                         context, 
                         fixed, 
-                        attachment) VALUES(?, ?, ?, ?);`;
+                        attachment,
+                        created_at) VALUES(?, ?, ?, ?, now());`;
         const data = await pool.query(sql, [title, context, fixed, rename]);
       } else {
         const sql = `INSERT INTO service_notice ( 
                         title, 
                         context, 
-                        fixed) VALUES(?, ?, ?);`;
+                        fixed,
+                        created_at) VALUES(?, ?, ?, now());`;
         const data = await pool.query(sql, [title, context, fixed]);
       }
       const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM service_notice;`;
@@ -79,13 +81,15 @@ router.put(
                       title=?, 
                       context=?, 
                       fixed=?, 
-                      attachment=? WHERE id=?;`;
+                      attachment=?,
+                      updated_at = now() WHERE id=?;`;
         const data = await pool.query(sql, [title, context, fixed, rename, id]);
       } else {
         const sql = `UPDATE service_notice SET 
                       title=?, 
                       context=?, 
-                      fixed=? WHERE id=?;`;
+                      fixed=?,
+                      updated_at = now() WHERE id=?;`;
         const data = await pool.query(sql, [title, context, fixed, id]);
       }
 

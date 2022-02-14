@@ -5,8 +5,8 @@ import styles from "../../styles/navitem.module.css";
 
 function NavItem({ active, url, title }) {
   const className = active
-    ? cn("nav-link", styles.navItemUser)
-    : cn("nav-link");
+    ? cn("nav-link", styles.navItemUser, styles.navItemUserHover)
+    : cn("nav-link", styles.navItemUserHover);
 
   return (
     <li className="nav-item">

@@ -3,13 +3,13 @@ import styles from "../../styles/usersurveyagegender.module.css";
 
 function UserSurveyAgeGender({ register }) {
   return (
-    <div className="border rounded">
+    <div className="border rounded shadow-sm my-2">
       <div className="ps-3 p-2 fs-4">필수 정보</div>
       <div className="d-flex gap-5 bg-light border-top">
         <div className="d-flex align-items-center ps-3 p-2">
           <div>연령</div>
           <select
-            className={cn(styles.selectInput, "form-select")}
+            className={cn(styles.selectInput, "form-select", "ms-2")}
             aria-label="age"
             {...register("age", { required: true })}
           >
@@ -24,7 +24,7 @@ function UserSurveyAgeGender({ register }) {
         <div className="d-flex align-items-center">
           <div>성별</div>
           <select
-            className={cn(styles.selectInput2, "form-select")}
+            className={cn(styles.selectInput2, "form-select", "ms-2")}
             aria-label="gender"
             {...register("gender", { required: true })}
           >

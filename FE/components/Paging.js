@@ -1,11 +1,13 @@
 import React from "react";
 
-const Paging = ({ postsPerPage, totalPosts, paginate }) => {
+const Paging = ({ postsPerPage, totalPosts, paginate, fixedCnt }) => {
   const pageNumber = [];
-  // console.log({ postsPerPage, totalPosts, paginate });
-
   // Math.ceil: 올림
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+  for (
+    let i = 1;
+    i <= Math.ceil((totalPosts - fixedCnt) / (postsPerPage - fixedCnt));
+    i++
+  ) {
     pageNumber.push(i);
   }
 

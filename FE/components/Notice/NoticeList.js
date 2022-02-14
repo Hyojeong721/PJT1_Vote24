@@ -7,7 +7,15 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
+const NoticeList = ({
+  indexlst,
+  fixedCnt,
+  postsPerPage,
+  setDataList,
+  dataList,
+  url,
+  createUrl,
+}) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -17,9 +25,12 @@ const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
     setList(dataList);
 
     let ids = [];
-    dataList.map((item, i) => {
-      ids[i] = item.id;
-    });
+    {
+      dataList &&
+        dataList.map((item, i) => {
+          ids[i] = item.id;
+        });
+    }
 
     setIdList(ids);
   }, [dataList]);
@@ -117,7 +128,11 @@ const NoticeList = ({ setDataList, dataList, url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={index + 1}
+                      content={
+                        indexlst[Math.abs(index - postsPerPage) - 1] -
+                        fixedCnt +
+                        1
+                      }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>

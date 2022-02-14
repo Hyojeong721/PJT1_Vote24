@@ -10,10 +10,11 @@ function SurveyCreateFormHeader({
   nowCategory,
   setNowCategory,
   initialBenchmarks,
-  setValue,
+  reset,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
+  const [benchScoreERR, setBenchScoreERR] = useState(false);
 
   const addInitialBenchmarks = (initialBenchmarks) => {
     initialBenchmarks.forEach((b, idx) => {
@@ -42,46 +43,63 @@ function SurveyCreateFormHeader({
   };
 
   const handleBenchmarkDelete = (inputId) => {
-    setBenchmarks(benchmarks.filter((b) => b.id !== inputId));
+    setBenchmarks((state) => state.filter((b) => b.id !== inputId));
     unregister(`C${inputId}`);
     unregister(`D${inputId}`);
-    setBCnt((state) => state + 1);
+    if (!benchmarks.length) {
+      setBenchScoreERR(false);
+    }
+  };
+
+  const handleBenchmarkScoreKeyDown = (e, b) => {
+    if (e.key === "Backspace") {
+      return;
+    } else if (0 <= e.key && e.key <= 9) {
+      setBenchScoreERR(false);
+    } else {
+      setBenchScoreERR(true);
+    }
   };
 
   const paintBenchmark = benchmarks.map((b) => {
     return (
-      <div key={b.id} className="d-flex gap-1">
-        <input
-          id="benchmark"
-          name="benchmark"
-          type="number"
-          min="0"
-          className={cn(styles.benchInput, "form-control")}
-          placeholder="O점 이상일때"
-          autoComplete="off"
-          {...register(`C${b.id}`)}
-        ></input>
-        <input
-          id="benchmark"
-          name="benchmark"
-          type="text"
-          className="survey-input-box form-control"
-          placeholder="점수에 해당하는 문구를 작성하세요"
-          autoComplete="off"
-          {...register(`D${b.id}`)}
-        ></input>
-        <button
-          className="btn material-icons p-0"
-          onClick={() => handleBenchmarkDelete(b.id)}
-        >
-          clear
-        </button>
+      <div key={b.id}>
+        <div className="d-flex gap-1">
+          <input
+            id="benchmark"
+            name="benchmark"
+            type="number"
+            min="0"
+            className={cn(styles.benchInput, "form-control", "fs-0")}
+            placeholder="O점 이상일때"
+            autoComplete="off"
+            onKeyDown={(e) => {
+              handleBenchmarkScoreKeyDown(e, b);
+            }}
+            {...register(`C${b.id}`)}
+          ></input>
+          <input
+            id="benchmark"
+            name="benchmark"
+            type="text"
+            className="survey-input-box form-control"
+            placeholder="점수에 해당하는 문구를 작성하세요"
+            autoComplete="off"
+            {...register(`D${b.id}`)}
+          ></input>
+          <button
+            className="btn material-icons p-0"
+            onClick={() => handleBenchmarkDelete(b.id)}
+          >
+            clear
+          </button>
+        </div>
       </div>
     );
   });
 
   return (
-    <form className="w-100 survey-form-header">
+    <div className="w-100 survey-form-header">
       <CategoryRadio
         register={register}
         nowCategory={nowCategory}
@@ -163,6 +181,14 @@ function SurveyCreateFormHeader({
           <div className="form-control mt-2">
             <div className="my-1">설문 결과의 기준 점수를 입력하세요.</div>
             <div>{paintBenchmark}</div>
+            {benchScoreERR && benchmarks.length ? (
+              <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
+                <span className="material-icons fs-5">priority_high</span>
+                <span>점수에 숫자를 입력해주세요.</span>
+              </div>
+            ) : (
+              <></>
+            )}
             <button
               type="button"
               className="btn material-icons p-0"
@@ -218,7 +244,7 @@ function SurveyCreateFormHeader({
             )}
         </div>
       )}
-    </form>
+    </div>
   );
 }
 

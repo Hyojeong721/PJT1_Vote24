@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ISODateFormatter from "../ISODateFormatter";
+// import ISODateFormatter from "../ISODateFormatter";
 import cn from "classnames";
 import styles from "../../styles/userpostlistitem.module.css";
 
@@ -8,11 +8,11 @@ function UserPostListItem({ url, idx, post }) {
 
   // status 예정 0, 진행중 1, 마감 2
   let eventStatus = "예정";
-  let statusColor = "btn-warning";
+  let statusColor = styles.btnLime;
 
   if (status === 1) {
     eventStatus = "진행중";
-    statusColor = "btn-primary";
+    statusColor = "btn-warning";
   } else if (status === 2) {
     eventStatus = "마감";
     statusColor = "btn-secondary";
@@ -20,10 +20,10 @@ function UserPostListItem({ url, idx, post }) {
 
   return (
     <Link href={url} passHref>
-      <a className="w-75 position-relative user-survey-list-item shadow-sm btn d-flex justify-content-between align-items-center mt-3">
+      <a className="w-75 position-relative user-post-list-item shadow btn d-flex justify-content-between align-items-center mt-3">
         <div className="d-flex ">
           {fixed === 1 ? (
-            <div className="btn btn-primary">고정</div>
+            <div className="btn btn-warning">고정</div>
           ) : (
             <div>
               {fixed === 0 ? (

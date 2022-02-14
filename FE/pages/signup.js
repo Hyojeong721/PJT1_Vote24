@@ -4,7 +4,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { toast } from "react-toastify";

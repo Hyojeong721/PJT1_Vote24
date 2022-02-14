@@ -43,7 +43,6 @@ function QuestionChoice({
 
   const handleOptionDelete = (inputId) => {
     setOptions(options.filter((o) => o.id !== inputId));
-    setOCnt((state) => state + 1);
     unregister(`A${q.id}-${inputId}`); // A == option
     unregister(`B${q.id}-${inputId}`); // B == option score
   };
