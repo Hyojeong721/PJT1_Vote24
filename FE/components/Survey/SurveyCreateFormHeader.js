@@ -11,10 +11,16 @@ function SurveyCreateFormHeader({
   setNowCategory,
   initialBenchmarks,
   setValue,
+  getValues,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
   const [benchScoreERR, setBenchScoreERR] = useState(false);
+  const [nowDate, setNowDate] = useState(new Date().toISOString().slice(0, -8));
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().slice(0, -8)
+  );
+  const [endDate, setEndDate] = useState(new Date(8640000000000000));
 
   const addInitialBenchmarks = (initialBenchmarks) => {
     initialBenchmarks.forEach((b, idx) => {
@@ -151,6 +157,11 @@ function SurveyCreateFormHeader({
             id="start_at"
             type="datetime-local"
             className="form-control"
+            min={nowDate}
+            max={endDate}
+            onSelect={(e) => {
+              setStartDate(e.target.value);
+            }}
             {...register("start_at", { required: true })}
           ></input>
           {errors.start_at && errors.start_at.type === "required" && (
@@ -160,7 +171,6 @@ function SurveyCreateFormHeader({
             </div>
           )}
         </div>
-
         <div className={cn(styles.datetimeBox)}>
           <label htmlFor="end_at" className="fw-bold ms-1">
             종료일
@@ -169,9 +179,12 @@ function SurveyCreateFormHeader({
             id="end_at"
             type="datetime-local"
             className="form-control"
+            min={startDate}
+            onSelect={(e) => {
+              setEndDate(e.target.value);
+            }}
             {...register("end_at", { required: true })}
           ></input>
-
           {errors.end_at && errors.end_at.type === "required" && (
             <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
               <span className="material-icons fs-6">priority_high</span>
