@@ -101,7 +101,7 @@ router.put(
       }
 
       logger.info("PUT Service Notice");
-      return res.json({ result: "Success" });
+      return res.json({ result: "Success", id: id });
     } catch (error) {
       logger.error("PUT Service Notice" + error);
       return res.json(error);
@@ -115,7 +115,6 @@ router.put(
  *----------------------------------------------------------------------*/
 router.delete("/service/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
-  const { hospital_id } = req.body;
   if (hospital_id != 24) {
     logger.info("POST Service Notice");
     return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });

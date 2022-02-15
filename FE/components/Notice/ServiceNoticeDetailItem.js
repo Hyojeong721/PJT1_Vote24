@@ -9,11 +9,12 @@ import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
 
-const ServiceNoticeDetailItem = ({ url }) => {
+const ServiceNoticeDetailItem = ({ url, userId }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const { id } = router.query;
 
+  console.log("userid", userId);
   // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
@@ -49,6 +50,27 @@ const ServiceNoticeDetailItem = ({ url }) => {
         console.log("delete실패", error);
       });
   };
+
+  const vote24btn = () => {
+    if (userId == 24) {
+      return (
+        <div name="수정/삭제">
+          <Link href={`/service/notice/${id}/update`} passHref>
+            <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
+          </Link>
+          <button
+            onClick={handleRemove}
+            className={cn(ct.btn, "btn btn-danger")}
+          >
+            삭제
+          </button>
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
   return (
     <div className={cn(ct.content)}>
       <div className={cn(ct.contentHeader)}>
@@ -73,7 +95,7 @@ const ServiceNoticeDetailItem = ({ url }) => {
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
 
-          <div>
+          {/* <div name="수정/삭제">
             <Link href={`/service/notice/${id}/update`} passHref>
               <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
             </Link>
@@ -83,7 +105,9 @@ const ServiceNoticeDetailItem = ({ url }) => {
             >
               삭제
             </button>
-          </div>
+          </div> */}
+
+          {vote24btn()}
         </div>
       </div>
       <div className={cn(ct.contentBody)}>
