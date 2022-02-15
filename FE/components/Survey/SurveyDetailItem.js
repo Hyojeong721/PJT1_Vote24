@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import DateForm from "../../components/DateForm";
 import QuestionList from "../../components/Survey/QuestionList";
 import cn from "classnames";
@@ -6,25 +7,30 @@ import Benchbox from "../Survey/BenchBox";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import GoSurveyList from "../../components/Survey/GoSurveyList";
 
-const SurveyDetailItem = ({ sId, surveyDetail }) => {
+const SurveyDetailItem = ({ sId, url }) => {
+  const [data, setData] = useState([]);
   const router = useRouter();
-  console.log("id_index_넘겨진데이터", surveyDetail);
-  const {
-    category,
-    count,
-    context,
-    benchmark,
-    created_at,
-    updated_at,
-    title,
-    start_at,
-    end_at,
-    question,
-  } = surveyDetail;
+
+  useEffect(() => {
+    const getPost = async () => {
+      await axios
+        .get(url)
+        .then((res) => {
+          console.log("설문상세", res.data);
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log("설문 상세 get 실패", err);
+          router.push("/404");
+        });
+    };
+    getPost();
+  }, [url]);
 
   //삭제
-  const handleRemove = ({ category, e }) => {
+  const handleRemove = (category, e) => {
     const jwt = localStorage.getItem("jwt");
     axios
       .delete(`http://i6a205.p.ssafy.io:8000/api/survey/${sId}`, {
@@ -49,33 +55,33 @@ const SurveyDetailItem = ({ sId, surveyDetail }) => {
     <div className={cn(ct.content)}>
       <div className={cn(ct.contentHeader)}>
         <h2 className={cn(ct.title)}>
-          <div>{title}</div>
+          <div>{data.title}</div>
         </h2>
 
         <div className={cn(ct.contentInfo, "d-flex justify-content-between")}>
           <div>
             <span className={cn(ct.item)}>
               {" "}
-              작성일 : {DateForm(created_at)}
+              작성일 : {DateForm(data.created_at)}
             </span>
-            {updated_at && (
+            {data.updated_at && (
               <span className={cn(ct.item)}>
-                수정일 : {DateForm(updated_at)}
+                수정일 : {DateForm(data.updated_at)}
               </span>
             )}
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>
-              설문기한 : {DateForm(start_at)} ~ {DateForm(end_at)}
+              설문기한 : {DateForm(data.start_at)} ~ {DateForm(data.end_at)}
             </span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}> 총 참여자수 : {count} </span>
+            <span className={cn(ct.item)}> 총 참여자수 : {data.count} </span>
           </div>
           <div>
             <Link href={`/survey/${sId}/update`} passHref>
               <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
             </Link>
             <button
-              onClick={(e) => handleRemove({ category }, e)}
+              onClick={(e) => handleRemove(data.category, e)}
               className={cn(ct.btn, "btn btn-danger")}
             >
               삭제
@@ -84,9 +90,9 @@ const SurveyDetailItem = ({ sId, surveyDetail }) => {
         </div>
       </div>
 
-      <div className={cn(ct.surveyInfo)}>
-        {context &&
-          context.split("\n").map((line, idx) => {
+      <div name="설문설명" className={cn(ct.surveyInfo)}>
+        {data.context &&
+          data.context.split("\n").map((line, idx) => {
             return (
               <span key={idx}>
                 {line}
@@ -95,10 +101,15 @@ const SurveyDetailItem = ({ sId, surveyDetail }) => {
             );
           })}
       </div>
-      {/* <div name="surveyBody"> */}
-      {/* <QuestionList total={count} dataList={question}></QuestionList> */}
-      {/* <Benchbox benchmark={benchmark} /> */}
-      {/* </div> */}
+
+      <div name="surveyBody">
+        <QuestionList
+          total={data.count}
+          dataList={data.question}
+        ></QuestionList>
+        <Benchbox benchmark={data.benchmark} />
+      </div>
+      <GoSurveyList url={"/survey"} category={data.category} />
     </div>
   );
 };

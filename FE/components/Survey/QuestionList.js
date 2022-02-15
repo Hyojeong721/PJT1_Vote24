@@ -11,8 +11,8 @@ const QuestionList = ({ total, dataList }) => {
   return (
     <div className="m-5">
       <div className="d-flex justify-content-around">
-        <PieChart total={total} dataList={dataList}></PieChart>
-        <PieChart total={total} dataList={dataList}></PieChart>
+        {/* <PieChart total={total} result={dataList.result}></PieChart> */}
+        {/* <PieChart total={total} dataList={dataList}></PieChart> */}
       </div>
 
       <div className={cn(ct.questionListResult)}>문항별 응답현황</div>
