@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import Header from "../../../components/Header";
-import ServiceNoticeUpdateForm from "../../../components/Notice/ServiceNoticeUpdateForm";
+import Header from "../../../../components/Header";
+import ServiceNoticeUpdateForm from "../../../../components/Notice/ServiceNoticeUpdateForm";
 
 function ServiceNoticeUpdate() {
   const router = useRouter();

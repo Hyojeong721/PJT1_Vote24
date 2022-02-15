@@ -6,7 +6,7 @@ import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
 
 const ServiceNoticeList = ({
-  userId,
+  hospital_id,
   indexlst,
   fixedCnt,
   postsPerPage,
@@ -14,7 +14,7 @@ const ServiceNoticeList = ({
   dataList,
   url,
 }) => {
-  const [list, setList] = useState(dataList);
+  const [list, setList] = useState(dataList, hospital_id);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "생성일", "조회수"];
