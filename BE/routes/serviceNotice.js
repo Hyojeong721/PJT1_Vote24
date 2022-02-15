@@ -21,7 +21,7 @@ router.post(
   service_upload.single("service_notice_image"),
   async (req, res) => {
     const { hospital_id, title, context, fixed, attachment } = req.body;
-    if (hospital_id != 0) {
+    if (hospital_id != 24) {
       logger.info("POST Service Notice");
       return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
     }
@@ -71,7 +71,7 @@ router.put(
   async (req, res) => {
     const id = req.params.id;
     const { hospital_id, title, context, fixed, attachment } = req.body;
-    if (hospital_id != 0) {
+    if (hospital_id != 24) {
       logger.info("POST Service Notice");
       return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
     }
@@ -81,7 +81,7 @@ router.put(
     // const path = "uploads/service/" + rename;
 
     try {
-      if (req.body.attachment) {
+      if (attachment != "null") {
         nameParser("uploads/service", "uploads/service", attachment, rename);
         const sql = `UPDATE service_notice SET 
                       title=?, 
@@ -116,7 +116,7 @@ router.put(
 router.delete("/service/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   const { hospital_id } = req.body;
-  if (hospital_id != 0) {
+  if (hospital_id != 24) {
     logger.info("POST Service Notice");
     return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
   }
