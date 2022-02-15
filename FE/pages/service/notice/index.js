@@ -61,7 +61,7 @@ function ServiceNotice() {
       </Header>
       <div className="container div-table">
         <ServiceNoticeList
-          userId={userId}
+          hospital_id={userId}
           indexlst={indexlst}
           fixedCnt={fixedCnt}
           postsPerPage={postsPerPage}
