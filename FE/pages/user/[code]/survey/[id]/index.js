@@ -16,6 +16,8 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     handleSubmit,
   } = useForm();
 
+  console.log("@@", surveyDetail);
+
   const paintOptions = (qId, option) => {
     return option.map(({ id, order, context, weight }) => {
       return (
@@ -123,13 +125,29 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 
 export async function getServerSideProps({ params }) {
   const { code, id } = params;
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data.id)
+    .catch((err) => console.log(err));
+
+  if (!hId) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
   const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${id}`;
   const surveyDetail = await axios
     .get(SURVEY_DETAIL_URL)
     .then((res) => res.data)
     .catch((err) => console.log(err));
-
-  if (Object.keys(surveyDetail).length === 0) {
+  // Object.keys(surveyDetail).length === 0 ||
+  if (surveyDetail.status !== 1) {
     return {
       redirect: {
         permanent: false,

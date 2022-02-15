@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CategoryRadio from "./CategoryRadio";
+import { getPrevDate, getNextDate } from "../getDate";
 import cn from "classnames";
 import styles from "../../styles/surveycreateformheader.module.css";
 
@@ -157,7 +158,7 @@ function SurveyCreateFormHeader({
             type="date"
             className="form-control"
             min={new Date().toISOString().slice(0, 10)}
-            max={endDate}
+            max={getPrevDate(endDate)}
             onSelect={(e) => {
               setStartDate(e.target.value);
             }}
@@ -172,13 +173,13 @@ function SurveyCreateFormHeader({
         </div>
         <div className={cn(styles.datetimeBox)}>
           <label htmlFor="end_at" className="fw-bold ms-1">
-            종료일
+            종료일 (00시 기준)
           </label>
           <input
             id="end_at"
             type="date"
             className="form-control"
-            min={startDate}
+            min={getNextDate(startDate)}
             onSelect={(e) => {
               setEndDate(e.target.value);
             }}

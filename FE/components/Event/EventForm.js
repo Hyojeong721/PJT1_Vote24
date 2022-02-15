@@ -5,6 +5,7 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { getPrevDate, getNextDate } from "../getDate";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
@@ -121,7 +122,7 @@ const EventForm = () => {
               onChange={handleInputChange}
               value={values.start_at}
               min={startDate}
-              max={values.end_at}
+              max={getPrevDate(values.end_at)}
               required
             ></input>
             {"  "}~{"  "}
@@ -131,7 +132,7 @@ const EventForm = () => {
               type="date"
               onChange={handleInputChange}
               value={values.end_at}
-              min={startDate}
+              min={getNextDate(startDate)}
               required
             ></input>
           </div>

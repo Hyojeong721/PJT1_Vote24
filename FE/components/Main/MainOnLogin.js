@@ -57,7 +57,7 @@ function MainOnLogin() {
           <SimpleCard title="누적 설문 참여자 수" context={data.totalMyVote} />
           <SimpleCard
             title="일일 설문 참여자 수"
-            context={data.todayVote}
+            context={data.todayMyVote}
             color="orange"
           />
           <SimpleCard
@@ -71,7 +71,7 @@ function MainOnLogin() {
             color="blue"
           />
         </div>
-        <div className="row justify-content-md-center gap-3">
+        <div className="row justify-content-md-center gap-5">
           {data && <PopularSurvey popularSurveys={data.popularVotes} />}
 
           <AgeGenderGraph data={data.result_Mysurvey} />
