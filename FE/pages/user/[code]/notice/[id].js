@@ -38,7 +38,10 @@ function NoticeDetailUser({ code, noticeDetail }) {
       </div>
       <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
         <div>{context}</div>
-        <Image src={image} width="100%" height="100%" />
+        <div>이미지</div>
+        <div className={styles.imageContainer}>
+          <Image src={image} layout="fill" objectFit="contain" priority />
+        </div>
       </div>
       <Link href={`/user/${code}/notice`} passHref>
         <button type="button" className="btn user-detail-to-list-button m-3">

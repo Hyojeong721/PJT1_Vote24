@@ -58,6 +58,27 @@ function Signup() {
         /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/,
         "사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO"
       ),
+    logo_image: yup
+      .mixed()
+      .test("required", "병원 로고 이미지 파일을 선택해주세요!", (value) => {
+        return value && value.length;
+      })
+      .test(
+        "type",
+        "png/jpeg/jpg 형식의 파일을 선택해주세요!",
+        function (value) {
+          return (
+            value &&
+            value[0] &&
+            (value[0].type === "image/jpeg" ||
+              value[0].type === "image/jpg" ||
+              value[0].type === "image/png")
+          );
+        }
+      )
+      .test("fileSize", "파일 사이즈가 너무 큽니다!", (value, context) => {
+        return value && value[0] && value[0].size <= 200000;
+      }),
   });
 
   const {
@@ -159,7 +180,7 @@ function Signup() {
 
   const onBnCheck = async (e) => {
     const businessNumber = getValues("business_number");
-    const bnREGEX = /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/;
+    const bnREGEX = /([0-9]{3})-([0-9]{2})-([0-9]{5})/;
     if (!bnREGEX.test(businessNumber) || errors.business_number?.message) {
       toast.dismiss();
       toast.error("사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO");
@@ -377,6 +398,9 @@ function Signup() {
                 onChange={onFileChange}
               />
             </div>
+            <span className="fs-0 text-danger ms-1">
+              {errors.logo_image?.message}
+            </span>
           </div>
 
           {/* <div className="w-75 d-flex justify-content-center mt-2">

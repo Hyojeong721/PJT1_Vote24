@@ -51,7 +51,7 @@ function MainHeader() {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 col-xl-7">
+            <div className="col-lg-6 col-xl-7 p-0">
               <div className={styles.imageContainer}>
                 <div className={styles.imgWrapper}>
                   <Image

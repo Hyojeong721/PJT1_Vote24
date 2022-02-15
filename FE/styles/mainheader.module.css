@@ -31,13 +31,12 @@
 }
 
 .header .imageContainer {
-  margin-top: 1rem;
-  margin-left: 1.5rem;
+  margin: auto;
 }
 
 .header .imageContainer .imgWrapper {
   transition: 0.5s;
-  width: 630px;
+  transform: scale(1);
 }
 
 .header .imageContainer .imgWrapper:hover {
