@@ -82,7 +82,7 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
 router.post(
   "/notice/:hospital_id",
   verifyToken,
-  notice_upload.single("notice_image"),
+  notice_upload.single("notice_img"),
   async (req, res) => {
     const { hospital_id } = req.params;
 
@@ -151,7 +151,7 @@ router.delete("/notice/:hospital_id/:id", verifyToken, async (req, res) => {
 router.put(
   "/notice/:hospital_id/:id",
   verifyToken,
-  notice_upload.single("notice_image"),
+  notice_upload.single("notice_img"),
   async (req, res) => {
     const { hospital_id, id } = req.params;
 

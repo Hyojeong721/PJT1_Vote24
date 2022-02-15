@@ -15,99 +15,89 @@ const router = express.Router();
  * POST Service Notice Detail
  * Example URL = ../service
  *----------------------------------------------------------------------*/
-router.post(
-  "/service",
-  verifyToken,
-  service_upload.single("service_notice_image"),
-  async (req, res) => {
-    const { hospital_id, title, context, fixed, attachment } = req.body;
-    if (hospital_id != 24) {
-      logger.info("POST Service Notice");
-      return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
-    }
-    const rename =
-      new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
-      attachment;
+router.post("/service", verifyToken, service_upload.single("service_img"), async (req, res) => {
+  const { hospital_id, title, context, fixed, attachment } = req.body;
+  if (hospital_id != 24) {
+    logger.info("POST Service Notice");
+    return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
+  }
+  const rename =
+    new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+    attachment;
 
-    try {
-      let a;
-      if (req.body.attachment) {
-        nameParser("uploads/service", "uploads/service", attachment, rename);
-        const sql = `INSERT INTO service_notice ( 
+  try {
+    let a;
+    if (req.body.attachment) {
+      nameParser("uploads/service", "uploads/service", attachment, rename);
+      const sql = `INSERT INTO service_notice ( 
                         title, 
                         context, 
                         fixed, 
                         attachment,
                         created_at) VALUES(?, ?, ?, ?, now());`;
-        const data = await pool.query(sql, [title, context, fixed, rename]);
-      } else {
-        const sql = `INSERT INTO service_notice ( 
+      const data = await pool.query(sql, [title, context, fixed, rename]);
+    } else {
+      const sql = `INSERT INTO service_notice ( 
                         title, 
                         context, 
                         fixed,
                         created_at) VALUES(?, ?, ?, now());`;
-        const data = await pool.query(sql, [title, context, fixed]);
-      }
-      const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM service_notice;`;
-      const data_id = await pool.query(LAST_INSERT_ID);
-      const create_id = data_id[0][0].auto_id;
-      logger.info("POST Service Notice");
-      return res.json({ state: "Success", id: create_id });
-    } catch (error) {
-      logger.error("POST Service Notice " + error);
-      return res.json({ state: "Fail" });
+      const data = await pool.query(sql, [title, context, fixed]);
     }
+    const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM service_notice;`;
+    const data_id = await pool.query(LAST_INSERT_ID);
+    const create_id = data_id[0][0].auto_id;
+    logger.info("POST Service Notice");
+    return res.json({ state: "Success", id: create_id });
+  } catch (error) {
+    logger.error("POST Service Notice " + error);
+    return res.json({ state: "Fail" });
   }
-);
+});
 
 /*----------------------------------------------------------------------*
  * PUT Service Notice Detail
  * Example URL = ../service/1
  *----------------------------------------------------------------------*/
-router.put(
-  "/service/:id",
-  verifyToken,
-  service_upload.single("service_notice_image"),
-  async (req, res) => {
-    const id = req.params.id;
-    const { hospital_id, title, context, fixed, attachment } = req.body;
-    if (hospital_id != 24) {
-      logger.info("POST Service Notice");
-      return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
-    }
-    const rename =
-      new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
-      attachment;
-    // const path = "uploads/service/" + rename;
+router.put("/service/:id", verifyToken, service_upload.single("service_img"), async (req, res) => {
+  const id = req.params.id;
+  const { hospital_id, title, context, fixed, attachment } = req.body;
+  if (hospital_id != 24) {
+    logger.info("POST Service Notice");
+    return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
+  }
+  const rename =
+    new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
+    attachment;
+  // const path = "uploads/service/" + rename;
 
-    try {
-      if (attachment != "null") {
-        nameParser("uploads/service", "uploads/service", attachment, rename);
-        const sql = `UPDATE service_notice SET 
+  try {
+    if (attachment != "null") {
+      nameParser("uploads/service", "uploads/service", attachment, rename);
+      const sql = `UPDATE service_notice SET 
                       title=?, 
                       context=?, 
                       fixed=?, 
                       attachment=?,
                       updated_at = now() WHERE id=?;`;
-        const data = await pool.query(sql, [title, context, fixed, rename, id]);
-      } else {
-        const sql = `UPDATE service_notice SET 
+      const data = await pool.query(sql, [title, context, fixed, rename, id]);
+    } else {
+      const sql = `UPDATE service_notice SET 
                       title=?, 
                       context=?, 
                       fixed=?,
                       attachment = null,
                       updated_at = now() WHERE id=?;`;
-        const data = await pool.query(sql, [title, context, fixed, id]);
-      }
-
-      logger.info("PUT Service Notice");
-      return res.json({ result: "Success", id: id });
-    } catch (error) {
-      logger.error("PUT Service Notice" + error);
-      return res.json(error);
+      const data = await pool.query(sql, [title, context, fixed, id]);
     }
+
+    logger.info("PUT Service Notice");
+    return res.json({ result: "Success", id: id });
+  } catch (error) {
+    logger.error("PUT Service Notice" + error);
+    return res.json(error);
   }
-);
+});
 
 /*----------------------------------------------------------------------*
  * DELETE Service Notice Detail
