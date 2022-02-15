@@ -2,7 +2,7 @@ import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const CREATE_URL = "service/notice/create";
+const CREATE_URL = "/service/notice/create";
 
 const Vote24NoticeBtn = ({ userId, handleRemove }) => {
   if (userId == 24) {

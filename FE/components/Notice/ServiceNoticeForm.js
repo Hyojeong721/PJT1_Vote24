@@ -1,31 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
-const NoticeUpdateForm = ({ noticeId, url }) => {
-  const [values, setValues] = useState([]);
+const ServiceNoticeForm = ({ url }) => {
   const router = useRouter();
-
-  // 기존 data 가져오기
-  useEffect(() => {
-    const getPost = async () => {
-      await axios
-        .get(url)
-        .then((res) => {
-          setValues(res.data);
-        })
-        .catch((err) => {
-          console.log("병원공지 원본data get 실패", err);
-          router.push("/404");
-        });
-    };
-    getPost();
-  }, [url]);
+  const jwt = localStorage.getItem("jwt");
+  const [values, setValues] = useState({
+    hospital_id: "24",
+    title: "",
+    context: "",
+    fixed: "0",
+    imgFile: null,
+  });
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const userId = userInfo.id;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -38,15 +32,10 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       [name]: value,
     }));
   };
-
-  // 고정 체크 박스 수정
-  const handlefixed = (e) => {
-    handleChange("fixed", e.target.value);
-  };
-
-  // 글 수정 서버 요청
+  // 작성 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -55,35 +44,40 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           const imgName = imgFile.name;
           fd.append("notice_image", imgFile);
           fd.append("attachment", imgName);
+          console.log("attachment", imgName);
+        }
+      } else if (key === "userId") {
+        if (userId == 0) {
+          fd.append("userId", 0);
         }
       } else {
         fd.append(`${key}`, values[key]);
       }
     }
-
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
-
-    const jwt = localStorage.getItem("jwt");
     await axios
-      .put(url, fd, {
+      .post(url, fd, {
         headers: {
           authorization: jwt,
           "Content-Type": `multipart/form-data`,
         },
       })
       .then((res) => {
-        console.log("병원공지 수정 성공", res.data);
-        router.push(`/notice/${noticeId}`);
+        console.log("서비스공지 등록 성공!", res.data);
+        if (res.data.id) {
+          router.push(`/service/notice/${res.data.id}`);
+        }
       })
       .catch((err) => {
-        toast.error("병원공지 수정 실패!", {
+        toast.error("공지사항 등록 실패!", {
           autoClose: 3000,
         });
         console.log(err);
       });
+  };
+
+  // 고정 체크 박스 수정
+  const handlefixed = (e) => {
+    handleChange("fixed", e.target.value);
   };
 
   return (
@@ -99,9 +93,9 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
             <input
               className={cn(cs.input)}
               name="title"
+              value={values.title}
               onChange={handleInputChange}
               id="title"
-              value={values.title}
               required
             ></input>
           </div>
@@ -118,7 +112,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
                 type="radio"
                 name="fixed"
                 defaultValue={1}
-                checked={values.fixed == 1}
                 onChange={handlefixed}
               />
               {"  "} <label htmlFor="fixed">고정공지</label>
@@ -155,7 +148,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
             ></textarea>
           </div>
         </div>
-
         <div name="첨부파일" className={cn(cs.formRow)}>
           <FileInput
             name="imgFile"
@@ -164,16 +156,15 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           ></FileInput>
         </div>
       </div>
-
-      <div name="취소등록버튼" className={cn(cs.btns, "d-flex")}>
+      <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href={`/notice/${noticeId}`} passHref>
+          <Link href="/service/notice" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>
         <div className={cn(cs.btn)}>
           <button type="submit" className="btn btn-primary">
-            수정
+            등록
           </button>
         </div>
       </div>
@@ -181,4 +172,4 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   );
 };
 
-export default NoticeUpdateForm;
+export default ServiceNoticeForm;
