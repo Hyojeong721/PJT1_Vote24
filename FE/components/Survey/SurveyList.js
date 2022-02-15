@@ -20,12 +20,15 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
     "status",
   ];
   const statusicon = (status) => {
-    if (status) {
-      return <div>진행중</div>;
+    if (status == 0) {
+      return "진행중";
+    } else if (status == 1) {
+      return "예정";
     } else {
-      return <div>마감</div>;
+      return "마감";
     }
   };
+
   // 설문 목록의 모든 설문id값을 idList에 넣는다.
   useEffect(() => {
     setList(dataList);

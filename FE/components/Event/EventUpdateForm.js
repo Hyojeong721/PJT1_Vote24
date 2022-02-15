@@ -42,6 +42,7 @@ const EventUpdateForm = ({ eventId, url }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("@@", values);
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -62,6 +63,7 @@ const EventUpdateForm = ({ eventId, url }) => {
       }
     }
     // 서버에 보내기
+
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {

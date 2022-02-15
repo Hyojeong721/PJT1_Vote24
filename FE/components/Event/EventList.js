@@ -27,9 +27,9 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
 
   const onStatus = (status) => {
     if (status == 0) {
-      return "예정";
-    } else if (status == 1) {
       return "진행중";
+    } else if (status == 1) {
+      return "예정";
     } else {
       return "마감";
     }

@@ -78,7 +78,7 @@ export async function getServerSideProps({ query }) {
       .then((res) => res.data)
       .catch((err) => console.log(err));
 
-  if (status !== 1) {
+  if (status !== 0) {
     return {
       redirect: {
         permanent: false,

@@ -12,15 +12,19 @@ function SurveyCreateFormHeader({
   setNowCategory,
   initialBenchmarks,
   setValue,
-  getValues,
+  surveyDetail,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
   const [benchScoreERR, setBenchScoreERR] = useState(false);
+
+  const todayDate = new Date().toISOString().slice(0, 10);
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().slice(0, 10)
+    surveyDetail ? surveyDetail.start_at : todayDate
   );
-  const [endDate, setEndDate] = useState(new Date(8640000000000000));
+  const [endDate, setEndDate] = useState(
+    surveyDetail ? surveyDetail.end_at : new Date(8640000000000000)
+  );
 
   const addInitialBenchmarks = (initialBenchmarks) => {
     initialBenchmarks.forEach((b, idx) => {
@@ -56,24 +60,6 @@ function SurveyCreateFormHeader({
       setBenchScoreERR(false);
     }
   };
-
-  // const handleBenchmarkScoreKeyDown = (e, b) => {
-  //   if (e.key === "Backspace") {
-  //     return;
-  //   } else if (0 <= e.key && e.key <= 9) {
-  //     setBenchScoreERR(false);
-  //   } else {
-  //     setBenchScoreERR(true);
-  //   }
-  // };
-  // const handleBenchmarScoreKey = (e) => {
-  //   const regExp = /[^0-9]/g;
-  //   const ele = e.target;
-  //   if (regExp.test(ele.value)) {
-  //     ele.value = ele.value.replace(regExp, "");
-  //     setBenchScoreERR(true);
-  //   }
-  // };
 
   const handleBenchmarScoreKey = (e) => {
     const regExp = /[^0-9]/g;
@@ -157,10 +143,12 @@ function SurveyCreateFormHeader({
             id="start_at"
             type="date"
             className="form-control"
-            min={new Date().toISOString().slice(0, 10)}
+            min={todayDate}
             max={getPrevDate(endDate)}
             onSelect={(e) => {
-              setStartDate(e.target.value);
+              if (e.target.value) {
+                setStartDate(e.target.value);
+              }
             }}
             {...register("start_at", { required: true })}
           ></input>
@@ -181,7 +169,9 @@ function SurveyCreateFormHeader({
             className="form-control"
             min={getNextDate(startDate)}
             onSelect={(e) => {
-              setEndDate(e.target.value);
+              if (e.target.value) {
+                setEndDate(e.target.value);
+              }
             }}
             {...register("end_at", { required: true })}
           ></input>

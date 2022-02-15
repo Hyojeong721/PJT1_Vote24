@@ -6,11 +6,11 @@ import styles from "../../styles/userpostlistitem.module.css";
 function UserPostListItem({ url, idx, post }) {
   const { title, fixed, created_at, start_at, end_at, status } = post;
 
-  // status 예정 0, 진행중 1, 마감 2
+  // status 진행중 0, 예정 1, 마감 2
   let eventStatus = "예정";
   let statusColor = styles.btnLime;
 
-  if (status === 1) {
+  if (status === 0) {
     eventStatus = "진행중";
     statusColor = "btn-warning";
   } else if (status === 2) {

@@ -9,7 +9,7 @@ function UserSurveyListItem({ url, idx, survey }) {
   let surveyStatus = "예정";
   let statusColor = styles.btnLime;
 
-  if (status === 1) {
+  if (status === 0) {
     surveyStatus = "진행중";
     statusColor = "btn-warning";
   } else if (status === 2) {
@@ -23,7 +23,7 @@ function UserSurveyListItem({ url, idx, survey }) {
     });
   };
 
-  if (status === 1) {
+  if (status === 0) {
     return (
       <Link href={url} passHref>
         <button className="w-75 user-post-list-item shadow btn d-flex justify-content-between align-items-center mt-3">

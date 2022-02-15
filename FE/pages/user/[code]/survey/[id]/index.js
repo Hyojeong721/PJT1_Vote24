@@ -16,8 +16,6 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     handleSubmit,
   } = useForm();
 
-  console.log("@@", surveyDetail);
-
   const paintOptions = (qId, option) => {
     return option.map(({ id, order, context, weight }) => {
       return (
@@ -71,6 +69,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const onSubmit = async (data) => {
     const questions = [];
     let score = 0;
+    // score 계산
     for (let key of Object.keys(data)) {
       if (key === "age" || key === "gender") {
         continue;
@@ -147,7 +146,7 @@ export async function getServerSideProps({ params }) {
     .then((res) => res.data)
     .catch((err) => console.log(err));
   // Object.keys(surveyDetail).length === 0 ||
-  if (surveyDetail.status !== 1) {
+  if (surveyDetail.status !== 0) {
     return {
       redirect: {
         permanent: false,
