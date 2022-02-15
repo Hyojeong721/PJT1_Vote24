@@ -23,7 +23,9 @@ function PopularSurvery({ popularSurveys }) {
               <th scope="col">조회수</th>
             </tr>
           </thead>
-          <tbody>{popularSurveys.length ? paintPopularSurveys : ""}</tbody>
+          <tbody>
+            {popularSurveys.length > 0 ? paintPopularSurveys : null}
+          </tbody>
         </table>
       </div>
     </div>
