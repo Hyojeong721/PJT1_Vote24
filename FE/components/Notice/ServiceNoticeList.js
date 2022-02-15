@@ -48,7 +48,6 @@ const ServiceNoticeList = ({
   };
 
   // 선택 삭제
-
   const handleRemove = () => {
     if (checkList.length) {
       checkList.map((noticeId) => {
@@ -62,7 +61,7 @@ const ServiceNoticeList = ({
             console.log(response);
           })
           .catch((error) => {
-            console.log("dddd", error);
+            console.log("삭제에러", error);
           });
         setList(list.filter((data) => data.id !== noticeId));
         setDataList((state) => state.filter((data) => data.id !== noticeId));

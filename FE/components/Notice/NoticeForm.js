@@ -37,7 +37,6 @@ const NoticeForm = ({ url }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 보낼 데이터들을 fromdata에 담아
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -46,6 +45,7 @@ const NoticeForm = ({ url }) => {
           const imgName = imgFile.name;
           fd.append("notice_image", imgFile);
           fd.append("attachment", imgName);
+          console.log("attachment", imgName);
         }
       } else if (key === "userId") {
         if (userId == 0) {

@@ -9,7 +9,7 @@ import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
 
-const NoticeDetailItem = ({ url }) => {
+const ServiceNoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const { id } = router.query;
@@ -20,7 +20,7 @@ const NoticeDetailItem = ({ url }) => {
       await axios
         .get(`${url}/${id}`)
         .then((res) => {
-          console.log("게시글내용", res.data);
+          console.log("서비스공지get 성공", res.data);
           setData(res.data);
         })
         .catch((err) => {
@@ -32,7 +32,6 @@ const NoticeDetailItem = ({ url }) => {
       getPost();
     }
   }, [id, url]);
-
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
@@ -44,7 +43,7 @@ const NoticeDetailItem = ({ url }) => {
       })
       .then((res) => {
         console.log("delete성공", res);
-        router.push("/notice");
+        router.push("/service/notice");
       })
       .catch((error) => {
         console.log("delete실패", error);
@@ -59,7 +58,7 @@ const NoticeDetailItem = ({ url }) => {
 
         <div className={cn(ct.contentInfo, "d-flex justify-content-between")}>
           <div>
-            <span className={cn(ct.item)}>관리자</span>
+            <span className={cn(ct.item)}>Vote24</span>
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>
               작성 : {DateForm(data.created_at)}
@@ -75,7 +74,7 @@ const NoticeDetailItem = ({ url }) => {
           </div>
 
           <div>
-            <Link href={`/notice/${id}/update`} passHref>
+            <Link href={`/service/notice/${id}/update`} passHref>
               <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
             </Link>
             <button
@@ -95,7 +94,6 @@ const NoticeDetailItem = ({ url }) => {
               alt={data.attachment}
               width="800px"
               height="800px"
-              objectFit="contain"
               priority
             ></Image>
           )}
@@ -113,7 +111,7 @@ const NoticeDetailItem = ({ url }) => {
         </div>
       </div>
       <div>
-        <Link href="/notice">
+        <Link href="/service/notice">
           <button
             type="button"
             className={cn(ct.contenBtnList, "btn btn-primary btn-round")}
@@ -130,4 +128,4 @@ const NoticeDetailItem = ({ url }) => {
   );
 };
 
-export default NoticeDetailItem;
+export default ServiceNoticeDetailItem;

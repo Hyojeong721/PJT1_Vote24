@@ -6,7 +6,7 @@ import axios from "axios";
 import ServiceNoticeList from "../../../components/Notice/ServiceNoticeList";
 import Paging from "../../../components/Paging";
 
-const NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
+const SERVICE_NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
 
 function ServiceNotice() {
   const [dataList, setDataList] = useState([]);
@@ -20,7 +20,7 @@ function ServiceNotice() {
   useEffect(() => {
     const getList = async () => {
       await axios
-        .get(NOTICE_URL)
+        .get(SERVICE_NOTICE_URL)
         .then((res) => {
           setDataList(res.data);
           console.log("공지목록", res.data);
@@ -36,7 +36,7 @@ function ServiceNotice() {
         });
     };
     getList();
-  }, [NOTICE_URL]);
+  }, [SERVICE_NOTICE_URL]);
 
   // 페이징 처리를 위한 계산
   const fixedCnt = fixed.length;
@@ -67,7 +67,7 @@ function ServiceNotice() {
           postsPerPage={postsPerPage}
           setDataList={setDataList}
           dataList={currentPosts}
-          url={NOTICE_URL}
+          url={SERVICE_NOTICE_URL}
         />
         <Paging
           postsPerPage={postsPerPage}

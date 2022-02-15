@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Header from "../../../components/Header";
-import NoticeForm from "../../../components/Notice/NoticeForm";
+import ServiceNoticeForm from "../../../components/Notice/ServiceNoticeForm";
 
 const SERVICE_URL = `http://i6a205.p.ssafy.io:8000/api/service`;
 
@@ -9,7 +9,7 @@ function NoticeCreate() {
     <div>
       <Header title="Vote24 공지사항 작성"></Header>
       <div className="container">
-        <NoticeForm url={SERVICE_URL}></NoticeForm>
+        <ServiceNoticeForm url={SERVICE_URL}></ServiceNoticeForm>
       </div>
     </div>
   );

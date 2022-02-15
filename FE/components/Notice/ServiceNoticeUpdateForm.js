@@ -7,7 +7,7 @@ import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
-const NoticeUpdateForm = ({ noticeId, url }) => {
+const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
 
@@ -20,7 +20,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           setValues(res.data);
         })
         .catch((err) => {
-          console.log("병원공지 원본data get 실패", err);
+          console.log("서비스공지 원본data get 실패", err);
           router.push("/404");
         });
     };
@@ -167,7 +167,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
 
       <div name="취소등록버튼" className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href={`/notice/${noticeId}`} passHref>
+          <Link href={`/service/notice/${noticeId}`} passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>
@@ -181,4 +181,4 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   );
 };
 
-export default NoticeUpdateForm;
+export default ServiceNoticeUpdateForm;
