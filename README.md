@@ -363,3 +363,10 @@ postsperpage = 한페이지당 게시글 수
 fixedCnt = 고정게시글 수
 ==> 고정공지를 제외한 게시글들의 번호 = indexlst[Math.abs(index-postsPerPage)-1]-fixedCnt+1
 [Math.abs(index-postsPerPage)-1] : 현재 페이지 인덱스가 위에서부터 아래로 0 1 2 3 4 5 인데 고정글이 4개라면 4, 5가 0, 1 돼야함 
+
+/////////////////////
+0215-0216
+- 설문 결과 페이지 차트 도입
+- 수정페이지에서 기존 파일명 보기 안됌
+참고:https://www.phpschool.com/gnuboard4/bbs/board.php?bo_table=qna_function&wr_id=152467&page=3600
+
