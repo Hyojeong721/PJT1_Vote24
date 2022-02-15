@@ -161,7 +161,7 @@ router.delete("/event/:hospital_id/:id", verifyToken, async (req, res) => {
 router.put(
   "/event/:hospital_id/:id",
   verifyToken,
-  event_upload.single("event_image"),
+  event_upload.single("event_img"),
   async (req, res) => {
     const { hospital_id, id } = req.params;
 
