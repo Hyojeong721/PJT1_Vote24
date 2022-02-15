@@ -23,7 +23,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   } = useForm();
 
   const { benchmark, question } = surveyDetail;
-
   const setFormData = ({
     category,
     title,
@@ -47,8 +46,17 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   }, [surveyDetail]);
 
   const onSubmit = async (data) => {
+    console.log(data);
     const { qList, bList } = parseInput(data);
-    const { category, title, context, output_link, start_at, end_at } = data;
+    const {
+      category,
+      title,
+      context,
+      output_link,
+      reservation_link,
+      start_at,
+      end_at,
+    } = data;
     const result = {
       created_at: surveyDetail.created_at.slice(0, -5).replace("T", " "),
       count: surveyDetail.count,
@@ -56,6 +64,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
       title,
       context,
       output_link,
+      reservation_link,
       start_at,
       end_at,
       question: qList,
@@ -71,7 +80,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
         },
       })
       .then((res) => {
-        console.log("@@@@", res.data);
         toast.success("설문 수정 완료");
         router.push(`/survey/${res.data.surveyID}`);
       })
@@ -102,6 +110,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
         setNowCategory={setNowCategory}
         initialBenchmarks={benchmark}
         setValue={setValue}
+        surveyDetail={surveyDetail}
       />
       <SurveyCreateFormBody
         register={register}
