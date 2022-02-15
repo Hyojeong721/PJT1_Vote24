@@ -19,7 +19,6 @@ function NoticeDetailUser({ code, noticeDetail }) {
     next_id,
     next_title,
   } = noticeDetail;
-  console.log(updated_at);
 
   return (
     <div className="min-vh-100 d-flex flex-column align-items-center pb-5">
@@ -28,20 +27,38 @@ function NoticeDetailUser({ code, noticeDetail }) {
         <div>공지사항</div>
       </header>
       <div className="position-relative w-100 user-detail-title d-flex flex-column justify-content-center align-items-center">
-        <div className="fs-1">{title}</div>
-        <div className="position-absolute bottom-0 w-100 d-flex justify-content-end border-bottom text-secondary">
+        <div className="fs-1 px-5">{title}</div>
+        <div className="position-absolute bottom-0 w-100 d-flex justify-content-end border-bottom text-secondary pe-2">
           {updated_at
             ? ISODateFormatter(updated_at)
             : ISODateFormatter(created_at)}{" "}
           | 조회수 {views}
         </div>
       </div>
-      <div className="w-75 user-detail-section border-bottom d-flex flex-column justify-content-center align-items-center">
-        <div>{context}</div>
-        <div>이미지</div>
-        <div className={styles.imageContainer}>
-          <Image src={image} layout="fill" objectFit="contain" priority />
+      <div className="user-detail-section border-bottom d-flex flex-column p-5">
+        <div>
+          {context &&
+            context.split("\n").map((line, idx) => {
+              return (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
         </div>
+        {image && (
+          <div className={(styles.imageContainer, "mx-auto")}>
+            <Image
+              alt="post_image"
+              src={image}
+              width="500px"
+              height="500px"
+              objectFit="contain"
+              priority
+            />
+          </div>
+        )}
       </div>
       <Link href={`/user/${code}/notice`} passHref>
         <button type="button" className="btn user-detail-to-list-button m-3">

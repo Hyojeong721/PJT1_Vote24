@@ -95,6 +95,7 @@ const NoticeDetailItem = ({ url }) => {
               alt={data.attachment}
               width="800px"
               height="800px"
+              objectFit="contain"
               priority
             ></Image>
           )}
