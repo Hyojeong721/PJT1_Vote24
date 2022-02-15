@@ -87,8 +87,8 @@ router.get("/benchmark/list/:survey_id", async (req, res) => {
     let result = output_link_data[0][0];
 
     const now = new Date();
-    if (now < survey_data[0][0].start_at) result.status = 0;
-    else result.status = now < survey_data[0][0].end_at ? 1 : 2;
+    if (now < survey_data[0][0].start_at) result.status = 1;
+    else result.status = now < survey_data[0][0].end_at ? 0 : 2;
 
     result.benchmark = benchmark_data[0];
     logger.info("[INFO] GET /benchmark/list");
