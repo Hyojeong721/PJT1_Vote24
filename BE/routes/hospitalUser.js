@@ -38,20 +38,6 @@ router.post("/id/:id", async (req, res) => {
   }
 });
 
-// router.get("/test", async (req, res) => {
-//   // let dupl = 1;
-//   // let code = 0;
-//   // while (dupl == 1) {
-//   //   code = crypto.randomBytes(3).toString("hex");
-//   //   const dupl_sql = "select EXISTS (select * from hospital_info where code=? limit 1) as success;";
-//   //   let dupl_data = await pool.query(dupl_sql, [code]);
-//   //   dupl = dupl_data[0][0].success;
-//   // }
-//   // console.log(code);
-//   // return res.json(dupl);
-//   console.log(router);
-// });
-
 /*----------------------------------------------------------------------*
  * POST HospitalUser Join
  * Example URL = ../join
