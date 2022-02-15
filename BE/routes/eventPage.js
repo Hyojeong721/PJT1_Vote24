@@ -31,8 +31,8 @@ router.get("/event/:hospital_id", async (req, res) => {
     const result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
-      if (now < result[i].start_at) result[i].status = 0;
-      else result[i].status = now < result[i].end_at ? 1 : 2;
+      if (now < result[i].start_at) result[i].status = 1;
+      else result[i].status = now < result[i].end_at ? 0 : 2;
     }
 
     logger.info("GET Event List");
