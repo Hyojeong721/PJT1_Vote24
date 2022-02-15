@@ -70,23 +70,25 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     const questions = [];
     let score = 0;
     for (let key of Object.keys(data)) {
+      if (key === "age" || key === "gender") {
+        continue;
+      }
+
       if (key.slice(0, 2) === "QC") {
         const [optionId, weight] = data[key].split("-");
         questions.push({ id: key.slice(2), type: "0", select: optionId });
         score += parseInt(weight);
-      } else {
+      } else if (key.slice(0, 2) === "QE") {
         questions.push({ id: key.slice(2), type: "1", answer: data[key] });
       }
     }
 
     const { age, gender } = data;
-
     const result = { questions, score, age, gender };
 
     await axios
       .post(SURVEY_SUBMIT_URL, result)
       .then((res) => {
-        console.log("res", res.data);
         router.push({
           pathname: `/user/${code}/survey/${sId}/result`,
           query: { score },
