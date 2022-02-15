@@ -62,9 +62,14 @@ const ServiceNoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("서비스공지 등록 성공!", res.data);
+        console.log("서비스공지 등록", res.data);
         if (res.data.id) {
           router.push(`/service/notice/${res.data.id}`);
+        } else {
+          toast.error("서비스 공지 등록 실패!", {
+            autoClose: 3000,
+          });
+          router.push("/service/notice");
         }
       })
       .catch((err) => {
@@ -72,6 +77,7 @@ const ServiceNoticeForm = ({ url }) => {
           autoClose: 3000,
         });
         console.log(err);
+        router.push("/404");
       });
   };
 

@@ -60,6 +60,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         fd.append(`${key}`, values[key]);
       }
     }
+    fd.append("hospital_id", 24);
 
     // // formData 안에 값들 확인할 때
     // for (let value of fd.values()) {
@@ -75,14 +76,22 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("병원공지 수정 성공", res.data);
-        router.push(`/notice/${noticeId}`);
+        console.log("병원공지 수정", res.data);
+        if (res.data.id) {
+          router.push(`/service/notice/${res.data.id}`);
+        } else {
+          toast.error("병원공지 수정 실패!", {
+            autoClose: 3000,
+          });
+          router.push("/404");
+        }
       })
       .catch((err) => {
         toast.error("병원공지 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
+        router.push("/404");
       });
   };
 

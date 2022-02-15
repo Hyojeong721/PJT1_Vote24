@@ -14,7 +14,7 @@ const ServiceNoticeList = ({
   dataList,
   url,
 }) => {
-  const [list, setList] = useState(dataList, hospital_id);
+  const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "생성일", "조회수"];
@@ -39,6 +39,8 @@ const ServiceNoticeList = ({
     setCheckList(e.target.checked ? idList : []);
   };
 
+  console.log(list);
+
   const onChangeEach = (e, id) => {
     if (e.target.checked) {
       setCheckList([...checkList, id]);
@@ -46,7 +48,6 @@ const ServiceNoticeList = ({
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
   };
-
   // 선택 삭제
   const handleRemove = () => {
     if (checkList.length) {
@@ -55,6 +56,9 @@ const ServiceNoticeList = ({
           .delete(`${url}/${noticeId}`, {
             headers: {
               authorization: jwt,
+            },
+            data: {
+              hospital_id: hospital_id,
             },
           })
           .then((response) => {
@@ -73,7 +77,7 @@ const ServiceNoticeList = ({
 
   return (
     <div>
-      <Vote24NoticeBtn userId={userId} handleRemove={handleRemove} />
+      <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
       <table className="table">
         <thead>
           <tr>
