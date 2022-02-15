@@ -7,9 +7,9 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function SurveyDetailItem({ sId, surveyDetail }) {
+const SurveyDetailItem = ({ sId, surveyDetail }) => {
   const router = useRouter();
-  console.log(surveyDetail);
+  console.log("id_index_넘겨진데이터", surveyDetail);
   const {
     category,
     count,
@@ -23,6 +23,7 @@ function SurveyDetailItem({ sId, surveyDetail }) {
     question,
   } = surveyDetail;
 
+  //삭제
   const handleRemove = ({ category, e }) => {
     const jwt = localStorage.getItem("jwt");
     axios
@@ -82,13 +83,24 @@ function SurveyDetailItem({ sId, surveyDetail }) {
           </div>
         </div>
       </div>
-      <div className={cn(ct.surveyInfo)}>{context}</div>
-      <div name="surveyBody">
-        <QuestionList total={count} dataList={question}></QuestionList>
-        <Benchbox benchmark={benchmark} />
+
+      <div className={cn(ct.surveyInfo)}>
+        {context &&
+          context.split("\n").map((line, idx) => {
+            return (
+              <span key={idx}>
+                {line}
+                <br />
+              </span>
+            );
+          })}
       </div>
+      {/* <div name="surveyBody"> */}
+      {/* <QuestionList total={count} dataList={question}></QuestionList> */}
+      {/* <Benchbox benchmark={benchmark} /> */}
+      {/* </div> */}
     </div>
   );
-}
+};
 
 export default SurveyDetailItem;

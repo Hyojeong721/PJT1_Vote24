@@ -4,6 +4,8 @@ import Header from "../../../components/Header";
 import SurveyDetailItem from "../../../components/Survey/SurveyDetailItem";
 import GoSurveyList from "../../../components/Survey/GoSurveyList";
 import { useRouter } from "next/router";
+import Benchbox from "../../../components/Survey/BenchBox";
+import QuestionList from "../../../components/Survey/QuestionList";
 
 function SurveyDetail() {
   const [data, setData] = useState([]);
@@ -31,11 +33,19 @@ function SurveyDetail() {
     }
   }, [sId, SURVEY_DETAIL_URL]);
 
+  console.log("data", data);
   return (
     <div>
       <Header title="설문 상세"></Header>
       <div className="container">
         <SurveyDetailItem sId={sId} surveyDetail={data}></SurveyDetailItem>
+
+        <QuestionList
+          total={data.count}
+          dataList={data.question}
+        ></QuestionList>
+        <Benchbox benchmark={data.benchmark} />
+
         <GoSurveyList url={"/survey"} category={data.category} />
       </div>
     </div>
