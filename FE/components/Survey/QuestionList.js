@@ -1,18 +1,17 @@
 import React from "react";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
-import PieChart from "./PieChart";
+import PieChartAge from "./PieChartAge";
+import PieChartGender from "./PieChartGender";
+
 import BarChart from "./BarChart";
 
-const QuestionList = ({ total, dataList }) => {
-  console.log("total:", total);
-  console.log("dataList", dataList);
-
+const QuestionList = ({ total, dataList, dataresult }) => {
   return (
     <div className="m-5">
       <div className="d-flex justify-content-around">
-        {/* <PieChart total={total} result={dataList.result}></PieChart> */}
-        {/* <PieChart total={total} dataList={dataList}></PieChart> */}
+        {dataList && <PieChartAge total={total} result={dataresult} />}
+        {dataList && <PieChartGender total={total} result={dataresult} />}
       </div>
 
       <div className={cn(ct.questionListResult)}>문항별 응답현황</div>

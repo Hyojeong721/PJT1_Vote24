@@ -106,6 +106,7 @@ const SurveyDetailItem = ({ sId, url }) => {
         <QuestionList
           total={data.count}
           dataList={data.question}
+          dataresult={data.result}
         ></QuestionList>
         <Benchbox benchmark={data.benchmark} />
       </div>
