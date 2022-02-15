@@ -69,7 +69,15 @@ router.get("/benchmark/:id", async (req, res) => {
 router.get("/benchmark/list/:survey_id", async (req, res) => {
   try {
     const survey_id = req.params.survey_id;
-    // const { page } = req.query;
+    const survey_sql = "SELECT * FROM hospital_survey WHERE ID = ?;";
+    const survey_data = await pool.query(survey_sql, [survey_id]);
+
+    // 없는 데이터 접근시
+    if (survey_data[0][0] == null) {
+      logger.info("[INFO] GET /benchmark/list/:survey_id");
+      return res.json({});
+    }
+
     const output_link_sql =
       "SELECT id, title, output_link, reservation_link FROM hospital_survey WHERE id=?";
     const output_link_data = await pool.query(output_link_sql, [survey_id]);
@@ -77,6 +85,11 @@ router.get("/benchmark/list/:survey_id", async (req, res) => {
     const benchmark_data = await pool.query(benchmark_sql, [survey_id]);
     // const result = data[0].slice((page - 1) * 10, page * 10);
     let result = output_link_data[0][0];
+
+    const now = new Date();
+    if (now < survey_data[0][0].start_at) result.status = 0;
+    else result.status = now < survey_data[0][0].end_at ? 1 : 2;
+
     result.benchmark = benchmark_data[0];
     logger.info("[INFO] GET /benchmark/list");
     return res.json(result);
