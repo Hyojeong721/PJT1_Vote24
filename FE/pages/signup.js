@@ -159,7 +159,7 @@ function Signup() {
 
   const onBnCheck = async (e) => {
     const businessNumber = getValues("business_number");
-    const bnREGEX = /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/;
+    const bnREGEX = /([0-9]{3})-([0-9]{2})-([0-9]{5})/;
     if (!bnREGEX.test(businessNumber) || errors.business_number?.message) {
       toast.dismiss();
       toast.error("사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO");
