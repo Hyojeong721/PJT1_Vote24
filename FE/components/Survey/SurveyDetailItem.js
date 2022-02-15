@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 
 function SurveyDetailItem({ sId, surveyDetail }) {
   const router = useRouter();
-
+  console.log(surveyDetail);
   const {
     category,
     count,
