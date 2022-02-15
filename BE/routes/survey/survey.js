@@ -47,7 +47,6 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
     const LAST_INSERT_ID = `SELECT MAX(id) as auto_id FROM hospital_survey;`;
     const surveyID_data = await pool.query(LAST_INSERT_ID);
     const surveyID = surveyID_data[0][0].auto_id;
-    console.log(surveyID);
     let question_sql = ``;
     let option_sql = ``;
     let benchmark_sql = ``;
@@ -67,7 +66,6 @@ router.post("/survey/:hospital_id", verifyToken, async (req, res) => {
       questionID_data = await pool.query(LAST_INSERT_ID_Q);
       questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
-      console.log(!question[i].option);
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
         const option_yes_sql =
@@ -126,7 +124,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
       "SELECT hospital_id FROM hospital_survey WHERE id = ?",
       [id]
     );
-    console.log(hospital_id_data);
     const hospital_id = hospital_id_data[0][0].hospital_id;
     await pool.query("DELETE FROM hospital_survey WHERE id = ?", [id]);
     if (req.body.end_at) {
@@ -180,7 +177,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
       questionID_data = await pool.query(LAST_INSERT_ID_Q);
       questionID = questionID_data[0][0].auto_id;
       if (question[i].type == 1) continue;
-      console.log(!question[i].option);
       if (!question[i].option) {
         // 디폴트 처리(그렇다., 아니다.)
         const option_yes_sql =
@@ -244,16 +240,26 @@ router.get("/survey/:id", async (req, res) => {
     const question_sql = "SELECT * FROM question WHERE survey_id = ? order by `order`;";
     const question_data = await pool.query(question_sql, [id]);
     let option_sql = "select * from `option` where question_id in (";
-    console.log(survey_data[0][0]);
+    // console.log(survey_data[0][0]);
+
+    // 없는 데이터 접근시
     if (survey_data[0][0] == null) {
       logger.info("[INFO] GET /survey/detail");
       return res.json({});
     }
+
+    // 설문 상태 추가
+    let status;
+    const now = new Date();
+    if (now < survey_data[0][0].start_at) status = 0;
+    else status = now < survey_data[0][0].end_at ? 1 : 2;
+
     for (i = 0; i < question_data[0].length; i++) {
       option_sql += `${question_data[0][i].id}`;
       if (i == question_data[0].length - 1) option_sql += ")";
       else option_sql += ",";
     }
+
     // console.log(question_data[0]);
     if (question_data[0].length == 0)
       option_sql = "select * from `option` where question_id in (-1);";
@@ -287,6 +293,7 @@ router.get("/survey/:id", async (req, res) => {
       }
       survey_dataset = {
         ...survey_data[0][0],
+        status: status,
         question: question_dataset,
         benchmark: benchmark_data[0],
         result: result_data[0],
@@ -304,6 +311,7 @@ router.get("/survey/:id", async (req, res) => {
       }
       survey_dataset = {
         ...survey_data[0][0],
+        status: status,
         question: question_dataset,
         benchmark: benchmark_data[0],
         result: result_data[0],
@@ -332,7 +340,6 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
       if (now < result[i].start_at) result[i].status = 0;
       else result[i].status = now < result[i].end_at ? 1 : 2;
     }
-    console.log(result);
     logger.info("[INFO] GET /survey/list");
     return res.json(result);
   } catch (error) {
@@ -379,6 +386,7 @@ router.post("/survey/result/:id", async (req, res) => {
         await pool.query(sql, [questions[i].id, questions[i].answer]);
       }
     }
+
     const score_sql = "INSERT INTO score_sum (survey_id, score_sum) VALUES (?, ?);";
     await pool.query(score_sql, [id, score]);
 

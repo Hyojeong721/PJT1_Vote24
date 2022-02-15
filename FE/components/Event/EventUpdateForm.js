@@ -7,6 +7,7 @@ import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 import DateForm from "../DateForm";
+import { getPrevDate, getNextDate } from "../getDate";
 
 const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
@@ -94,7 +95,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               className={cn(cs.input)}
               name="title"
               id="title"
-              value={values.title}
+              value={values.title ? values.title : ""}
               onChange={handleInputChange}
               required
             ></input>
@@ -113,9 +114,11 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="start_at"
               type="date"
               onChange={handleInputChange}
-              value={DateForm(values.start_at)}
+              value={
+                values.start_at ? values.start_at.slice(0, 10) : "2022-01-01"
+              }
               min={new Date().toISOString().slice(0, 10)}
-              max={DateForm(values.end_at)}
+              max={getPrevDate(values.end_at)}
               required
             ></input>
             {"  "}~{"  "}
@@ -124,8 +127,8 @@ const EventUpdateForm = ({ eventId, url }) => {
               name="end_at"
               type="date"
               onChange={handleInputChange}
-              value={DateForm(values.end_at)}
-              min={DateForm(values.start_at)}
+              value={values.end_at ? values.end_at.slice(0, 10) : "2022-01-01"}
+              min={getNextDate(values.start_at)}
               max={new Date(8640000000000000)}
               required
             ></input>

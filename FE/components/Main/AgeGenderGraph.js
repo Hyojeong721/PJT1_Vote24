@@ -58,7 +58,7 @@ function HospitalSatisfaction() {
   return (
     <div className="card mb-3 col-12 col-lg-5">
       <div className="card-body">
-        <h2 className="card-title">병원 만족도</h2>
+        <h2 className="card-title">나이 / 성별 그래프</h2>
         <Radar data={data} />
       </div>
     </div>
