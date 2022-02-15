@@ -168,7 +168,7 @@ router.put(
     const { title, end_at, start_at, context, attachment } = req.body;
 
     try {
-      if (attachment) {
+      if (attachment != "null") {
         const rename =
           new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
           attachment;
