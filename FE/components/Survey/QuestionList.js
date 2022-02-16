@@ -7,27 +7,6 @@ import BarChart from "./BarChart";
 
 const QuestionList = ({ total, dataList, dataresult }) => {
   if (dataList) {
-    // const onAnswer = () => {
-    //   dataList
-    //     ? dataList.map((item) => {
-    //         const answer = item.answer;
-    //         let i;
-    //         for (i = 0; i < answer.length; i++) {
-    //           if (i <= 2) {
-    //             return <div>ㅇㅇ{answer.answer}</div>;
-    //           } else {
-    //             return (
-    //               <div>
-    //                 <summary>더보기</summary>
-    //                 <p>{answer.answer}</p>
-    //               </div>
-    //             );
-    //           }
-    //         }
-    //       })
-    //     : "ㅇㄴㅁ";
-    // };
-
     return (
       <div className="mt-3 m-5">
         <div className="mb-5 d-flex justify-content-around">
@@ -54,7 +33,7 @@ const QuestionList = ({ total, dataList, dataresult }) => {
                     <BarChart total={total} item={item} />
                   )}
                   <div className={cn(ct.moretext)}>
-                    {item.type == 1 && item.answer.length != 0
+                    {item.type == 1 && item.answer && item.answer.length != 0
                       ? item.answer.map((answer) => {
                           if (answer.answer != "") {
                             return <p>- {answer.answer}</p>;
