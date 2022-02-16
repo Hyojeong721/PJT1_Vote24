@@ -17,7 +17,7 @@ function HospitalNotice() {
       <Header title="병원 공지사항">
         <div></div>
       </Header>
-      <div className="container div-table">
+      <div className="container div-table shadow">
         <NoticeList url={NOTICE_URL} createUrl={CREATE_URL} />
       </div>
     </div>

@@ -31,6 +31,7 @@ function FileInput({ name, value, onChange }) {
           type="file"
           id="formFile"
           onChange={handleChange}
+          accept="image/*"
           ref={inputRef}
         ></input>
         {value && (

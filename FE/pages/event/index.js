@@ -50,7 +50,7 @@ function HospitalEvent() {
       <Header title="병원 이벤트">
         <div></div>
       </Header>
-      <div className="container mt-3">
+      <div className="container div-table shadow">
         <EventList
           setDataList={setDataList}
           dataListProp={dataListProp}

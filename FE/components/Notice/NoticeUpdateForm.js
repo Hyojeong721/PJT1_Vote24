@@ -187,6 +187,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
                   className="form-control"
                   type="file"
                   name="file"
+                  accept="image/*"
                   ref={inputRef}
                   onChange={handleChangeFile}
                 />

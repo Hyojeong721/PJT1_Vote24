@@ -420,7 +420,7 @@ function Signup() {
               objectFit="contain"
             />
           </div> */}
-          <div className="d-flex justify-content-center mt-3 mb-5">
+          <div className="d-flex justify-content-center mt-3">
             <button type="submit" className="submit-button btn btn-primary">
               서비스 신청
             </button>

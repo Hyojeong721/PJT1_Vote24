@@ -6,7 +6,9 @@ import SearchBar from "../../../../components/SearchBar";
 import { useState } from "react";
 
 function EventUser({ code, eventListProp }) {
-  const [eventList, setEventList] = useState(eventListProp);
+  const [eventList, setEventList] = useState(
+    eventListProp.sort((a, b) => a.status - b.status)
+  );
 
   const paintEventList = eventList.map((e, idx) => {
     return (
