@@ -86,7 +86,7 @@ const NoticeList = ({ url, createUrl }) => {
             },
           })
           .then((response) => {
-            toast.success("병원 공지 삭제 성공!");
+            toast.success("병원 공지 삭제 완료!");
           })
           .catch((error) => {
             console.log("삭제에러", error);

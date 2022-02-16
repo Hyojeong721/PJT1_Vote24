@@ -10,7 +10,7 @@ function HospitalEvent() {
   const [dataListProp, setDataListProp] = useState([]);
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(5);
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
@@ -27,9 +27,8 @@ function HospitalEvent() {
           },
         })
         .then((res) => {
-          const data = res.data;
-          setDataList(data);
-          setDataListProp(data);
+          setDataList(res.data);
+          setDataListProp(res.data);
         })
         .catch((err) => {
           console.log("이벤트 리스트 get 실패", err);

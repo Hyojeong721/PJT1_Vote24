@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import router from "next/router";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -10,7 +10,6 @@ import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
 const EventForm = () => {
-  const router = useRouter();
   const todayDate = new Date().toISOString().slice(0, 10);
   const [startDate, setStartDate] = useState(todayDate);
 
@@ -22,12 +21,10 @@ const EventForm = () => {
     imgFile: null,
   });
 
-  // 데이터 보내는 서버 url 작성
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
 
-  // 글 작성시 state에 반영
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     handleChange(name, value);
@@ -72,7 +69,9 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        toast.success("이벤트 등록 성공!");
+        toast.success("이벤트 등록 완료!", {
+          autoClose: 3000,
+        });
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
@@ -89,7 +88,8 @@ const EventForm = () => {
         <div name="제목" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="title">
-              <span className={cn(cs.star)}>*{"  "}</span>제목
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>제목</span>
             </label>
           </div>
 
@@ -108,7 +108,8 @@ const EventForm = () => {
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="start_at">
-              <span className={cn(cs.star)}>*{"  "}</span>시작일
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>시작일</span>
             </label>{" "}
             ~ <label htmlFor="end_at">마감일</label>
           </div>
@@ -123,7 +124,9 @@ const EventForm = () => {
               max={getPrevDate(values.end_at)}
               required
             ></input>
-            {"  "}~{"  "}
+            <span>
+              {"  "}~{"  "}
+            </span>
             <input
               id="end_at"
               name="end_at"
@@ -139,7 +142,8 @@ const EventForm = () => {
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
           <div className={cn(cs.formControl)}>
