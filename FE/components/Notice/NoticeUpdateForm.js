@@ -72,19 +72,19 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         }
       } else {
         if (key != "attachment") {
-          fd.append(`${key}`, values[key]);
+          fd.append(key, values[key]);
         }
       }
     }
 
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log("form값들", value);
-    }
-    // formData 안에 값들 확인할 때
-    for (let key of fd.keys()) {
-      console.log("form값들 key", key);
-    }
+    // // formData 안에 값들 확인할 때
+    // for (let value of fd.values()) {
+    //   console.log("form값들", value);
+    // }
+    // // formData 안에 값들 확인할 때
+    // for (let key of fd.keys()) {
+    //   console.log("form값들 key", key);
+    // }
 
     const jwt = localStorage.getItem("jwt");
     await axios
@@ -105,7 +105,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         console.log(err);
       });
   };
-  console.log("업뎃전데이터", values);
 
   return (
     <form onSubmit={handleSubmit}>
