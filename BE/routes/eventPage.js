@@ -84,7 +84,7 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
  * GET Event Detail
  * Example URL = ../event/947780/1
  *----------------------------------------------------------------------*/
-router.get("user/event/:hospital_id/:id", async (req, res) => {
+router.get("/user/event/:hospital_id/:id", async (req, res) => {
   try {
     const { hospital_id, id } = req.params;
     const sqlInc = `UPDATE hospital_event SET views = views+1 WHERE id = ?;`;

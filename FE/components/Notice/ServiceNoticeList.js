@@ -5,6 +5,7 @@ import TableColumn from "../Table/TableColumn";
 import SearchBar from "../SearchBar";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
+import PagingFixed from "../../components/PagingFixed";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
@@ -54,12 +55,9 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
   // 페이징 처리를 위한 계산
   if (dataList.length) {
     const fixedCnt = fixed.length;
-    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-    const currentPosts = [
-      ...dataList.slice(0, fixedCnt),
-      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-    ];
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataList.slice(indexOfFirstPost, indexOfLastPost);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
   }
 
@@ -134,7 +132,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           {currentPosts
             ? currentPosts.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id}>
+                  <TableRow key={index} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -145,9 +143,9 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
                     <TableColumn
                       content={
                         index +
-                        1 -
-                        fixedCnt +
-                        (currentPage - 1) * (postsPerPage - fixedCnt)
+                        1 +
+                        (postsPerPage - fixedCnt) +
+                        (currentPage - 2) * postsPerPage
                       }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
@@ -170,6 +168,12 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
             : ""}
         </tbody>
       </table>
+      <PagingFixed
+        postsPerPage={postsPerPage}
+        totalPosts={dataList.length}
+        paginate={paginate}
+        fixedCnt={fixedCnt}
+      />
     </div>
   );
 };
