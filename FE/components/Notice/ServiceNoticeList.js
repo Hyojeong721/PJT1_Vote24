@@ -4,6 +4,7 @@ import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
+import PagingFixed from "../../components/PagingFixed";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
@@ -128,7 +129,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           {currentPosts
             ? currentPosts.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id}>
+                  <TableRow key={index} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -164,6 +165,12 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
             : ""}
         </tbody>
       </table>
+      <PagingFixed
+        postsPerPage={postsPerPage}
+        totalPosts={dataList.length}
+        paginate={paginate}
+        fixedCnt={fixedCnt}
+      />
     </div>
   );
 };
