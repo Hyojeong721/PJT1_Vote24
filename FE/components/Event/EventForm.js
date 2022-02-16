@@ -11,10 +11,8 @@ import cs from "../../styles/postcreate.module.css";
 
 const EventForm = () => {
   const router = useRouter();
-
-  const [startDate, setStartDate] = useState(
-    new Date().toISOString().slice(0, 10)
-  );
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const [startDate, setStartDate] = useState(todayDate);
 
   const [values, setValues] = useState({
     title: "",
@@ -121,7 +119,7 @@ const EventForm = () => {
               type="date"
               onChange={handleInputChange}
               value={values.start_at}
-              min={startDate}
+              min={todayDate}
               max={getPrevDate(values.end_at)}
               required
             ></input>

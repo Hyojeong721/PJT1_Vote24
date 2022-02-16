@@ -56,7 +56,7 @@ const EventUpdateForm = ({ eventId, url }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("@@", values);
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -66,12 +66,10 @@ const EventUpdateForm = ({ eventId, url }) => {
           fd.append("event_img", imgFile);
           fd.append("attachment", imgName);
         }
-      } else if (
-        key === "created_at" ||
-        key === "start_at" ||
-        key == "end_at"
-      ) {
+      } else if (key === "created_at") {
         fd.append(`${key}`, values[key].slice(0, -5).replace("T", " "));
+      } else if (key === "start_at" || key == "end_at") {
+        fd.append(`${key}`, values[key].slice(0, 10));
       } else {
         fd.append(`${key}`, values[key]);
       }
