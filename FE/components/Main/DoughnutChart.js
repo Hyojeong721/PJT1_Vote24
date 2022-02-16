@@ -57,6 +57,7 @@ export default function DoughnutChart({ ageDataProp, genderDataProp }) {
         "flex-column",
         "flex-md-row",
         "justify-content-evenly",
+        "align-items-center",
         "gap-3"
       )}
     >
