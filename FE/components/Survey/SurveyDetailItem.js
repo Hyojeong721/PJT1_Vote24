@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import GoSurveyList from "../../components/Survey/GoSurveyList";
+import { toast } from "react-toastify";
 
 const SurveyDetailItem = ({ sId, url }) => {
   const [data, setData] = useState([]);
@@ -18,11 +19,10 @@ const SurveyDetailItem = ({ sId, url }) => {
       await axios
         .get(url)
         .then((res) => {
-          console.log("설문상세", res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log("설문 상세 get 실패", err);
+          toast.error("설문 상세 정보를 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -39,7 +39,7 @@ const SurveyDetailItem = ({ sId, url }) => {
         },
       })
       .then((res) => {
-        console.log("delete성공", res);
+        toast.success("설문 삭제 성공!");
         if (category == 0) {
           router.push("/survey/health");
         } else {
@@ -48,10 +48,9 @@ const SurveyDetailItem = ({ sId, url }) => {
       })
       .catch((error) => {
         console.log("delete실패", error);
+        toast.success("설문 삭제 실패!");
       });
   };
-  console.log("detail_data", data);
-  console.log("detail_data_result", data.result);
 
   return (
     <div className={cn(ct.content)}>

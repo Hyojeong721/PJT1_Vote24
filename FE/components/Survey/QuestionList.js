@@ -6,8 +6,6 @@ import PieChartGender from "./PieChartGender";
 import BarChart from "./BarChart";
 
 const QuestionList = ({ total, dataList, dataresult }) => {
-  console.log("datalist", dataList);
-  console.log("dataresult", dataresult);
   if (dataList) {
     return (
       <div className="mt-3 m-5">
