@@ -18,9 +18,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-// options.scales[scaleId].grid;
 const BarChart = ({ total, item }) => {
-  console.log(item);
+  console.log("barchart_item", item);
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -42,32 +41,27 @@ const BarChart = ({ total, item }) => {
         display: false,
       },
       width: 100,
-      // datalabels: {
-      //   color: "#fff",
-      //   borderwidth: 2,
-      //   anchor: "center",
-      //   formatter: 100,
-      // },
     },
   };
+  if (item.option) {
+    const data = {
+      labels: item.option.map((opt) => opt.context),
 
-  const data = {
-    labels: item.option.map((opt) => opt.context),
-
-    datasets: [
-      {
-        data: item.option.map((opt) => opt.count),
-        backgroundColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(50, 159, 64, 1)",
-        ],
-      },
-    ],
-  };
+      datasets: [
+        {
+          data: item.option.map((opt) => opt.count),
+          backgroundColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(50, 159, 64, 1)",
+          ],
+        },
+      ],
+    };
+  }
 
   return (
     <div className="mx-auto" style={{ maxHeight: "300px", maxWidth: "1000px" }}>

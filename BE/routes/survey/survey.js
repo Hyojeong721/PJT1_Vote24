@@ -233,7 +233,6 @@ router.delete("/survey/:id", verifyToken, async (req, res) => {
 // survey Detail
 router.get("/survey/:id", async (req, res) => {
   const id = req.params.id;
-
   try {
     const survey_sql = "SELECT * FROM hospital_survey WHERE ID = ?;";
     const survey_data = await pool.query(survey_sql, [id]);
@@ -292,14 +291,15 @@ router.get("/survey/:id", async (req, res) => {
       if (option_data[0].length != 0) {
         let n = 0;
         let qid = option_data[0][0].question_id;
-        let option_dataset = [];
+
         for (i = 0; i < option_data[0].length; i++) {
           if (qid != option_data[0][i].question_id) {
             qid = option_data[0][i].question_id;
             n++;
           }
           if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
-          else option_dataset[n] = [option_data[0][i]];
+          //option_dataset[0] = [option_data[0][0],option_data[0][1]]
+          else option_dataset[n] = [option_data[0][i]]; // option_dataset[0] = [option_data[0][i]]
         }
       }
 
@@ -338,16 +338,7 @@ router.get("/survey/:id", async (req, res) => {
         result: result_data[0],
       };
     } else {
-      let option_dataset = [];
-      let m = 0;
       let question_dataset = [];
-      for (i = 0; i < question_data[0].length; i++) {
-        question_dataset[i] = question_data[0][i];
-        if (question_data[0][i].type == 0) {
-          question_dataset[i].option = option_dataset[m];
-          m++;
-        }
-      }
       survey_dataset = {
         ...survey_data[0][0],
         status: status,

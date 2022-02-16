@@ -31,11 +31,17 @@ const QuestionList = ({ total, dataList, dataresult }) => {
                   <div className={cn(ct.question)}>
                     {item.order}. {item.context}
                   </div>
-                  {item.type == 0 && total != 0 && (
+                  {item.type == 0 && total != 0 && item.option && (
                     <BarChart total={total} item={item} />
                   )}
                   {item.type == 1 && (
-                    <div>예비 주관식 답 더보기{item.answer}</div>
+                    <div>
+                      {item.answer
+                        ? item.answer.map((ans) => {
+                            <div>{ans.answer}</div>;
+                          })
+                        : "주관식 데이터가 없습니다."}
+                    </div>
                   )}
                   {item.option
                     ? item.option.map((opt) => {

@@ -108,7 +108,7 @@ const NoticeList = ({ url, createUrl }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div></div>
+        <div>설문</div>
         <div>
           <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
