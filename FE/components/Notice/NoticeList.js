@@ -58,12 +58,9 @@ const NoticeList = ({ url, createUrl }) => {
   // 페이징 처리를 위한 계산
   if (dataList.length) {
     const fixedCnt = fixed.length;
-    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-    const currentPosts = [
-      ...dataList.slice(0, fixedCnt),
-      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-    ];
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataList.slice(indexOfFirstPost, indexOfLastPost);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
   }
   // 전체 선택/해제
@@ -110,7 +107,7 @@ const NoticeList = ({ url, createUrl }) => {
 
   return (
     <div>
-      <div className={cn(listbtn.btns)}>
+      <div name="상단 버튼" className={cn(listbtn.btns)}>
         <div>
           <SearchBar setPostList={setDataList} postListProp={dataListProp} />
         </div>
@@ -152,7 +149,7 @@ const NoticeList = ({ url, createUrl }) => {
           {currentPosts
             ? currentPosts.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id}>
+                  <TableRow key={index} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -161,17 +158,11 @@ const NoticeList = ({ url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      // content={
-                      //   indexlst[Math.abs(index - postsPerPage) - 1] -
-                      //   fixedCnt +
-                      //   1
-                      // }
-                      // content={currentPage}
                       content={
                         index +
-                        1 -
-                        fixedCnt +
-                        (currentPage - 1) * (postsPerPage - fixedCnt)
+                        1 +
+                        (postsPerPage - fixedCnt) +
+                        (currentPage - 2) * postsPerPage
                       }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
