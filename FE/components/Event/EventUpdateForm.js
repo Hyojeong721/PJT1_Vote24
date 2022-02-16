@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
-import DateForm from "../DateForm";
 import { getPrevDate, getNextDate } from "../getDate";
 
 const EventUpdateForm = ({ eventId, url }) => {
@@ -20,6 +18,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         .get(url)
         .then((res) => {
           const data = res.data;
+          res.data.del = 0;
           setValues(data);
         })
         .catch((err) => {
@@ -53,6 +52,7 @@ const EventUpdateForm = ({ eventId, url }) => {
     values.image = null;
     handleChange("imgFile", null);
     handleChange("attachment", null);
+    handleChange("del", 1);
   };
 
   // 글 수정 서버 요청
@@ -67,15 +67,7 @@ const EventUpdateForm = ({ eventId, url }) => {
           const imgName = imgFile.name;
           fd.append("event_img", imgFile);
           fd.append("attachment", imgName);
-        } else if (values[key] == "null") {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
-        } else {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
         }
-      } else if (key === "attachment") {
-        continue;
       } else if (key === "created_at") {
         fd.append(`${key}`, values[key].slice(0, -5).replace("T", " "));
       } else if (key === "start_at" || key == "end_at") {

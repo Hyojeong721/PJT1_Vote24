@@ -17,6 +17,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       await axios
         .get(url)
         .then((res) => {
+          res.data.del = 0;
           setValues(res.data);
         })
         .catch((err) => {
@@ -54,6 +55,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     values.image = null;
     handleChange("imgFile", null);
     handleChange("attachment", null);
+    handleChange("del", 1);
   };
 
   // 글 수정 서버 요청
@@ -67,12 +69,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
-        } else if (values[key] == "null") {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
-        } else {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
         }
       } else {
         if (key != "attachment") {

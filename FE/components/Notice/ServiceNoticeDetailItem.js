@@ -12,14 +12,14 @@ import Link from "next/link";
 const ServiceNoticeDetailItem = ({ url, userId }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  const { id } = router.query;
+  const nId = router.query.id;
 
   console.log("userid", userId);
   // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
-        .get(`${url}/${id}`)
+        .get(`${url}/${nId}`)
         .then((res) => {
           console.log("서비스공지get 성공", res.data);
           setData(res.data);
@@ -29,18 +29,19 @@ const ServiceNoticeDetailItem = ({ url, userId }) => {
           router.push("/404");
         });
     };
-    if (id) {
+    if (nId) {
       getPost();
     }
-  }, [id, url]);
+  }, [nId, url]);
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`${url}/${id}`, {
+      .delete(`${url}/${nId}`, {
         headers: {
           authorization: jwt,
         },
+        data: { hospital_id: userId },
       })
       .then((res) => {
         console.log("delete성공", res);
@@ -55,7 +56,7 @@ const ServiceNoticeDetailItem = ({ url, userId }) => {
     if (userId == 24) {
       return (
         <div name="수정/삭제">
-          <Link href={`/service/notice/${id}/update`} passHref>
+          <Link href={`/service/notice/${nId}/update`} passHref>
             <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
           </Link>
           <button

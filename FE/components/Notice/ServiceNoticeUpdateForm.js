@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import router from "next/router";
@@ -9,7 +8,6 @@ import cs from "../../styles/postcreate.module.css";
 
 const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
-  const router = useRouter();
   const inputRef = useRef(values.image);
 
   // 기존 data 가져오기
@@ -18,6 +16,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
       await axios
         .get(url)
         .then((res) => {
+          res.data.del = 0;
           setValues(res.data);
         })
         .catch((err) => {
@@ -51,11 +50,12 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
     handleChange("attachment", nextValue.name);
   };
 
-  const handleClearClick = () => {
+  const handleClearClick = (values) => {
     values.attachment = null;
     values.image = null;
     handleChange("imgFile", null);
     handleChange("attachment", null);
+    handleChange("del", 1);
   };
 
   // 글 수정 서버 요청
@@ -69,26 +69,20 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
-        } else if (values[key] == "null") {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
-        } else {
-          fd.append("notice_img", "null");
-          fd.append("attachment", "null");
         }
       } else {
         if (key != "attachment") {
-          fd.append(`${key}`, values[key]);
+          fd.append(key, values[key]);
         }
       }
     }
     fd.append("hospital_id", 24);
 
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log("form값들", value);
-    }
-
+    // // formData 안에 값들 확인할 때
+    // for (let value of fd.values()) {
+    //   console.log("form값들", value);
+    // }
+    console.log("values", typeof values);
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
