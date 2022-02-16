@@ -105,3 +105,13 @@
 .blue {
   color: blue;
 }
+.moretext {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 600px;
+  max-height: 150px;
+  justify-content: space-between;
+  margin: 15px 60px;
+}

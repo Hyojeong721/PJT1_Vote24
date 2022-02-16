@@ -50,8 +50,6 @@ const SurveyDetailItem = ({ sId, url }) => {
         console.log("delete실패", error);
       });
   };
-  console.log("detail_data", data);
-  console.log("detail_data_result", data.result);
 
   return (
     <div className={cn(ct.content)}>

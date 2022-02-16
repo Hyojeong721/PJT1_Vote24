@@ -7,7 +7,6 @@ import BarChart from "./BarChart";
 
 const QuestionList = ({ total, dataList, dataresult }) => {
   console.log("datalist", dataList);
-  console.log("dataresult", dataresult);
   if (dataList) {
     return (
       <div className="mt-3 m-5">
@@ -34,15 +33,15 @@ const QuestionList = ({ total, dataList, dataresult }) => {
                   {item.type == 0 && total != 0 && item.option && (
                     <BarChart total={total} item={item} />
                   )}
-                  {item.type == 1 && (
-                    <div>
-                      {item.answer
-                        ? item.answer.map((ans) => {
-                            <div>{ans.answer}</div>;
-                          })
-                        : "주관식 데이터가 없습니다."}
-                    </div>
-                  )}
+                  <div className={cn(ct.moretext)}>
+                    {item.type == 1 &&
+                      item.answer.length != 0 &&
+                      item.answer.map((answer) => {
+                        if (answer.answer != "") {
+                          return <p>- {answer.answer}</p>;
+                        }
+                      })}
+                  </div>
                   {item.option
                     ? item.option.map((opt) => {
                         return (
