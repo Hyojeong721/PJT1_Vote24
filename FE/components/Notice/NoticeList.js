@@ -156,12 +156,13 @@ const NoticeList = ({ url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={
-                        index +
-                        1 +
-                        (postsPerPage - fixedCnt) +
-                        (currentPage - 2) * postsPerPage
-                      }
+                      // content={
+                      //   index +
+                      //   1 +
+                      //   (postsPerPage - fixedCnt) +
+                      //   (currentPage - 2) * postsPerPage
+                      // }
+                      content={index + 1 + (currentPage - 1) * postsPerPage}
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>
