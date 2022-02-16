@@ -54,12 +54,9 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
   // 페이징 처리를 위한 계산
   if (dataList.length) {
     const fixedCnt = fixed.length;
-    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-    const currentPosts = [
-      ...dataList.slice(0, fixedCnt),
-      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-    ];
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataList.slice(indexOfFirstPost, indexOfLastPost);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
   }
 
@@ -145,9 +142,9 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
                     <TableColumn
                       content={
                         index +
-                        1 -
-                        fixedCnt +
-                        (currentPage - 1) * (postsPerPage - fixedCnt)
+                        1 +
+                        (postsPerPage - fixedCnt) +
+                        (currentPage - 2) * postsPerPage
                       }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
