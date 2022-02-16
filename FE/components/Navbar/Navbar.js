@@ -49,10 +49,10 @@ function Navbar({ isLoggedIn, currentPage }) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container-fluid">
+      <div className="container navbar-container">
         {/* Logo */}
         <Link href="/">
-          <a className="navbar-brand navbar-logo">
+          <a className="navbar-brand navbar-logo ms-2">
             <Image className="navbar-logo" src={Logo} alt="vote24" />
           </a>
         </Link>

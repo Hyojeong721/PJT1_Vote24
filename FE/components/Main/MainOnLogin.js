@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
-import AgeGenderGraph from "./AgeGenderGraph";
+import PieChart from "../Survey/PieChart";
 import cn from "classnames";
 import styles from "../../styles/mainonlogin.module.css";
 
@@ -73,8 +73,15 @@ function MainOnLogin() {
         </div>
         <div className="row justify-content-md-center gap-5">
           {data && <PopularSurvey popularSurveys={data.popularVotes} />}
-
-          <AgeGenderGraph data={data.result_Mysurvey} />
+          <div className="card mb-3 col-12 col-lg-5">
+            <div className="card-body">
+              <h2>설문 참여자 현황</h2>
+              <div className="d-flex justify-content-center">
+                <PieChart data={data.result_Mysurvey_age} />
+                <PieChart data={data.result_Mysurvey_gender} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

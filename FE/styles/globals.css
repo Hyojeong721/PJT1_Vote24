@@ -37,6 +37,10 @@ a {
   min-height: 70px;
 }
 
+.navbar-container {
+  max-width: 1200px;
+}
+
 .halfPage {
   margin: auto;
   max-width: 820px;
