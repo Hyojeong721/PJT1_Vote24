@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
+import SearchBar from "../SearchBar";
 import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const EventList = ({ setDataList, dataList, EVENT_URL }) => {
+const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -77,7 +78,9 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link href="/event/create" passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>

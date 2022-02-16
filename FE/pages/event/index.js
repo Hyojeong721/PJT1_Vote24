@@ -7,6 +7,7 @@ import Paging from "../../components/Paging";
 
 function HospitalEvent() {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
@@ -28,6 +29,7 @@ function HospitalEvent() {
         .then((res) => {
           const data = res.data;
           setDataList(data);
+          setDataListProp(data);
         })
         .catch((err) => {
           console.log("이벤트 리스트 get 실패", err);
@@ -51,6 +53,7 @@ function HospitalEvent() {
       <div className="container mt-3">
         <EventList
           setDataList={setDataList}
+          dataListProp={dataListProp}
           dataList={currentPosts}
           EVENT_URL={EVENT_URL}
         />
