@@ -6,7 +6,9 @@ import UserHeader from "../../../../components/User/UserHeader";
 import SearchBar from "../../../../components/SearchBar";
 
 function SurveyServiceUser({ code, surveyListProp }) {
-  const [surveyList, setSurveyList] = useState(surveyListProp);
+  const [surveyList, setSurveyList] = useState(
+    surveyListProp.sort((a, b) => a.status - b.status)
+  );
 
   const paintSurveyList = surveyList.map((s, idx) => {
     return (

@@ -19,7 +19,6 @@ ChartJS.register(
   Legend
 );
 const BarChart = ({ total, item }) => {
-  console.log("barchart_item", item);
   const options = {
     responsive: true,
     maintainAspectRatio: false,

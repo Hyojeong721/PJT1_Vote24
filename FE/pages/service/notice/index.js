@@ -13,7 +13,7 @@ function ServiceNotice() {
       <Header title="서비스 공지사항">
         <div></div>
       </Header>
-      <div className="container div-table">
+      <div className="container div-table shadow">
         <ServiceNoticeList url={SERVICE_NOTICE_URL} hospital_id={userId} />
       </div>
     </div>

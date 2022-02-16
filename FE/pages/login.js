@@ -136,23 +136,4 @@ function Login() {
   );
 }
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context) => {
-//     const { userStatus } = store.getState();
-//     console.log("serverside", userStatus);
-//     if (userStatus.isLoggedIn) {
-//       // toast.error("이미 로그인 된 유저입니다.");
-//       return {
-//         redirect: {
-//           destination: "/",
-//           permanent: false,
-//         },
-//       };
-//     }
-//     return {
-//       props: {},
-//     };
-//   }
-// );
-
 export default Login;

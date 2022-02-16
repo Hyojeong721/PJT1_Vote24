@@ -21,7 +21,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           setValues(res.data);
         })
         .catch((err) => {
-          console.log("병원공지 원본data get 실패", err);
+          toast.error("병원 공지사항을 가져오는데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -77,15 +77,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       }
     }
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
-    // // formData 안에 값들 확인할 때
-    // for (let key of fd.keys()) {
-    //   console.log("form값들 key", key);
-    // }
-
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
@@ -95,11 +86,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("병원공지 수정 성공", res.data);
+        toast.success("병원 공지사항 수정 성공!");
         router.push(`/notice/${noticeId}`);
       })
       .catch((err) => {
-        toast.error("병원공지 수정 실패!", {
+        toast.error("병원 공지사항 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
@@ -196,6 +187,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
                   className="form-control"
                   type="file"
                   name="file"
+                  accept="image/*"
                   ref={inputRef}
                   onChange={handleChangeFile}
                 />

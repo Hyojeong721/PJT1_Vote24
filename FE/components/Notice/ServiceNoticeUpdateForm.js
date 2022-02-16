@@ -20,7 +20,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           setValues(res.data);
         })
         .catch((err) => {
-          console.log("서비스공지 원본data get 실패", err);
+          toast.error("서비스 공지사항을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -82,7 +82,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
     // for (let value of fd.values()) {
     //   console.log("form값들", value);
     // }
-    console.log("values", typeof values);
+
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
@@ -92,11 +92,11 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("서비스공지 수정", res.data);
         if (res.data.id) {
+          toast.success("서비스 공지 수정 성공!");
           router.push(`/service/notice/${res.data.id}`);
         } else {
-          toast.error("then넘어온 수정 실패!", {
+          toast.error("서비스 공지 수정 실패!", {
             autoClose: 3000,
           });
         }

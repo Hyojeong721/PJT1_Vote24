@@ -1,4 +1,4 @@
-import { useState } from "react";
+import Link from "next/link";
 
 function PopularSurvery({ popularSurveys }) {
   if (!popularSurveys.length) {
@@ -13,19 +13,21 @@ function PopularSurvery({ popularSurveys }) {
   }
 
   const paintPopularSurveys = popularSurveys.map((s, idx) => (
-    <tr key={s.id}>
-      <th scope="row">{idx + 1}</th>
-      <td>{s.title}</td>
-      <td>{s.userId}</td>
-      <td>{s.count}</td>
-    </tr>
+    <Link href={`/survey/${s.id}`}>
+      <tr key={s.id}>
+        <th scope="row">{idx + 1}</th>
+        <td>{s.title}</td>
+        <td>{s.userId}</td>
+        <td>{s.count}</td>
+      </tr>
+    </Link>
   ));
 
   return (
     <div className="card">
       <div className="card-body">
         <h2 className="card-title">인기 설문</h2>
-        <table className="table">
+        <table className="table table-hover">
           <thead>
             <tr>
               <th scope="col">순위</th>
@@ -34,7 +36,7 @@ function PopularSurvery({ popularSurveys }) {
               <th scope="col">조회수</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="pointerHover">
             {popularSurveys.length > 0 ? paintPopularSurveys : null}
           </tbody>
         </table>

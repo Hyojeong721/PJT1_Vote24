@@ -45,7 +45,6 @@ const NoticeForm = ({ url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
-          console.log("attachment", imgName);
         }
       } else if (key === "userId") {
         if (userId == 0) {
@@ -54,14 +53,6 @@ const NoticeForm = ({ url }) => {
       } else {
         fd.append(`${key}`, values[key]);
       }
-    }
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log("form값들", value);
-    }
-    // formData 안에 값들 확인할 때
-    for (let key of fd.keys()) {
-      console.log("form값들 key", key);
     }
     const jwt = localStorage.getItem("jwt");
     await axios
@@ -72,7 +63,7 @@ const NoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("공지사항 등록 성공!", res.data);
+        toast.success("공지사항 등록 성공!");
         router.push(`/notice/${res.data.id}`);
       })
       .catch((err) => {
