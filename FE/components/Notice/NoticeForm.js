@@ -55,6 +55,14 @@ const NoticeForm = ({ url }) => {
         fd.append(`${key}`, values[key]);
       }
     }
+    // formData 안에 값들 확인할 때
+    for (let value of fd.values()) {
+      console.log("form값들", value);
+    }
+    // formData 안에 값들 확인할 때
+    for (let key of fd.keys()) {
+      console.log("form값들 key", key);
+    }
     const jwt = localStorage.getItem("jwt");
     await axios
       .post(url, fd, {

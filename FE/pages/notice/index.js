@@ -8,11 +8,11 @@ import PagingFixed from "../../components/PagingFixed";
 
 function HospitalNotice() {
   const [dataList, setDataList] = useState([]);
-  const [fixed, setFixed] = useState([]);
+  // const [fixed, setFixed] = useState([]);
 
-  // 페이징 처리를 위한
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  // // 페이징 처리를 위한
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postsPerPage] = useState(5);
 
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
@@ -27,7 +27,7 @@ function HospitalNotice() {
         .then((res) => {
           setDataList(res.data);
           console.log("공지목록", res.data);
-          setFixed(res.data.filter((data) => data.fixed == 1));
+          // setFixed(res.data.filter((data) => data.fixed == 1));
           console.log(
             "fixed data",
             res.data.filter((data) => data.fixed == 1)
@@ -41,22 +41,23 @@ function HospitalNotice() {
     getList();
   }, [NOTICE_URL]);
 
-  const fixedCnt = fixed.length;
-  // 페이징 처리를 위한 계산
-  const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-  const currentPosts = [
-    ...dataList.slice(0, fixedCnt),
-    ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-  ];
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // // 페이징 처리를 위한 계산
+  // const fixedCnt = fixed.length;
+  // const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+  // const currentPosts = [
+  //   ...dataList.slice(0, fixedCnt),
+  //   ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+  // ];
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  var indexlst = [];
-  let i = 0;
-  for (i = indexOfLastPost; indexOfFirstPost < i; i--) {
-    indexlst.push(i - 1);
-  }
+  // var indexlst = [];
+  // let i = 0;
+  // for (i = indexOfLastPost; indexOfFirstPost < i; i--) {
+  //   indexlst.push(i - 1);
+  // }
 
+  // console.log(currentPage);
   return (
     <div>
       <Header title="병원 공지사항">
@@ -64,20 +65,21 @@ function HospitalNotice() {
       </Header>
       <div className="container div-table">
         <NoticeList
-          indexlst={indexlst}
-          fixedCnt={fixedCnt}
-          postsPerPage={postsPerPage}
+          // indexlst={indexlst}
+          // currentPage={currentPage}
+          // fixedCnt={fixedCnt}
+          // postsPerPage={postsPerPage}
           setDataList={setDataList}
-          dataList={currentPosts}
+          // dataList={currentPosts}
           url={NOTICE_URL}
           createUrl={CREATE_URL}
         />
-        <PagingFixed
+        {/* <PagingFixed
           postsPerPage={postsPerPage}
           totalPosts={dataList.length}
           paginate={paginate}
           fixedCnt={fixedCnt}
-        />
+        /> */}
       </div>
     </div>
   );

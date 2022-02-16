@@ -6,34 +6,61 @@ import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import PagingFixed from "../../components/PagingFixed";
+import router from "next/router";
 
-const NoticeList = ({
-  indexlst,
-  fixedCnt,
-  postsPerPage,
-  setDataList,
-  dataList,
-  url,
-  createUrl,
-}) => {
-  const [list, setList] = useState(dataList);
+const NoticeList = ({ url, createUrl }) => {
+  // const [list, setList] = useState(dataList);
+  const [dataList, setDataList] = useState([]);
+
+  // 페이징 처리를 위한
+  const [fixed, setFixed] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "생성일", "조회수"];
 
   useEffect(() => {
-    setList(dataList);
-
-    let ids = [];
-    {
-      dataList &&
-        dataList.map((item, i) => {
-          ids[i] = item.id;
+    const getList = async () => {
+      await axios
+        .get(url)
+        .then((res) => {
+          setDataList(res.data);
+          console.log("공지목록", res.data);
+          setFixed(res.data.filter((data) => data.fixed == 1));
+          console.log(
+            "fixed data",
+            res.data.filter((data) => data.fixed == 1)
+          );
+          let ids = [];
+          {
+            res.data &&
+              res.data.slice(0, postsPerPage).map((item, i) => {
+                ids[i] = item.id;
+              });
+          }
+          setIdList(ids);
+        })
+        .catch((err) => {
+          console.log("병원 공지 목록 get 실패", err);
+          router.push("/404");
         });
-    }
+    };
+    getList();
+  }, [url]);
 
-    setIdList(ids);
-  }, [dataList]);
+  // 페이징 처리를 위한 계산
+  const fixedCnt = fixed.length;
+  const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+  const currentPosts = [
+    ...dataList.slice(0, fixedCnt),
+    ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+  ];
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
@@ -61,13 +88,16 @@ const NoticeList = ({
           })
           .then((response) => {
             console.log(response);
+            return router.push("/notice");
           })
           .catch((error) => {
             console.log("dddd", error);
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
-        setList(list.filter((data) => data.id !== noticeId));
-        setDataList((state) => state.filter((data) => data.id !== noticeId));
+        setIdList(dataList.filter((data) => data.id !== noticeId));
+        setDataList((dataList) =>
+          dataList.filter((data) => data.id !== noticeId)
+        );
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -113,8 +143,8 @@ const NoticeList = ({
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
+          {currentPosts
+            ? currentPosts.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -130,7 +160,13 @@ const NoticeList = ({
                       //   fixedCnt +
                       //   1
                       // }
-                      content={index + 1 + fixedCnt}
+                      // content={currentPage}
+                      content={
+                        index +
+                        1 -
+                        fixedCnt +
+                        (currentPage - 1) * (postsPerPage - fixedCnt)
+                      }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>
@@ -152,6 +188,12 @@ const NoticeList = ({
             : ""}
         </tbody>
       </table>
+      <PagingFixed
+        postsPerPage={postsPerPage}
+        totalPosts={dataList.length}
+        paginate={paginate}
+        fixedCnt={fixedCnt}
+      />
     </div>
   );
 };
