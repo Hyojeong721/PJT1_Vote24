@@ -72,7 +72,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         }
       } else {
         if (key != "attachment") {
-          fd.append(`${key}`, values[key]);
+          fd.append(key, values[key]);
         }
       }
     }
