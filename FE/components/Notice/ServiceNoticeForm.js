@@ -3,14 +3,12 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import router from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
 const ServiceNoticeForm = ({ url }) => {
-  const router = useRouter();
-  const jwt = localStorage.getItem("jwt");
   const [values, setValues] = useState({
     hospital_id: "24",
     title: "",
@@ -18,6 +16,7 @@ const ServiceNoticeForm = ({ url }) => {
     fixed: "0",
     imgFile: null,
   });
+
   const { userInfo } = useSelector((state) => state.userStatus);
   const userId = userInfo.id;
 
@@ -53,6 +52,7 @@ const ServiceNoticeForm = ({ url }) => {
         fd.append(`${key}`, values[key]);
       }
     }
+    const jwt = localStorage.getItem("jwt");
     await axios
       .post(url, fd, {
         headers: {
@@ -61,22 +61,14 @@ const ServiceNoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        if (res.data.id) {
-          toast.success("서비스 공지 등록 성공!");
-          router.push(`/service/notice/${res.data.id}`);
-        } else {
-          toast.error("서비스 공지 등록 실패!", {
-            autoClose: 3000,
-          });
-          router.push("/service/notice");
-        }
+        toast.success("공지사항 등록 성공!");
+        router.push(`/notice/${res.data.id}`);
       })
       .catch((err) => {
+        console.log(err);
         toast.error("공지사항 등록 실패!", {
           autoClose: 3000,
         });
-        console.log(err);
-        router.push("/404");
       });
   };
 
@@ -108,7 +100,8 @@ const ServiceNoticeForm = ({ url }) => {
 
         <div name="체크박스" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
-            <span className={cn(cs.star)}>*{"  "}</span>TYPE
+            <span className={cn(cs.star)}>*{"  "}</span>
+            <span>TYPE</span>
           </div>
           <div className={cn(cs.formControl)}>
             <span className="form-label me-3">
@@ -119,7 +112,8 @@ const ServiceNoticeForm = ({ url }) => {
                 defaultValue={1}
                 onChange={handlefixed}
               />
-              {"  "} <label htmlFor="fixed">고정공지</label>
+              <span>{"  "}</span>
+              <label htmlFor="fixed">고정공지</label>
             </span>
             <input
               id="no_fixed"
@@ -129,7 +123,7 @@ const ServiceNoticeForm = ({ url }) => {
               checked={values.fixed == 0}
               onChange={handlefixed}
             />
-            {"  "}
+            <span>{"  "}</span>
             <label htmlFor="no_fixed">일반공지</label>
           </div>
         </div>
@@ -137,7 +131,8 @@ const ServiceNoticeForm = ({ url }) => {
         <div name="내용" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
 

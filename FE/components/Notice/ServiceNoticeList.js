@@ -5,14 +5,14 @@ import TableColumn from "../Table/TableColumn";
 import SearchBar from "../SearchBar";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { toast } from "react-toastify";
 import PagingFixed from "../../components/PagingFixed";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
   const [dataListProp, setDataListProp] = useState([]);
-  const router = useRouter();
+
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +36,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           let ids = [];
           {
             res.data &&
-              res.data.slice(0, postsPerPage).map((item, i) => {
+              res.data.map((item, i) => {
                 ids[i] = item.id;
               });
           }
@@ -61,7 +61,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    setCheckList(e.target.checked ? idList : []);
+    setCheckList(e.target.checked ? currentPosts.map((post) => post.id) : []);
   };
 
   const onChangeEach = (e, id) => {
@@ -86,11 +86,13 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
             },
           })
           .then((response) => {
-            toast.error("서비스 공지 삭제 성공!");
+            toast.success("서비스 공지 삭제 성공!");
           })
           .catch((error) => {
+            console.log("삭제에러", error);
             toast.error("서비스 공지 삭제 실패!");
           });
+
         setIdList(dataList.filter((data) => data.id !== noticeId));
         setDataList((dataList) =>
           dataList.filter((data) => data.id !== noticeId)
@@ -114,12 +116,14 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={checkList.length === idList.length}
+                checked={
+                  currentPosts && checkList.length === currentPosts.length
+                }
               />
             </th>
             {headersName.map((item, index) => {
               return (
-                <th className="table-header-column" key={index}>
+                <th className="table-header-column" key={item.id}>
                   {item}
                 </th>
               );
@@ -130,7 +134,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           {currentPosts
             ? currentPosts.map((item, index) => {
                 return (
-                  <TableRow key={index} id={item.id}>
+                  <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -139,12 +143,6 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      // content={
-                      //   index +
-                      //   1 +
-                      //   (postsPerPage - fixedCnt) +
-                      //   (currentPage - 2) * postsPerPage
-                      // }
                       content={index + 1 + (currentPage - 1) * postsPerPage}
                       fixed={item.fixed}
                       url={`notice/${item.id}`}

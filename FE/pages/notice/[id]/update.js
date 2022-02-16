@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
+import router from "next/router";
 import { useSelector } from "react-redux";
 import Header from "../../../components/Header";
 import NoticeUpdateForm from "../../../components/Notice/NoticeUpdateForm";
 
 function NoticeUpdate() {
-  const router = useRouter();
   const { userInfo } = useSelector((state) => state.userStatus);
   const noticeId = router.query.id;
   const hospitalId = userInfo.id;

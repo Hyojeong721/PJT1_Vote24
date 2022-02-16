@@ -48,7 +48,7 @@ const SurveyDetailItem = ({ sId, url }) => {
       })
       .catch((error) => {
         console.log("delete실패", error);
-        toast.success("설문 삭제 실패!");
+        toast.error("설문 삭제 실패!");
       });
   };
 

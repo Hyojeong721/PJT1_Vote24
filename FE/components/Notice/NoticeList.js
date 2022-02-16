@@ -38,7 +38,7 @@ const NoticeList = ({ url, createUrl }) => {
           let ids = [];
           {
             res.data &&
-              res.data.slice(0, postsPerPage).map((item, i) => {
+              res.data.map((item, i) => {
                 ids[i] = item.id;
               });
           }
@@ -63,7 +63,7 @@ const NoticeList = ({ url, createUrl }) => {
   }
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    setCheckList(e.target.checked ? idList : []);
+    setCheckList(e.target.checked ? currentPosts.map((post) => post.id) : []);
   };
 
   const onChangeEach = (e, id) => {
@@ -86,13 +86,13 @@ const NoticeList = ({ url, createUrl }) => {
             },
           })
           .then((response) => {
-            router.push("/notice");
+            toast.success("병원 공지 삭제 성공!");
           })
           .catch((error) => {
             console.log("삭제에러", error);
             toast.error("삭제에 실패하였습니다.");
           });
-        // list 재구성 = 삭제된애들 빼고 나머지 넣기
+
         setIdList(dataList.filter((data) => data.id !== noticeId));
         setDataList((dataList) =>
           dataList.filter((data) => data.id !== noticeId)
@@ -112,7 +112,7 @@ const NoticeList = ({ url, createUrl }) => {
         <div>
           <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
-              글쓰기
+              공지작성
             </button>
           </Link>
 
@@ -131,12 +131,14 @@ const NoticeList = ({ url, createUrl }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={checkList.length === idList.length}
+                checked={
+                  currentPosts && checkList.length === currentPosts.length
+                }
               />
             </th>
             {headersName.map((item, index) => {
               return (
-                <th className="table-header-column" key={index}>
+                <th className="table-header-column" key={item.id}>
                   {item}
                 </th>
               );
@@ -147,7 +149,7 @@ const NoticeList = ({ url, createUrl }) => {
           {currentPosts
             ? currentPosts.map((item, index) => {
                 return (
-                  <TableRow key={index} id={item.id}>
+                  <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -156,12 +158,6 @@ const NoticeList = ({ url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      // content={
-                      //   index +
-                      //   1 +
-                      //   (postsPerPage - fixedCnt) +
-                      //   (currentPage - 2) * postsPerPage
-                      // }
                       content={index + 1 + (currentPage - 1) * postsPerPage}
                       fixed={item.fixed}
                       url={`notice/${item.id}`}

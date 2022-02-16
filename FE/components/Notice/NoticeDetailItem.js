@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Image from "next/image";
 import DateForm from "../DateForm";
 import Prev from "../Prev";
@@ -11,33 +11,31 @@ import Link from "next/link";
 
 const NoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
-  const router = useRouter();
-  const { id } = router.query;
+  const nId = router.query.id;
 
-  // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
-        .get(`${url}/${id}`)
+        .get(`${url}/${nId}`)
         .then((res) => {
-          console.log("게시글내용", res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log("공지 상세 get 실패", err);
+          toast.error("병원 공지사항을 가져오는 데 실패했습니다.");
+          console.log("병원공지 상세 get 실패", err);
           router.push("/404");
         });
     };
-    if (id) {
+    if (nId) {
       getPost();
     }
-  }, [id, url]);
+  }, [nId, url]);
 
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`${url}/${id}`, {
+      .delete(`${url}/${nId}`, {
         headers: {
           authorization: jwt,
         },
@@ -75,7 +73,7 @@ const NoticeDetailItem = ({ url }) => {
           </div>
 
           <div>
-            <Link href={`/notice/${id}/update`} passHref>
+            <Link href={`/notice/${nId}/update`} passHref>
               <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
             </Link>
             <button
