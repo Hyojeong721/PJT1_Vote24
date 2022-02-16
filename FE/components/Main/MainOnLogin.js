@@ -33,6 +33,7 @@ function MainOnLogin() {
       .catch((err) => console.log(err));
 
     setData(summaryData);
+    console.log("@@", summaryData);
   };
 
   useEffect(() => {
@@ -47,6 +48,7 @@ function MainOnLogin() {
           <a
             className={cn(styles.goButton, "border", "rounded", "fs-5", "ms-3")}
           >
+            <div className="ms-1">사용자 페이지로 이동</div>
             <span className="material-icons fs-1">play_arrow</span>
           </a>
         </Link>
@@ -74,7 +76,7 @@ function MainOnLogin() {
         <div className="card">
           <div className="card-body">
             <h2>설문 참여자 현황</h2>
-            {data && data.result_Mysurvey_age.keys().length ? (
+            {data && data.result_Mysurvey_age.length ? (
               <DoughnutChart
                 ageDataProp={data.result_Mysurvey_age}
                 genderDataProp={data.result_Mysurvey_gender}

@@ -115,8 +115,10 @@ export async function getServerSideProps({ params }) {
   const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/user/notice/${id}/${nId}`;
   const noticeDetail = await axios
     .get(NOTICE_DETAIL_URL)
-    .then((res) => res.data)
-    .catch((err) => console.log(err));
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => console.log("err"));
 
   if (Object.keys(noticeDetail).length === 0) {
     return {
