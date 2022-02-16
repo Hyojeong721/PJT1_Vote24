@@ -92,6 +92,19 @@ router.get("/main/:hospital_id", async (req, res) => {
       `select r.age, count(r.age) as count from survey_result r join hospital_survey s on r.survey_id = s.id where s.hospital_id = ${hospital_id} group by r.age order by age;`
     );
 
+    let ageSet = [];
+
+    for (i = 0; i < 6; i++) {
+      ageSet[i] = { age: (i + 1) * 10, count: 0 };
+    }
+
+    for (i = 0; i < result_Mysurvey_age[0].length; i++) {
+      ageSet[result_Mysurvey_age[0][i].age / 10 - 1] = {
+        age: result_Mysurvey_age[0][i].age,
+        count: result_Mysurvey_age[0][i].count,
+      };
+    }
+
     // 설문결과(남자-나이 별 count)
     const result_Mysurvey_man_age = await pool.query(
       `select r.age, count(r.age) as count from survey_result r join hospital_survey s on r.survey_id = s.id where s.hospital_id = ${hospital_id} and r.gender=0 group by r.age order by age;`
@@ -118,7 +131,7 @@ router.get("/main/:hospital_id", async (req, res) => {
       todayMyVote: todayMyVote,
       // result_Mysurvey: result_Mysurvey[0],
       popularVotes: popularVotes[0],
-      result_Mysurvey_age: result_Mysurvey_age[0],
+      result_Mysurvey_age: ageSet,
       result_Mysurvey_man_age: result_Mysurvey_man_age[0],
       result_Mysurvey_woman_age: result_Mysurvey_woman_age[0],
       result_Mysurvey_gender: result_Mysurvey_gender[0],
