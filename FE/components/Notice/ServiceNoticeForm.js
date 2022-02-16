@@ -42,7 +42,7 @@ const ServiceNoticeForm = ({ url }) => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_img", imgFile);
+          fd.append("service_img", imgFile);
           fd.append("attachment", imgName);
           console.log("attachment", imgName);
         }
