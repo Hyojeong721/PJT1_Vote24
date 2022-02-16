@@ -75,7 +75,7 @@ function MainOnLogin() {
         <div className="card">
           <div className="card-body">
             <h2>설문 참여자 현황</h2>
-            {data.result_Mysurvey_age.keys().length ? (
+            {data && data.result_Mysurvey_age.keys().length ? (
               <DoughnutChart
                 ageDataProp={data.result_Mysurvey_age}
                 genderDataProp={data.result_Mysurvey_gender}
