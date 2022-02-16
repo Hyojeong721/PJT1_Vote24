@@ -240,7 +240,11 @@ router.get("/survey/:id", async (req, res) => {
     const question_sql = "SELECT * FROM question WHERE survey_id = ? order by `order`;";
     const question_data = await pool.query(question_sql, [id]);
     let option_sql = "select * from `option` where question_id in (";
+    let answer_sql = "select * from subjective_answer where question_id in (";
     // console.log(survey_data[0][0]);
+
+    let oflag = false;
+    let alag = false;
 
     // 없는 데이터 접근시
     if (survey_data[0][0] == null) {
@@ -255,40 +259,75 @@ router.get("/survey/:id", async (req, res) => {
     else status = now < survey_data[0][0].end_at ? 0 : 2;
 
     for (i = 0; i < question_data[0].length; i++) {
-      option_sql += `${question_data[0][i].id}`;
-      if (i == question_data[0].length - 1) option_sql += ")";
-      else option_sql += ",";
+      if (question_data[0][i].type == 0) {
+        option_sql += `${question_data[0][i].id},`;
+        oflag = true;
+      } else {
+        answer_sql += `${question_data[0][i].id},`;
+        alag = true;
+      }
+      if (i == question_data[0].length - 1) {
+        option_sql = option_sql.slice(0, -1);
+        option_sql += ")";
+        answer_sql = answer_sql.slice(0, -1);
+        answer_sql += ")";
+      }
     }
 
     // console.log(question_data[0]);
-    if (question_data[0].length == 0)
-      option_sql = "select * from `option` where question_id in (-1);";
+    if (!oflag) option_sql = "select * from `option` where question_id in (-1);";
+    if (!alag) answer_sql = "select * from `subjective_answer` where question_id in (-1);";
     const option_data = await pool.query(option_sql);
+    const answer_data = await pool.query(answer_sql);
 
     const benchmark_sql = "SELECT * FROM benchmark WHERE survey_id = ?;";
     const benchmark_data = await pool.query(benchmark_sql, [id]);
     const result_sql = "SELECT age, gender FROM survey_result WHERE survey_id = ?;";
     const result_data = await pool.query(result_sql, [id]);
     // console.log(option_data[0][0]);
-    if (question_data[0].length != 0 && option_data[0] != 0) {
-      let n = 0;
-      let qid = option_data[0][0].question_id;
+    if (question_data[0].length != 0) {
       let option_dataset = [];
-      for (i = 0; i < option_data[0].length; i++) {
-        if (qid != option_data[0][i].question_id) {
-          qid = option_data[0][i].question_id;
-          n++;
+      let answer_dataset = [];
+
+      if (option_data[0].length != 0) {
+        let n = 0;
+        let qid = option_data[0][0].question_id;
+        let option_dataset = [];
+        for (i = 0; i < option_data[0].length; i++) {
+          if (qid != option_data[0][i].question_id) {
+            qid = option_data[0][i].question_id;
+            n++;
+          }
+          if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
+          else option_dataset[n] = [option_data[0][i]];
         }
-        if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
-        else option_dataset[n] = [option_data[0][i]];
       }
+
+      if (answer_data[0].length != 0) {
+        let l = 0;
+        let qid = answer_data[0][0].question_id;
+
+        for (i = 0; i < answer_data[0].length; i++) {
+          if (qid != answer_data[0][i].question_id) {
+            qid = answer_data[0][i].question_id;
+            l++;
+          }
+          if (answer_dataset[l]) answer_dataset[l].push(answer_data[0][i]);
+          else answer_dataset[l] = [answer_data[0][i]];
+        }
+      }
+
       let m = 0;
+      let o = 0;
       let question_dataset = [];
       for (i = 0; i < question_data[0].length; i++) {
         question_dataset[i] = question_data[0][i];
         if (question_data[0][i].type == 0) {
           question_dataset[i].option = option_dataset[m];
           m++;
+        } else {
+          question_dataset[i].answer = answer_dataset[o];
+          o++;
         }
       }
       survey_dataset = {
