@@ -251,8 +251,8 @@ router.get("/survey/:id", async (req, res) => {
     // 설문 상태 추가
     let status;
     const now = new Date();
-    if (now < survey_data[0][0].start_at) status = 0;
-    else status = now < survey_data[0][0].end_at ? 1 : 2;
+    if (now < survey_data[0][0].start_at) status = 1;
+    else status = now < survey_data[0][0].end_at ? 0 : 2;
 
     for (i = 0; i < question_data[0].length; i++) {
       option_sql += `${question_data[0][i].id}`;
@@ -337,8 +337,8 @@ router.get("/survey/list/:hospital_id", async (req, res) => {
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
-      if (now < result[i].start_at) result[i].status = 0;
-      else result[i].status = now < result[i].end_at ? 1 : 2;
+      if (now < result[i].start_at) result[i].status = 1;
+      else result[i].status = now < result[i].end_at ? 0 : 2;
     }
     logger.info("[INFO] GET /survey/list");
     return res.json(result);
@@ -358,8 +358,8 @@ router.get("/survey/list/:hospital_id/:category", async (req, res) => {
     let result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
-      if (now < result[i].start_at) result[i].status = 0;
-      else result[i].status = now < result[i].end_at ? 1 : 2;
+      if (now < result[i].start_at) result[i].status = 1;
+      else result[i].status = now < result[i].end_at ? 0 : 2;
     }
     logger.info("[INFO] GET /survey/list/:hospital_id/:category");
     return res.json(result);
