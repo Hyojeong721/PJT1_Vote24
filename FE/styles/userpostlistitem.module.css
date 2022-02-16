@@ -1,3 +1,11 @@
 .dateFont {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
   font-size: 0.8rem;
+}
+
+.btnLime {
+  background-color: #ffeecb;
+  border-color: #ffeecb;
 }

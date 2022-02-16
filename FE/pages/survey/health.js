@@ -5,28 +5,32 @@ import axios from "axios";
 import SurveyList from "../../components/Survey/SurveyList";
 import Paging from "../../components/Paging";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
-function Health() {
+function HealthSurvey() {
   const [dataList, setDataList] = useState([]);
-  // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(3);
 
-  // 병원 id 받아서 url에 적용
+  const router = useRouter();
+
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
-  // console.log(SURVEY_HEALTH_URL);
 
-  // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
-      const res = await axios.get(SURVEY_HEALTH_URL);
-      console.log("건강설문 목록 데이터", res.data);
-
-      setDataList(res.data);
+      await axios
+        .get(SURVEY_HEALTH_URL)
+        .then((res) => {
+          setDataList(res.data);
+        })
+        .catch((error) => {
+          console.log("건강설문 목록 get 실패", error);
+          router.push("/404");
+        });
     };
     getList();
   }, [SURVEY_HEALTH_URL]);
@@ -44,7 +48,12 @@ function Health() {
         <Link href={"service"}>
           <a>만족도 설문으로 가기</a>
         </Link>
-        <SurveyList dataList={currentPosts} category={"0"}></SurveyList>
+        <SurveyList
+          setDataList={setDataList}
+          dataList={currentPosts}
+          category={"0"}
+          url={SURVEY_URL}
+        ></SurveyList>
         <Paging
           postsPerPage={postsPerPage}
           totalPosts={dataList.length}
@@ -55,4 +64,4 @@ function Health() {
   );
 }
 
-export default Health;
+export default HealthSurvey;

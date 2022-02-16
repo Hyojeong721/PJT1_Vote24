@@ -1,25 +1,28 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function PopularSurvery() {
-  const [surveyList, setSurveyList] = useState([]);
-  const GET_SURVEY_URL = "https://jsonplaceholder.typicode.com/posts";
+function PopularSurvery({ popularSurveys }) {
+  if (!popularSurveys.length) {
+    return (
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-title">인기 설문</h2>
+          <div>진행 중인 설문이 없습니다.</div>
+        </div>
+      </div>
+    );
+  }
 
-  const getSurvey = async () => {
-    await axios
-      .get(GET_SURVEY_URL)
-      .then((res) => {
-        setSurveyList(res.data.slice(0, 5));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getSurvey();
-  }, []);
+  const paintPopularSurveys = popularSurveys.map((s, idx) => (
+    <tr key={s.id}>
+      <th scope="row">{idx + 1}</th>
+      <td>{s.title}</td>
+      <td>{s.userId}</td>
+      <td>{s.count}</td>
+    </tr>
+  ));
 
   return (
-    <div className="card mb-3">
+    <div className="card">
       <div className="card-body">
         <h2 className="card-title">인기 설문</h2>
         <table className="table">
@@ -32,13 +35,7 @@ function PopularSurvery() {
             </tr>
           </thead>
           <tbody>
-            {surveyList.map((el) => (
-              <tr key={el.id}>
-                <th scope="row">{el.id}</th>
-                <td>{el.title}</td>
-                <td>{el.userId}</td>
-              </tr>
-            ))}
+            {popularSurveys.length > 0 ? paintPopularSurveys : null}
           </tbody>
         </table>
       </div>

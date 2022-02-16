@@ -49,7 +49,7 @@ function Navbar({ isLoggedIn, currentPage }) {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container-fluid">
+      <div className="container navbar-container">
         {/* Logo */}
         <Link href="/">
           <a className="navbar-brand navbar-logo">
@@ -72,14 +72,14 @@ function Navbar({ isLoggedIn, currentPage }) {
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav links */}
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <NavItem active={currentPage === "/"} url="/" title="Home" />
             {!isLoggedIn ? (
               <>
                 <NavItem
                   active={currentPage === "/service/info"}
                   url="/service/info"
-                  title="서비스 소개"
+                  title="이용 안내"
                 />
                 <NavItem
                   active={currentPage === "/service/notice"}

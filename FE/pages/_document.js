@@ -5,6 +5,7 @@ class CustomDocument extends Document {
     return (
       <Html>
         <Head>
+          <link href="/public/favicon.ico" rel="logo" />
           <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -12,15 +13,20 @@ class CustomDocument extends Document {
             crossOrigin="anonymous"
           />
           <link
+            href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+            rel="stylesheet"
+            type="text/css"
+          />
+          <link
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
             rel="stylesheet"
           />
-          <body>
-            <Main />
-            <NextScript />
-            <noscript>Vote24 병원 설문조사 플랫폼</noscript>
-          </body>
         </Head>
+        <body>
+          <Main />
+          <NextScript />
+          <noscript>Vote24 병원 설문조사 플랫폼</noscript>
+        </body>
       </Html>
     );
   }

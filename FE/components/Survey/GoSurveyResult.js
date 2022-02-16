@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-function MoreResult() {
+function GoSurveyResult({ sId }) {
   return (
     <div>
       <div>
-        <Link href={``}>
+        <Link href={`/survey/${sId}/result`}>
           <a type="button" className={"btn btn-primary"}>
             자세히보기
           </a>
@@ -14,4 +14,4 @@ function MoreResult() {
   );
 }
 
-export default MoreResult;
+export default GoSurveyResult;

@@ -13,10 +13,32 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+.min-vh-80 {
+  min-height: 80vh;
+}
+
+.min-vh-90 {
+  min-height: 90vh;
+}
+
+.min-w-50 {
+  min-width: 50%;
+}
+
+.fs-0 {
+  font-size: 0.8rem;
 }
 
 .navbar {
   width: 100%;
+  min-height: 70px;
+}
+
+.navbar-container {
+  max-width: 1200px;
 }
 
 .halfPage {

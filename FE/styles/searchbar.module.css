@@ -1,0 +1,17 @@
+.searchBox {
+  position: relative;
+  width: 200px;
+}
+/* 
+.searchInput {
+  border: none;
+  outline: none;
+  margin: 5px;
+  box-sizing: border-box;
+} */
+
+/* .searchIcon {
+  position: absolute;
+  top: 6px;
+  left: 0px;
+} */

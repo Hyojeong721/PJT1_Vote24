@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -24,7 +23,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   } = useForm();
 
   const { benchmark, question } = surveyDetail;
-
   const setFormData = ({
     category,
     title,
@@ -32,13 +30,15 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     start_at,
     end_at,
     output_link,
+    reservation_link,
   }) => {
     setNowCategory(`${category}`);
     setValue("title", title);
     setValue("context", context);
-    setValue("start_at", start_at.slice(0, 16));
-    setValue("end_at", end_at.slice(0, 16));
+    setValue("start_at", start_at.slice(0, 10));
+    setValue("end_at", end_at.slice(0, 10));
     setValue("output_link", output_link);
+    setValue("reservation_link", reservation_link);
   };
 
   useEffect(() => {
@@ -48,12 +48,23 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   const onSubmit = async (data) => {
     console.log(data);
     const { qList, bList } = parseInput(data);
-    const { category, title, context, output_link, start_at, end_at } = data;
-    const result = {
+    const {
       category,
       title,
       context,
       output_link,
+      reservation_link,
+      start_at,
+      end_at,
+    } = data;
+    const result = {
+      created_at: surveyDetail.created_at.slice(0, -5).replace("T", " "),
+      count: surveyDetail.count,
+      category,
+      title,
+      context,
+      output_link,
+      reservation_link,
       start_at,
       end_at,
       question: qList,
@@ -61,7 +72,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     };
 
     const jwt = localStorage.getItem("jwt");
-    console.log("@@@@@@", result);
+
     await axios
       .put(SURVEY_URL, result, {
         headers: {
@@ -87,9 +98,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
         "border-2",
         "shadow",
         "rounded",
-        "d-flex",
-        "flex-column",
-        "align-items-center",
         "mt-5",
         "pb-5"
       )}
@@ -102,6 +110,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
         setNowCategory={setNowCategory}
         initialBenchmarks={benchmark}
         setValue={setValue}
+        surveyDetail={surveyDetail}
       />
       <SurveyCreateFormBody
         register={register}

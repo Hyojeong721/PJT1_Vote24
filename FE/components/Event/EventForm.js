@@ -5,17 +5,20 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { getPrevDate, getNextDate } from "../getDate";
 import cn from "classnames";
-import cs from "../../styles/noticecreate.module.css";
+import cs from "../../styles/postcreate.module.css";
 
 const EventForm = () => {
   const router = useRouter();
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const [startDate, setStartDate] = useState(todayDate);
 
   const [values, setValues] = useState({
     title: "",
     context: "",
     start_at: "",
-    end_at: "",
+    end_at: new Date(8640000000000000),
     imgFile: null,
   });
 
@@ -35,12 +38,16 @@ const EventForm = () => {
       ...prevValues,
       [name]: value,
     }));
+
+    if (name === "start_at") {
+      setStartDate(value);
+    }
   };
 
-  // 작성완료 눌렀을때 서버에 보내기
+  //작성완료
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 보낼 데이터들을 fromdata에 담는 과정
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -51,17 +58,10 @@ const EventForm = () => {
           fd.append("attachment", imgName);
         }
       } else {
-        console.log(key, values[key]);
         fd.append(`${key}`, values[key]);
       }
     }
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log(value);
-    // }
-
-    // 서버에 보내기
     const jwt = localStorage.getItem("jwt");
 
     await axios
@@ -72,86 +72,100 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("이벤트 등록 성공!", res.data);
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
-        toast.error("이벤트 등록 실패!");
+        toast.error("이벤트 등록 실패!", {
+          autoClose: 3000,
+        });
         console.log(err);
       });
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn(cs.noticeCreate)}>
-      <div className={cn(cs.formRow, cs.formRowtop, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="title">
-            <span className={cn(cs.star)}>*{"  "}</span>제목
-          </label>
+    <form onSubmit={handleSubmit}>
+      <div name="form" className={cn(cs.form)}>
+        <div name="제목" className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="title">
+              <span className={cn(cs.star)}>*{"  "}</span>제목
+            </label>
+          </div>
+
+          <div className={cn(cs.formControl)}>
+            <input
+              className={cn(cs.input)}
+              name="title"
+              value={values.title}
+              onChange={handleInputChange}
+              id="title"
+              required
+            ></input>
+          </div>
         </div>
-        <div className={cn(cs.formControl)}>
-          <input
-            className={cn(cs.input)}
-            name="title"
-            value={values.title}
-            onChange={handleInputChange}
-            id="title"
-          ></input>
+
+        <div className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="start_at">
+              <span className={cn(cs.star)}>*{"  "}</span>시작일
+            </label>{" "}
+            ~ <label htmlFor="end_at">마감일</label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            <input
+              id="start_at"
+              name="start_at"
+              type="date"
+              onChange={handleInputChange}
+              value={values.start_at}
+              min={todayDate}
+              max={getPrevDate(values.end_at)}
+              required
+            ></input>
+            {"  "}~{"  "}
+            <input
+              id="end_at"
+              name="end_at"
+              type="date"
+              onChange={handleInputChange}
+              value={values.end_at}
+              min={getNextDate(startDate)}
+              required
+            ></input>
+          </div>
         </div>
-      </div>
-      <div className={cn(cs.formRow, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="start_at">
-            <span className={cn(cs.star)}>*{"  "}</span>시작일
-          </label>{" "}
-          ~ <label htmlFor="end_at">마감일</label>
+
+        <div className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="context">
+              <span className={cn(cs.star)}>*{"  "}</span>내용
+            </label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            <textarea
+              className={cn(cs.textarea)}
+              name="context"
+              value={values.context}
+              onChange={handleInputChange}
+              id="context"
+              rows="20"
+              required
+            ></textarea>
+          </div>
         </div>
-        <div className={cn(cs.formControl)}>
-          <input
-            id="start_at"
-            name="start_at"
-            type="date"
-            onChange={handleInputChange}
-            value={values.start_at}
-          ></input>
-          {"  "}~{"  "}
-          <input
-            id="end_at"
-            name="end_at"
-            type="date"
-            onChange={handleInputChange}
-            value={values.end_at}
-          ></input>
+        <div className={cn(cs.formRow)}>
+          <FileInput
+            name="imgFile"
+            value={values.imgFile}
+            onChange={handleChange}
+          ></FileInput>
         </div>
       </div>
 
       <div className={cn(cs.btns, "d-flex")}>
-        <div className={cn(cs.formLabel)}>
-          <label htmlFor="context" className="form-label">
-            <span className={cn(cs.star)}>*{"  "}</span>내용
-          </label>
-        </div>
-        <div className={cn(cs.formControl)}>
-          <textarea
-            className={cn(cs.textarea)}
-            name="context"
-            value={values.context}
-            onChange={handleInputChange}
-            id="context"
-            rows="5"
-          ></textarea>
-        </div>
-      </div>
-      <div className={cn(cs.formRow)}>
-        <FileInput
-          name="imgFile"
-          value={values.imgFile}
-          onChange={handleChange}
-        ></FileInput>
-      </div>
-      <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href="/notice/" passHref>
+          <Link href="/event/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>

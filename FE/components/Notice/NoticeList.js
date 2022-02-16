@@ -6,35 +6,71 @@ import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import PagingFixed from "../../components/PagingFixed";
+import router from "next/router";
 
-const NoticeList = ({ dataList, url, createUrl }) => {
-  const [list, setList] = useState(dataList);
+const NoticeList = ({ url, createUrl }) => {
+  const [dataList, setDataList] = useState([]);
+
+  // 페이징 처리를 위한
+  const [fixed, setFixed] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
+
   const headersName = ["번호", "제목", "생성일", "조회수"];
 
   useEffect(() => {
-    setList(dataList);
+    const getList = async () => {
+      await axios
+        .get(url)
+        .then((res) => {
+          setDataList(res.data);
+          console.log("공지목록", res.data);
+          setFixed(res.data.filter((data) => data.fixed == 1));
+          console.log(
+            "fixed data",
+            res.data.filter((data) => data.fixed == 1)
+          );
+          let ids = [];
+          {
+            res.data &&
+              res.data.slice(0, postsPerPage).map((item, i) => {
+                ids[i] = item.id;
+              });
+          }
+          setIdList(ids);
+        })
+        .catch((err) => {
+          console.log("병원 공지 목록 get 실패", err);
+          router.push("/404");
+        });
+    };
+    getList();
+  }, [url]);
 
-    let ids = [];
-    dataList.map((item, i) => {
-      ids[i] = item.id;
-    });
-
-    setIdList(ids);
-  }, [dataList]);
-
+  // 페이징 처리를 위한 계산
+  if (dataList.length) {
+    const fixedCnt = fixed.length;
+    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+    const currentPosts = [
+      ...dataList.slice(0, fixedCnt),
+      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+    ];
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  }
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    // 체크할 시 CheckList에 id 값 전체 넣기, 체크 해제할 시 CheckList에 빈 배열 넣기
     setCheckList(e.target.checked ? idList : []);
   };
 
   const onChangeEach = (e, id) => {
-    // 체크할 시 CheckList에 id값 넣기
     if (e.target.checked) {
       setCheckList([...checkList, id]);
-      // 체크 해제할 시 CheckList에서 해당 id값이 `아닌` 값만 배열에 넣기
     } else {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
@@ -53,12 +89,16 @@ const NoticeList = ({ dataList, url, createUrl }) => {
           })
           .then((response) => {
             console.log(response);
+            router.push("/notice");
           })
           .catch((error) => {
-            console.log("dddd", error);
+            console.log("삭제에러", error);
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
-        setList(list.filter((data) => data.id !== noticeId));
+        setIdList(dataList.filter((data) => data.id !== noticeId));
+        setDataList((dataList) =>
+          dataList.filter((data) => data.id !== noticeId)
+        );
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -68,7 +108,7 @@ const NoticeList = ({ dataList, url, createUrl }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div></div>
         <div>
           <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
@@ -104,8 +144,8 @@ const NoticeList = ({ dataList, url, createUrl }) => {
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item) => {
+          {currentPosts
+            ? currentPosts.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -116,7 +156,19 @@ const NoticeList = ({ dataList, url, createUrl }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={item.id}
+                      // content={
+                      //   indexlst[Math.abs(index - postsPerPage) - 1] -
+                      //   fixedCnt +
+                      //   1
+                      // }
+                      // content={currentPage}
+                      content={
+                        index +
+                        1 -
+                        fixedCnt +
+                        (currentPage - 1) * (postsPerPage - fixedCnt)
+                      }
+                      fixed={item.fixed}
                       url={`notice/${item.id}`}
                     ></TableColumn>
                     <TableColumn
@@ -137,6 +189,12 @@ const NoticeList = ({ dataList, url, createUrl }) => {
             : ""}
         </tbody>
       </table>
+      <PagingFixed
+        postsPerPage={postsPerPage}
+        totalPosts={dataList.length}
+        paginate={paginate}
+        fixedCnt={fixedCnt}
+      />
     </div>
   );
 };

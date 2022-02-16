@@ -3,7 +3,6 @@ import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 
 const GoSurveyList = ({ url, category }) => {
-  console.log("category", category);
   if (category == 0) {
     return (
       <div>

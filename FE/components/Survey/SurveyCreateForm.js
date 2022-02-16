@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -15,26 +15,43 @@ function SurveyCreateForm() {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
 
+  useEffect(() => {
+    if (router.query.category) {
+      setNowCategory(router.query.category);
+    }
+  }, []);
+
   const { userInfo } = useSelector((state) => state.userStatus);
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
+  // const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
+  const SURVEY_URL = `http://localhost:8000/api/survey/${userInfo.id}`;
 
   const {
     register,
     unregister,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm();
 
   const onSubmit = async (data) => {
     const { qList, bList } = parseInput(data);
-    const { category, title, context, output_link, start_at, end_at } = data;
+    const {
+      category,
+      title,
+      context,
+      start_at,
+      end_at,
+      output_link,
+      reservation_link,
+    } = data;
     const result = {
       category,
       title,
       context,
-      output_link,
       start_at,
       end_at,
+      output_link,
+      reservation_link,
       question: qList,
       benchmark: bList,
     };
@@ -48,7 +65,6 @@ function SurveyCreateForm() {
       })
       .then((res) => {
         toast.success("설문 생성 성공");
-        console.log(res.data);
         router.push(`/survey/${res.data.surveyID}`);
       })
       .catch((err) => {
@@ -66,9 +82,6 @@ function SurveyCreateForm() {
         "border-2",
         "shadow",
         "rounded",
-        "d-flex",
-        "flex-column",
-        "align-items-center",
         "mt-5",
         "pb-5"
       )}
@@ -79,6 +92,7 @@ function SurveyCreateForm() {
         errors={errors}
         nowCategory={nowCategory}
         setNowCategory={setNowCategory}
+        setValue={setValue}
       />
       <SurveyCreateFormBody
         register={register}

@@ -1,18 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import NavItemUser from "./NavItemUser";
-import Logo from "../../public/logo.png";
+import { useSelector } from "react-redux";
+import styles from "../../styles/navbaruser.module.css";
 
 function NavbarUser({ currentPage, code }) {
+  const { hospitalInfo } = useSelector((state) => state.hospitalInfo);
+  const { name, phone, image } = hospitalInfo;
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div className="container-fluid">
-        <Link href={`/user/${code}`}>
-          <a className="navbar-brand navbar-logo">
-            <Image className="navbar-logo" src={Logo} alt="vote24" />
-          </a>
-        </Link>
+        {name && (
+          <Link href={`/user/${code}`} passHref>
+            <a className="d-flex align-items-center gap-1 me-3">
+              <div className={styles.logoImageContainer}>
+                <Image
+                  src={image}
+                  layout="fill"
+                  objectFit="contain"
+                  priority
+                ></Image>
+              </div>
+              <div className="fs-3">{name}</div>
+            </a>
+          </Link>
+        )}
         <button
           className="navbar-toggler"
           type="button"
@@ -25,7 +39,7 @@ function NavbarUser({ currentPage, code }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <NavItemUser
               active={currentPage === `/user/[code]/survey/health`}
               url={`/user/${code}/survey/health`}

@@ -9,7 +9,7 @@ function HospitalEvent() {
   const [dataList, setDataList] = useState([]);
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(6);
+  const [postsPerPage] = useState(3);
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
@@ -18,16 +18,21 @@ function HospitalEvent() {
   // 서버에서 이벤트 목록 받아오는 코드
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-
     const getList = async () => {
-      const res = await axios.get(`${EVENT_URL}`, {
-        headers: {
-          authorization: jwt,
-        },
-      });
-      const ex_data = res.data;
-      const data = ex_data.reverse();
-      setDataList(data);
+      await axios
+        .get(EVENT_URL, {
+          headers: {
+            authorization: jwt,
+          },
+        })
+        .then((res) => {
+          const data = res.data;
+          setDataList(data);
+        })
+        .catch((err) => {
+          console.log("이벤트 리스트 get 실패", err);
+          router.push("/404");
+        });
     };
     getList();
   }, [EVENT_URL]);
@@ -40,9 +45,15 @@ function HospitalEvent() {
 
   return (
     <div>
-      <Header title="병원 이벤트"></Header>
+      <Header title="병원 이벤트">
+        <div></div>
+      </Header>
       <div className="container mt-3">
-        <EventList dataList={currentPosts} EVENT_URL={EVENT_URL} />
+        <EventList
+          setDataList={setDataList}
+          dataList={currentPosts}
+          EVENT_URL={EVENT_URL}
+        />
 
         <Paging
           postsPerPage={postsPerPage}

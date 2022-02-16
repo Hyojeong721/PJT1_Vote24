@@ -5,13 +5,13 @@ import styles from "../../styles/navitem.module.css";
 
 function NavItem({ active, url, title }) {
   const className = active
-    ? cn("nav-item", styles.navItemUser)
-    : cn("nav-item");
+    ? cn("nav-link", styles.navItemUser, styles.navItemUserHover)
+    : cn("nav-link", styles.navItemUserHover);
 
   return (
-    <li className={className}>
+    <li className="nav-item">
       <Link href={url}>
-        <a className="nav-link">{title}</a>
+        <a className={className}>{title}</a>
       </Link>
     </li>
   );

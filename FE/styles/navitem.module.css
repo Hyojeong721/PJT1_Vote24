@@ -1,7 +1,15 @@
-.navItemUser {
-  border-bottom: 3px solid #84c3dc;
+.navItem {
+  color: #5f4dee !important;
 }
 
-.navItem {
-  border-bottom: 3px solid #0d6efd;
+.navItemHover:hover {
+  color: #5f4dee !important;
+}
+
+.navItemUser {
+  color: #ffc107 !important;
+}
+
+.navItemUserHover:hover {
+  color: #ffc107 !important;
 }
