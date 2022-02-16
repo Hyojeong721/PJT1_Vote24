@@ -5,8 +5,7 @@ import axios from "axios";
 import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
-import PieChartAge from "../Survey/PieChartAge";
-import PieChartGender from "../Survey/PieChartGender";
+import DoughnutChart from "./DoughnutChart";
 import cn from "classnames";
 import styles from "../../styles/mainonlogin.module.css";
 
@@ -72,16 +71,16 @@ function MainOnLogin() {
             color="blue"
           />
         </div>
-        <div className="row justify-content-md-center gap-5">
-          {data && <PopularSurvey popularSurveys={data.popularVotes} />}
-          <div className="card mb-3 col-12 col-lg-5">
-            <div className="card-body">
-              <h2>설문 참여자 현황</h2>
-              <div className="d-flex justify-content-center">
-                <PieChartAge data={data.result_Mysurvey_age} />
-                <PieChartGender data={data.result_Mysurvey_gender} />
-              </div>
-            </div>
+        {data && <PopularSurvey popularSurveys={data.popularVotes} />}
+        <div className="card">
+          <div className="card-body">
+            <h2>설문 참여자 현황</h2>
+            {data && (
+              <DoughnutChart
+                ageDataProp={data.result_Mysurvey_age}
+                genderDataProp={data.result_Mysurvey_gender}
+              />
+            )}
           </div>
         </div>
       </div>

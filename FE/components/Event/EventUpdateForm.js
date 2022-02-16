@@ -58,7 +58,7 @@ const EventUpdateForm = ({ eventId, url }) => {
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
