@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import router from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
@@ -48,12 +48,14 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const handleChangeFile = (e) => {
     const nextValue = e.target.files[0];
     handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
   };
 
   const handleClearClick = () => {
     values.attachment = null;
     values.image = null;
     handleChange("imgFile", null);
+    handleChange("attachment", null);
   };
 
   // 글 수정 서버 요청
@@ -67,17 +69,25 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
+        } else if (values[key] == "null") {
+          fd.append("notice_img", "null");
+          fd.append("attachment", "null");
+        } else {
+          fd.append("notice_img", "null");
+          fd.append("attachment", "null");
         }
       } else {
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(`${key}`, values[key]);
+        }
       }
     }
     fd.append("hospital_id", 24);
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
+    // formData 안에 값들 확인할 때
+    for (let value of fd.values()) {
+      console.log("form값들", value);
+    }
 
     const jwt = localStorage.getItem("jwt");
     await axios
@@ -88,22 +98,22 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("병원공지 수정", res.data);
+        console.log("서비스공지 수정", res.data);
         if (res.data.id) {
           router.push(`/service/notice/${res.data.id}`);
         } else {
-          toast.error("병원공지 수정 실패!", {
+          toast.error("then넘어온 수정 실패!", {
             autoClose: 3000,
           });
-          router.push("/404");
+          // router.push("/404");
         }
       })
       .catch((err) => {
-        toast.error("병원공지 수정 실패!", {
+        toast.error("서비스공지 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
-        router.push("/404");
+        // router.push("/404");
       });
   };
 
@@ -122,7 +132,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
               name="title"
               onChange={handleInputChange}
               id="title"
-              value={values.title}
+              defaultValue={values.title}
               required
             ></input>
           </div>
@@ -168,7 +178,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
             <textarea
               className={cn(cs.textarea)}
               name="context"
-              value={values.context}
+              defaultValue={values.context}
               onChange={handleInputChange}
               id="context"
               rows="20"

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -48,12 +47,13 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   const handleChangeFile = (e) => {
     const nextValue = e.target.files[0];
     handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
   };
-
   const handleClearClick = () => {
     values.attachment = null;
     values.image = null;
     handleChange("imgFile", null);
+    handleChange("attachment", null);
   };
 
   // 글 수정 서버 요청
@@ -67,9 +67,17 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
+        } else if (values[key] == "null") {
+          fd.append("notice_img", "null");
+          fd.append("attachment", "null");
+        } else {
+          fd.append("notice_img", "null");
+          fd.append("attachment", "null");
         }
       } else {
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(`${key}`, values[key]);
+        }
       }
     }
 
@@ -83,7 +91,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     }
 
     const jwt = localStorage.getItem("jwt");
-    console.log("보내는 db", fd);
     await axios
       .put(url, fd, {
         headers: {
@@ -175,12 +182,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         </div>
 
         <div name="첨부파일" className={cn(cs.formRow)}>
-          {/* <FileInput
-            name="imgFile"
-            image={values.image}
-            attachment={values.attachment}
-            onChange={handleChange}
-          ></FileInput> */}
           <div className={cn(cs.formRow, "d-flex")}>
             <div className={cn(cs.formLabel)}>
               <label htmlFor="formFile" className="form-label">
