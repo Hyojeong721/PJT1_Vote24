@@ -5,41 +5,65 @@ import TableColumn from "../Table/TableColumn";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
 
-const ServiceNoticeList = ({
-  hospital_id,
-  indexlst,
-  fixedCnt,
-  postsPerPage,
-  setDataList,
-  dataList,
-  url,
-}) => {
-  const [list, setList] = useState(dataList);
+const ServiceNoticeList = ({ hospital_id, url }) => {
+  const [dataList, setDataList] = useState([]);
+  // 페이징 처리를 위한
+  const [fixed, setFixed] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
+
   const headersName = ["번호", "제목", "생성일", "조회수"];
   const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
-    setList(dataList);
-
-    let ids = [];
-    {
-      dataList &&
-        dataList.map((item, i) => {
-          ids[i] = item.id;
+    const getList = async () => {
+      await axios
+        .get(url)
+        .then((res) => {
+          setDataList(res.data);
+          console.log("서비스공지목록", res.data);
+          setFixed(res.data.filter((data) => data.fixed == 1));
+          console.log(
+            "fixed data",
+            res.data.filter((data) => data.fixed == 1)
+          );
+          let ids = [];
+          {
+            res.data &&
+              res.data.slice(0, postsPerPage).map((item, i) => {
+                ids[i] = item.id;
+              });
+          }
+          setIdList(ids);
+        })
+        .catch((err) => {
+          console.log("서비스 공지 목록 get 실패", err);
+          router.push("/404");
         });
-    }
+    };
+    getList();
+  }, [url]);
 
-    setIdList(ids);
-  }, [dataList]);
+  // 페이징 처리를 위한 계산
+  if (dataList.length) {
+    const fixedCnt = fixed.length;
+    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+    const currentPosts = [
+      ...dataList.slice(0, fixedCnt),
+      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+    ];
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  }
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
     setCheckList(e.target.checked ? idList : []);
   };
-
-  console.log(list);
 
   const onChangeEach = (e, id) => {
     if (e.target.checked) {
@@ -48,6 +72,7 @@ const ServiceNoticeList = ({
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
   };
+
   // 선택 삭제
   const handleRemove = () => {
     if (checkList.length) {
@@ -67,8 +92,10 @@ const ServiceNoticeList = ({
           .catch((error) => {
             console.log("삭제에러", error);
           });
-        setList(list.filter((data) => data.id !== noticeId));
-        setDataList((state) => state.filter((data) => data.id !== noticeId));
+        setIdList(dataList.filter((data) => data.id !== noticeId));
+        setDataList((dataList) =>
+          dataList.filter((data) => data.id !== noticeId)
+        );
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -98,8 +125,8 @@ const ServiceNoticeList = ({
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
+          {currentPosts
+            ? currentPosts.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -111,9 +138,10 @@ const ServiceNoticeList = ({
                     </td>
                     <TableColumn
                       content={
-                        indexlst[Math.abs(index - postsPerPage) - 1] -
+                        index +
+                        1 -
                         fixedCnt +
-                        1
+                        (currentPage - 1) * (postsPerPage - fixedCnt)
                       }
                       fixed={item.fixed}
                       url={`notice/${item.id}`}

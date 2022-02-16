@@ -10,7 +10,6 @@ import PagingFixed from "../../components/PagingFixed";
 import router from "next/router";
 
 const NoticeList = ({ url, createUrl }) => {
-  // const [list, setList] = useState(dataList);
   const [dataList, setDataList] = useState([]);
 
   // 페이징 처리를 위한
@@ -21,6 +20,7 @@ const NoticeList = ({ url, createUrl }) => {
   // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
+
   const headersName = ["번호", "제목", "생성일", "조회수"];
 
   useEffect(() => {
@@ -53,15 +53,16 @@ const NoticeList = ({ url, createUrl }) => {
   }, [url]);
 
   // 페이징 처리를 위한 계산
-  const fixedCnt = fixed.length;
-  const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-  const currentPosts = [
-    ...dataList.slice(0, fixedCnt),
-    ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-  ];
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  if (dataList.length) {
+    const fixedCnt = fixed.length;
+    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+    const currentPosts = [
+      ...dataList.slice(0, fixedCnt),
+      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+    ];
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  }
   // 전체 선택/해제
   const onChangeAll = (e) => {
     setCheckList(e.target.checked ? idList : []);
@@ -88,10 +89,10 @@ const NoticeList = ({ url, createUrl }) => {
           })
           .then((response) => {
             console.log(response);
-            return router.push("/notice");
+            router.push("/notice");
           })
           .catch((error) => {
-            console.log("dddd", error);
+            console.log("삭제에러", error);
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
         setIdList(dataList.filter((data) => data.id !== noticeId));
@@ -107,7 +108,7 @@ const NoticeList = ({ url, createUrl }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div></div>
         <div>
           <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
