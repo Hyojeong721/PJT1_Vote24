@@ -1,6 +1,17 @@
 import { useState } from "react";
 
 function PopularSurvery({ popularSurveys }) {
+  if (!popularSurveys.length) {
+    return (
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-title">인기 설문</h2>
+          <div>진행 중인 설문이 없습니다.</div>
+        </div>
+      </div>
+    );
+  }
+
   const paintPopularSurveys = popularSurveys.map((s, idx) => (
     <tr key={s.id}>
       <th scope="row">{idx + 1}</th>

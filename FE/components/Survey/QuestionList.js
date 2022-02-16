@@ -9,7 +9,7 @@ const QuestionList = ({ total, dataList, dataresult }) => {
   console.log("datalist", dataList);
   return (
     <div className="mt-3 m-5">
-      <div className="mb-5 d-flex justify-content-around">
+      <div className="mb-5 d-flex flex-column flex-lg-row justify-content-around align-items-center">
         {total == 0 && <div>설문데이터가 없습니다.</div>}
         {total != 0 && <PieChartAge total={total} result={dataresult} />}
         {total != 0 && <PieChartGender total={total} result={dataresult} />}

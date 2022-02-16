@@ -75,11 +75,13 @@ function MainOnLogin() {
         <div className="card">
           <div className="card-body">
             <h2>설문 참여자 현황</h2>
-            {data && (
+            {data.result_Mysurvey_age.keys().length ? (
               <DoughnutChart
                 ageDataProp={data.result_Mysurvey_age}
                 genderDataProp={data.result_Mysurvey_gender}
               />
+            ) : (
+              <div>참여한 설문 데이터가 없습니다.</div>
             )}
           </div>
         </div>

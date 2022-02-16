@@ -52,7 +52,7 @@ function Navbar({ isLoggedIn, currentPage }) {
       <div className="container navbar-container">
         {/* Logo */}
         <Link href="/">
-          <a className="navbar-brand navbar-logo ms-2">
+          <a className="navbar-brand navbar-logo">
             <Image className="navbar-logo" src={Logo} alt="vote24" />
           </a>
         </Link>

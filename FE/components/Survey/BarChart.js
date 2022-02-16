@@ -23,6 +23,7 @@ const BarChart = ({ total, item }) => {
   console.log(item);
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
 
     indexAxis: "y",
     scales: {
@@ -69,12 +70,8 @@ const BarChart = ({ total, item }) => {
   };
 
   return (
-    <div style={{ height: "400px", width: "800px" }}>
-      <Bar
-        style={{ height: "300px", width: "800px" }}
-        options={options}
-        data={data}
-      />
+    <div className="mx-auto" style={{ maxHeight: "300px", maxWidth: "1000px" }}>
+      <Bar options={options} data={data} />
     </div>
   );
 };
