@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
+import SearchBar from "../SearchBar";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,6 +27,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
         .get(url)
         .then((res) => {
           setDataList(res.data);
+          setDataListProp(res.data);
           console.log("서비스공지목록", res.data);
           setFixed(res.data.filter((data) => data.fixed == 1));
           console.log(
@@ -104,7 +107,10 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
 
   return (
     <div>
-      <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
+      <div className="d-flex justify-content-between align-items-center">
+        <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
+      </div>
       <table className="table">
         <thead>
           <tr>

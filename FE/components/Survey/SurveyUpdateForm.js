@@ -33,6 +33,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     reservation_link,
   }) => {
     setNowCategory(`${category}`);
+    setValue("category", `${category}`);
     setValue("title", title);
     setValue("context", context);
     setValue("start_at", start_at.slice(0, 10));
@@ -46,7 +47,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   }, [surveyDetail]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const { qList, bList } = parseInput(data);
     const {
       category,

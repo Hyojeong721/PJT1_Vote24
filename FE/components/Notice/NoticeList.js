@@ -8,9 +8,11 @@ import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 import PagingFixed from "../../components/PagingFixed";
 import router from "next/router";
+import SearchBar from "../SearchBar";
 
 const NoticeList = ({ url, createUrl }) => {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
 
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
@@ -29,6 +31,7 @@ const NoticeList = ({ url, createUrl }) => {
         .get(url)
         .then((res) => {
           setDataList(res.data);
+          setDataListProp(res.data);
           console.log("공지목록", res.data);
           setFixed(res.data.filter((data) => data.fixed == 1));
           console.log(
@@ -108,7 +111,9 @@ const NoticeList = ({ url, createUrl }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>설문</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link href={createUrl} passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
