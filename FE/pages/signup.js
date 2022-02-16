@@ -175,7 +175,10 @@ function Signup() {
         toast.success("사용 가능한 이메일입니다!");
         setEmailChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 이메일 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   const onBnCheck = async (e) => {
@@ -200,7 +203,10 @@ function Signup() {
         toast.success("사용 가능한 사업자번호 입니다!");
         setBnChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 사업자 등록 번호 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   return (

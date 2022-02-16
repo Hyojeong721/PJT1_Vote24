@@ -44,7 +44,6 @@ const ServiceNoticeForm = ({ url }) => {
           const imgName = imgFile.name;
           fd.append("service_img", imgFile);
           fd.append("attachment", imgName);
-          console.log("attachment", imgName);
         }
       } else if (key === "userId") {
         if (userId == 0) {
@@ -62,8 +61,8 @@ const ServiceNoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("서비스공지 등록", res.data);
         if (res.data.id) {
+          toast.success("서비스 공지 등록 성공!");
           router.push(`/service/notice/${res.data.id}`);
         } else {
           toast.error("서비스 공지 등록 실패!", {

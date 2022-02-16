@@ -18,7 +18,7 @@ const EventForm = () => {
     title: "",
     context: "",
     start_at: "",
-    end_at: new Date(8640000000000000),
+    end_at: "",
     imgFile: null,
   });
 
@@ -72,7 +72,7 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        console.log("이벤트 등록 성공!", res.data);
+        toast.success("이벤트 등록 성공!");
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {

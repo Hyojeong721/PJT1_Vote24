@@ -89,11 +89,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         },
       })
       .then((res) => {
-        // formData 안에 값들 확인할 때
-        for (let value of fd.values()) {
-          console.log("form값들", value);
-        }
-        console.log("이벤트 수정 성공", res.data);
+        toast.success("이벤트 수정 성공!");
         router.push(`/event/${eventId}`);
       })
       .catch((err) => {

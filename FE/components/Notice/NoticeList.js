@@ -9,6 +9,7 @@ import listbtn from "../../styles/listbtn.module.css";
 import PagingFixed from "../../components/PagingFixed";
 import router from "next/router";
 import SearchBar from "../SearchBar";
+import { toast } from "react-toastify";
 
 const NoticeList = ({ url, createUrl }) => {
   const [dataList, setDataList] = useState([]);
@@ -32,12 +33,8 @@ const NoticeList = ({ url, createUrl }) => {
         .then((res) => {
           setDataList(res.data);
           setDataListProp(res.data);
-          console.log("공지목록", res.data);
           setFixed(res.data.filter((data) => data.fixed == 1));
-          console.log(
-            "fixed data",
-            res.data.filter((data) => data.fixed == 1)
-          );
+
           let ids = [];
           {
             res.data &&
@@ -49,6 +46,7 @@ const NoticeList = ({ url, createUrl }) => {
         })
         .catch((err) => {
           console.log("병원 공지 목록 get 실패", err);
+          toast.error("병원 공지 목록을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -91,11 +89,11 @@ const NoticeList = ({ url, createUrl }) => {
             },
           })
           .then((response) => {
-            console.log(response);
             router.push("/notice");
           })
           .catch((error) => {
             console.log("삭제에러", error);
+            toast.error("삭제에 실패하였습니다.");
           });
         // list 재구성 = 삭제된애들 빼고 나머지 넣기
         setIdList(dataList.filter((data) => data.id !== noticeId));

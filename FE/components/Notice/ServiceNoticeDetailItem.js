@@ -8,24 +8,23 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const ServiceNoticeDetailItem = ({ url, userId }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const nId = router.query.id;
 
-  console.log("userid", userId);
   // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(`${url}/${nId}`)
         .then((res) => {
-          console.log("서비스공지get 성공", res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log("공지 상세 get 실패", err);
+          toast.error("서비스 공지사항을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };

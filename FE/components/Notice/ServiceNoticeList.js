@@ -5,10 +5,13 @@ import TableColumn from "../Table/TableColumn";
 import SearchBar from "../SearchBar";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
   const [dataListProp, setDataListProp] = useState([]);
+  const router = useRouter();
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,12 +31,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
         .then((res) => {
           setDataList(res.data);
           setDataListProp(res.data);
-          console.log("서비스공지목록", res.data);
           setFixed(res.data.filter((data) => data.fixed == 1));
-          console.log(
-            "fixed data",
-            res.data.filter((data) => data.fixed == 1)
-          );
           let ids = [];
           {
             res.data &&
@@ -44,7 +42,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           setIdList(ids);
         })
         .catch((err) => {
-          console.log("서비스 공지 목록 get 실패", err);
+          toast.error("서비스 공지 목록을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -90,10 +88,10 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
             },
           })
           .then((response) => {
-            console.log(response);
+            toast.error("서비스 공지 삭제 성공!");
           })
           .catch((error) => {
-            console.log("삭제에러", error);
+            toast.error("서비스 공지 삭제 실패!");
           });
         setIdList(dataList.filter((data) => data.id !== noticeId));
         setDataList((dataList) =>
