@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -9,8 +9,9 @@ import cs from "../../styles/postcreate.module.css";
 
 const NoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
-  const router = useRouter();
+  const inputRef = useRef(values.image);
 
+  const router = useRouter();
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
@@ -43,6 +44,17 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   const handlefixed = (e) => {
     handleChange("fixed", e.target.value);
   };
+  //첨부파일
+  const handleChangeFile = (e) => {
+    const nextValue = e.target.files[0];
+    handleChange("imgFile", nextValue);
+  };
+
+  const handleClearClick = () => {
+    values.attachment = null;
+    values.image = null;
+    handleChange("imgFile", null);
+  };
 
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
@@ -61,12 +73,17 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
       }
     }
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
+    // formData 안에 값들 확인할 때
+    for (let value of fd.values()) {
+      console.log("form값들", value);
+    }
+    // formData 안에 값들 확인할 때
+    for (let key of fd.keys()) {
+      console.log("form값들 key", key);
+    }
 
     const jwt = localStorage.getItem("jwt");
+    console.log("보내는 db", fd);
     await axios
       .put(url, fd, {
         headers: {
@@ -85,6 +102,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         console.log(err);
       });
   };
+  console.log("업뎃전데이터", values);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -101,7 +119,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               name="title"
               onChange={handleInputChange}
               id="title"
-              value={values.title}
+              defaultValue={values.title}
               required
             ></input>
           </div>
@@ -147,7 +165,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
             <textarea
               className={cn(cs.textarea)}
               name="context"
-              value={values.context}
+              defaultValue={values.context}
               onChange={handleInputChange}
               id="context"
               rows="20"
@@ -157,11 +175,37 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         </div>
 
         <div name="첨부파일" className={cn(cs.formRow)}>
-          <FileInput
+          {/* <FileInput
             name="imgFile"
-            value={values.imgFile}
+            image={values.image}
+            attachment={values.attachment}
             onChange={handleChange}
-          ></FileInput>
+          ></FileInput> */}
+          <div className={cn(cs.formRow, "d-flex")}>
+            <div className={cn(cs.formLabel)}>
+              <label htmlFor="formFile" className="form-label">
+                첨부파일
+              </label>
+            </div>
+            <div className={cn(cs.formControl)}>
+              {values.image ? (
+                <div>
+                  {values.attachment}
+                  <button className={cn(cs.delete)} onClick={handleClearClick}>
+                    삭제
+                  </button>
+                </div>
+              ) : (
+                <input
+                  className="form-control"
+                  type="file"
+                  name="file"
+                  ref={inputRef}
+                  onChange={handleChangeFile}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

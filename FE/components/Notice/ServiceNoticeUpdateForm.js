@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import cs from "../../styles/postcreate.module.css";
 const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
+  const inputRef = useRef(values.image);
 
   // 기존 data 가져오기
   useEffect(() => {
@@ -42,6 +43,17 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   // 고정 체크 박스 수정
   const handlefixed = (e) => {
     handleChange("fixed", e.target.value);
+  };
+  //첨부파일
+  const handleChangeFile = (e) => {
+    const nextValue = e.target.files[0];
+    handleChange("imgFile", nextValue);
+  };
+
+  const handleClearClick = () => {
+    values.attachment = null;
+    values.image = null;
+    handleChange("imgFile", null);
   };
 
   // 글 수정 서버 요청
@@ -165,12 +177,30 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           </div>
         </div>
 
-        <div name="첨부파일" className={cn(cs.formRow)}>
-          <FileInput
-            name="imgFile"
-            value={values.imgFile}
-            onChange={handleChange}
-          ></FileInput>
+        <div name="첨부파일" className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="formFile" className="form-label">
+              첨부파일
+            </label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            {values.image ? (
+              <div>
+                {values.attachment}
+                <button className={cn(cs.delete)} onClick={handleClearClick}>
+                  삭제
+                </button>
+              </div>
+            ) : (
+              <input
+                className="form-control"
+                type="file"
+                name="file"
+                ref={inputRef}
+                onChange={handleChangeFile}
+              />
+            )}
+          </div>
         </div>
       </div>
 
