@@ -61,7 +61,7 @@ router.post("/service", verifyToken, service_upload.single("service_img"), async
  *----------------------------------------------------------------------*/
 router.put("/service/:id", verifyToken, service_upload.single("service_img"), async (req, res) => {
   const id = req.params.id;
-  const { hospital_id, title, context, fixed, attachment } = req.body;
+  const { hospital_id, title, context, fixed, attachment, del } = req.body;
   if (hospital_id != 24) {
     logger.info("POST Service Notice");
     return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });
@@ -72,7 +72,7 @@ router.put("/service/:id", verifyToken, service_upload.single("service_img"), as
   // const path = "uploads/service/" + rename;
 
   try {
-    if (attachment != "null") {
+    if (attachment) {
       nameParser("uploads/service", "uploads/service", attachment, rename);
       const sql = `UPDATE service_notice SET 
                       title=?, 
@@ -82,13 +82,22 @@ router.put("/service/:id", verifyToken, service_upload.single("service_img"), as
                       updated_at = now() WHERE id=?;`;
       const data = await pool.query(sql, [title, context, fixed, rename, id]);
     } else {
-      const sql = `UPDATE service_notice SET 
+      if (del == 0) {
+        const sql = `UPDATE service_notice SET 
+                      title=?, 
+                      context=?, 
+                      fixed=?,
+                      updated_at = now() WHERE id=?;`;
+        const data = await pool.query(sql, [title, context, fixed, id]);
+      } else {
+        const sql = `UPDATE service_notice SET 
                       title=?, 
                       context=?, 
                       fixed=?,
                       attachment = null,
                       updated_at = now() WHERE id=?;`;
-      const data = await pool.query(sql, [title, context, fixed, id]);
+        const data = await pool.query(sql, [title, context, fixed, id]);
+      }
     }
 
     logger.info("PUT Service Notice");
@@ -105,6 +114,7 @@ router.put("/service/:id", verifyToken, service_upload.single("service_img"), as
  *----------------------------------------------------------------------*/
 router.delete("/service/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
+  const { hospital_id } = req.body;
   if (hospital_id != 24) {
     logger.info("POST Service Notice");
     return res.json({ state: "Fail", Message: "사이트 관리자만 접근 가능합니다." });

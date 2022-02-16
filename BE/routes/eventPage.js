@@ -165,10 +165,10 @@ router.put(
   async (req, res) => {
     const { hospital_id, id } = req.params;
 
-    const { title, end_at, start_at, context, attachment } = req.body;
+    const { title, end_at, start_at, context, attachment, del } = req.body;
 
     try {
-      if (attachment != "null") {
+      if (attachment) {
         const rename =
           new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, "") +
           attachment;
@@ -192,14 +192,24 @@ router.put(
           hospital_id,
         ]);
       } else {
-        const sql = `update hospital_event set
+        if (del == 0) {
+          const sql = `update hospital_event set
+                            title =?, 
+                            context =?, 
+                            start_at =?, 
+                            end_at =?,
+                            updated_at = now() where id=? AND hospital_id=?`;
+          const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+        } else {
+          const sql = `update hospital_event set
                             title =?, 
                             context =?, 
                             start_at =?, 
                             end_at =?,
                             attachment = null,
                             updated_at = now() where id=? AND hospital_id=?`;
-        const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+          const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+        }
       }
 
       logger.info("UPDATE Event Detail");
