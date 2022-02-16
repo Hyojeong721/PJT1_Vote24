@@ -129,16 +129,18 @@ const NoticeList = ({ url, createUrl }) => {
           <tr>
             <th className="table-header-column">
               <input
+                name="checkboxAll"
                 type="checkbox"
                 onChange={onChangeAll}
                 checked={
-                  currentPosts && checkList.length === currentPosts.length
+                  (currentPosts && checkList.length === currentPosts.length) ||
+                  ""
                 }
               />
             </th>
             {headersName.map((item, index) => {
               return (
-                <th className="table-header-column" key={item.id}>
+                <th className="table-header-column" key={index}>
                   {item}
                 </th>
               );
@@ -146,38 +148,40 @@ const NoticeList = ({ url, createUrl }) => {
           </tr>
         </thead>
         <tbody>
-          {currentPosts
-            ? currentPosts.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id}>
-                    <td className="table-column">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      ></input>
-                    </td>
-                    <TableColumn
-                      content={index + 1 + (currentPage - 1) * postsPerPage}
-                      fixed={item.fixed}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.title}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={DateForm(item.created_at)}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.views}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                  </TableRow>
-                );
-              })
-            : ""}
+          {currentPosts ? (
+            currentPosts.map((item, index) => {
+              return (
+                <TableRow key={index} id={item.id}>
+                  <td className="table-column">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    ></input>
+                  </td>
+                  <TableColumn
+                    content={index + 1 + (currentPage - 1) * postsPerPage}
+                    fixed={item.fixed}
+                    url={`notice/${item.id}`}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    url={`notice/${item.id}`}
+                  ></TableColumn>
+                  <TableColumn
+                    content={DateForm(item.created_at)}
+                    url={`notice/${item.id}`}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    url={`notice/${item.id}`}
+                  ></TableColumn>
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr></tr>
+          )}
         </tbody>
       </table>
       <PagingFixed
