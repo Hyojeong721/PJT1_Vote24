@@ -1,15 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import router from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
 const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
-  const router = useRouter();
   const inputRef = useRef(values.image);
 
   // 기존 data 가져오기
@@ -18,6 +16,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
       await axios
         .get(url)
         .then((res) => {
+          res.data.del = 0;
           setValues(res.data);
         })
         .catch((err) => {
@@ -48,12 +47,15 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const handleChangeFile = (e) => {
     const nextValue = e.target.files[0];
     handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
   };
 
-  const handleClearClick = () => {
+  const handleClearClick = (values) => {
     values.attachment = null;
     values.image = null;
     handleChange("imgFile", null);
+    handleChange("attachment", null);
+    handleChange("del", 1);
   };
 
   // 글 수정 서버 요청
@@ -69,7 +71,9 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           fd.append("attachment", imgName);
         }
       } else {
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(key, values[key]);
+        }
       }
     }
     fd.append("hospital_id", 24);
@@ -78,7 +82,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
     // for (let value of fd.values()) {
     //   console.log("form값들", value);
     // }
-
+    console.log("values", typeof values);
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
@@ -88,22 +92,22 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("병원공지 수정", res.data);
+        console.log("서비스공지 수정", res.data);
         if (res.data.id) {
           router.push(`/service/notice/${res.data.id}`);
         } else {
-          toast.error("병원공지 수정 실패!", {
+          toast.error("then넘어온 수정 실패!", {
             autoClose: 3000,
           });
-          router.push("/404");
+          // router.push("/404");
         }
       })
       .catch((err) => {
-        toast.error("병원공지 수정 실패!", {
+        toast.error("서비스공지 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
-        router.push("/404");
+        // router.push("/404");
       });
   };
 
@@ -122,7 +126,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
               name="title"
               onChange={handleInputChange}
               id="title"
-              value={values.title}
+              defaultValue={values.title}
               required
             ></input>
           </div>
@@ -168,7 +172,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
             <textarea
               className={cn(cs.textarea)}
               name="context"
-              value={values.context}
+              defaultValue={values.context}
               onChange={handleInputChange}
               id="context"
               rows="20"

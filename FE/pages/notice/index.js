@@ -1,24 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import router from "next/router";
 import Header from "../../components/Header";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import NoticeList from "../../components/Notice/NoticeList";
-import PagingFixed from "../../components/PagingFixed";
 
 function HospitalNotice() {
-  const [dataList, setDataList] = useState([]);
-  // const [fixed, setFixed] = useState([]);
-
-  // // 페이징 처리를 위한
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [postsPerPage] = useState(5);
-
   // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
   const CREATE_URL = "/notice/create";
+
   // 서버에서 notice 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
@@ -27,7 +20,7 @@ function HospitalNotice() {
         .then((res) => {
           setDataList(res.data);
           console.log("공지목록", res.data);
-          // setFixed(res.data.filter((data) => data.fixed == 1));
+          setFixed(res.data.filter((data) => data.fixed == 1));
           console.log(
             "fixed data",
             res.data.filter((data) => data.fixed == 1)
@@ -41,45 +34,23 @@ function HospitalNotice() {
     getList();
   }, [NOTICE_URL]);
 
-  // // 페이징 처리를 위한 계산
-  // const fixedCnt = fixed.length;
-  // const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-  // const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-  // const currentPosts = [
-  //   ...dataList.slice(0, fixedCnt),
-  //   ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-  // ];
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // 페이징 처리를 위한 계산
+  const fixedCnt = fixed.length;
+  const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
+  const currentPosts = [
+    ...dataList.slice(0, fixedCnt),
+    ...dataList.slice(indexOfFirstPost, indexOfLastPost),
+  ];
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // var indexlst = [];
-  // let i = 0;
-  // for (i = indexOfLastPost; indexOfFirstPost < i; i--) {
-  //   indexlst.push(i - 1);
-  // }
-
-  // console.log(currentPage);
   return (
     <div>
       <Header title="병원 공지사항">
         <div></div>
       </Header>
       <div className="container div-table">
-        <NoticeList
-          // indexlst={indexlst}
-          // currentPage={currentPage}
-          // fixedCnt={fixedCnt}
-          // postsPerPage={postsPerPage}
-          setDataList={setDataList}
-          // dataList={currentPosts}
-          url={NOTICE_URL}
-          createUrl={CREATE_URL}
-        />
-        {/* <PagingFixed
-          postsPerPage={postsPerPage}
-          totalPosts={dataList.length}
-          paginate={paginate}
-          fixedCnt={fixedCnt}
-        /> */}
+        <NoticeList url={NOTICE_URL} createUrl={CREATE_URL} />
       </div>
     </div>
   );

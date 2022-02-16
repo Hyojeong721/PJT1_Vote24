@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
-import DateForm from "../DateForm";
 import { getPrevDate, getNextDate } from "../getDate";
 
 const EventUpdateForm = ({ eventId, url }) => {
@@ -20,6 +18,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         .get(url)
         .then((res) => {
           const data = res.data;
+          res.data.del = 0;
           setValues(data);
         })
         .catch((err) => {
@@ -45,12 +44,15 @@ const EventUpdateForm = ({ eventId, url }) => {
   const handleChangeFile = (e) => {
     const nextValue = e.target.files[0];
     handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
   };
 
   const handleClearClick = () => {
     values.attachment = null;
     values.image = null;
     handleChange("imgFile", null);
+    handleChange("attachment", null);
+    handleChange("del", 1);
   };
 
   // 글 수정 서버 요청
@@ -71,7 +73,9 @@ const EventUpdateForm = ({ eventId, url }) => {
       } else if (key === "start_at" || key == "end_at") {
         fd.append(`${key}`, values[key].slice(0, 10));
       } else {
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(`${key}`, values[key]);
+        }
       }
     }
     // 서버에 보내기
@@ -85,6 +89,10 @@ const EventUpdateForm = ({ eventId, url }) => {
         },
       })
       .then((res) => {
+        // formData 안에 값들 확인할 때
+        for (let value of fd.values()) {
+          console.log("form값들", value);
+        }
         console.log("이벤트 수정 성공", res.data);
         router.push(`/event/${eventId}`);
       })
