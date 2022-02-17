@@ -7,8 +7,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function DoughnutChart({ ageDataProp, genderDataProp }) {
   const ageChartData = ageDataProp.map((d) => d.count);
   const genderChartData = genderDataProp.map((d) => d.count);
-  console.log(ageDataProp);
-  console.log(ageChartData);
 
   const options = {
     responsive: true,

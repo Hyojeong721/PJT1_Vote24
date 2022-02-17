@@ -5,7 +5,6 @@ import { Pie } from "react-chartjs-2";
 // ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChartAge = ({ result }) => {
-  console.log("age에 들어온", result);
   let cnt10 = 0;
   let cnt20 = 0;
   let cnt30 = 0;
