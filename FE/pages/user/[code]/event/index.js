@@ -80,9 +80,10 @@ export async function getServerSideProps({ params }) {
   }
 
   const EVENT_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/event/${id}`;
-  const eventList = await axios.get(EVENT_URL).then((res) => {
-    return res.data;
-  });
+  const eventList = await axios
+    .get(EVENT_URL)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {

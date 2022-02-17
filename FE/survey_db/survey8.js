@@ -78,14 +78,11 @@ const result = {
 
 const fs = require("fs");
 const axios = require("axios");
-const {
-  default: SurveyCreateFormBody,
-} = require("../components/Survey/SurveyCreateFormBody");
 const jwt =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImlhdCI6MTY0NTA4Mzc4MywiZXhwIjoxNjQ1MTcwMTgzfQ.H0Bjm4xqrozq3H49eEzuRFMMYYC5Nji28hTGsNPlbR8";
 
 axios
-  .post(`http://i6a205.p.ssafy.io:8000/api/survey/${26}`, result, {
+  .post(`http://i6a205.p.ssafy.io:8000/api/survey/${27}`, result, {
     headers: {
       authorization: jwt,
     },

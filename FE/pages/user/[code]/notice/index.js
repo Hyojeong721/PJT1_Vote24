@@ -79,9 +79,10 @@ export async function getServerSideProps({ params }) {
   }
 
   const NOTICE_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/notice/${id}`;
-  const noticeList = await axios.get(NOTICE_URL).then((res) => {
-    return res.data;
-  });
+  const noticeList = await axios
+    .get(NOTICE_URL)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {

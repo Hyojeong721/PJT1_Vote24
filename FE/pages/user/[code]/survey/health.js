@@ -81,9 +81,10 @@ export async function getServerSideProps({ params }) {
   }
 
   const SURVEY_HEALTH_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/list/${id}/0`;
-  const surveyList = await axios.get(SURVEY_HEALTH_URL).then((res) => {
-    return res.data;
-  });
+  const surveyList = await axios
+    .get(SURVEY_HEALTH_URL)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {
