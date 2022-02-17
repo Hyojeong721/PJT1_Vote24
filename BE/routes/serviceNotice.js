@@ -99,7 +99,6 @@ router.put("/service/:id", verifyToken, service_upload.single("service_img"), as
         const data = await pool.query(sql, [title, context, fixed, id]);
       }
     }
-
     logger.info("PUT Service Notice");
     return res.json({ result: "Success", id: id });
   } catch (error) {

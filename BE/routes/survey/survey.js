@@ -117,7 +117,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     question,
     benchmark,
     created_at,
-    count,
   } = req.body;
   try {
     const hospital_id_data = await pool.query(
@@ -127,7 +126,7 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     const hospital_id = hospital_id_data[0][0].hospital_id;
     await pool.query("DELETE FROM hospital_survey WHERE id = ?", [id]);
     if (req.body.end_at) {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, end_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, start_at, end_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -135,13 +134,12 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
-        count,
         start_at,
         end_at,
         created_at,
       ]);
     } else {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, start_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -149,7 +147,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
-        count,
         start_at,
         created_at,
       ]);
