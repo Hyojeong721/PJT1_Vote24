@@ -26,6 +26,15 @@ export async function getServerSideProps({ params }) {
     return res.data;
   });
 
+  if (Object.keys(surveyDetail).length === 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/survey",
+      },
+    };
+  }
+
   return {
     props: {
       sId,

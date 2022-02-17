@@ -19,7 +19,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const paintOptions = (qId, option) => {
     return option.map(({ id, order, context, weight }) => {
       return (
-        <div key={order} className="d-flex align-items-center gap-2">
+        <div key={`O${order}`} className="d-flex align-items-center gap-2">
           <input
             className="form-check-input"
             type="radio"
@@ -51,7 +51,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const paintQuestions = question.map((q) => {
     const { order, context, option } = q;
     return (
-      <div key={order} className="border rounded-3 shadow-sm my-3">
+      <div key={`Q${order}`} className="border rounded-3 shadow-sm my-3">
         <div className="fs-4 ps-3 p-2">
           {order}. {context}
         </div>

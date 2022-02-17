@@ -19,6 +19,9 @@ const SurveyDetailItem = ({ sId, url }) => {
       await axios
         .get(url)
         .then((res) => {
+          if (Object.keys(res.data).length === 0) {
+            router.push("/404");
+          }
           setData(res.data);
         })
         .catch((err) => {
