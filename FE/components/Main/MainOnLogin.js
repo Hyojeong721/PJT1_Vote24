@@ -33,7 +33,6 @@ function MainOnLogin() {
       .catch((err) => console.log(err));
 
     setData(summaryData);
-    console.log(summaryData);
   };
 
   useEffect(() => {
