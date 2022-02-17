@@ -100,7 +100,7 @@ const EventDetailItem = ({ id, url }) => {
         </div>
       </div>
       <div name="내용" className={(cn(ct.contentBody), "m-3")}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}

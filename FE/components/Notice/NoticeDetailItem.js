@@ -86,7 +86,7 @@ const NoticeDetailItem = ({ url }) => {
         </div>
       </div>
       <div className={cn(ct.contentBody)}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}

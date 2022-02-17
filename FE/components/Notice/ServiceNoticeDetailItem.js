@@ -99,13 +99,14 @@ const ServiceNoticeDetailItem = ({ url, userId }) => {
         </div>
       </div>
       <div className={cn(ct.contentBody)}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}
               alt={data.attachment}
               width="800px"
               height="800px"
+              objectFit="contain"
               priority
             ></Image>
           )}
