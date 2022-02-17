@@ -8,11 +8,18 @@ import Paging from "../../../../components/Paging";
 
 function NoticeUser({ code, noticeListProp }) {
   const [noticeList, setNoticeList] = useState(noticeListProp);
+
   // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(8);
 
-  const paintNoticeList = noticeList.map((n, idx) => {
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = noticeList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const paintNoticeList = currentPosts.map((n, idx) => {
     return (
       <UserPostListItem
         key={idx}
@@ -22,11 +29,6 @@ function NoticeUser({ code, noticeListProp }) {
       />
     );
   });
-  // 페이징 처리를 위한 계산
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = noticeList.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
@@ -38,7 +40,7 @@ function NoticeUser({ code, noticeListProp }) {
         <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
       </div>
       {currentPosts.length ? (
-        currentPosts
+        paintNoticeList
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
           <span className="material-icons fs-1 d-flex align-items-center">
