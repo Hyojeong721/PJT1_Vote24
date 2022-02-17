@@ -4,13 +4,23 @@ import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
 import SearchBar from "../../../../components/SearchBar";
+import Paging from "../../../../components/Paging";
 
 function SurveyHealthUser({ code, surveyListProp }) {
   const [surveyList, setSurveyList] = useState(
     surveyListProp.sort((a, b) => a.status - b.status)
   );
+  // 페이징 처리를 위한
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
 
-  const paintSurveyList = surveyList.map((s, idx) => {
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = surveyList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const paintSurveyList = currentPosts.map((s, idx) => {
     return (
       <UserSurveyListItem
         key={idx}
@@ -32,7 +42,7 @@ function SurveyHealthUser({ code, surveyListProp }) {
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setSurveyList} postListProp={surveyListProp} />
       </div>
-      {surveyList.length ? (
+      {currentPosts.length ? (
         paintSurveyList
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
@@ -42,6 +52,11 @@ function SurveyHealthUser({ code, surveyListProp }) {
           작성된 설문조사가 없습니다.
         </div>
       )}
+      <Paging
+        postsPerPage={postsPerPage}
+        totalPosts={surveyList.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
