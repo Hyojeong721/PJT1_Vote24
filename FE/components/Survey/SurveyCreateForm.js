@@ -44,7 +44,6 @@ function SurveyCreateForm() {
       output_link,
       reservation_link,
     } = data;
-    console.log("@@@", category);
     const result = {
       category,
       title,
@@ -57,6 +56,9 @@ function SurveyCreateForm() {
       benchmark: bList,
     };
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
 
     await axios
       .post(SURVEY_URL, result, {

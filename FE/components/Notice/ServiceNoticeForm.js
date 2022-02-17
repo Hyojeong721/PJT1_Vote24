@@ -53,6 +53,10 @@ const ServiceNoticeForm = ({ url }) => {
       }
     }
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .post(url, fd, {
         headers: {

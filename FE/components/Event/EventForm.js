@@ -60,6 +60,9 @@ const EventForm = () => {
     }
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
 
     await axios
       .post(EVENT_URL, fd, {

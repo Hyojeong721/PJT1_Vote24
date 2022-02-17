@@ -77,6 +77,10 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     }
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .put(url, fd, {
         headers: {

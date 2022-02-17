@@ -80,6 +80,10 @@ const EventUpdateForm = ({ eventId, url }) => {
 
     // 서버에 보내기
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .put(url, fd, {
         headers: {

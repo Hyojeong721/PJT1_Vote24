@@ -57,7 +57,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
       start_at,
       end_at,
     } = data;
-    console.log("update", category);
+
     const result = {
       created_at: surveyDetail.created_at.slice(0, -5).replace("T", " "),
       count: surveyDetail.count,
@@ -73,6 +73,9 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     };
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
 
     await axios
       .put(SURVEY_URL, result, {

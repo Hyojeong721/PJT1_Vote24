@@ -79,6 +79,10 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
     fd.append("hospital_id", 24);
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .put(url, fd, {
         headers: {
