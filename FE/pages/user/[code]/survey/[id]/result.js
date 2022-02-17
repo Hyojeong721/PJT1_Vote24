@@ -21,17 +21,17 @@ function SurveyDetailUser({
           </div>
         </div>
         <div className="fs-3 my-3">
-          <p>{score === "0" || `결사결과: ${score}점 (${outputText})`}</p>
+          <p>{score === "0" || `결사결과: ${score}점 - ${outputText}`}</p>
         </div>
         {outputLink && (
           <div className="d-flex flex-column justify-content-center align-items-center fs-3 my-3 gap-3">
-            <Link href={`https://${outputLink}`} passHref>
+            <Link href={outputLink} passHref>
               <a className={cn(styles.btnUser, "btn", "fs-2")}>
                 <span className="material-icons me-2">ads_click</span>
                 건강 정보 더보기
               </a>
             </Link>
-            <Link href={`https://${reservationLink}`} passHref>
+            <Link href={reservationLink} passHref>
               <a className={cn(styles.btnUser, "btn", "fs-2")}>
                 <span className="material-icons me-2">ads_click</span>
                 진료 예약 바로가기
@@ -78,10 +78,7 @@ export async function getServerSideProps({ query }) {
   const { status, title, output_link, reservation_link, benchmark } =
     await axios
       .get(GET_BENCHMARK_URL)
-      .then((res) => {
-        console.log("@@", res.data);
-        return res.data;
-      })
+      .then((res) => res.data)
       .catch((err) => console.log(err));
 
   if (status !== 0) {
@@ -94,6 +91,7 @@ export async function getServerSideProps({ query }) {
   }
 
   let outputText = "";
+  benchmark.sort((a, b) => a.benchmark - b.benchmark);
   for (let i = 0; i < benchmark.length; i++) {
     if (score > benchmark[i].benchmark) {
       outputText = benchmark[i].output_text;

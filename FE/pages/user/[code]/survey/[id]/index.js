@@ -105,7 +105,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
       <div className="w-75 bg-white form-control mt-3 text-center shadow border-0 border-bottom border-3 border-warning">
         <BackButton url={`/user/${code}/survey/${categoryName}`} />
         <div className="fs-1 border-bottom mb-3">{title}</div>
-        <div className="my-2">
+        <div className="my-2 text-start">
           {context &&
             context.split("\n").map((line, idx) => {
               return (

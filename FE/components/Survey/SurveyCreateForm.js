@@ -15,15 +15,6 @@ function SurveyCreateForm() {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
 
-  useEffect(() => {
-    if (router.query.category) {
-      setNowCategory(router.query.category);
-    }
-  }, []);
-
-  const { userInfo } = useSelector((state) => state.userStatus);
-  const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${userInfo.id}`;
-
   const {
     register,
     unregister,
@@ -31,6 +22,16 @@ function SurveyCreateForm() {
     handleSubmit,
     setValue,
   } = useForm();
+
+  useEffect(() => {
+    if (router.query.category === "1") {
+      setNowCategory(router.query.category);
+      setValue("category", "1");
+    }
+  }, []);
+
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${userInfo.id}`;
 
   const onSubmit = async (data) => {
     const { qList, bList } = parseInput(data);

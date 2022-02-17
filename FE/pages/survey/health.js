@@ -13,7 +13,7 @@ function HealthSurvey() {
   const [dataList, setDataList] = useState([]);
   const [dataListProp, setDataListProp] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
 
   const router = useRouter();
 
