@@ -67,6 +67,16 @@
   margin: 20px 0;
   background-color: #f9f9f9;
 }
+.surveyUpdateInfo {
+  /* padding: 15px; */
+  margin: 20px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.warning {
+  margin-right: 3px;
+  color: red;
+}
 
 .questionListResult {
   font-size: 30px;
