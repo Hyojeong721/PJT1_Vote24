@@ -12,7 +12,7 @@ const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey`;
 function ServiceSurvey() {
   const [dataList, setDataList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(10);
 
   const router = useRouter();
 

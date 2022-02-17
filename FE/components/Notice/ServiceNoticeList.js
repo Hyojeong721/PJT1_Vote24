@@ -17,7 +17,7 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(10);
 
   // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
@@ -62,7 +62,11 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    setCheckList(e.target.checked ? currentPosts.map((post) => post.id) : []);
+    setCheckList(
+      e.target.checked && currentPosts
+        ? currentPosts.map((post) => post.id)
+        : []
+    );
   };
 
   const onChangeEach = (e, id) => {
