@@ -150,6 +150,8 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
                       content={`${DateForm(item.start_at)} ~ ${DateForm(
                         item.end_at
                       )}`}
+                      name="survey"
+                      id={item.id}
                     />
                     <TableColumn
                       content={item.count}
