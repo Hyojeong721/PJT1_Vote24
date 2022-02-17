@@ -21,7 +21,7 @@ function SurveyDetailUser({
           </div>
         </div>
         <div className="fs-3 my-3">
-          <p>{score === "0" || `결사결과: ${score}점 - ${outputText}`}</p>
+          <p>{score === "0" || `검사결과: ${score}점 - ${outputText}`}</p>
         </div>
         {outputLink && (
           <div className="d-flex flex-column justify-content-center align-items-center fs-3 my-3 gap-3">
