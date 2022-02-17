@@ -8,12 +8,14 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function DoughnutChart({ ageDataProp, genderDataProp }) {
   const ageChartData = ageDataProp.map((d) => d.count);
 
-  let male = 0;
-  let female = 0;
-  genderDataProp.forEach((d) => {
-    d.gender ? female++ : male++;
+  const genderChartData = [0, 0];
+  genderDataProp.forEach((data) => {
+    if (data.gender) {
+      genderChartData[1] = data.count;
+    } else {
+      genderChartData[0] = data.count;
+    }
   });
-  const genderChartData = [male, female];
 
   const options = {
     responsive: true,
@@ -44,11 +46,7 @@ export default function DoughnutChart({ ageDataProp, genderDataProp }) {
       {
         label: "My First Dataset",
         data: genderChartData,
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-        ],
+        backgroundColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)"],
         hoverOffset: 4,
       },
     ],

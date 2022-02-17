@@ -1,0 +1,7 @@
+.pageButton {
+  background-color: white;
+}
+
+.pageButton:hover {
+  background-color: #fff8e6;
+}
