@@ -11,6 +11,7 @@ const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey`;
 
 function ServiceSurvey() {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
 
@@ -26,6 +27,7 @@ function ServiceSurvey() {
         .get(SURVEY_SERVICE_URL)
         .then((res) => {
           setDataList(res.data);
+          setDataListProp(res.data);
         })
         .catch((error) => {
           console.log("만족도 설문 목록 get 실패", error);
@@ -43,14 +45,19 @@ function ServiceSurvey() {
 
   return (
     <div>
-      <Header title="서비스 만족도"></Header>
-      <div className="container">
-        <Link href={"health"}>
-          <a>건강 설문으로 가기</a>
-        </Link>
+      <Header title="서비스 만족도 설문">
+        <></>
+      </Header>
+      <div className="container div-table shadow">
+        <div className="ms-3 mt-2">
+          <Link href={"health"}>
+            <a>건강 설문으로 가기</a>
+          </Link>
+        </div>
         <SurveyList
           url={SURVEY_URL}
           setDataList={setDataList}
+          dataListProp={dataListProp}
           dataList={currentPosts}
           category={"1"}
         ></SurveyList>

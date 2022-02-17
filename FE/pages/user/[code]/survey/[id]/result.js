@@ -1,6 +1,7 @@
 import axios from "axios";
 import Link from "next/link";
-import BackButton from "../../../../../components/BackButton";
+import cn from "classnames";
+import styles from "../../../../../styles/userresult.module.css";
 
 function SurveyDetailUser({
   code,
@@ -14,24 +15,26 @@ function SurveyDetailUser({
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="fs-1 mt-3">설문 결과</div>
       <div className="w-75 bg-white form-control mt-3 text-center gap-3">
-        <div className="fs-1 my-3 border-bottom">
-          <p>설문에 참여해주셔서 감사합니다.</p>
+        <div className="fs-2 mt-5">
+          <div className="border-2 border-bottom border-warning">
+            <p>설문에 참여해주셔서 감사합니다.</p>
+          </div>
         </div>
-        <div className="fs-3 my-3 border-bottom ">
+        <div className="fs-3 my-3">
           <p>{score === "0" || `결사결과: ${score}점 (${outputText})`}</p>
         </div>
-        {score === "0" || (
+        {outputLink && (
           <div className="d-flex flex-column justify-content-center align-items-center fs-3 my-3 gap-3">
             <Link href={`https://${outputLink}`} passHref>
-              <a>
-                건강 정보 더보기{" "}
-                <span className="material-icons">north_east</span>
+              <a className={cn(styles.btnUser, "btn", "fs-2")}>
+                <span className="material-icons me-2">ads_click</span>
+                건강 정보 더보기
               </a>
             </Link>
             <Link href={`https://${reservationLink}`} passHref>
-              <a>
-                진료예약 바로가기{" "}
-                <span className="material-icons">north_east</span>
+              <a className={cn(styles.btnUser, "btn", "fs-2")}>
+                <span className="material-icons me-2">ads_click</span>
+                진료 예약 바로가기
               </a>
             </Link>
           </div>
@@ -75,7 +78,10 @@ export async function getServerSideProps({ query }) {
   const { status, title, output_link, reservation_link, benchmark } =
     await axios
       .get(GET_BENCHMARK_URL)
-      .then((res) => res.data)
+      .then((res) => {
+        console.log("@@", res.data);
+        return res.data;
+      })
       .catch((err) => console.log(err));
 
   if (status !== 0) {
