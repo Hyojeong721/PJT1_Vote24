@@ -6,8 +6,9 @@ import Link from "next/link";
 import axios from "axios";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import SearchBar from "../SearchBar";
 
-const SurveyList = ({ url, setDataList, category, dataList }) => {
+const SurveyList = ({ url, category, dataList, setDataList, dataListProp }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -83,7 +84,9 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link
             href={{

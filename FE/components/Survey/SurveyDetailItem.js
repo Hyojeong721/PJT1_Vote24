@@ -14,7 +14,6 @@ import SurveyOuputLink from "./SurveyOutputLink";
 const SurveyDetailItem = ({ sId, url }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  console.log(data);
   useEffect(() => {
     const getPost = async () => {
       await axios

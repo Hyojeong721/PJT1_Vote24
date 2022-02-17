@@ -33,6 +33,7 @@ function SurveyCreateForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log(category);
     const { qList, bList } = parseInput(data);
     const {
       category,
@@ -43,6 +44,7 @@ function SurveyCreateForm() {
       output_link,
       reservation_link,
     } = data;
+    console.log("@@@", category);
     const result = {
       category,
       title,

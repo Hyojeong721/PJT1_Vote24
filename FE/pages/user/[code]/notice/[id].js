@@ -36,17 +36,6 @@ function NoticeDetailUser({ code, noticeDetail }) {
         </div>
       </div>
       <div className="user-detail-section border-bottom d-flex flex-column p-5">
-        <div>
-          {context &&
-            context.split("\n").map((line, idx) => {
-              return (
-                <span key={idx}>
-                  {line}
-                  <br />
-                </span>
-              );
-            })}
-        </div>
         {image && (
           <div className={(styles.imageContainer, "mx-auto")}>
             <Image
@@ -59,6 +48,17 @@ function NoticeDetailUser({ code, noticeDetail }) {
             />
           </div>
         )}
+        <div>
+          {context &&
+            context.split("\n").map((line, idx) => {
+              return (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+        </div>
       </div>
       <Link href={`/user/${code}/notice`} passHref>
         <button type="button" className="btn user-detail-to-list-button m-3">
