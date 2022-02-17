@@ -14,8 +14,8 @@ function SurveyDetailUser({
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center">
       <div className="fs-1 mt-3">설문 결과</div>
-      <div className="w-75 bg-white form-control mt-3 text-center gap-3">
-        <div className="fs-2 mt-5">
+      <div className="w-75 bg-white form-control mt-3 mb-3 text-center gap-3">
+        <div className="fs-2 mt-5 mb-5">
           <div className="border-2 border-bottom border-warning">
             <p>설문에 참여해주셔서 감사합니다.</p>
           </div>

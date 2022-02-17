@@ -4,9 +4,13 @@ import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 import SearchBar from "../../../../components/SearchBar";
 import { useState } from "react";
+import Paging from "../../../../components/Paging";
 
 function NoticeUser({ code, noticeListProp }) {
   const [noticeList, setNoticeList] = useState(noticeListProp);
+  // 페이징 처리를 위한
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
 
   const paintNoticeList = noticeList.map((n, idx) => {
     return (
@@ -18,6 +22,11 @@ function NoticeUser({ code, noticeListProp }) {
       />
     );
   });
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = noticeList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
@@ -28,8 +37,8 @@ function NoticeUser({ code, noticeListProp }) {
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
       </div>
-      {noticeList.length ? (
-        paintNoticeList
+      {currentPosts.length ? (
+        currentPosts
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
           <span className="material-icons fs-1 d-flex align-items-center">
@@ -38,6 +47,11 @@ function NoticeUser({ code, noticeListProp }) {
           작성된 공지사항이 없습니다.
         </div>
       )}
+      <Paging
+        postsPerPage={postsPerPage}
+        totalPosts={noticeList.length}
+        paginate={paginate}
+      />
     </div>
   );
 }

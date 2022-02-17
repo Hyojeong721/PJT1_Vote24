@@ -55,6 +55,8 @@ function HospitalEvent() {
           dataListProp={dataListProp}
           dataList={currentPosts}
           EVENT_URL={EVENT_URL}
+          currentPage={currentPage}
+          postsPerPage={postsPerPage}
         />
 
         <Paging
