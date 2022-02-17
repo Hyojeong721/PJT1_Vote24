@@ -2,8 +2,12 @@ const SurveyOuputLink = ({ output_link, reservation_link }) => {
   if (output_link || reservation_link) {
     return (
       <div>
-        <div className="ms-5 m-2">건강정보링크 : {output_link}</div>
-        <div className="ms-5 m-2">예약링크 : {reservation_link}</div>
+        <div className="ms-5 m-2">
+          건강정보링크 :<a href={output_link}> {output_link}</a>
+        </div>
+        <div className="ms-5 m-2">
+          예약링크 :<a href={reservation_link}> {reservation_link}</a>{" "}
+        </div>
       </div>
     );
   } else {
