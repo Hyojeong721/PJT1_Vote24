@@ -33,7 +33,6 @@ function SurveyCreateForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(category);
     const { qList, bList } = parseInput(data);
     const {
       category,
@@ -101,6 +100,7 @@ function SurveyCreateForm() {
         register={register}
         unregister={unregister}
         nowCategory={nowCategory}
+        setValue={setValue}
       />
 
       <div className="w-100 d-flex mt-5">

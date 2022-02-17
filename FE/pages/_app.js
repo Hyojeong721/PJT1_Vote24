@@ -35,14 +35,6 @@ function MyApp({ Component, pageProps }) {
   const code = router.query.code;
   const isUserPage = currentPage.includes("user");
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.onbeforeunload = function () {
-  //       localStorage.clear();
-  //     };
-  //   }
-  // }, []);
-
   return (
     <>
       <Head>

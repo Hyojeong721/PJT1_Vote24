@@ -125,57 +125,61 @@ const SurveyList = ({ url, category, dataList, setDataList, dataListProp }) => {
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id} name="/survey">
-                    <td>
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      />
-                    </td>
+          {list.length ? (
+            list.map((item, index) => {
+              return (
+                <TableRow key={item.id} id={item.id} name="/survey">
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    />
+                  </td>
 
-                    <TableColumn
-                      content={index + 1}
-                      url={`${item.id}`}
-                      name="survey"
-                      id={item.id}
-                    />
-                    <TableColumn
-                      content={item.title}
-                      url={`${item.id}`}
-                      name="survey"
-                      id={item.id}
-                    />
-                    <TableColumn
-                      content={`${DateForm(item.start_at)} ~ ${DateForm(
-                        item.end_at
-                      )}`}
-                      name="survey"
-                      id={item.id}
-                    />
-                    <TableColumn
-                      content={item.count}
-                      url={`${item.id}`}
-                      name="survey"
-                      id={item.id}
-                    />
-                    <TableColumn
-                      content={DateForm(item.created_at)}
-                      name="survey"
-                      id={item.id}
-                    />
-                    <TableColumn
-                      content={statusicon(item.status)}
-                      name="survey"
-                      id={item.id}
-                    />
-                  </TableRow>
-                );
-              })
-            : ""}
+                  <TableColumn
+                    content={index + 1}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={item.title}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={`${DateForm(item.start_at)} ~ ${DateForm(
+                      item.end_at
+                    )}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={item.count}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={DateForm(item.created_at)}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={statusicon(item.status)}
+                    name="survey"
+                    id={item.id}
+                  />
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={7}>작성된 설문이 없습니다.</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
