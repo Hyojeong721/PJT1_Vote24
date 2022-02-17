@@ -104,18 +104,6 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
     }
   };
 
-  // if (!dataListProp.length) {
-  //   return (
-  //     <div>
-  //       <div className="d-flex justify-content-center align-items-center p-5">
-  //         <div>
-  //           <h1>작성된 공지사항이 없습니다.</h1>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
@@ -183,7 +171,9 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
               );
             })
           ) : (
-            <tr></tr>
+            <tr>
+              <td colSpan={5}>작성된 공지사항이 없습니다.</td>
+            </tr>
           )}
         </tbody>
       </table>

@@ -184,7 +184,9 @@ const NoticeList = ({ url, createUrl }) => {
               );
             })
           ) : (
-            <tr></tr>
+            <tr>
+              <td colSpan={5}>작성된 공지사항이 없습니다.</td>
+            </tr>
           )}
         </tbody>
       </table>

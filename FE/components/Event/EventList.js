@@ -14,7 +14,6 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "기한", "조회수", "status"];
-
   useEffect(() => {
     setList(dataList);
 
@@ -61,7 +60,6 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
             },
           })
           .then((response) => {
-            console.log(response);
             toast.success("병원 이벤트 삭제 완료!");
           })
           .catch((error) => {
@@ -103,7 +101,7 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={checkList.length === idList.length}
+                checked={list.length && checkList.length === idList.length}
               />
             </th>
             {headersName.map((item, index) => {
@@ -116,49 +114,53 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id}>
-                    <td className="table-column">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      ></input>
-                    </td>
+          {list.length ? (
+            list.map((item, index) => {
+              return (
+                <TableRow key={item.id} id={item.id}>
+                  <td className="table-column">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    ></input>
+                  </td>
 
-                    <TableColumn
-                      content={index + 1}
-                      name="event"
-                      id={item.id}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.title}
-                      name="event"
-                      id={item.id}
-                    ></TableColumn>
-                    <TableColumn
-                      content={`${DateForm(item.start_at)}~${DateForm(
-                        item.end_at
-                      )}`}
-                      name="event"
-                      id={item.id}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.views}
-                      name="event"
-                      id={item.id}
-                    ></TableColumn>
-                    <TableColumn
-                      content={onStatus(item.status)}
-                      name="event"
-                      id={item.id}
-                    ></TableColumn>
-                  </TableRow>
-                );
-              })
-            : ""}
+                  <TableColumn
+                    content={index + 1}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={`${DateForm(item.start_at)}~${DateForm(
+                      item.end_at
+                    )}`}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={onStatus(item.status)}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={6}>작성된 이벤트가 없습니다.</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
