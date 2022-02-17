@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import Header from "../../../components/Header";
 import ServiceNoticeList from "../../../components/Notice/ServiceNoticeList";
 
-const SERVICE_NOTICE_URL = "http://i6a205.p.ssafy.io:8000/api/service";
+const SERVICE_NOTICE_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/service`;
 
 function ServiceNotice() {
   const { userInfo } = useSelector((state) => state.userStatus);

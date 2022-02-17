@@ -7,7 +7,7 @@ import Paging from "../../components/Paging";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
+const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey`;
 
 function ServiceSurvey() {
   const [dataList, setDataList] = useState([]);

@@ -45,7 +45,7 @@ function SurveyHealthUser({ code, surveyListProp }) {
 export async function getServerSideProps({ params }) {
   const code = params.code;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
@@ -61,7 +61,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const SURVEY_HEALTH_URL = `http://i6a205.p.ssafy.io:8000/api/survey/list/${id}/0`;
+  const SURVEY_HEALTH_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/list/${id}/0`;
   const surveyList = await axios.get(SURVEY_HEALTH_URL).then((res) => {
     return res.data;
   });

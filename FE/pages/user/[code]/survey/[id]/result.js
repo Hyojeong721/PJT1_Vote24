@@ -56,7 +56,7 @@ function SurveyDetailUser({
 export async function getServerSideProps({ query }) {
   const { code, id, score } = query;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const hId = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data.id)
@@ -71,7 +71,7 @@ export async function getServerSideProps({ query }) {
     };
   }
 
-  const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/list/${id}`;
+  const GET_BENCHMARK_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/benchmark/list/${id}`;
   const { status, title, output_link, reservation_link, benchmark } =
     await axios
       .get(GET_BENCHMARK_URL)

@@ -4,7 +4,7 @@ import ServiceNoticeUpdateForm from "../../../../components/Notice/ServiceNotice
 
 function ServiceNoticeUpdate() {
   const noticeId = router.query.id;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/service/${noticeId}`;
+  const NOTICE_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/service/${noticeId}`;
 
   return (
     <div>

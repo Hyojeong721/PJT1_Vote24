@@ -6,7 +6,7 @@ function SurveyDetail() {
   const router = useRouter();
   const sId = router.query.id;
 
-  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
+  const SURVEY_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`;
   return (
     <div>
       <Header title="설문 상세"></Header>

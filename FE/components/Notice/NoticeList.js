@@ -162,12 +162,24 @@ const NoticeList = ({ url, createUrl }) => {
                   <TableColumn
                     content={index + 1 + (currentPage - 1) * postsPerPage}
                     fixed={item.fixed}
+                    name="notice"
+                    id={item.id}
                   ></TableColumn>
-                  <TableColumn content={item.title}></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    name="notice"
+                    id={item.id}
+                  ></TableColumn>
                   <TableColumn
                     content={DateForm(item.created_at)}
+                    name="notice"
+                    id={item.id}
                   ></TableColumn>
-                  <TableColumn content={item.views}></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    name="notice"
+                    id={item.id}
+                  ></TableColumn>
                 </TableRow>
               );
             })

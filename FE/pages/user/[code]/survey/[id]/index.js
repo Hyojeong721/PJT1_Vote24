@@ -5,7 +5,7 @@ import BackButton from "../../../../../components/BackButton";
 import UserSurveyAgeGender from "../../../../../components/User/UserSurveyAgeGender";
 
 function SurveyDetailUser({ code, sId, surveyDetail }) {
-  const SURVEY_SUBMIT_URL = `http://i6a205.p.ssafy.io:8000/api/survey/result/${sId}`;
+  const SURVEY_SUBMIT_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/result/${sId}`;
   const { title, context, start_at, end_at, question, category, output_link } =
     surveyDetail;
   const categoryName = category === 0 ? "health" : "service";
@@ -125,7 +125,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 export async function getServerSideProps({ params }) {
   const { code, id } = params;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const hId = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data.id)
@@ -140,7 +140,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${id}`;
+  const SURVEY_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${id}`;
   const surveyDetail = await axios
     .get(SURVEY_DETAIL_URL)
     .then((res) => res.data)

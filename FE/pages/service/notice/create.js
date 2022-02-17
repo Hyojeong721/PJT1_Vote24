@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../components/Header";
 import ServiceNoticeForm from "../../../components/Notice/ServiceNoticeForm";
 
-const SERVICE_URL = `http://i6a205.p.ssafy.io:8000/api/service`;
+const SERVICE_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/service`;
 
 function ServiceNoticeCreate() {
   return (
