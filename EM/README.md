@@ -5,7 +5,7 @@
 * HC-06의 TX,RX와 Arduino UNO 보드의 TX,RX를 반대로 연결한다.
 * 위 연결 과정에서 문제가 발생한다. 이유는 Arduino UNO 보드에는 Serial Port가 1개이므로 컴퓨터와 연결하는 것과 HC-06과 연결하는 Serial Port가 충돌이 나기 때문이다.
 
-# Desktop KioskApp
+# DesktopKioskApp
 * Vote24KioskApp은 키오스크 앱의 코드가 있는 프로젝트이다.
 * Setupvote24KioskApp은 Vote24KioskApp의 배포할수 있는 setup 파일을 만드는 프로젝트이다.
 * Visual Studio의 솔루션 탐색기에서 Setupvote24KioskApp을 찾아 마우스 우클릭 후, 빌드를 하면 저장 위치에 설치 파일이 생성된다.
