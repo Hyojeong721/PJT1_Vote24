@@ -8,13 +8,13 @@ use `ssafy24`;
 
 CREATE TABLE `hospital_info` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(25) NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `business_number` varchar(50) NOT NULL,
-  `phone` varchar(15) NOT NULL,
+  `phone` varchar(255) NOT NULL,
   `code` varchar(6) DEFAULT NULL,
-  `logo_image` varchar(255) DEFAULT 'default_image',
+  `logo_image` varchar(255) DEFAULT 'default_image.png',
   `approval` tinyint(1) NOT NULL DEFAULT '0',
   `admin_approval` tinyint(1) NOT NULL DEFAULT '0',
   `todayCnt` int NOT NULL DEFAULT '0',
