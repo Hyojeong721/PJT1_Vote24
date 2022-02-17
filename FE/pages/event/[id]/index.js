@@ -9,7 +9,7 @@ function EventDetail() {
   const { id } = router.query;
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}/${id}`;
+  const EVENT_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/event/${hospital_id}/${id}`;
 
   return (
     <div>

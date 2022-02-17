@@ -118,7 +118,7 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
           {list
             ? list.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id} name="event">
+                  <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -126,15 +126,34 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
                         checked={checkList.includes(item.id)}
                       ></input>
                     </td>
-                    <TableColumn content={index + 1}></TableColumn>
-                    <TableColumn content={item.title}></TableColumn>
+
+                    <TableColumn
+                      content={index + 1}
+                      name="event"
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={item.title}
+                      name="event"
+                      id={item.id}
+                    ></TableColumn>
                     <TableColumn
                       content={`${DateForm(item.start_at)}~${DateForm(
                         item.end_at
                       )}`}
+                      name="event"
+                      id={item.id}
                     ></TableColumn>
-                    <TableColumn content={item.views}></TableColumn>
-                    <TableColumn content={onStatus(item.status)}></TableColumn>
+                    <TableColumn
+                      content={item.views}
+                      name="event"
+                      id={item.id}
+                    ></TableColumn>
+                    <TableColumn
+                      content={onStatus(item.status)}
+                      name="event"
+                      id={item.id}
+                    ></TableColumn>
                   </TableRow>
                 );
               })

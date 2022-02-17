@@ -134,16 +134,39 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
                       />
                     </td>
 
-                    <TableColumn content={index + 1} url={`${item.id}`} />
-                    <TableColumn content={item.title} url={`${item.id}`} />
+                    <TableColumn
+                      content={index + 1}
+                      url={`${item.id}`}
+                      name="survey"
+                      id={item.id}
+                    />
+                    <TableColumn
+                      content={item.title}
+                      url={`${item.id}`}
+                      name="survey"
+                      id={item.id}
+                    />
                     <TableColumn
                       content={`${DateForm(item.start_at)} ~ ${DateForm(
                         item.end_at
                       )}`}
                     />
-                    <TableColumn content={item.count} url={`${item.id}`} />
-                    <TableColumn content={DateForm(item.created_at)} />
-                    <TableColumn content={statusicon(item.status)} />
+                    <TableColumn
+                      content={item.count}
+                      url={`${item.id}`}
+                      name="survey"
+                      id={item.id}
+                    />
+                    <TableColumn
+                      content={DateForm(item.created_at)}
+                      name="survey"
+                      id={item.id}
+                    />
+                    <TableColumn
+                      content={statusicon(item.status)}
+                      name="survey"
+                      id={item.id}
+                    />
                   </TableRow>
                 );
               })

@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
 
-const SIGNUP_URL = "http://i6a205.p.ssafy.io:8000/api/join";
-const EMAIL_CHECK = "http://i6a205.p.ssafy.io:8000/api/emailCheck";
-const BN_CHECK = "http://i6a205.p.ssafy.io:8000/api/bnNumberCheck";
+const SIGNUP_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/join`;
+const EMAIL_CHECK = `${process.env.NEXT_PUBLIC_SERVER}/api/emailCheck`;
+const BN_CHECK = `${process.env.NEXT_PUBLIC_SERVER}/api/bnNumberCheck`;
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState("");

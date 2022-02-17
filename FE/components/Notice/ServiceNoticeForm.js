@@ -62,7 +62,7 @@ const ServiceNoticeForm = ({ url }) => {
       })
       .then((res) => {
         toast.success("공지사항 등록 성공!");
-        router.push(`/notice/${res.data.id}`);
+        router.push(`/service/notice/${res.data.id}`);
       })
       .catch((err) => {
         console.log(err);

@@ -13,7 +13,7 @@ import styles from "../../styles/surveycreateform.module.css";
 function SurveyUpdateForm({ surveyDetail, sId }) {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
+  const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`;
   const {
     register,
     unregister,

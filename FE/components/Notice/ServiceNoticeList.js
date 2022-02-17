@@ -147,12 +147,24 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
                   <TableColumn
                     content={index + 1 + (currentPage - 1) * postsPerPage}
                     fixed={item.fixed}
+                    name="service/notice"
+                    id={item.id}
                   ></TableColumn>
-                  <TableColumn content={item.title}></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
                   <TableColumn
                     content={DateForm(item.created_at)}
+                    name="service/notice"
+                    id={item.id}
                   ></TableColumn>
-                  <TableColumn content={item.views}></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
                 </TableRow>
               );
             })

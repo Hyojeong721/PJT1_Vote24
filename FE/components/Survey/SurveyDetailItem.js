@@ -33,7 +33,7 @@ const SurveyDetailItem = ({ sId, url }) => {
   const handleRemove = (category, e) => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`http://i6a205.p.ssafy.io:8000/api/survey/${sId}`, {
+      .delete(`${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`, {
         headers: {
           authorization: jwt,
         },

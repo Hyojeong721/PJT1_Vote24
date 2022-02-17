@@ -49,7 +49,7 @@ export default EventUser;
 export async function getServerSideProps({ params }) {
   const code = params.code;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
@@ -65,7 +65,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${id}`;
+  const EVENT_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/event/${id}`;
   const eventList = await axios.get(EVENT_URL).then((res) => {
     return res.data;
   });

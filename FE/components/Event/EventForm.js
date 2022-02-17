@@ -23,7 +23,7 @@ const EventForm = () => {
 
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospital_id}`;
+  const EVENT_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/event/${hospital_id}`;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

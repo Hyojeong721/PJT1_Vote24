@@ -22,7 +22,7 @@ function SurveyCreateForm() {
   }, []);
 
   const { userInfo } = useSelector((state) => state.userStatus);
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${userInfo.id}`;
+  const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${userInfo.id}`;
 
   const {
     register,
