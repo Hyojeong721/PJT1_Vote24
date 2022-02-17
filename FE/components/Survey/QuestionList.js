@@ -9,7 +9,7 @@ const QuestionList = ({ total, dataList, dataresult, category }) => {
   if (dataList) {
     return (
       <div className="mt-3 m-5">
-        <div className="mb-5 d-flex justify-content-around">
+        <div className="mb-5 d-flex flex-column flex-lg-row justify-content-around">
           {dataresult.length == 0 && total == 0 && (
             <div>연령/성별 데이터가 없습니다.</div>
           )}
