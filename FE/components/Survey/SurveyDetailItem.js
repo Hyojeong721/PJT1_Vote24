@@ -114,6 +114,7 @@ const SurveyDetailItem = ({ sId, url }) => {
           total={data.count}
           dataList={data.question}
           dataresult={data.result}
+          category={data.category}
         ></QuestionList>
         <Benchbox benchmark={data.benchmark} />
         <SurveyOuputLink

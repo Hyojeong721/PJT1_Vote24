@@ -5,7 +5,7 @@ import PieChartAge from "./PieChartAge";
 import PieChartGender from "./PieChartGender";
 import BarChart from "./BarChart";
 
-const QuestionList = ({ total, dataList, dataresult }) => {
+const QuestionList = ({ total, dataList, dataresult, category }) => {
   if (dataList) {
     return (
       <div className="mt-3 m-5">
@@ -46,8 +46,12 @@ const QuestionList = ({ total, dataList, dataresult }) => {
                         return (
                           <div key={index} className={cn(ct.option)}>
                             <div>
-                              - {opt.context}
-                              <span> [배점 : {opt.weight}]</span>
+                              <span>- {opt.context}</span>
+                              {category == 0 ? (
+                                <span> [배점 : {opt.weight}]</span>
+                              ) : (
+                                ""
+                              )}
                             </div>
 
                             <div className={cn(ct.optionCnt)}>
