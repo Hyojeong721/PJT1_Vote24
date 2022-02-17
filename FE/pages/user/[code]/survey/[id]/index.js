@@ -52,7 +52,9 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     const { order, context, option } = q;
     return (
       <div key={order} className="border rounded-3 shadow-sm my-3">
-        <div className="fs-4 ps-3 p-2">{context}</div>
+        <div className="fs-4 ps-3 p-2">
+          {order}. {context}
+        </div>
         <div className="border-top bg-light p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
