@@ -125,7 +125,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
       />
 
       <div className="w-100 d-flex mt-5">
-        <Link href={`/survey`} passHref>
+        <Link href={`/survey/${sId}`} passHref>
           <a className="btn btn-secondary">취소</a>
         </Link>
         <button
