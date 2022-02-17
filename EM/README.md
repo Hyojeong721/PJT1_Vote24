@@ -22,3 +22,4 @@
 
 # 배포
 * S06P12A205/EM/DesktopKioskApp/SetupVote24KioskApp/Release 에서 .msi 파일을 받아 설치 할 수 있다.
+* 설치시 문제점 블루투스 Serial 링크가 포트 12가 아니면 프로그램이 실행되지 않는다.
