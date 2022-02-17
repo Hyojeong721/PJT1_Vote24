@@ -42,11 +42,12 @@ const NoticeDetailItem = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("delete성공", res);
+        toast.success("공지사항 삭제 성공!");
         router.push("/notice");
       })
       .catch((error) => {
         console.log("delete실패", error);
+        toast.success("공지사항 삭제 실패!");
       });
   };
   return (
