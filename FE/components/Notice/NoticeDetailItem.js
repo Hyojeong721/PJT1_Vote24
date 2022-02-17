@@ -8,6 +8,7 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const NoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ const NoticeDetailItem = ({ url }) => {
           setData(res.data);
         })
         .catch((err) => {
-          toast.error("병원 공지사항을 가져오는 데 실패했습니다.");
+          toast.error("병원 공지사항을 가져오는데 실패했습니다.");
           console.log("병원공지 상세 get 실패", err);
           router.push("/404");
         });
