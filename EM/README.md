@@ -19,3 +19,6 @@
 # 문제점
 * HC-06은 9600bps의 속도만 지원한다. 따라서 bluetooth의 속도가 매우 빨라도 9600 이상의 속도를 가질 수 없다.
 * 위와 같은 문제점으로 어플리케이션의 마우스 이동 속도나 클릭 속도가 매우 느리다. 
+
+# 배포
+* S06P12A205/EM/DesktopKioskApp/SetupVote24KioskApp/Release 에서 .msi 파일을 받아 설치 할 수 있다.
