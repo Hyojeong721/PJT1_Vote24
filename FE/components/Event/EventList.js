@@ -9,7 +9,14 @@ import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 import { toast } from "react-toastify";
 
-const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
+const EventList = ({
+  setDataList,
+  dataList,
+  dataListProp,
+  EVENT_URL,
+  currentPage,
+  postsPerPage,
+}) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -127,7 +134,7 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
                   </td>
 
                   <TableColumn
-                    content={index + 1}
+                    content={index + 1 + (currentPage - 1) * postsPerPage}
                     name="event"
                     id={item.id}
                   ></TableColumn>
