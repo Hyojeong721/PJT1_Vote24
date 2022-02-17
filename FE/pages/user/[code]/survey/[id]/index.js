@@ -52,7 +52,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
     const { order, context, option } = q;
     return (
       <div key={order} className="border rounded-3 shadow-sm my-3">
-        <div className="fs-2 ps-3 p-2">{context}</div>
+        <div className="fs-4 ps-3 p-2">{context}</div>
         <div className="border-top bg-light p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
@@ -104,7 +104,15 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
         <BackButton url={`/user/${code}/survey/${categoryName}`} />
         <div className="fs-1 border-bottom mb-3">{title}</div>
         <div className="my-2">
-          <span>{context}</span>
+          {context &&
+            context.split("\n").map((line, idx) => {
+              return (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
         </div>
       </div>
       <div className="w-75 bg-white form-control my-3 shadow border-0">
