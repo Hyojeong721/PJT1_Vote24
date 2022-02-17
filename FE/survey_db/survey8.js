@@ -63,15 +63,14 @@ const benchmarks = [
 ];
 
 const result = {
-  title: "우울증 건강 설문",
-  context:
-    "지난 2주간, 얼마나 자주 다음과 같은 문제들로 곤란을 겪으셨습니까?\n지난 2주 동안에 아래와 같은 생각을 한 날을 헤아려서 해당하는 답변에 체크하여 주시기 바랍니다. \n(출처: 창녕군 정신건강복지센터)",
-  output_link: "http://search.snuh.org/search/search.jsp",
-  reservation_link:
-    "https://child.snuh.org/reservation/clinic/KC152/clinicInfo.do",
+  title: "2022년 2분기 코로나 블루 조사",
+  context: "2022년 4-6월 사이 코로나로 인해 우울감을 느낀 적이 있나요?",
+  output_link:
+    "https://www.youtube.com/results?search_query=%EC%BD%94%EB%A1%9C%EB%82%98+%EB%B8%94%EB%A3%A8",
+  reservation_link: "https://www.amc.seoul.kr/asan/reservation/main.do",
 
-  start_at: "2022-02-15",
-  end_at: "2022-03-27",
+  start_at: "2022-04-01",
+  end_at: "2022-06-30",
   category: 0,
   question: questions,
   benchmark: benchmarks,
@@ -79,6 +78,9 @@ const result = {
 
 const fs = require("fs");
 const axios = require("axios");
+const {
+  default: SurveyCreateFormBody,
+} = require("../components/Survey/SurveyCreateFormBody");
 const jwt =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImlhdCI6MTY0NTA4Mzc4MywiZXhwIjoxNjQ1MTcwMTgzfQ.H0Bjm4xqrozq3H49eEzuRFMMYYC5Nji28hTGsNPlbR8";
 

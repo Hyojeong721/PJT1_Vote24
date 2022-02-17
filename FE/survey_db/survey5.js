@@ -33,12 +33,12 @@ const question = {
       weight: 3,
     },
     {
-      order: 3,
+      order: 4,
       context: "자주",
       weight: 4,
     },
     {
-      order: 3,
+      order: 5,
       context: "매우 자주",
       weight: 5,
     },

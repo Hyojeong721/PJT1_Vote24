@@ -42,12 +42,12 @@ const question = {
       weight: 4,
     },
     {
-      order: 3,
+      order: 4,
       context: "그렇다",
       weight: 5,
     },
     {
-      order: 3,
+      order: 5,
       context: "매우 그렇다",
       weight: 7,
     },
