@@ -33,13 +33,13 @@ const QuestionList = ({ total, dataList, dataresult }) => {
                     <BarChart total={total} item={item} />
                   )}
                   <div className={cn(ct.moretext)}>
-                    {item.type == 1 &&
-                      item.answer.length != 0 &&
-                      item.answer.map((answer) => {
-                        if (answer.answer != "") {
-                          return <p>- {answer.answer}</p>;
-                        }
-                      })}
+                    {item.type == 1 && item.answer && item.answer.length != 0
+                      ? item.answer.map((answer) => {
+                          if (answer.answer != "") {
+                            return <p>- {answer.answer}</p>;
+                          }
+                        })
+                      : null}
                   </div>
                   {item.option
                     ? item.option.map((opt) => {

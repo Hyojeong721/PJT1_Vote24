@@ -125,7 +125,7 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
           {list
             ? list.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id}>
+                  <TableRow key={item.id} id={item.id} name="/survey">
                     <td>
                       <input
                         type="checkbox"
@@ -140,17 +140,10 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
                       content={`${DateForm(item.start_at)} ~ ${DateForm(
                         item.end_at
                       )}`}
-                      url={`${item.id}`}
                     />
                     <TableColumn content={item.count} url={`${item.id}`} />
-                    <TableColumn
-                      content={DateForm(item.created_at)}
-                      url={`${item.id}`}
-                    />
-                    <TableColumn
-                      content={statusicon(item.status)}
-                      url={`${item.id}`}
-                    />
+                    <TableColumn content={DateForm(item.created_at)} />
+                    <TableColumn content={statusicon(item.status)} />
                   </TableRow>
                 );
               })

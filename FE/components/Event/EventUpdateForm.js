@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -9,17 +9,15 @@ import { getPrevDate, getNextDate } from "../getDate";
 
 const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
-  const router = useRouter();
   const inputRef = useRef(values.image);
-  // 기존 data 가져오기
+
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(url)
         .then((res) => {
-          const data = res.data;
           res.data.del = 0;
-          setValues(data);
+          setValues(res.data);
         })
         .catch((err) => {
           console.log("이벤트 원본데이터 get 실패", err);
@@ -28,6 +26,7 @@ const EventUpdateForm = ({ eventId, url }) => {
     };
     getPost();
   }, [url]);
+
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,8 +77,8 @@ const EventUpdateForm = ({ eventId, url }) => {
         }
       }
     }
-    // 서버에 보내기
 
+    // 서버에 보내기
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
@@ -89,13 +88,11 @@ const EventUpdateForm = ({ eventId, url }) => {
         },
       })
       .then((res) => {
-        toast.success("이벤트 수정 성공!");
+        toast.success("이벤트 수정 성공!", { autoClose: 3000 });
         router.push(`/event/${eventId}`);
       })
       .catch((err) => {
-        toast.error("이벤트 수정 실패!", {
-          autoClose: 3000,
-        });
+        toast.error("이벤트 수정 실패!", { autoClose: 3000 });
         console.log(err);
       });
   };
@@ -105,7 +102,8 @@ const EventUpdateForm = ({ eventId, url }) => {
         <div name="제목" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="title">
-              <span className={cn(cs.star)}>* </span>제목
+              <span className={cn(cs.star)}>* </span>
+              <span>제목</span>
             </label>
           </div>
           <div className={cn(cs.formControl)}>
@@ -113,7 +111,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               className={cn(cs.input)}
               name="title"
               id="title"
-              value={values.title ? values.title : ""}
+              defaultValue={values.title}
               onChange={handleInputChange}
               required
             ></input>
@@ -122,7 +120,8 @@ const EventUpdateForm = ({ eventId, url }) => {
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="start_at">
-              <span className={cn(cs.star)}>*{"  "}</span>시작일
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>시작일</span>
             </label>{" "}
             ~ <label htmlFor="end_at">마감일</label>
           </div>
@@ -155,7 +154,8 @@ const EventUpdateForm = ({ eventId, url }) => {
         <div className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
           <div className={cn(cs.formControl)}>
@@ -163,7 +163,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               className={cn(cs.textarea)}
               id="context"
               name="context"
-              value={values.context}
+              defaultValue={values.context}
               onChange={handleInputChange}
               rows="20"
               required
@@ -177,7 +177,7 @@ const EventUpdateForm = ({ eventId, url }) => {
             </label>
           </div>
           <div className={cn(cs.formControl)}>
-            {values.image ? (
+            {values.attachment != null ? (
               <div>
                 {values.attachment}
                 <button className={cn(cs.delete)} onClick={handleClearClick}>

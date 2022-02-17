@@ -13,7 +13,6 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "기한", "조회수", "status"];
-  console.log(dataList);
 
   useEffect(() => {
     setList(dataList);
@@ -62,11 +61,12 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
           })
           .then((response) => {
             console.log(response);
+            toast.success("병원 이벤트 삭제 완료!");
           })
           .catch((error) => {
-            console.log(error);
+            console.log("이벤트 삭제에러", error);
+            toast.error("삭제에 실패하였습니다.");
           });
-        // list 재구성 = 삭제된 애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== eventId));
         setDataList((state) => state.filter((data) => data.id !== eventId));
       });
@@ -118,7 +118,7 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
           {list
             ? list.map((item, index) => {
                 return (
-                  <TableRow key={item.id} id={item.id}>
+                  <TableRow key={item.id} id={item.id} name="event">
                     <td className="table-column">
                       <input
                         type="checkbox"
@@ -126,28 +126,15 @@ const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
                         checked={checkList.includes(item.id)}
                       ></input>
                     </td>
-                    <TableColumn
-                      content={index + 1}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.title}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
+                    <TableColumn content={index + 1}></TableColumn>
+                    <TableColumn content={item.title}></TableColumn>
                     <TableColumn
                       content={`${DateForm(item.start_at)}~${DateForm(
                         item.end_at
                       )}`}
-                      url={`event/${item.id}`}
                     ></TableColumn>
-                    <TableColumn
-                      content={item.views}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={onStatus(item.status)}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
+                    <TableColumn content={item.views}></TableColumn>
+                    <TableColumn content={onStatus(item.status)}></TableColumn>
                   </TableRow>
                 );
               })

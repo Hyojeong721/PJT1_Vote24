@@ -106,11 +106,15 @@
   color: blue;
 }
 .moretext {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* 한 줄 자르기 */
+  display: inline-block;
   width: 600px;
+  white-space: nowrap;
+  overflow: auto;
+  text-overflow: ellipsis;
+  /* 여러 줄 자르기 추가 스타일 */
+  white-space: normal;
+  line-height: 2;
   max-height: 150px;
   justify-content: space-between;
   margin: 15px 60px;
