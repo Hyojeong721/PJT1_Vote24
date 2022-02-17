@@ -4,13 +4,22 @@ import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
 import SearchBar from "../../../../components/SearchBar";
 import { useState } from "react";
+import Paging from "../../../../components/Paging";
 
 function EventUser({ code, eventListProp }) {
   const [eventList, setEventList] = useState(
     eventListProp.sort((a, b) => a.status - b.status)
   );
+  // 페이징 처리를 위한
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = eventList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const paintEventList = eventList.map((e, idx) => {
+  const paintEventList = currentPosts.map((e, idx) => {
     return (
       <UserPostListItem
         key={idx}
@@ -30,7 +39,7 @@ function EventUser({ code, eventListProp }) {
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setEventList} postListProp={eventListProp} />
       </div>
-      {eventList.length ? (
+      {currentPosts.length ? (
         paintEventList
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
@@ -40,6 +49,11 @@ function EventUser({ code, eventListProp }) {
           작성된 이벤트가 없습니다.
         </div>
       )}
+      <Paging
+        postsPerPage={postsPerPage}
+        totalPosts={eventList.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
