@@ -33,6 +33,7 @@ function MainOnLogin() {
       .catch((err) => console.log(err));
 
     setData(summaryData);
+    console.log(summaryData);
   };
 
   useEffect(() => {
@@ -75,7 +76,9 @@ function MainOnLogin() {
         <div className="card">
           <div className="card-body">
             <h2>설문 참여자 현황</h2>
-            {data.totalMyVote && data.result_Mysurvey_age.length ? (
+            {data.totalMyVote &&
+            data.totalMyVote !== "0" &&
+            data.result_Mysurvey_age.length ? (
               <DoughnutChart
                 ageDataProp={data.result_Mysurvey_age}
                 genderDataProp={data.result_Mysurvey_gender}

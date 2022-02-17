@@ -2,11 +2,18 @@ import cn from "classnames";
 import styles from "../../styles/doughnutchart.module.css";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { useState } from "react";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function DoughnutChart({ ageDataProp, genderDataProp }) {
   const ageChartData = ageDataProp.map((d) => d.count);
-  const genderChartData = genderDataProp.map((d) => d.count);
+
+  let male = 0;
+  let female = 0;
+  genderDataProp.forEach((d) => {
+    d.gender ? female++ : male++;
+  });
+  const genderChartData = [male, female];
 
   const options = {
     responsive: true,
