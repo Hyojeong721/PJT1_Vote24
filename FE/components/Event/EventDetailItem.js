@@ -8,6 +8,7 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const EventDetailItem = ({ id, url }) => {
   const [data, setData] = useState([]);
