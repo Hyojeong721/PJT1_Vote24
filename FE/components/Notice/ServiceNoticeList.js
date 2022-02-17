@@ -104,10 +104,24 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
     }
   };
 
+  // if (!dataListProp.length) {
+  //   return (
+  //     <div>
+  //       <div className="d-flex justify-content-center align-items-center p-5">
+  //         <div>
+  //           <h1>작성된 공지사항이 없습니다.</h1>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
-        <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        <div className="ms-4">
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
       </div>
       <table className="table">

@@ -7,6 +7,7 @@ import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import { toast } from "react-toastify";
 
 const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
   const [list, setList] = useState(dataList);
