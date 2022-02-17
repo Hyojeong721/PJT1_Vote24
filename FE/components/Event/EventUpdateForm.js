@@ -208,7 +208,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         </div>
         <div className={cn(cs.btn)}>
           <button type="submit" className="btn btn-primary">
-            등록
+            수정
           </button>
         </div>
       </div>
