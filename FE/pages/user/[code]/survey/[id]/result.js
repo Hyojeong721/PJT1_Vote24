@@ -28,7 +28,7 @@ function SurveyDetailUser({
                 <span className="material-icons">north_east</span>
               </a>
             </Link>
-            <Link href={`https://${outputLink}`} passHref>
+            <Link href={`https://${reservationLink}`} passHref>
               <a>
                 진료예약 바로가기{" "}
                 <span className="material-icons">north_east</span>
