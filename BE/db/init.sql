@@ -1,5 +1,3 @@
-grant all privileges on *.* to `a205`;
-
 use `ssafy24`;
 
 CREATE TABLE `hospital_info` (
