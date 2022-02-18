@@ -50,7 +50,6 @@ const SurveyList = ({ url, category, dataList, setDataList, dataListProp }) => {
   const onChangeEach = (e, id) => {
     if (e.target.checked) {
       setCheckList([...checkList, id]);
-      console.log(checkList);
     } else {
       setCheckList(checkList.filter((checkedId) => checkedId !== id));
     }
