@@ -20,10 +20,13 @@ function NavDropdown({ active, title, subtitles }) {
       >
         <div className={className}>{title}</div>
       </a>
-      <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+      <ul
+        className={cn(styles.navDropDown, "dropdown-menu", "ps-1")}
+        aria-labelledby="navbarDropdown"
+      >
         {subtitles
           ? subtitles.map((subtitle, idx) => (
-              <li key={idx}>
+              <li key={idx} className="my-1">
                 <Link className="dropdown-item" href={subtitle.url}>
                   {subtitle.title}
                 </Link>

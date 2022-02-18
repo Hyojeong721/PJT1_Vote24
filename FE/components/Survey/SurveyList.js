@@ -6,8 +6,9 @@ import Link from "next/link";
 import axios from "axios";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import SearchBar from "../SearchBar";
 
-const SurveyList = ({ url, setDataList, category, dataList }) => {
+const SurveyList = ({ url, category, dataList, setDataList, dataListProp }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -83,7 +84,9 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link
             href={{
@@ -122,39 +125,61 @@ const SurveyList = ({ url, setDataList, category, dataList }) => {
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      />
-                    </td>
+          {list.length ? (
+            list.map((item, index) => {
+              return (
+                <TableRow key={item.id} id={item.id} name="/survey">
+                  <td>
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    />
+                  </td>
 
-                    <TableColumn content={index + 1} url={`${item.id}`} />
-                    <TableColumn content={item.title} url={`${item.id}`} />
-                    <TableColumn
-                      content={`${DateForm(item.start_at)} ~ ${DateForm(
-                        item.end_at
-                      )}`}
-                      url={`${item.id}`}
-                    />
-                    <TableColumn content={item.count} url={`${item.id}`} />
-                    <TableColumn
-                      content={DateForm(item.created_at)}
-                      url={`${item.id}`}
-                    />
-                    <TableColumn
-                      content={statusicon(item.status)}
-                      url={`${item.id}`}
-                    />
-                  </TableRow>
-                );
-              })
-            : ""}
+                  <TableColumn
+                    content={index + 1}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={item.title}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={`${DateForm(item.start_at)} ~ ${DateForm(
+                      item.end_at
+                    )}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={item.count}
+                    url={`${item.id}`}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={DateForm(item.created_at)}
+                    name="survey"
+                    id={item.id}
+                  />
+                  <TableColumn
+                    content={statusicon(item.status)}
+                    name="survey"
+                    id={item.id}
+                  />
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={7}>작성된 설문이 없습니다.</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

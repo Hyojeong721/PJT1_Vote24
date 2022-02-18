@@ -1,11 +1,10 @@
-import { useRouter } from "next/router";
+import router from "next/router";
 import Header from "../../../../components/Header";
 import ServiceNoticeUpdateForm from "../../../../components/Notice/ServiceNoticeUpdateForm";
 
 function ServiceNoticeUpdate() {
-  const router = useRouter();
   const noticeId = router.query.id;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/service/${noticeId}`;
+  const NOTICE_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/service/${noticeId}`;
 
   return (
     <div>

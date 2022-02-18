@@ -2,15 +2,22 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
+import SearchBar from "../SearchBar";
 import axios from "axios";
 import Vote24NoticeBtn from "./Vote24NoticeBtn";
+import router from "next/router";
+import { toast } from "react-toastify";
+import PagingFixed from "../../components/PagingFixed";
+import Link from "next/link";
 
 const ServiceNoticeList = ({ hospital_id, url }) => {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
+
   // 페이징 처리를 위한
   const [fixed, setFixed] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(10);
 
   // 체크박스를 위한
   const [checkList, setCheckList] = useState([]);
@@ -25,23 +32,19 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
         .get(url)
         .then((res) => {
           setDataList(res.data);
-          console.log("서비스공지목록", res.data);
+          setDataListProp(res.data);
           setFixed(res.data.filter((data) => data.fixed == 1));
-          console.log(
-            "fixed data",
-            res.data.filter((data) => data.fixed == 1)
-          );
           let ids = [];
           {
             res.data &&
-              res.data.slice(0, postsPerPage).map((item, i) => {
+              res.data.map((item, i) => {
                 ids[i] = item.id;
               });
           }
           setIdList(ids);
         })
         .catch((err) => {
-          console.log("서비스 공지 목록 get 실패", err);
+          toast.error("서비스 공지 목록을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -51,18 +54,19 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
   // 페이징 처리를 위한 계산
   if (dataList.length) {
     const fixedCnt = fixed.length;
-    const indexOfLastPost = currentPage * (postsPerPage - fixedCnt) + fixedCnt;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage + fixedCnt;
-    const currentPosts = [
-      ...dataList.slice(0, fixedCnt),
-      ...dataList.slice(indexOfFirstPost, indexOfLastPost),
-    ];
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = dataList.slice(indexOfFirstPost, indexOfLastPost);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
   }
 
   // 전체 선택/해제
   const onChangeAll = (e) => {
-    setCheckList(e.target.checked ? idList : []);
+    setCheckList(
+      e.target.checked && currentPosts
+        ? currentPosts.map((post) => post.id)
+        : []
+    );
   };
 
   const onChangeEach = (e, id) => {
@@ -87,11 +91,13 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
             },
           })
           .then((response) => {
-            console.log(response);
+            toast.success("서비스 공지 삭제 성공!");
           })
           .catch((error) => {
             console.log("삭제에러", error);
+            toast.error("서비스 공지 삭제 실패!");
           });
+
         setIdList(dataList.filter((data) => data.id !== noticeId));
         setDataList((dataList) =>
           dataList.filter((data) => data.id !== noticeId)
@@ -104,7 +110,12 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
 
   return (
     <div>
-      <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="ms-4">
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
+        <Vote24NoticeBtn userId={hospital_id} handleRemove={handleRemove} />
+      </div>
       <table className="table">
         <thead>
           <tr>
@@ -112,7 +123,10 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={checkList.length === idList.length}
+                checked={
+                  (currentPosts && checkList.length === currentPosts.length) ||
+                  ""
+                }
               />
             </th>
             {headersName.map((item, index) => {
@@ -125,45 +139,54 @@ const ServiceNoticeList = ({ hospital_id, url }) => {
           </tr>
         </thead>
         <tbody>
-          {currentPosts
-            ? currentPosts.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id}>
-                    <td className="table-column">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      ></input>
-                    </td>
-                    <TableColumn
-                      content={
-                        index +
-                        1 -
-                        fixedCnt +
-                        (currentPage - 1) * (postsPerPage - fixedCnt)
-                      }
-                      fixed={item.fixed}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.title}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={DateForm(item.created_at)}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.views}
-                      url={`notice/${item.id}`}
-                    ></TableColumn>
-                  </TableRow>
-                );
-              })
-            : ""}
+          {currentPosts ? (
+            currentPosts.map((item, index) => {
+              return (
+                <TableRow key={index} id={item.id} name="/service/notice">
+                  <td className="table-column">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    ></input>
+                  </td>
+                  <TableColumn
+                    content={index + 1 + (currentPage - 1) * postsPerPage}
+                    fixed={item.fixed}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={DateForm(item.created_at)}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    name="service/notice"
+                    id={item.id}
+                  ></TableColumn>
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={5}>작성된 공지사항이 없습니다.</td>
+            </tr>
+          )}
         </tbody>
       </table>
+      <PagingFixed
+        postsPerPage={postsPerPage}
+        totalPosts={dataList.length}
+        paginate={paginate}
+        fixedCnt={fixedCnt}
+      />
     </div>
   );
 };

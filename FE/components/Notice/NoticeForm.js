@@ -3,14 +3,12 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
+import router from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
 const NoticeForm = ({ url }) => {
-  const router = useRouter();
-
   const [values, setValues] = useState({
     userId: "",
     title: "",
@@ -45,7 +43,6 @@ const NoticeForm = ({ url }) => {
           const imgName = imgFile.name;
           fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
-          console.log("attachment", imgName);
         }
       } else if (key === "userId") {
         if (userId == 0) {
@@ -55,15 +52,11 @@ const NoticeForm = ({ url }) => {
         fd.append(`${key}`, values[key]);
       }
     }
-    // formData 안에 값들 확인할 때
-    for (let value of fd.values()) {
-      console.log("form값들", value);
-    }
-    // formData 안에 값들 확인할 때
-    for (let key of fd.keys()) {
-      console.log("form값들 key", key);
-    }
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .post(url, fd, {
         headers: {
@@ -72,14 +65,14 @@ const NoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("공지사항 등록 성공!", res.data);
+        toast.success("공지사항 등록 성공!");
         router.push(`/notice/${res.data.id}`);
       })
       .catch((err) => {
+        console.log(err);
         toast.error("공지사항 등록 실패!", {
           autoClose: 3000,
         });
-        console.log(err);
       });
   };
 
@@ -111,7 +104,8 @@ const NoticeForm = ({ url }) => {
 
         <div name="체크박스" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
-            <span className={cn(cs.star)}>*{"  "}</span>TYPE
+            <span className={cn(cs.star)}>*{"  "}</span>
+            <span>TYPE</span>
           </div>
           <div className={cn(cs.formControl)}>
             <span className="form-label me-3">
@@ -122,7 +116,8 @@ const NoticeForm = ({ url }) => {
                 defaultValue={1}
                 onChange={handlefixed}
               />
-              {"  "} <label htmlFor="fixed">고정공지</label>
+              <span>{"  "}</span>
+              <label htmlFor="fixed">고정공지</label>
             </span>
             <input
               id="no_fixed"
@@ -132,15 +127,16 @@ const NoticeForm = ({ url }) => {
               checked={values.fixed == 0}
               onChange={handlefixed}
             />
-            {"  "}
+            <span>{"  "}</span>
             <label htmlFor="no_fixed">일반공지</label>
           </div>
         </div>
 
-        <div className={cn(cs.formRow, "d-flex")}>
+        <div name="내용" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
 
@@ -156,7 +152,7 @@ const NoticeForm = ({ url }) => {
             ></textarea>
           </div>
         </div>
-        <div className={cn(cs.formRow)}>
+        <div name="첨부파일" className={cn(cs.formRow)}>
           <FileInput
             name="imgFile"
             value={values.imgFile}

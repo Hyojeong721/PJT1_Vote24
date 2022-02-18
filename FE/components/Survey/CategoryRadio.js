@@ -1,6 +1,6 @@
 function CategoryRadio({ register, nowCategory, setNowCategory }) {
   return (
-    <div>
+    <div className="mb-2 border-bottom">
       <div className="form-check form-check-inline mt-3">
         <input
           className="form-check-input"
@@ -14,10 +14,10 @@ function CategoryRadio({ register, nowCategory, setNowCategory }) {
           })}
         />
         <label className="form-check-label" htmlFor="category1">
-          건강설문
+          건강 설문
         </label>
       </div>
-      <div className="form-check form-check-inline">
+      <div className="form-check form-check-inline ms-5">
         <input
           className="form-check-input"
           type="radio"
@@ -28,7 +28,7 @@ function CategoryRadio({ register, nowCategory, setNowCategory }) {
           {...register("category")}
         />
         <label className="form-check-label" htmlFor="category2">
-          병원설문
+          서비스 만족 설문
         </label>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Image from "next/image";
 import DateForm from "../DateForm";
 import Prev from "../Prev";
@@ -8,46 +8,46 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const NoticeDetailItem = ({ url }) => {
   const [data, setData] = useState([]);
-  const router = useRouter();
-  const { id } = router.query;
+  const nId = router.query.id;
 
-  // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
-        .get(`${url}/${id}`)
+        .get(`${url}/${nId}`)
         .then((res) => {
-          console.log("게시글내용", res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log("공지 상세 get 실패", err);
+          toast.error("병원 공지사항을 가져오는데 실패했습니다.");
+          console.log("병원공지 상세 get 실패", err);
           router.push("/404");
         });
     };
-    if (id) {
+    if (nId) {
       getPost();
     }
-  }, [id, url]);
+  }, [nId, url]);
 
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`${url}/${id}`, {
+      .delete(`${url}/${nId}`, {
         headers: {
           authorization: jwt,
         },
       })
       .then((res) => {
-        console.log("delete성공", res);
+        toast.success("공지사항 삭제 성공!");
         router.push("/notice");
       })
       .catch((error) => {
         console.log("delete실패", error);
+        toast.success("공지사항 삭제 실패!");
       });
   };
   return (
@@ -75,7 +75,7 @@ const NoticeDetailItem = ({ url }) => {
           </div>
 
           <div>
-            <Link href={`/notice/${id}/update`} passHref>
+            <Link href={`/notice/${nId}/update`} passHref>
               <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
             </Link>
             <button
@@ -88,7 +88,7 @@ const NoticeDetailItem = ({ url }) => {
         </div>
       </div>
       <div className={cn(ct.contentBody)}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}

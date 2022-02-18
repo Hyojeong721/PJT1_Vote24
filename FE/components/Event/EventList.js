@@ -2,18 +2,25 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
+import SearchBar from "../SearchBar";
 import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
+import { toast } from "react-toastify";
 
-const EventList = ({ setDataList, dataList, EVENT_URL }) => {
+const EventList = ({
+  setDataList,
+  dataList,
+  dataListProp,
+  EVENT_URL,
+  currentPage,
+  postsPerPage,
+}) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
   const headersName = ["번호", "제목", "기한", "조회수", "status"];
-  console.log(dataList);
-
   useEffect(() => {
     setList(dataList);
 
@@ -60,12 +67,12 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
             },
           })
           .then((response) => {
-            console.log(response);
+            toast.success("병원 이벤트 삭제 완료!");
           })
           .catch((error) => {
-            console.log(error);
+            console.log("이벤트 삭제에러", error);
+            toast.error("삭제에 실패하였습니다.");
           });
-        // list 재구성 = 삭제된 애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== eventId));
         setDataList((state) => state.filter((data) => data.id !== eventId));
       });
@@ -77,7 +84,9 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link href="/event/create" passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
@@ -99,7 +108,7 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
               <input
                 type="checkbox"
                 onChange={onChangeAll}
-                checked={checkList.length === idList.length}
+                checked={list.length && checkList.length === idList.length}
               />
             </th>
             {headersName.map((item, index) => {
@@ -112,43 +121,53 @@ const EventList = ({ setDataList, dataList, EVENT_URL }) => {
           </tr>
         </thead>
         <tbody>
-          {list
-            ? list.map((item, index) => {
-                return (
-                  <TableRow key={item.id} id={item.id}>
-                    <td className="table-column">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => onChangeEach(e, item.id)}
-                        checked={checkList.includes(item.id)}
-                      ></input>
-                    </td>
-                    <TableColumn
-                      content={index + 1}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.title}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={`${DateForm(item.start_at)}~${DateForm(
-                        item.end_at
-                      )}`}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={item.views}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                    <TableColumn
-                      content={onStatus(item.status)}
-                      url={`event/${item.id}`}
-                    ></TableColumn>
-                  </TableRow>
-                );
-              })
-            : ""}
+          {list.length ? (
+            list.map((item, index) => {
+              return (
+                <TableRow key={item.id} id={item.id}>
+                  <td className="table-column">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => onChangeEach(e, item.id)}
+                      checked={checkList.includes(item.id)}
+                    ></input>
+                  </td>
+
+                  <TableColumn
+                    content={index + 1 + (currentPage - 1) * postsPerPage}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.title}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={`${DateForm(item.start_at)}~${DateForm(
+                      item.end_at
+                    )}`}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={item.views}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                  <TableColumn
+                    content={onStatus(item.status)}
+                    name="event"
+                    id={item.id}
+                  ></TableColumn>
+                </TableRow>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan={6}>작성된 이벤트가 없습니다.</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

@@ -1,4 +1,6 @@
 import React from "react";
+import cn from "classnames";
+import styles from "../styles/paging.module.css";
 
 const Paging = ({ postsPerPage, totalPosts, paginate }) => {
   const pageNumber = [];
@@ -13,7 +15,7 @@ const Paging = ({ postsPerPage, totalPosts, paginate }) => {
         {pageNumber.map((pageNum) => (
           <li
             key={pageNum}
-            className="pagination_item"
+            className={cn(styles.pageButton, "pagination_item")}
             onClick={() => paginate(pageNum)}
           >
             {pageNum}

@@ -45,3 +45,7 @@ a {
   margin: auto;
   max-width: 820px;
 }
+
+.pointerHover {
+  cursor: pointer;
+}

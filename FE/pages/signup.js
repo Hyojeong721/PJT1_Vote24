@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
 
-const SIGNUP_URL = "http://i6a205.p.ssafy.io:8000/api/join";
-const EMAIL_CHECK = "http://i6a205.p.ssafy.io:8000/api/emailCheck";
-const BN_CHECK = "http://i6a205.p.ssafy.io:8000/api/bnNumberCheck";
+const SIGNUP_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/join`;
+const EMAIL_CHECK = `${process.env.NEXT_PUBLIC_SERVER}/api/emailCheck`;
+const BN_CHECK = `${process.env.NEXT_PUBLIC_SERVER}/api/bnNumberCheck`;
 
 function Signup() {
   const [imgBase64, setImgBase64] = useState("");
@@ -175,7 +175,10 @@ function Signup() {
         toast.success("사용 가능한 이메일입니다!");
         setEmailChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 이메일 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   const onBnCheck = async (e) => {
@@ -200,7 +203,10 @@ function Signup() {
         toast.success("사용 가능한 사업자번호 입니다!");
         setBnChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 사업자 등록 번호 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   return (
@@ -414,7 +420,7 @@ function Signup() {
               objectFit="contain"
             />
           </div> */}
-          <div className="d-flex justify-content-center mt-3 mb-5">
+          <div className="d-flex justify-content-center mt-3">
             <button type="submit" className="submit-button btn btn-primary">
               서비스 신청
             </button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Image from "next/image";
 import DateForm from "../DateForm";
 import Prev from "../Prev";
@@ -8,24 +8,22 @@ import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const ServiceNoticeDetailItem = ({ url, userId }) => {
   const [data, setData] = useState([]);
-  const router = useRouter();
   const nId = router.query.id;
 
-  console.log("userid", userId);
-  // 게시글 내용 받아오기
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(`${url}/${nId}`)
         .then((res) => {
-          console.log("서비스공지get 성공", res.data);
           setData(res.data);
         })
         .catch((err) => {
-          console.log("공지 상세 get 실패", err);
+          toast.error("서비스 공지사항을 가져오는 데 실패했습니다.");
+          console.log("서비스공지 상세 get 실패", err);
           router.push("/404");
         });
     };
@@ -33,6 +31,7 @@ const ServiceNoticeDetailItem = ({ url, userId }) => {
       getPost();
     }
   }, [nId, url]);
+
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
@@ -96,29 +95,18 @@ const ServiceNoticeDetailItem = ({ url, userId }) => {
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
 
-          {/* <div name="수정/삭제">
-            <Link href={`/service/notice/${id}/update`} passHref>
-              <a className={cn(ct.btn, "btn btn-primary")}>수정</a>
-            </Link>
-            <button
-              onClick={handleRemove}
-              className={cn(ct.btn, "btn btn-danger")}
-            >
-              삭제
-            </button>
-          </div> */}
-
           {vote24btn()}
         </div>
       </div>
       <div className={cn(ct.contentBody)}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}
               alt={data.attachment}
               width="800px"
               height="800px"
+              objectFit="contain"
               priority
             ></Image>
           )}

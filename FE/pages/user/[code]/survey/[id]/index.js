@@ -5,7 +5,7 @@ import BackButton from "../../../../../components/BackButton";
 import UserSurveyAgeGender from "../../../../../components/User/UserSurveyAgeGender";
 
 function SurveyDetailUser({ code, sId, surveyDetail }) {
-  const SURVEY_SUBMIT_URL = `http://i6a205.p.ssafy.io:8000/api/survey/result/${sId}`;
+  const SURVEY_SUBMIT_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/result/${sId}`;
   const { title, context, start_at, end_at, question, category, output_link } =
     surveyDetail;
   const categoryName = category === 0 ? "health" : "service";
@@ -19,7 +19,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const paintOptions = (qId, option) => {
     return option.map(({ id, order, context, weight }) => {
       return (
-        <div key={order} className="d-flex align-items-center gap-2">
+        <div key={`O${order}`} className="d-flex align-items-center gap-2">
           <input
             className="form-check-input"
             type="radio"
@@ -51,8 +51,10 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const paintQuestions = question.map((q) => {
     const { order, context, option } = q;
     return (
-      <div key={order} className="border rounded-3 shadow-sm my-3">
-        <div className="fs-2 ps-3 p-2">{context}</div>
+      <div key={`Q${order}`} className="border rounded-3 shadow-sm my-3">
+        <div className="fs-4 ps-3 p-2">
+          {order}. {context}
+        </div>
         <div className="border-top bg-light p-3">
           {option ? paintOptions(q.id, option) : paintEssayInput(q.id)}
         </div>
@@ -103,8 +105,16 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
       <div className="w-75 bg-white form-control mt-3 text-center shadow border-0 border-bottom border-3 border-warning">
         <BackButton url={`/user/${code}/survey/${categoryName}`} />
         <div className="fs-1 border-bottom mb-3">{title}</div>
-        <div className="my-2">
-          <span>{context}</span>
+        <div className="my-2 text-start">
+          {context &&
+            context.split("\n").map((line, idx) => {
+              return (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
         </div>
       </div>
       <div className="w-75 bg-white form-control my-3 shadow border-0">
@@ -125,7 +135,7 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 export async function getServerSideProps({ params }) {
   const { code, id } = params;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const hId = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data.id)
@@ -140,7 +150,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${id}`;
+  const SURVEY_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${id}`;
   const surveyDetail = await axios
     .get(SURVEY_DETAIL_URL)
     .then((res) => res.data)

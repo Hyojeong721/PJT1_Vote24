@@ -117,7 +117,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     question,
     benchmark,
     created_at,
-    count,
   } = req.body;
   try {
     const hospital_id_data = await pool.query(
@@ -127,7 +126,7 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
     const hospital_id = hospital_id_data[0][0].hospital_id;
     await pool.query("DELETE FROM hospital_survey WHERE id = ?", [id]);
     if (req.body.end_at) {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, end_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, start_at, end_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -135,13 +134,12 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
-        count,
         start_at,
         end_at,
         created_at,
       ]);
     } else {
-      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, count, start_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, now());`;
+      const survey_sql = `INSERT INTO hospital_survey ( hospital_id, category, title, context, output_link, reservation_link, start_at, created_at, updated_at ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, now());`;
       await pool.query(survey_sql, [
         hospital_id,
         category,
@@ -149,7 +147,6 @@ router.put("/survey/:id", verifyToken, async (req, res) => {
         context,
         output_link,
         reservation_link,
-        count,
         start_at,
         created_at,
       ]);
@@ -233,7 +230,6 @@ router.delete("/survey/:id", verifyToken, async (req, res) => {
 // survey Detail
 router.get("/survey/:id", async (req, res) => {
   const id = req.params.id;
-
   try {
     const survey_sql = "SELECT * FROM hospital_survey WHERE ID = ?;";
     const survey_data = await pool.query(survey_sql, [id]);
@@ -292,14 +288,15 @@ router.get("/survey/:id", async (req, res) => {
       if (option_data[0].length != 0) {
         let n = 0;
         let qid = option_data[0][0].question_id;
-        let option_dataset = [];
+
         for (i = 0; i < option_data[0].length; i++) {
           if (qid != option_data[0][i].question_id) {
             qid = option_data[0][i].question_id;
             n++;
           }
           if (option_dataset[n]) option_dataset[n].push(option_data[0][i]);
-          else option_dataset[n] = [option_data[0][i]];
+          //option_dataset[0] = [option_data[0][0],option_data[0][1]]
+          else option_dataset[n] = [option_data[0][i]]; // option_dataset[0] = [option_data[0][i]]
         }
       }
 
@@ -338,16 +335,7 @@ router.get("/survey/:id", async (req, res) => {
         result: result_data[0],
       };
     } else {
-      let option_dataset = [];
-      let m = 0;
       let question_dataset = [];
-      for (i = 0; i < question_data[0].length; i++) {
-        question_dataset[i] = question_data[0][i];
-        if (question_data[0][i].type == 0) {
-          question_dataset[i].option = option_dataset[m];
-          m++;
-        }
-      }
       survey_dataset = {
         ...survey_data[0][0],
         status: status,

@@ -8,21 +8,24 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import GoSurveyList from "../../components/Survey/GoSurveyList";
+import { toast } from "react-toastify";
+import SurveyOuputLink from "./SurveyOutputLink";
 
 const SurveyDetailItem = ({ sId, url }) => {
   const [data, setData] = useState([]);
   const router = useRouter();
-
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(url)
         .then((res) => {
-          console.log("설문상세", res.data);
+          if (sId && Object.keys(res.data).length === 0) {
+            router.push("/404");
+          }
           setData(res.data);
         })
         .catch((err) => {
-          console.log("설문 상세 get 실패", err);
+          toast.error("설문 상세 정보를 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -33,13 +36,13 @@ const SurveyDetailItem = ({ sId, url }) => {
   const handleRemove = (category, e) => {
     const jwt = localStorage.getItem("jwt");
     axios
-      .delete(`http://i6a205.p.ssafy.io:8000/api/survey/${sId}`, {
+      .delete(`${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`, {
         headers: {
           authorization: jwt,
         },
       })
       .then((res) => {
-        console.log("delete성공", res);
+        toast.success("설문 삭제 성공!");
         if (category == 0) {
           router.push("/survey/health");
         } else {
@@ -48,10 +51,9 @@ const SurveyDetailItem = ({ sId, url }) => {
       })
       .catch((error) => {
         console.log("delete실패", error);
+        toast.error("설문 삭제 실패!");
       });
   };
-  console.log("detail_data", data);
-  console.log("detail_data_result", data.result);
 
   return (
     <div className={cn(ct.content)}>
@@ -73,7 +75,7 @@ const SurveyDetailItem = ({ sId, url }) => {
             )}
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>
-              설문기한 : {DateForm(data.start_at)} ~ {DateForm(data.end_at)}
+              설문기간 : {DateForm(data.start_at)} ~ {DateForm(data.end_at)}
             </span>
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}> 총 참여자수 : {data.count} </span>
@@ -91,6 +93,12 @@ const SurveyDetailItem = ({ sId, url }) => {
           </div>
         </div>
       </div>
+      {data.status == 0 && (
+        <div name="수정안내" className={cn(ct.surveyUpdateInfo)}>
+          <span className={cn(ct.warning)}> 주의! </span>
+          <p>설문기간 중에 수정하시면 설문 결과 데이터가 리셋됩니다.</p>
+        </div>
+      )}
 
       <div name="설문설명" className={cn(ct.surveyInfo)}>
         {data.context &&
@@ -109,8 +117,13 @@ const SurveyDetailItem = ({ sId, url }) => {
           total={data.count}
           dataList={data.question}
           dataresult={data.result}
+          category={data.category}
         ></QuestionList>
         <Benchbox benchmark={data.benchmark} />
+        <SurveyOuputLink
+          output_link={data.output_link}
+          reservation_link={data.reservation_link}
+        />
       </div>
       <GoSurveyList url={"/survey"} category={data.category} />
     </div>

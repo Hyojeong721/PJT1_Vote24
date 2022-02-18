@@ -10,7 +10,7 @@ function NavbarUser({ currentPage, code }) {
   const { name, phone, image } = hospitalInfo;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div className="container-fluid">
         {name && (
           <Link href={`/user/${code}`} passHref>

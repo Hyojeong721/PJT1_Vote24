@@ -8,7 +8,7 @@ function NoticeUpdate() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const eventId = router.query.id;
   const hospitalId = userInfo.id;
-  const EVENT_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/event/${hospitalId}/${eventId}`;
+  const EVENT_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/event/${hospitalId}/${eventId}`;
 
   return (
     <div>

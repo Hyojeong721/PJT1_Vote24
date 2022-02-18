@@ -10,7 +10,6 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
   const inputRef = useRef(values.image);
 
-  // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
       await axios
@@ -20,7 +19,8 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
           setValues(res.data);
         })
         .catch((err) => {
-          console.log("서비스공지 원본data get 실패", err);
+          console.log("서비스공지 get error", error);
+          toast.error("서비스 공지사항을 가져오는 데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -38,11 +38,11 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
       [name]: value,
     }));
   };
-
   // 고정 체크 박스 수정
   const handlefixed = (e) => {
     handleChange("fixed", e.target.value);
   };
+
   //첨부파일
   const handleChangeFile = (e) => {
     const nextValue = e.target.files[0];
@@ -67,7 +67,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_img", imgFile);
+          fd.append("service_img", imgFile);
           fd.append("attachment", imgName);
         }
       } else {
@@ -78,12 +78,11 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
     }
     fd.append("hospital_id", 24);
 
-    // // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
-    console.log("values", typeof values);
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .put(url, fd, {
         headers: {
@@ -92,22 +91,14 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("서비스공지 수정", res.data);
-        if (res.data.id) {
-          router.push(`/service/notice/${res.data.id}`);
-        } else {
-          toast.error("then넘어온 수정 실패!", {
-            autoClose: 3000,
-          });
-          // router.push("/404");
-        }
+        toast.success("서비스 공지 수정 성공!", { autoClose: 3000 });
+        router.push(`/service/notice/${noticeId}`);
       })
       .catch((err) => {
-        toast.error("서비스공지 수정 실패!", {
+        toast.error("서비스 공지 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
-        // router.push("/404");
       });
   };
 
@@ -117,7 +108,8 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         <div name="제목" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="title">
-              <span className={cn(cs.star)}>*{"  "}</span>제목
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>제목</span>
             </label>
           </div>
           <div className={cn(cs.formControl)}>
@@ -134,7 +126,8 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
 
         <div name="체크박스" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
-            <span className={cn(cs.star)}>*{"  "}</span>TYPE
+            <span className={cn(cs.star)}>*{"  "}</span>
+            <span>TYPE</span>
           </div>
           <div className={cn(cs.formControl)}>
             <span className="form-label me-3">
@@ -156,7 +149,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
               checked={values.fixed == 0}
               onChange={handlefixed}
             />
-            {"  "}
+            <span>{"  "} </span>
             <label htmlFor="no_fixed">일반공지</label>
           </div>
         </div>
@@ -164,7 +157,8 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
         <div name="내용" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
 
@@ -188,9 +182,9 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
             </label>
           </div>
           <div className={cn(cs.formControl)}>
-            {values.image ? (
+            {values.attachment != null ? (
               <div>
-                {values.attachment}
+                <span>{values.attachment}</span>
                 <button className={cn(cs.delete)} onClick={handleClearClick}>
                   삭제
                 </button>
@@ -200,6 +194,7 @@ const ServiceNoticeUpdateForm = ({ noticeId, url }) => {
                 className="form-control"
                 type="file"
                 name="file"
+                accept="image/*"
                 ref={inputRef}
                 onChange={handleChangeFile}
               />

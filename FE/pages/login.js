@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Header from "../components/Header";
 import Link from "next/link";
 
-const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
+const LOGIN_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/login`;
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -135,24 +135,5 @@ function Login() {
     </div>
   );
 }
-
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context) => {
-//     const { userStatus } = store.getState();
-//     console.log("serverside", userStatus);
-//     if (userStatus.isLoggedIn) {
-//       // toast.error("이미 로그인 된 유저입니다.");
-//       return {
-//         redirect: {
-//           destination: "/",
-//           permanent: false,
-//         },
-//       };
-//     }
-//     return {
-//       props: {},
-//     };
-//   }
-// );
 
 export default Login;

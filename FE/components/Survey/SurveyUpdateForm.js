@@ -13,7 +13,7 @@ import styles from "../../styles/surveycreateform.module.css";
 function SurveyUpdateForm({ surveyDetail, sId }) {
   const router = useRouter();
   const [nowCategory, setNowCategory] = useState("0");
-  const SURVEY_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
+  const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`;
   const {
     register,
     unregister,
@@ -33,6 +33,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     reservation_link,
   }) => {
     setNowCategory(`${category}`);
+    setValue("category", `${category}`);
     setValue("title", title);
     setValue("context", context);
     setValue("start_at", start_at.slice(0, 10));
@@ -46,7 +47,6 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
   }, [surveyDetail]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const { qList, bList } = parseInput(data);
     const {
       category,
@@ -57,6 +57,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
       start_at,
       end_at,
     } = data;
+
     const result = {
       created_at: surveyDetail.created_at.slice(0, -5).replace("T", " "),
       count: surveyDetail.count,
@@ -72,6 +73,9 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
     };
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
 
     await axios
       .put(SURVEY_URL, result, {
@@ -121,7 +125,7 @@ function SurveyUpdateForm({ surveyDetail, sId }) {
       />
 
       <div className="w-100 d-flex mt-5">
-        <Link href={`/survey`} passHref>
+        <Link href={`/survey/${sId}`} passHref>
           <a className="btn btn-secondary">취소</a>
         </Link>
         <button

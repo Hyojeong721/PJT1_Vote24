@@ -21,10 +21,19 @@ function SurveyUpdate({ sId, surveyDetail }) {
 
 export async function getServerSideProps({ params }) {
   const sId = params.id;
-  const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${sId}`;
+  const SURVEY_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/${sId}`;
   const surveyDetail = await axios.get(SURVEY_DETAIL_URL).then((res) => {
     return res.data;
   });
+
+  if (Object.keys(surveyDetail).length === 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/survey",
+      },
+    };
+  }
 
   return {
     props: {
