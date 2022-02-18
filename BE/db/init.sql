@@ -1,4 +1,4 @@
-create user `a205`;
+create user `a205`, `ssafy1!`;
 
 grant all privileges on *.* to `a205`;
 
