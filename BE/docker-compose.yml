@@ -18,4 +18,8 @@ services:
       - ./db/:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=ssafy1!
+      - MYSQL_USER=a205
+      - MYSQL_PASSWORD=ssafy1!
       - MYSQL_DATABASE=ssafy24
+    expose:
+      - "3303"
