@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 function PopularSurvery({ popularSurveys }) {
-  if (!popularSurveys.length) {
+  if (popularSurveys && !popularSurveys.length) {
     return (
       <div className="card">
         <div className="card-body">

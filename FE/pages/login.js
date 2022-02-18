@@ -57,6 +57,7 @@ function Login() {
       .catch((err) => {
         toast.dismiss();
         toast.error(`${err.message}`);
+        console.log(err);
       });
   };
 
