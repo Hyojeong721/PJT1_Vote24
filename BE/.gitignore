@@ -6,5 +6,4 @@ uploads/event/*
 uploads/notice/*
 uploads/service/*
 server.js
-utils/mysql.js
 log/*
