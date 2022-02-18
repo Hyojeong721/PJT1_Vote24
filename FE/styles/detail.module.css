@@ -1,0 +1,131 @@
+.content {
+  margin: 2rem;
+}
+
+.title {
+  padding: 16px 0 16px;
+  font-weight: bolder;
+  font-size: 36px;
+}
+
+.contentHeader {
+  border-bottom: 1px solid #888;
+}
+
+.contentBody {
+  padding: 40px 30px;
+  border-bottom: 1px solid #888;
+  margin-bottom: 30px;
+}
+
+.contentNav {
+  margin: 3px;
+}
+
+.contentNav li {
+  padding: 10px 0;
+}
+
+.contentNav strong {
+  padding: 0 10px 0 0;
+}
+
+.prev {
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.next {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.btn {
+  margin-right: 4px;
+}
+
+.item {
+  font-size: 16px;
+  padding-right: 12px;
+  color: #666;
+}
+
+.contentInfo {
+  margin: 10px 0;
+}
+
+.contenBtnList {
+  border-radius: 25px;
+  width: 100px;
+  margin: auto;
+  display: block;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.surveyInfo {
+  padding: 30px;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+}
+.surveyUpdateInfo {
+  /* padding: 15px; */
+  margin: 20px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.warning {
+  margin-right: 3px;
+  color: red;
+}
+
+.questionListResult {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.questionList {
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.question {
+  font-size: 20px;
+  margin: 20px;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 60px;
+}
+
+.optionCnt {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.benchbox {
+  border: 1px solid #e6e6e6;
+  padding: 20px 30px;
+  margin: 50px;
+}
+.bench {
+  margin: 15px 0;
+}
+.blue {
+  color: blue;
+}
+.moretext {
+  /* 한 줄 자르기 */
+  display: inline-block;
+  width: 600px;
+  white-space: nowrap;
+  overflow: auto;
+  text-overflow: ellipsis;
+  /* 여러 줄 자르기 추가 스타일 */
+  white-space: normal;
+  line-height: 2;
+  max-height: 150px;
+  justify-content: space-between;
+  margin: 15px 60px;
+}

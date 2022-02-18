@@ -1,0 +1,44 @@
+.header {
+  background-color: #5f4dee;
+  min-height: 50vh;
+}
+
+.header .headerContent {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  text-align: center;
+}
+
+.header .textContainer {
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header h1 {
+  color: #fff;
+  font: 700 2.5rem/3.125rem;
+  font-weight: bold;
+  font-size: 3.5rem;
+  line-height: 4.125rem;
+}
+
+.header .pLarge {
+  font: 400 1.125rem/1.75rem;
+  color: #f3f7fd;
+}
+
+.header .imageContainer {
+  margin: auto;
+}
+
+.header .imageContainer .imgWrapper {
+  transition: 0.5s;
+  transform: scale(1);
+}
+
+.header .imageContainer .imgWrapper:hover {
+  transform: scale(1.1);
+}

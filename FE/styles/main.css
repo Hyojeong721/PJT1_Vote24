@@ -1,0 +1,33 @@
+.background {
+  height: 80vh;
+}
+
+.main_title {
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.main_body {
+  width: 600px;
+  height: 400px;
+}
+
+.header_image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 75%;
+}
+
+.indigo {
+  bottom: 0px;
+  opacity: 80%;
+  background-color: #1b2845;
+}
+
+.code_input {
+  width: 300px;
+  height: 100px;
+  border-radius: 15px;
+}

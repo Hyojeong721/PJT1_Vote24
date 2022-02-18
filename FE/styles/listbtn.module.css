@@ -1,0 +1,18 @@
+.btns {
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.createbtn {
+  text-decoration: none;
+  color: white;
+}
+
+.deletebtn {
+  margin-left: 10px;
+}
+
+.nonbtn {
+  height: 80px;
+}

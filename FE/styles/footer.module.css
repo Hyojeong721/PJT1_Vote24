@@ -1,0 +1,21 @@
+.footerColor {
+  background-color: rgb(241 245 249);
+}
+
+.footerUser1 {
+  background-color: #c4f9ff;
+}
+
+.footerUser2 {
+  padding-top: 30px;
+  background-color: #ffeecb;
+}
+
+.footerFrame {
+  width: 100%;
+  height: 1.5rem;
+}
+
+.footerPath {
+  fill: #0d6efd;
+}

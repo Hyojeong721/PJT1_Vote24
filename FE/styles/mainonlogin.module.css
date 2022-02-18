@@ -1,0 +1,12 @@
+.goButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  height: 40px;
+  transition: 0.5s;
+}
+
+.goButton:hover {
+  background-color: rgb(184, 247, 37);
+}

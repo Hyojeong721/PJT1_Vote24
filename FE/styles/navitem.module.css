@@ -1,0 +1,23 @@
+.navItem {
+  color: #5f4dee !important;
+}
+
+.navItemHover:hover {
+  color: #5f4dee !important;
+}
+
+.navItemUser {
+  color: #ffc107 !important;
+}
+
+.navItemUserHover:hover {
+  color: #ffc107 !important;
+}
+.itme {
+  color: red;
+  text-align: center;
+}
+
+.navDropDown {
+  min-width: 100px;
+}

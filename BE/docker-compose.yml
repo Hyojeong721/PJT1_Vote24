@@ -1,0 +1,25 @@
+version: "3"
+services:
+  node:
+    build: .
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    links:
+      - mysql
+    depends_on:
+      - mysql
+  mysql:
+    image: "mysql"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=ssafy1!
+      - MYSQL_USER=a205
+      - MYSQL_PASSWORD=ssafy1!
+      - MYSQL_DATABASE=ssafy24
+    expose:
+      - "3306"

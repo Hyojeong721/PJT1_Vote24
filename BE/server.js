@@ -1,27 +1,25 @@
-const express = require('express');
+// Installed Package Import
+const express = require("express");
+const fs = require("fs");
+const cors = require("cors");
+const helmet = require("helmet");
+
+// Utils Function Import
+const { pool } = require("./utils/mysql");
+const { logger } = require("./utils/winston");
+
+const PORT = 8000;
 const server = express();
-const {pool} = require("./utils/mysql");
+
+const routes = require("./routes");
 
 server.use(express.json());
-server.use(express.urlencoded({extended: true}));
+server.use(express.urlencoded({ extended: true }));
+server.use(cors());
+server.use("/", routes);
+server.use(helmet());
 
-server.get('/', (req, res) => {
-    res.send("hello world");
-})
-
-server.post('/put', async (req, res) => {
-    console.log(req.body);
-    const params = req.body;
-    try{
-        const data = await pool.query('INSERT INTO hospital_info SET ?', params);
-        return res.json({result: 'ok'});
-    }
-    catch(error){
-        console.log("Error!!", error);
-        return res.json(error);
-    }
-})
-
-server.listen(80, function() {
-    console.log('Server open port 80');
+server.listen(PORT, function () {
+  logger.info(`Server listening on port ${PORT}`);
+  console.log(`Server open port ${PORT}`);
 });

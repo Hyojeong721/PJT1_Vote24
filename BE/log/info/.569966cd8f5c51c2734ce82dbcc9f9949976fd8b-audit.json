@@ -1,0 +1,109 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "log\\info\\.569966cd8f5c51c2734ce82dbcc9f9949976fd8b-audit.json",
+    "files": [
+        {
+            "date": 1642484764641,
+            "name": "log\\info\\2022-01-18.info.log",
+            "hash": "59a3c82aae1770dd75ed68d1252e07a6"
+        },
+        {
+            "date": 1642554458751,
+            "name": "log\\info\\2022-01-19.info.log",
+            "hash": "280f035683f209512e5794279daac6da"
+        },
+        {
+            "date": 1642655717175,
+            "name": "log\\info\\2022-01-20.info.log",
+            "hash": "dc677984942a8316cb199eef758d2678"
+        },
+        {
+            "date": 1642731154081,
+            "name": "log\\info\\2022-01-21.info.log",
+            "hash": "1c0d653da204025e3fa690e360fefe61"
+        },
+        {
+            "date": 1643008094650,
+            "name": "log\\info\\2022-01-24.info.log",
+            "hash": "ec4981dd2102fc4259cdf10dede5275d"
+        },
+        {
+            "date": 1643076843699,
+            "name": "log\\info\\2022-01-25.info.log",
+            "hash": "d07955bfe86d9f9e414c5dfb45e90754"
+        },
+        {
+            "date": 1643159412810,
+            "name": "log\\info\\2022-01-26.info.log",
+            "hash": "cbe1b6a1cd2f8a5e1b10f1797fc37cf0"
+        },
+        {
+            "date": 1643245702560,
+            "name": "log\\info\\2022-01-27.info.log",
+            "hash": "3a602ebf5da624104f5f48c0ef91acfa"
+        },
+        {
+            "date": 1643328593685,
+            "name": "log\\info\\2022-01-28.info.log",
+            "hash": "89d9e947395237385503921ee352475f"
+        },
+        {
+            "date": 1643852963577,
+            "name": "log\\info\\2022-02-03.info.log",
+            "hash": "af855771994e5ed0f002afda09859e3f"
+        },
+        {
+            "date": 1643937362953,
+            "name": "log\\info\\2022-02-04.info.log",
+            "hash": "be95f2a2d6c4ed6d650d4ea3017adf44"
+        },
+        {
+            "date": 1644202018250,
+            "name": "log\\info\\2022-02-07.info.log",
+            "hash": "c11d3a589ff2e5997c5b473649f4942a"
+        },
+        {
+            "date": 1644287447100,
+            "name": "log\\info\\2022-02-08.info.log",
+            "hash": "a289cdc33c316f37b7a5e98202b541ff"
+        },
+        {
+            "date": 1644367310964,
+            "name": "log\\info\\2022-02-09.info.log",
+            "hash": "25cf9d0585a86a1f88f4a559795741b5"
+        },
+        {
+            "date": 1644456327750,
+            "name": "log\\info\\2022-02-10.info.log",
+            "hash": "2d015b7910339861d683e300ac53fb94"
+        },
+        {
+            "date": 1644545333247,
+            "name": "log\\info\\2022-02-11.info.log",
+            "hash": "224f7ed654eca2199e030a67b7be5e28"
+        },
+        {
+            "date": 1644678783864,
+            "name": "log\\info\\2022-02-13.info.log",
+            "hash": "eb2f32977278a99bfa0877e9d58ebc88"
+        },
+        {
+            "date": 1644798681246,
+            "name": "log\\info\\2022-02-14.info.log",
+            "hash": "fd13d429eeb7f5204b58108180d2b78a"
+        },
+        {
+            "date": 1644850800038,
+            "name": "log\\info\\2022-02-15.info.log",
+            "hash": "5cf3d0f8561d74c1701bfcade54e6ecb"
+        },
+        {
+            "date": 1645017930381,
+            "name": "log\\info\\2022-02-16.info.log",
+            "hash": "cbc5e613b1fc6fe0832b72dcf23d8916"
+        }
+    ]
+}
