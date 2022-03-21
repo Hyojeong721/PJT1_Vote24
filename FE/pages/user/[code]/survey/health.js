@@ -52,16 +52,16 @@ export async function getServerSideProps({ params }) {
     .catch((err) => console.log(err));
 
   // id 는 hospital_id
-  // if (!id) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: "/404",
-  //     },
-  //   };
-  // }
+  if (!id) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
-  const SURVEY_HEALTH_URL = `http://i6a205.p.ssafy.io:8000/api/survey/list/${1}/0`;
+  const SURVEY_HEALTH_URL = `http://i6a205.p.ssafy.io:8000/api/survey/list/${id}/0`;
   const surveyList = await axios.get(SURVEY_HEALTH_URL).then((res) => {
     return res.data;
   });

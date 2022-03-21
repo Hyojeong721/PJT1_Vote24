@@ -17,12 +17,11 @@ function Header({ title, subtitle, image, children }) {
       <div className="container text-white">
         <div className={cn(styles.headerTitle, "ms-3", "d-flex")}>
           {image && (
-            <div className="me-2">
+            <div className={cn(styles.imageContainer, "me-2")}>
               <Image
                 src={image}
-                width="40px"
-                height="40px"
-                layout="fixed"
+                layout="fill"
+                objectFit="contain"
                 priority
               ></Image>
             </div>

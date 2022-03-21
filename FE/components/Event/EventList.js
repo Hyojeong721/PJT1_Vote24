@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import DateForm from "../DateForm";
 import TableRow from "../Table/TableRow";
 import TableColumn from "../Table/TableColumn";
+import SearchBar from "../SearchBar";
 import axios from "axios";
 import Link from "next/link";
 import cn from "classnames";
 import listbtn from "../../styles/listbtn.module.css";
 
-const EventList = ({ dataList, EVENT_URL }) => {
+const EventList = ({ setDataList, dataList, dataListProp, EVENT_URL }) => {
   const [list, setList] = useState(dataList);
   const [checkList, setCheckList] = useState([]);
   const [idList, setIdList] = useState([]);
@@ -27,9 +28,9 @@ const EventList = ({ dataList, EVENT_URL }) => {
 
   const onStatus = (status) => {
     if (status == 0) {
-      return "예정";
-    } else if (status == 1) {
       return "진행중";
+    } else if (status == 1) {
+      return "예정";
     } else {
       return "마감";
     }
@@ -65,8 +66,9 @@ const EventList = ({ dataList, EVENT_URL }) => {
           .catch((error) => {
             console.log(error);
           });
-        // list 재구성 = 삭제된애들 빼고 나머지 넣기
+        // list 재구성 = 삭제된 애들 빼고 나머지 넣기
         setList(list.filter((data) => data.id !== eventId));
+        setDataList((state) => state.filter((data) => data.id !== eventId));
       });
     } else {
       return alert("삭제할 목록을 선택하세요.");
@@ -76,7 +78,9 @@ const EventList = ({ dataList, EVENT_URL }) => {
   return (
     <div>
       <div className={cn(listbtn.btns)}>
-        <div>검색</div>
+        <div>
+          <SearchBar setPostList={setDataList} postListProp={dataListProp} />
+        </div>
         <div>
           <Link href="/event/create" passHref>
             <button className={cn(listbtn.createbtn, "btn btn-primary")}>
@@ -112,7 +116,7 @@ const EventList = ({ dataList, EVENT_URL }) => {
         </thead>
         <tbody>
           {list
-            ? list.map((item) => {
+            ? list.map((item, index) => {
                 return (
                   <TableRow key={item.id} id={item.id}>
                     <td className="table-column">
@@ -123,7 +127,7 @@ const EventList = ({ dataList, EVENT_URL }) => {
                       ></input>
                     </td>
                     <TableColumn
-                      content={item.id}
+                      content={index + 1}
                       url={`event/${item.id}`}
                     ></TableColumn>
                     <TableColumn

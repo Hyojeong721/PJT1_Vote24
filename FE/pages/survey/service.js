@@ -9,19 +9,17 @@ import { useRouter } from "next/router";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
-function Service() {
+function ServiceSurvey() {
   const [dataList, setDataList] = useState([]);
-  // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
+
   const router = useRouter();
 
-  // 병원 id 받아서 url에 적용
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const SURVEY_SERVICE_URL = `${SURVEY_URL}/list/${hospital_id}/1`;
 
-  // 서버에서 서비스 만족도 조사 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
       await axios
@@ -30,8 +28,8 @@ function Service() {
           setDataList(res.data);
         })
         .catch((error) => {
-          router.push("/404");
           console.log("만족도 설문 목록 get 실패", error);
+          router.push("/404");
         });
     };
     getList();
@@ -66,4 +64,4 @@ function Service() {
   );
 }
 
-export default Service;
+export default ServiceSurvey;

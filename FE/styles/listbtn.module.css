@@ -12,3 +12,7 @@
 .deletebtn {
   margin-left: 10px;
 }
+
+.nonbtn {
+  height: 80px;
+}

@@ -18,8 +18,7 @@ function Footer({ currentPage }) {
         footerColorClass,
         "container-fluid",
         "navbar-fixed-bottom",
-        "p-3",
-        "border-top"
+        "p-3"
       )}
     >
       <div className="container w-75 d-flex justify-content-between align-items-center">

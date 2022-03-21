@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CategoryRadio from "./CategoryRadio";
+import { getPrevDate, getNextDate } from "../getDate";
 import cn from "classnames";
 import styles from "../../styles/surveycreateformheader.module.css";
 
@@ -10,11 +11,20 @@ function SurveyCreateFormHeader({
   nowCategory,
   setNowCategory,
   initialBenchmarks,
-  reset,
+  setValue,
+  surveyDetail,
 }) {
   const [benchmarks, setBenchmarks] = useState([]);
   const [bCnt, setBCnt] = useState(1);
   const [benchScoreERR, setBenchScoreERR] = useState(false);
+
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const [startDate, setStartDate] = useState(
+    surveyDetail ? surveyDetail.start_at : todayDate
+  );
+  const [endDate, setEndDate] = useState(
+    surveyDetail ? surveyDetail.end_at : new Date(8640000000000000)
+  );
 
   const addInitialBenchmarks = (initialBenchmarks) => {
     initialBenchmarks.forEach((b, idx) => {
@@ -51,14 +61,17 @@ function SurveyCreateFormHeader({
     }
   };
 
-  const handleBenchmarkScoreKeyDown = (e, b) => {
-    if (e.key === "Backspace") {
-      return;
-    } else if (0 <= e.key && e.key <= 9) {
-      setBenchScoreERR(false);
-    } else {
+  const handleBenchmarScoreKey = (e) => {
+    const regExp = /[^0-9]/g;
+    if (regExp.test(e.target.value)) {
       setBenchScoreERR(true);
+    } else {
+      setBenchScoreERR(false);
     }
+
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*)\./g, "$1");
   };
 
   const paintBenchmark = benchmarks.map((b) => {
@@ -68,14 +81,12 @@ function SurveyCreateFormHeader({
           <input
             id="benchmark"
             name="benchmark"
-            type="number"
+            type="text"
             min="0"
             className={cn(styles.benchInput, "form-control", "fs-0")}
             placeholder="O점 이상일때"
             autoComplete="off"
-            onKeyDown={(e) => {
-              handleBenchmarkScoreKeyDown(e, b);
-            }}
+            onInput={(e) => handleBenchmarScoreKey(e)}
             {...register(`C${b.id}`)}
           ></input>
           <input
@@ -118,8 +129,8 @@ function SurveyCreateFormHeader({
         <div className={cn(styles.inputLabel)}></div>
       </div>
       {errors.title && errors.title.type === "required" && (
-        <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-          <span className="material-icons fs-5">priority_high</span>
+        <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+          <span className="material-icons fs-6">priority_high</span>
           <span>설문 제목 입력은 필수입니다.</span>
         </div>
       )}
@@ -130,32 +141,43 @@ function SurveyCreateFormHeader({
           </label>
           <input
             id="start_at"
-            type="datetime-local"
+            type="date"
             className="form-control"
+            min={todayDate}
+            max={getPrevDate(endDate)}
+            onSelect={(e) => {
+              if (e.target.value) {
+                setStartDate(e.target.value);
+              }
+            }}
             {...register("start_at", { required: true })}
           ></input>
           {errors.start_at && errors.start_at.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>시작일 입력은 필수입니다.</span>
             </div>
           )}
         </div>
-
         <div className={cn(styles.datetimeBox)}>
           <label htmlFor="end_at" className="fw-bold ms-1">
-            종료일
+            종료일 (00시 기준)
           </label>
           <input
             id="end_at"
-            type="datetime-local"
+            type="date"
             className="form-control"
+            min={getNextDate(startDate)}
+            onSelect={(e) => {
+              if (e.target.value) {
+                setEndDate(e.target.value);
+              }
+            }}
             {...register("end_at", { required: true })}
           ></input>
-
           {errors.end_at && errors.end_at.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>종료일 입력은 필수입니다.</span>
             </div>
           )}
@@ -170,8 +192,8 @@ function SurveyCreateFormHeader({
         {...register("context", { required: true })}
       ></textarea>
       {errors.context && errors.context.type === "required" && (
-        <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-          <span className="material-icons fs-5">priority_high</span>
+        <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+          <span className="material-icons fs-0">priority_high</span>
           <span>설문 설명 입력은 필수입니다.</span>
         </div>
       )}
@@ -182,8 +204,8 @@ function SurveyCreateFormHeader({
             <div className="my-1">설문 결과의 기준 점수를 입력하세요.</div>
             <div>{paintBenchmark}</div>
             {benchScoreERR && benchmarks.length ? (
-              <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-                <span className="material-icons fs-5">priority_high</span>
+              <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+                <span className="material-icons fs-6">priority_high</span>
                 <span>점수에 숫자를 입력해주세요.</span>
               </div>
             ) : (
@@ -212,8 +234,8 @@ function SurveyCreateFormHeader({
             </label>
           </div>
           {errors.output_link && errors.output_link.type === "required" && (
-            <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-              <span className="material-icons fs-5">priority_high</span>
+            <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+              <span className="material-icons fs-6">priority_high</span>
               <span>
                 설문 참여자에게 제공되는 건강 정보 링크 입력은 필수입니다.
               </span>
@@ -235,8 +257,8 @@ function SurveyCreateFormHeader({
           </div>
           {errors.reservation_link &&
             errors.reservation_link.type === "required" && (
-              <div className="error d-flex align-items-center mt-1 bg-primary text-white p-1 rounded">
-                <span className="material-icons fs-5">priority_high</span>
+              <div className={cn(styles.submitError, "fs-0", "rounded", "p-1")}>
+                <span className={"material-icons fs-6"}>priority_high</span>
                 <span>
                   설문 참여자에게 제공되는 진료 예약 링크 입력은 필수입니다.
                 </span>

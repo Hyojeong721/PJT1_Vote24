@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "../Header";
 import SimpleCard from "./SimpleCard";
 import PopularSurvey from "./PopularSurvey";
-import AgeGenderGraph from "./AgeGenderGraph";
+import DoughnutChart from "./DoughnutChart";
 import cn from "classnames";
 import styles from "../../styles/mainonlogin.module.css";
 
@@ -33,7 +33,7 @@ function MainOnLogin() {
       .catch((err) => console.log(err));
 
     setData(summaryData);
-    console.log(summaryData);
+    console.log("@@", summaryData);
   };
 
   useEffect(() => {
@@ -48,6 +48,7 @@ function MainOnLogin() {
           <a
             className={cn(styles.goButton, "border", "rounded", "fs-5", "ms-3")}
           >
+            <div className="ms-1">사용자 페이지로 이동</div>
             <span className="material-icons fs-1">play_arrow</span>
           </a>
         </Link>
@@ -57,7 +58,7 @@ function MainOnLogin() {
           <SimpleCard title="누적 설문 참여자 수" context={data.totalMyVote} />
           <SimpleCard
             title="일일 설문 참여자 수"
-            context={data.todayVote}
+            context={data.todayMyVote}
             color="orange"
           />
           <SimpleCard
@@ -71,11 +72,19 @@ function MainOnLogin() {
             color="blue"
           />
         </div>
-        <div className="row justify-content-md-center gap-3">
-          {data.populartVotes && (
-            <PopularSurvey popularSurveys={data.populartVotes} />
-          )}
-          <AgeGenderGraph data={data.result_Mysurvey} />
+        {data && <PopularSurvey popularSurveys={data.popularVotes} />}
+        <div className="card">
+          <div className="card-body">
+            <h2>설문 참여자 현황</h2>
+            {data && data.result_Mysurvey_age.length ? (
+              <DoughnutChart
+                ageDataProp={data.result_Mysurvey_age}
+                genderDataProp={data.result_Mysurvey_gender}
+              />
+            ) : (
+              <div>참여한 설문 데이터가 없습니다.</div>
+            )}
+          </div>
         </div>
       </div>
     </>

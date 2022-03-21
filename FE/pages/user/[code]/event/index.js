@@ -6,7 +6,9 @@ import SearchBar from "../../../../components/SearchBar";
 import { useState } from "react";
 
 function EventUser({ code, eventListProp }) {
-  const [eventList, setEventList] = useState(eventListProp);
+  const [eventList, setEventList] = useState(
+    eventListProp.sort((a, b) => a.status - b.status)
+  );
 
   const paintEventList = eventList.map((e, idx) => {
     return (
@@ -54,16 +56,16 @@ export async function getServerSideProps({ params }) {
     .catch((err) => console.log(err));
 
   // id 는 hospital_id
-  // if (!id) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: "/404",
-  //     },
-  //   };
-  // }
+  if (!id) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
-  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${1}`;
+  const EVENT_URL = `http://i6a205.p.ssafy.io:8000/api/event/${id}`;
   const eventList = await axios.get(EVENT_URL).then((res) => {
     return res.data;
   });

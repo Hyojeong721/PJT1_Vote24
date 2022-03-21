@@ -43,6 +43,43 @@ router.get("/notice/:hospital_id", async (req, res) => {
 router.get("/notice/:hospital_id/:id", async (req, res) => {
   try {
     const { hospital_id, id } = req.params;
+    const sql = `SELECT *
+    ,(SELECT id FROM hospital_notice WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_id
+    ,(SELECT title FROM hospital_notice WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_title
+    ,(SELECT id FROM hospital_notice WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_id
+    ,(SELECT title FROM hospital_notice WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_title
+    FROM hospital_notice WHERE hospital_id =? and id=?`;
+    const data = await pool.query(sql, [
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+    ]);
+    let result = data[0][0];
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
+
+    logger.info("GET Notice Detail");
+    return res.json(result);
+  } catch (error) {
+    logger.error("GET Notice Detail " + error);
+    return res.json(error);
+  }
+});
+
+/*----------------------------------------------------------------------*
+ * GET Notice Detail
+ * Example URL = ../notice/947780/1
+ *----------------------------------------------------------------------*/
+router.get("/user/notice/:hospital_id/:id", async (req, res) => {
+  try {
+    const { hospital_id, id } = req.params;
     const sqlInc = `UPDATE hospital_notice SET views = views+1 WHERE id = ?;`;
     await pool.query(sqlInc, [id]);
     const sql = `SELECT *
@@ -64,7 +101,8 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
       id,
     ]);
     let result = data[0][0];
-    result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/noticeimage/" + result.attachment;
 
     logger.info("GET Notice Detail");
     return res.json(result);
@@ -81,7 +119,7 @@ router.get("/notice/:hospital_id/:id", async (req, res) => {
 router.post(
   "/notice/:hospital_id",
   verifyToken,
-  notice_upload.single("notice_image"),
+  notice_upload.single("notice_img"),
   async (req, res) => {
     const { hospital_id } = req.params;
 
@@ -150,11 +188,11 @@ router.delete("/notice/:hospital_id/:id", verifyToken, async (req, res) => {
 router.put(
   "/notice/:hospital_id/:id",
   verifyToken,
-  notice_upload.single("notice_image"),
+  notice_upload.single("notice_img"),
   async (req, res) => {
     const { hospital_id, id } = req.params;
 
-    const { title, fixed, context, attachment } = req.body;
+    const { title, fixed, context, attachment, del } = req.body;
     try {
       if (attachment) {
         const rename =
@@ -171,12 +209,22 @@ router.put(
             updated_at = now() where id=? AND hospital_id =?`;
         const data = await pool.query(sql, [title, context, fixed, rename, id, hospital_id]);
       } else {
-        const sql = `update hospital_notice set
+        if (del == 0) {
+          const sql = `update hospital_notice set
             title =?, 
             context =?, 
             fixed =?,
             updated_at = now() where id=? AND hospital_id =?`;
-        const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
+          const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
+        } else {
+          const sql = `update hospital_notice set
+            title =?, 
+            context =?, 
+            fixed =?,
+            attachment = null,
+            updated_at = now() where id=? AND hospital_id =?`;
+          const data = await pool.query(sql, [title, context, fixed, id, hospital_id]);
+        }
       }
 
       logger.info("UPDATE Notice Detail");

@@ -5,11 +5,14 @@ import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { getPrevDate, getNextDate } from "../getDate";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
 
 const EventForm = () => {
   const router = useRouter();
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const [startDate, setStartDate] = useState(todayDate);
 
   const [values, setValues] = useState({
     title: "",
@@ -35,6 +38,10 @@ const EventForm = () => {
       ...prevValues,
       [name]: value,
     }));
+
+    if (name === "start_at") {
+      setStartDate(value);
+    }
   };
 
   //작성완료
@@ -65,7 +72,7 @@ const EventForm = () => {
         },
       })
       .then((res) => {
-        console.log("이벤트 등록 성공!", res.data);
+        toast.success("이벤트 등록 성공!");
         router.push(`/event/${res.data.id}`);
       })
       .catch((err) => {
@@ -109,18 +116,21 @@ const EventForm = () => {
             <input
               id="start_at"
               name="start_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
               value={values.start_at}
+              min={todayDate}
+              max={getPrevDate(values.end_at)}
               required
             ></input>
             {"  "}~{"  "}
             <input
               id="end_at"
               name="end_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
               value={values.end_at}
+              min={getNextDate(startDate)}
               required
             ></input>
           </div>

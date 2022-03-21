@@ -37,7 +37,7 @@ function Signup() {
       .required("비밀번호 입력은 필수입니다.")
       .matches(
         /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
-        "비밀번호는 반드시 8 ~ 16자이며, 한 개의 특수문자를 반드시 포함한 영어 숫자 조합이어야 합니다."
+        "비밀번호는 반드시 8~16자이며, 영문, 숫자, 특수문자를 포함해야 합니다."
       ),
     passwordConfirm: yup
       .string()
@@ -58,6 +58,27 @@ function Signup() {
         /([0-9]{3})-?([0-9]{2})-?([0-9]{5})/,
         "사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO"
       ),
+    logo_image: yup
+      .mixed()
+      .test("required", "병원 로고 이미지 파일을 선택해주세요!", (value) => {
+        return value && value.length;
+      })
+      .test(
+        "type",
+        "png/jpeg/jpg 형식의 파일을 선택해주세요!",
+        function (value) {
+          return (
+            value &&
+            value[0] &&
+            (value[0].type === "image/jpeg" ||
+              value[0].type === "image/jpg" ||
+              value[0].type === "image/png")
+          );
+        }
+      )
+      .test("fileSize", "파일 사이즈가 너무 큽니다!", (value, context) => {
+        return value && value[0] && value[0].size <= 200000;
+      }),
   });
 
   const {
@@ -106,6 +127,7 @@ function Signup() {
 
   const onSubmit = async (data) => {
     if (!(emailChecked && bnChecked)) {
+      toast.dismiss();
       toast.warning("중복 확인이 필요합니다.");
       return;
     }
@@ -119,11 +141,11 @@ function Signup() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         toast.success("서비스 신청 완료!");
         router.push("/");
       })
       .catch((err) => {
+        toast.dismiss();
         toast.error("서비스 신청 실패!");
         console.log(err);
       });
@@ -131,8 +153,12 @@ function Signup() {
 
   const onEmailCheck = async (e) => {
     const email = getValues("email");
-    if (email === "" || errors.email?.message) {
-      toast.error("유효하지 않은 이메일입니다!");
+    const emailREGEX =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+
+    if (!emailREGEX.test(email) || errors.email?.message) {
+      toast.dismiss();
+      toast.error("이메일 형식에 맞게 입력해주세요.");
       return;
     }
     const data = { email };
@@ -141,6 +167,7 @@ function Signup() {
       .post(EMAIL_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
+          toast.dismiss();
           toast.error("이미 존재하는 이메일입니다!");
           setEmailChecked(false);
           return;
@@ -148,13 +175,18 @@ function Signup() {
         toast.success("사용 가능한 이메일입니다!");
         setEmailChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 이메일 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   const onBnCheck = async (e) => {
     const businessNumber = getValues("business_number");
-    if (businessNumber === "") {
-      toast.error("사업자 등록 번호를 입력해주세요!");
+    const bnREGEX = /([0-9]{3})-([0-9]{2})-([0-9]{5})/;
+    if (!bnREGEX.test(businessNumber) || errors.business_number?.message) {
+      toast.dismiss();
+      toast.error("사업자 등록 번호 양식에 맞게 입력해주세요. OOO-OO-OOOOO");
       return;
     }
     const data = { business_number: businessNumber };
@@ -163,6 +195,7 @@ function Signup() {
       .post(BN_CHECK, data)
       .then((res) => {
         if (res.data.result === "notok") {
+          toast.dismiss();
           toast.error("이미 존재하는 사업자 번호입니다!");
           setBnChecked(false);
           return;
@@ -170,13 +203,16 @@ function Signup() {
         toast.success("사용 가능한 사업자번호 입니다!");
         setBnChecked(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("서버에러: 사업자 등록 번호 중복 확인에 실패하였습니다. ");
+        console.log(err);
+      });
   };
 
   return (
     <>
       <Header title="서비스 신청"></Header>
-      <div className="container d-flex justify-content-center">
+      <div className="container d-flex flex-column justify-content-center align-items-center">
         <form
           className="form-box d-flex flex-column p-3 border rounded-2 shadow my-5 bg-light"
           onSubmit={handleSubmit(onSubmit)}
@@ -214,7 +250,9 @@ function Signup() {
                 <label htmlFor="email">
                   <p className="text-secondary">you@example.com</p>
                 </label>
-                <span className="error">{errors.email?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.email?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -233,11 +271,12 @@ function Signup() {
                 />
                 <label htmlFor="password">
                   <p className="text-secondary fs-0">
-                    비밀번호는 8 ~ 16자 사이이며, 특수문자 1개를 포함해야
-                    합니다.
+                    8~16자 영문, 숫자, 특수문자를 포함해야 합니다.
                   </p>
                 </label>
-                <span className="error">{errors.password?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.password?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -259,7 +298,9 @@ function Signup() {
                     위 비밀번호와 동일한 비밀번호를 입력해주세요.
                   </p>
                 </label>
-                <span className="error">{errors.passwordConfirm?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.passwordConfirm?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -279,7 +320,9 @@ function Signup() {
                 <label htmlFor="name">
                   <p className="text-secondary">병원명을 입력해주세요.</p>
                 </label>
-                <span className="error">{errors.name?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.name?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -299,7 +342,9 @@ function Signup() {
                 <label htmlFor="phone">
                   <p className="text-secondary">전화번호를 입력해주세요.</p>
                 </label>
-                <span className="error">{errors.phone?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.phone?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -309,7 +354,10 @@ function Signup() {
                 <label htmlFor="business_number">사업자 등록 번호</label>
               </div>
               {bnChecked ? (
-                <button className="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary d-flex justify-content-center align-items-center"
+                >
                   <span className="material-icons">check_circle</span>
                 </button>
               ) : (
@@ -336,7 +384,9 @@ function Signup() {
                 <label htmlFor="business_number">
                   <p className="text-secondary">OOO-OO-OOOOO</p>
                 </label>
-                <span className="error">{errors.business_number?.message}</span>
+                <span className="fs-0 text-danger ms-1">
+                  {errors.business_number?.message}
+                </span>
               </div>
             </div>
           </div>
@@ -354,6 +404,9 @@ function Signup() {
                 onChange={onFileChange}
               />
             </div>
+            <span className="fs-0 text-danger ms-1">
+              {errors.logo_image?.message}
+            </span>
           </div>
 
           {/* <div className="w-75 d-flex justify-content-center mt-2">
@@ -367,8 +420,7 @@ function Signup() {
               objectFit="contain"
             />
           </div> */}
-
-          <div className="d-flex justify-content-center mt-5">
+          <div className="d-flex justify-content-center mt-3">
             <button type="submit" className="submit-button btn btn-primary">
               서비스 신청
             </button>

@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import FileInput from "../FileInput";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -9,18 +8,20 @@ import cs from "../../styles/postcreate.module.css";
 
 const NoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
-  const router = useRouter();
+  const inputRef = useRef(values.image);
 
+  const router = useRouter();
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
       await axios
         .get(url)
         .then((res) => {
+          res.data.del = 0;
           setValues(res.data);
         })
         .catch((err) => {
-          console.log("병원공지 원본data get 실패", err);
+          toast.error("병원 공지사항을 가져오는데 실패했습니다.");
           router.push("/404");
         });
     };
@@ -43,6 +44,19 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   const handlefixed = (e) => {
     handleChange("fixed", e.target.value);
   };
+  //첨부파일
+  const handleChangeFile = (e) => {
+    const nextValue = e.target.files[0];
+    handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
+  };
+  const handleClearClick = () => {
+    values.attachment = null;
+    values.image = null;
+    handleChange("imgFile", null);
+    handleChange("attachment", null);
+    handleChange("del", 1);
+  };
 
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
@@ -53,18 +67,15 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_image", imgFile);
+          fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
         }
       } else {
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(key, values[key]);
+        }
       }
     }
-
-    // formData 안에 값들 확인할 때
-    // for (let value of fd.values()) {
-    //   console.log("form값들", value);
-    // }
 
     const jwt = localStorage.getItem("jwt");
     await axios
@@ -75,14 +86,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        console.log("병원공지 수정 성공", res.data);
-        for (let value of fd.values()) {
-          console.log("form값들", value);
-        }
+        toast.success("병원 공지사항 수정 성공!");
         router.push(`/notice/${noticeId}`);
       })
       .catch((err) => {
-        toast.error("병원공지 수정 실패!", {
+        toast.error("병원 공지사항 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
@@ -104,7 +112,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               name="title"
               onChange={handleInputChange}
               id="title"
-              value={values.title}
+              defaultValue={values.title}
               required
             ></input>
           </div>
@@ -150,7 +158,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
             <textarea
               className={cn(cs.textarea)}
               name="context"
-              value={values.context}
+              defaultValue={values.context}
               onChange={handleInputChange}
               id="context"
               rows="20"
@@ -160,11 +168,32 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         </div>
 
         <div name="첨부파일" className={cn(cs.formRow)}>
-          <FileInput
-            name="imgFile"
-            value={values.imgFile}
-            onChange={handleChange}
-          ></FileInput>
+          <div className={cn(cs.formRow, "d-flex")}>
+            <div className={cn(cs.formLabel)}>
+              <label htmlFor="formFile" className="form-label">
+                첨부파일
+              </label>
+            </div>
+            <div className={cn(cs.formControl)}>
+              {values.image ? (
+                <div>
+                  {values.attachment}
+                  <button className={cn(cs.delete)} onClick={handleClearClick}>
+                    삭제
+                  </button>
+                </div>
+              ) : (
+                <input
+                  className="form-control"
+                  type="file"
+                  name="file"
+                  accept="image/*"
+                  ref={inputRef}
+                  onChange={handleChangeFile}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -176,7 +205,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         </div>
         <div className={cn(cs.btn)}>
           <button type="submit" className="btn btn-primary">
-            등록
+            수정
           </button>
         </div>
       </div>

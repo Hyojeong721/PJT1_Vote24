@@ -60,7 +60,15 @@ const EventDetailItem = ({ id, url }) => {
           <div>
             <span className={cn(ct.item)}>관리자</span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
+            <span className={cn(ct.item)}>
+              작성 : {DateForm(data.created_at)}
+            </span>
+
+            {data.updated_at && (
+              <span className={cn(ct.item)}>
+                수정 : {DateForm(data.updated_at)}
+              </span>
+            )}
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
@@ -94,6 +102,7 @@ const EventDetailItem = ({ id, url }) => {
               alt={data.attachment}
               width="800px"
               height="800px"
+              objectFit="contain"
               priority
             ></Image>
           )}
@@ -102,7 +111,7 @@ const EventDetailItem = ({ id, url }) => {
           {data.context &&
             data.context.split("\n").map((line) => {
               return (
-                <span>
+                <span key={line}>
                   {line}
                   <br />
                 </span>

@@ -29,7 +29,7 @@ function SurveyCreateForm() {
     unregister,
     formState: { errors },
     handleSubmit,
-    reset,
+    setValue,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -64,7 +64,6 @@ function SurveyCreateForm() {
       })
       .then((res) => {
         toast.success("설문 생성 성공");
-        console.log(res.data);
         router.push(`/survey/${res.data.surveyID}`);
       })
       .catch((err) => {
@@ -92,7 +91,7 @@ function SurveyCreateForm() {
         errors={errors}
         nowCategory={nowCategory}
         setNowCategory={setNowCategory}
-        reset={reset}
+        setValue={setValue}
       />
       <SurveyCreateFormBody
         register={register}

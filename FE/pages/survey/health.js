@@ -5,31 +5,31 @@ import axios from "axios";
 import SurveyList from "../../components/Survey/SurveyList";
 import Paging from "../../components/Paging";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
 
-function Health() {
+function HealthSurvey() {
   const [dataList, setDataList] = useState([]);
-  // 페이징 처리를 위한
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(3);
 
-  // 병원 id 받아서 url에 적용
+  const router = useRouter();
+
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
   const SURVEY_HEALTH_URL = `${SURVEY_URL}/list/${hospital_id}/0`;
 
-  // 서버에서 건강 설문 목록 받아오는 코드
   useEffect(() => {
     const getList = async () => {
       await axios
         .get(SURVEY_HEALTH_URL)
         .then((res) => {
-          const data = res.data;
           setDataList(res.data);
         })
         .catch((error) => {
-          console.log("건강설문 get 실패", error);
+          console.log("건강설문 목록 get 실패", error);
+          router.push("/404");
         });
     };
     getList();
@@ -64,4 +64,4 @@ function Health() {
   );
 }
 
-export default Health;
+export default HealthSurvey;

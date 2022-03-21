@@ -38,20 +38,6 @@ router.post("/id/:id", async (req, res) => {
   }
 });
 
-// router.get("/test", async (req, res) => {
-//   // let dupl = 1;
-//   // let code = 0;
-//   // while (dupl == 1) {
-//   //   code = crypto.randomBytes(3).toString("hex");
-//   //   const dupl_sql = "select EXISTS (select * from hospital_info where code=? limit 1) as success;";
-//   //   let dupl_data = await pool.query(dupl_sql, [code]);
-//   //   dupl = dupl_data[0][0].success;
-//   // }
-//   // console.log(code);
-//   // return res.json(dupl);
-//   console.log(router);
-// });
-
 /*----------------------------------------------------------------------*
  * POST HospitalUser Join
  * Example URL = ../join
@@ -74,6 +60,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
   nameParser("uploads/logo/", "uploads/logo/", req.body.logo_name, logo_rename);
 
   try {
+    const hash_password = await hashPassword(password);
     if (req.body.logo_name) {
       const sql = `INSERT INTO hospital_info ( 
                         email, 
@@ -86,7 +73,7 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
 
       const data = await pool.query(sql, [
         email,
-        password,
+        hash_password,
         name,
         business_number,
         phone,
@@ -101,7 +88,14 @@ router.post("/join", logo_upload.single("logo_image"), async (req, res) => {
                         business_number,
                         phone,
                         code) VALUES(?, ?, ?, ?, ?, ?);`;
-      const data = await pool.query(sql, [email, password, name, business_number, phone, code]);
+      const data = await pool.query(sql, [
+        email,
+        hash_password,
+        name,
+        business_number,
+        phone,
+        code,
+      ]);
     }
 
     logger.info("POST HospitalUser Join");
@@ -136,8 +130,7 @@ router.post("/login", async (req, res) => {
     const code = data[0][0].code;
     const name = data[0][0].name; // name 추가
     const image = "http://i6a205.p.ssafy.io:8000/api/logoimage/" + data[0][0].logo_image;
-    const hashedPassword = await hashPassword(data[0][0].password);
-    const compareResult = await comparePassword(password, hashedPassword);
+    const compareResult = await comparePassword(password, data[0][0].password);
 
     if (!compareResult) {
       logger.error("POST HospitalUser Login Fail : No exit Password");

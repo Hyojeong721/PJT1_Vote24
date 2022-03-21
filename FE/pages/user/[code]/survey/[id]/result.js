@@ -55,16 +55,41 @@ function SurveyDetailUser({
 
 export async function getServerSideProps({ query }) {
   const { code, id, score } = query;
-  const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/list/${id}`;
-  const { title, output_link, reservation_link, benchmark } = await axios
-    .get(GET_BENCHMARK_URL)
-    .then((res) => res.data)
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data.id)
     .catch((err) => console.log(err));
+
+  if (!hId) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
+  const GET_BENCHMARK_URL = `http://i6a205.p.ssafy.io:8000/api/benchmark/list/${id}`;
+  const { status, title, output_link, reservation_link, benchmark } =
+    await axios
+      .get(GET_BENCHMARK_URL)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+
+  if (status !== 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
   let outputText = "";
   for (let i = 0; i < benchmark.length; i++) {
     if (score > benchmark[i].benchmark) {
-      console.log("here", score, benchmark[i].benchmark);
       outputText = benchmark[i].output_text;
     }
   }

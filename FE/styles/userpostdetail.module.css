@@ -7,5 +7,12 @@
 }
 
 .prevnextButton:hover {
-  background-color: #dcf5ff;
+  color: black;
+  background-color: #fff8e6;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: auto;
 }

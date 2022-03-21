@@ -31,8 +31,8 @@ router.get("/event/:hospital_id", async (req, res) => {
     const result = data[0];
     const now = new Date();
     for (i = 0; i < result.length; i++) {
-      if (now < result[i].start_at) result[i].status = 0;
-      else result[i].status = now < result[i].end_at ? 1 : 2;
+      if (now < result[i].start_at) result[i].status = 1;
+      else result[i].status = now < result[i].end_at ? 0 : 2;
     }
 
     logger.info("GET Event List");
@@ -50,8 +50,44 @@ router.get("/event/:hospital_id", async (req, res) => {
 router.get("/event/:hospital_id/:id", async (req, res) => {
   try {
     const { hospital_id, id } = req.params;
+    const sql = `SELECT *
+    ,(SELECT id FROM hospital_event WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_id
+    ,(SELECT title FROM hospital_event WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_title
+    ,(SELECT id FROM hospital_event WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_id
+    ,(SELECT title FROM hospital_event WHERE hospital_id =? and id > ? ORDER BY id LIMIT 1) AS next_title
+    FROM hospital_event WHERE hospital_id =? and id=?`;
+    const data = await pool.query(sql, [
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+      hospital_id,
+      id,
+    ]);
+    let result = data[0][0];
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
+
+    logger.info("GET Event Detail");
+    return res.json(result);
+  } catch (error) {
+    logger.error("GET Event Detail " + error);
+    return res.json({ status: "Fail" });
+  }
+});
+
+/*----------------------------------------------------------------------*
+ * GET Event Detail
+ * Example URL = ../event/947780/1
+ *----------------------------------------------------------------------*/
+router.get("/user/event/:hospital_id/:id", async (req, res) => {
+  try {
+    const { hospital_id, id } = req.params;
     const sqlInc = `UPDATE hospital_event SET views = views+1 WHERE id = ?;`;
-    await pool.query(sqlInc, [id]);
     await pool.query(sqlInc, [id]);
     const sql = `SELECT *
     ,(SELECT id FROM hospital_event WHERE hospital_id =? and id < ? ORDER BY id DESC LIMIT 1) AS prev_id
@@ -72,7 +108,8 @@ router.get("/event/:hospital_id/:id", async (req, res) => {
       id,
     ]);
     let result = data[0][0];
-    result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
+    if (result.attachment)
+      result.image = "http://i6a205.p.ssafy.io:8000/api/eventimage/" + result.attachment;
 
     logger.info("GET Event Detail");
     return res.json(result);
@@ -160,11 +197,11 @@ router.delete("/event/:hospital_id/:id", verifyToken, async (req, res) => {
 router.put(
   "/event/:hospital_id/:id",
   verifyToken,
-  event_upload.single("event_image"),
+  event_upload.single("event_img"),
   async (req, res) => {
     const { hospital_id, id } = req.params;
 
-    const { title, end_at, start_at, context, attachment } = req.body;
+    const { title, end_at, start_at, context, attachment, del } = req.body;
 
     try {
       if (attachment) {
@@ -191,12 +228,24 @@ router.put(
           hospital_id,
         ]);
       } else {
-        const sql = `update hospital_event set
+        if (del == 0) {
+          const sql = `update hospital_event set
                             title =?, 
                             context =?, 
                             start_at =?, 
-                            end_at =? where id=? AND hospital_id=?`;
-        const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+                            end_at =?,
+                            updated_at = now() where id=? AND hospital_id=?`;
+          const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+        } else {
+          const sql = `update hospital_event set
+                            title =?, 
+                            context =?, 
+                            start_at =?, 
+                            end_at =?,
+                            attachment = null,
+                            updated_at = now() where id=? AND hospital_id=?`;
+          const data = await pool.query(sql, [title, context, start_at, end_at, id, hospital_id]);
+        }
       }
 
       logger.info("UPDATE Event Detail");

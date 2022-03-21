@@ -69,24 +69,27 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
   const onSubmit = async (data) => {
     const questions = [];
     let score = 0;
+    // score 계산
     for (let key of Object.keys(data)) {
+      if (key === "age" || key === "gender") {
+        continue;
+      }
+
       if (key.slice(0, 2) === "QC") {
         const [optionId, weight] = data[key].split("-");
         questions.push({ id: key.slice(2), type: "0", select: optionId });
         score += parseInt(weight);
-      } else {
+      } else if (key.slice(0, 2) === "QE") {
         questions.push({ id: key.slice(2), type: "1", answer: data[key] });
       }
     }
 
     const { age, gender } = data;
-
     const result = { questions, score, age, gender };
 
     await axios
       .post(SURVEY_SUBMIT_URL, result)
       .then((res) => {
-        console.log("res", res.data);
         router.push({
           pathname: `/user/${code}/survey/${sId}/result`,
           query: { score },
@@ -121,11 +124,36 @@ function SurveyDetailUser({ code, sId, surveyDetail }) {
 
 export async function getServerSideProps({ params }) {
   const { code, id } = params;
+
+  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const hId = await axios
+    .post(GET_HOSPITAL_ID_BY_CODE)
+    .then((res) => res.data.id)
+    .catch((err) => console.log(err));
+
+  if (!hId) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+
   const SURVEY_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/survey/${id}`;
   const surveyDetail = await axios
     .get(SURVEY_DETAIL_URL)
     .then((res) => res.data)
     .catch((err) => console.log(err));
+  // Object.keys(surveyDetail).length === 0 ||
+  if (surveyDetail.status !== 0) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
 
   return {
     props: {

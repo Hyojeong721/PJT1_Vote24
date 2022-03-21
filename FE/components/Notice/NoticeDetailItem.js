@@ -20,7 +20,7 @@ const NoticeDetailItem = ({ url }) => {
       await axios
         .get(`${url}/${id}`)
         .then((res) => {
-          console.log(res.data);
+          console.log("게시글내용", res.data);
           setData(res.data);
         })
         .catch((err) => {
@@ -32,6 +32,7 @@ const NoticeDetailItem = ({ url }) => {
       getPost();
     }
   }, [id, url]);
+
   //삭제
   const handleRemove = () => {
     const jwt = localStorage.getItem("jwt");
@@ -60,7 +61,15 @@ const NoticeDetailItem = ({ url }) => {
           <div>
             <span className={cn(ct.item)}>관리자</span>
             <span className={cn(ct.item)}> | </span>
-            <span className={cn(ct.item)}>{DateForm(data.updated_at)}</span>
+            <span className={cn(ct.item)}>
+              작성 : {DateForm(data.created_at)}
+            </span>
+
+            {data.updated_at && (
+              <span className={cn(ct.item)}>
+                수정 : {DateForm(data.updated_at)}
+              </span>
+            )}
             <span className={cn(ct.item)}> | </span>
             <span className={cn(ct.item)}>조회수 : {data.views} </span>
           </div>
@@ -86,15 +95,16 @@ const NoticeDetailItem = ({ url }) => {
               alt={data.attachment}
               width="800px"
               height="800px"
+              objectFit="contain"
               priority
             ></Image>
           )}
         </div>
         <div>
           {data.context &&
-            data.context.split("\n").map((line) => {
+            data.context.split("\n").map((line, idx) => {
               return (
-                <span>
+                <span key={idx}>
                   {line}
                   <br />
                 </span>

@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
-import DateTimeForm from "../DateTimeForm";
+import { getPrevDate, getNextDate } from "../getDate";
 
 const EventUpdateForm = ({ eventId, url }) => {
   const [values, setValues] = useState([]);
   const router = useRouter();
+  const inputRef = useRef(values.image);
   // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
@@ -18,6 +18,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         .get(url)
         .then((res) => {
           const data = res.data;
+          res.data.del = 0;
           setValues(data);
         })
         .catch((err) => {
@@ -38,9 +39,26 @@ const EventUpdateForm = ({ eventId, url }) => {
       [name]: value,
     }));
   };
+
+  //첨부파일
+  const handleChangeFile = (e) => {
+    const nextValue = e.target.files[0];
+    handleChange("imgFile", nextValue);
+    handleChange("attachment", nextValue.name);
+  };
+
+  const handleClearClick = () => {
+    values.attachment = null;
+    values.image = null;
+    handleChange("imgFile", null);
+    handleChange("attachment", null);
+    handleChange("del", 1);
+  };
+
   // 글 수정 서버 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
@@ -50,12 +68,18 @@ const EventUpdateForm = ({ eventId, url }) => {
           fd.append("event_img", imgFile);
           fd.append("attachment", imgName);
         }
+      } else if (key === "created_at") {
+        fd.append(`${key}`, values[key].slice(0, -5).replace("T", " "));
+      } else if (key === "start_at" || key == "end_at") {
+        fd.append(`${key}`, values[key].slice(0, 10));
       } else {
-        console.log(key, values[key]);
-        fd.append(`${key}`, values[key]);
+        if (key != "attachment") {
+          fd.append(`${key}`, values[key]);
+        }
       }
     }
     // 서버에 보내기
+
     const jwt = localStorage.getItem("jwt");
     await axios
       .put(url, fd, {
@@ -65,7 +89,7 @@ const EventUpdateForm = ({ eventId, url }) => {
         },
       })
       .then((res) => {
-        console.log("이벤트 수정 성공", res.data);
+        toast.success("이벤트 수정 성공!");
         router.push(`/event/${eventId}`);
       })
       .catch((err) => {
@@ -89,7 +113,7 @@ const EventUpdateForm = ({ eventId, url }) => {
               className={cn(cs.input)}
               name="title"
               id="title"
-              value={values.title}
+              value={values.title ? values.title : ""}
               onChange={handleInputChange}
               required
             ></input>
@@ -106,18 +130,24 @@ const EventUpdateForm = ({ eventId, url }) => {
             <input
               id="start_at"
               name="start_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
-              value={DateTimeForm(values.start_at)}
+              value={
+                values.start_at ? values.start_at.slice(0, 10) : "2022-01-01"
+              }
+              min={new Date().toISOString().slice(0, 10)}
+              max={getPrevDate(values.end_at)}
               required
             ></input>
             {"  "}~{"  "}
             <input
               id="end_at"
               name="end_at"
-              type="datetime-local"
+              type="date"
               onChange={handleInputChange}
-              value={DateTimeForm(values.end_at)}
+              value={values.end_at ? values.end_at.slice(0, 10) : "2022-01-01"}
+              min={getNextDate(values.start_at)}
+              max={new Date(8640000000000000)}
               required
             ></input>
           </div>
@@ -140,17 +170,35 @@ const EventUpdateForm = ({ eventId, url }) => {
             ></textarea>
           </div>
         </div>
-        <div className={cn(cs.formRow)}>
-          <FileInput
-            name="imgFile"
-            value={values.imgFile}
-            onChange={handleChange}
-          ></FileInput>
+        <div className={cn(cs.formRow, "d-flex")}>
+          <div className={cn(cs.formLabel)}>
+            <label htmlFor="formFile" className="form-label">
+              첨부파일
+            </label>
+          </div>
+          <div className={cn(cs.formControl)}>
+            {values.image ? (
+              <div>
+                {values.attachment}
+                <button className={cn(cs.delete)} onClick={handleClearClick}>
+                  삭제
+                </button>
+              </div>
+            ) : (
+              <input
+                className="form-control"
+                type="file"
+                name="file"
+                ref={inputRef}
+                onChange={handleChangeFile}
+              />
+            )}
+          </div>
         </div>
       </div>
       <div className={cn(cs.btns, "d-flex")}>
         <div className={cn(cs.btn)}>
-          <Link href="/notice/" passHref>
+          <Link href="/event/" passHref>
             <button className="btn btn-secondary">취소</button>
           </Link>
         </div>

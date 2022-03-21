@@ -2,6 +2,7 @@ import { useState } from "react";
 import FileInput from "../FileInput";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
 import cn from "classnames";
@@ -11,11 +12,15 @@ const NoticeForm = ({ url }) => {
   const router = useRouter();
 
   const [values, setValues] = useState({
+    userId: "",
     title: "",
     context: "",
     fixed: "0",
     imgFile: null,
   });
+
+  const { userInfo } = useSelector((state) => state.userStatus);
+  const userId = userInfo.id;
 
   // 글 작성시 state에 반영
   const handleInputChange = (e) => {
@@ -32,22 +37,24 @@ const NoticeForm = ({ url }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 보낼 데이터들을 fromdata에 담아
     const fd = new FormData();
     for (let key in values) {
       if (key === "imgFile") {
         if (values[key] != null) {
           const imgFile = values[key];
           const imgName = imgFile.name;
-          fd.append("notice_image", imgFile);
+          fd.append("notice_img", imgFile);
           fd.append("attachment", imgName);
+        }
+      } else if (key === "userId") {
+        if (userId == 0) {
+          fd.append("userId", 0);
         }
       } else {
         fd.append(`${key}`, values[key]);
       }
     }
     const jwt = localStorage.getItem("jwt");
-    // 서버에 보내기
     await axios
       .post(url, fd, {
         headers: {
@@ -56,7 +63,7 @@ const NoticeForm = ({ url }) => {
         },
       })
       .then((res) => {
-        console.log("공지사항 등록 성공!", res.data);
+        toast.success("공지사항 등록 성공!");
         router.push(`/notice/${res.data.id}`);
       })
       .catch((err) => {

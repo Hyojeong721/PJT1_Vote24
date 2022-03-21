@@ -1,9 +1,9 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import cn from "classnames";
 import cs from "../styles/fileinput.module.css";
 
 function FileInput({ name, value, onChange }) {
-  const inputRef = useRef();
+  const inputRef = useRef(value);
 
   const handleChange = (e) => {
     const nextValue = e.target.files[0];
@@ -31,6 +31,7 @@ function FileInput({ name, value, onChange }) {
           type="file"
           id="formFile"
           onChange={handleChange}
+          accept="image/*"
           ref={inputRef}
         ></input>
         {value && (
