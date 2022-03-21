@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import router from "next/router";
 import axios from "axios";
 import cn from "classnames";
 import cs from "../../styles/postcreate.module.css";
@@ -10,8 +10,6 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
   const [values, setValues] = useState([]);
   const inputRef = useRef(values.image);
 
-  const router = useRouter();
-  // 기존 data 가져오기
   useEffect(() => {
     const getPost = async () => {
       await axios
@@ -21,6 +19,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
           setValues(res.data);
         })
         .catch((err) => {
+          console.log("병원공지 get error", error);
           toast.error("병원 공지사항을 가져오는데 실패했습니다.");
           router.push("/404");
         });
@@ -78,6 +77,10 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
     }
 
     const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      router.reload();
+    }
+
     await axios
       .put(url, fd, {
         headers: {
@@ -86,11 +89,11 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         },
       })
       .then((res) => {
-        toast.success("병원 공지사항 수정 성공!");
+        toast.success("병원 공지사항 수정 성공!", { autoClose: 3000 });
         router.push(`/notice/${noticeId}`);
       })
       .catch((err) => {
-        toast.error("병원 공지사항 수정 실패!", {
+        toast.error("병원 공지 수정 실패!", {
           autoClose: 3000,
         });
         console.log(err);
@@ -103,7 +106,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         <div name="제목" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="title">
-              <span className={cn(cs.star)}>*{"  "}</span>제목
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>제목</span>
             </label>
           </div>
           <div className={cn(cs.formControl)}>
@@ -120,7 +124,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
 
         <div name="체크박스" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
-            <span className={cn(cs.star)}>*{"  "}</span>TYPE
+            <span className={cn(cs.star)}>*{"  "}</span>
+            <span>TYPE</span>
           </div>
           <div className={cn(cs.formControl)}>
             <span className="form-label me-3">
@@ -132,7 +137,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
                 checked={values.fixed == 1}
                 onChange={handlefixed}
               />
-              {"  "} <label htmlFor="fixed">고정공지</label>
+              <span>{"  "} </span>
+              <label htmlFor="fixed">고정공지</label>
             </span>
             <input
               id="no_fixed"
@@ -142,7 +148,7 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               checked={values.fixed == 0}
               onChange={handlefixed}
             />
-            {"  "}
+            <span>{"  "} </span>
             <label htmlFor="no_fixed">일반공지</label>
           </div>
         </div>
@@ -150,7 +156,8 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
         <div name="내용" className={cn(cs.formRow, "d-flex")}>
           <div className={cn(cs.formLabel)}>
             <label htmlFor="context">
-              <span className={cn(cs.star)}>*{"  "}</span>내용
+              <span className={cn(cs.star)}>*{"  "}</span>
+              <span>내용</span>
             </label>
           </div>
 
@@ -175,9 +182,9 @@ const NoticeUpdateForm = ({ noticeId, url }) => {
               </label>
             </div>
             <div className={cn(cs.formControl)}>
-              {values.image ? (
+              {values.attachment != null ? (
                 <div>
-                  {values.attachment}
+                  <span>{values.attachment}</span>
                   <button className={cn(cs.delete)} onClick={handleClearClick}>
                     삭제
                   </button>

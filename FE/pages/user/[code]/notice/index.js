@@ -4,11 +4,22 @@ import UserPostListItem from "../../../../components/User/UserPostListItem";
 import BackButton from "../../../../components/BackButton";
 import SearchBar from "../../../../components/SearchBar";
 import { useState } from "react";
+import Paging from "../../../../components/Paging";
 
 function NoticeUser({ code, noticeListProp }) {
   const [noticeList, setNoticeList] = useState(noticeListProp);
 
-  const paintNoticeList = noticeList.map((n, idx) => {
+  // 페이징 처리를 위한
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
+
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = noticeList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const paintNoticeList = currentPosts.map((n, idx) => {
     return (
       <UserPostListItem
         key={idx}
@@ -28,7 +39,7 @@ function NoticeUser({ code, noticeListProp }) {
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setNoticeList} postListProp={noticeListProp} />
       </div>
-      {noticeList.length ? (
+      {currentPosts.length ? (
         paintNoticeList
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
@@ -38,6 +49,11 @@ function NoticeUser({ code, noticeListProp }) {
           작성된 공지사항이 없습니다.
         </div>
       )}
+      <Paging
+        postsPerPage={postsPerPage}
+        totalPosts={noticeList.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
@@ -46,7 +62,7 @@ export default NoticeUser;
 
 export async function getServerSideProps({ params }) {
   const code = params.code;
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
@@ -62,7 +78,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const NOTICE_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${id}`;
+  const NOTICE_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/notice/${id}`;
   const noticeList = await axios.get(NOTICE_URL).then((res) => {
     return res.data;
   });

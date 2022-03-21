@@ -16,7 +16,7 @@ function MainOnLogin() {
   const [data, setData] = useState("");
 
   const fetchImage = async () => {
-    const GET_HOSPITAL_INFO_URL = `http://i6a205.p.ssafy.io:8000/api/id/${id}`;
+    const GET_HOSPITAL_INFO_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/id/${id}`;
     const { image } = await axios
       .post(GET_HOSPITAL_INFO_URL)
       .then((res) => res.data)
@@ -26,14 +26,13 @@ function MainOnLogin() {
   };
 
   const fetchData = async () => {
-    const GET_HOSPITAL_DATA_URL = `http://i6a205.p.ssafy.io:8000/api/main/${id}`;
+    const GET_HOSPITAL_DATA_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/main/${id}`;
     const summaryData = await axios
       .get(GET_HOSPITAL_DATA_URL)
       .then((res) => res.data)
       .catch((err) => console.log(err));
 
     setData(summaryData);
-    console.log("@@", summaryData);
   };
 
   useEffect(() => {
@@ -76,7 +75,9 @@ function MainOnLogin() {
         <div className="card">
           <div className="card-body">
             <h2>설문 참여자 현황</h2>
-            {data && data.result_Mysurvey_age.length ? (
+            {data.totalMyVote &&
+            data.totalMyVote !== "0" &&
+            data.result_Mysurvey_age.length ? (
               <DoughnutChart
                 ageDataProp={data.result_Mysurvey_age}
                 genderDataProp={data.result_Mysurvey_gender}

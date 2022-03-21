@@ -4,11 +4,23 @@ import UserSurveyListItem from "../../../../components/User/UserSurveyListItem";
 import BackButton from "../../../../components/BackButton";
 import UserHeader from "../../../../components/User/UserHeader";
 import SearchBar from "../../../../components/SearchBar";
+import Paging from "../../../../components/Paging";
 
 function SurveyHealthUser({ code, surveyListProp }) {
-  const [surveyList, setSurveyList] = useState(surveyListProp);
+  const [surveyList, setSurveyList] = useState(
+    surveyListProp.sort((a, b) => a.status - b.status)
+  );
+  // 페이징 처리를 위한
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
 
-  const paintSurveyList = surveyList.map((s, idx) => {
+  // 페이징 처리를 위한 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = surveyList.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const paintSurveyList = currentPosts.map((s, idx) => {
     return (
       <UserSurveyListItem
         key={idx}
@@ -22,13 +34,15 @@ function SurveyHealthUser({ code, surveyListProp }) {
   return (
     <div className="home-user-bg min-vh-100 d-flex flex-column align-items-center pb-5">
       <header className="position-relative w-100 d-flex justify-content-center my-3">
-        <BackButton url={`/user/${code}`} />
+        <div className="mt-2">
+          <BackButton url={`/user/${code}`} />
+        </div>
         <UserHeader title="건강 자가진단 설문" />
       </header>
       <div className="w-75 d-flex justify-content-end">
         <SearchBar setPostList={setSurveyList} postListProp={surveyListProp} />
       </div>
-      {surveyList.length ? (
+      {currentPosts.length ? (
         paintSurveyList
       ) : (
         <div className="fs-1 border rounded bg-white w-75 d-flex justify-content-center p-3 mt-3 ">
@@ -38,6 +52,11 @@ function SurveyHealthUser({ code, surveyListProp }) {
           작성된 설문조사가 없습니다.
         </div>
       )}
+      <Paging
+        postsPerPage={postsPerPage}
+        totalPosts={surveyList.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
@@ -45,7 +64,7 @@ function SurveyHealthUser({ code, surveyListProp }) {
 export async function getServerSideProps({ params }) {
   const code = params.code;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
@@ -61,10 +80,11 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const SURVEY_HEALTH_URL = `http://i6a205.p.ssafy.io:8000/api/survey/list/${id}/0`;
-  const surveyList = await axios.get(SURVEY_HEALTH_URL).then((res) => {
-    return res.data;
-  });
+  const SURVEY_HEALTH_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey/list/${id}/0`;
+  const surveyList = await axios
+    .get(SURVEY_HEALTH_URL)
+    .then((res) => res.data)
+    .catch((err) => console.log(err));
 
   return {
     props: {

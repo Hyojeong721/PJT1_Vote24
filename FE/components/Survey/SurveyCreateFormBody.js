@@ -13,13 +13,13 @@ function SurveyCreateFormBody({
 }) {
   const [questions, setQuestions] = useState([]);
   const [qCnt, setQCnt] = useState(1);
-  // const fiveOptions = [
-  //   { id: 1, text: "매우 아니다" },
-  //   { id: 2, text: "아니다" },
-  //   { id: 3, text: "보통이다" },
-  //   { id: 4, text: "그렇다" },
-  //   { id: 5, text: "매우 그렇다" },
-  // ];
+  const fiveOptions = [
+    { id: 1, context: "매우 아니다" },
+    { id: 2, context: "아니다" },
+    { id: 3, context: "보통이다" },
+    { id: 4, context: "그렇다" },
+    { id: 5, context: "매우 그렇다" },
+  ];
 
   const addInitialQuestions = (initialQuestions) => {
     initialQuestions.forEach((q, idx) => {
@@ -94,13 +94,13 @@ function SurveyCreateFormBody({
     <div className="w-100 d-flex flex-column survey-form-body mt-3">
       {paintQuestions}
       <div className="p-2 d-flex justify-content-center gap-2 mt-3">
-        {/* <button
+        <button
           className="btn btn-primary d-flex align-items-center"
           onClick={() => handleQuestionAdd(0, fiveOptions)}
         >
           <span>5지선다</span>
           <span className="material-icons">add_circle_outline</span>
-        </button> */}
+        </button>
         <button
           className="btn btn-primary d-flex align-items-center"
           onClick={() => handleQuestionAdd(0)}

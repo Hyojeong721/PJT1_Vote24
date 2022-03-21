@@ -13,3 +13,11 @@
 .navItemUserHover:hover {
   color: #ffc107 !important;
 }
+.itme {
+  color: red;
+  text-align: center;
+}
+
+.navDropDown {
+  min-width: 100px;
+}

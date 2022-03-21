@@ -36,17 +36,6 @@ function NoticeDetailUser({ code, noticeDetail }) {
         </div>
       </div>
       <div className="user-detail-section border-bottom d-flex flex-column p-5">
-        <div>
-          {context &&
-            context.split("\n").map((line, idx) => {
-              return (
-                <span key={idx}>
-                  {line}
-                  <br />
-                </span>
-              );
-            })}
-        </div>
         {image && (
           <div className={(styles.imageContainer, "mx-auto")}>
             <Image
@@ -59,6 +48,17 @@ function NoticeDetailUser({ code, noticeDetail }) {
             />
           </div>
         )}
+        <div>
+          {context &&
+            context.split("\n").map((line, idx) => {
+              return (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              );
+            })}
+        </div>
       </div>
       <Link href={`/user/${code}/notice`} passHref>
         <button type="button" className="btn user-detail-to-list-button m-3">
@@ -96,7 +96,7 @@ export async function getServerSideProps({ params }) {
   const code = params.code;
   const nId = params.id;
 
-  const GET_HOSPITAL_ID_BY_CODE = `http://i6a205.p.ssafy.io:8000/api/code/${code}`;
+  const GET_HOSPITAL_ID_BY_CODE = `${process.env.NEXT_PUBLIC_SERVER}/api/code/${code}`;
   const { id } = await axios
     .post(GET_HOSPITAL_ID_BY_CODE)
     .then((res) => res.data)
@@ -112,7 +112,7 @@ export async function getServerSideProps({ params }) {
     };
   }
 
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/user/notice/${id}/${nId}`;
+  const NOTICE_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/user/notice/${id}/${nId}`;
   const noticeDetail = await axios
     .get(NOTICE_DETAIL_URL)
     .then((res) => {

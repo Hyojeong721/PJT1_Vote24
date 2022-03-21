@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DateForm from "../DateForm";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Prev from "../Prev";
 import Next from "../Next";
 import cn from "classnames";
 import ct from "../../styles/detail.module.css";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const EventDetailItem = ({ id, url }) => {
-  const router = useRouter();
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -41,11 +41,17 @@ const EventDetailItem = ({ id, url }) => {
         },
       })
       .then((res) => {
+        toast.success("이벤트 삭제 완료!", {
+          autoClose: 3000,
+        });
         console.log("delete성공", res);
         router.push("/event");
       })
       .catch((error) => {
         console.log("delete실패", error);
+        toast.error("이벤트 삭제 실패!", {
+          autoClose: 3000,
+        });
       });
   };
 
@@ -95,7 +101,7 @@ const EventDetailItem = ({ id, url }) => {
         </div>
       </div>
       <div name="내용" className={(cn(ct.contentBody), "m-3")}>
-        <div>
+        <div className="d-flex justify-content-center">
           {data.attachment && (
             <Image
               src={data.image}
@@ -109,9 +115,9 @@ const EventDetailItem = ({ id, url }) => {
         </div>
         <div>
           {data.context &&
-            data.context.split("\n").map((line) => {
+            data.context.split("\n").map((line, idx) => {
               return (
-                <span key={line}>
+                <span key={idx}>
                   {line}
                   <br />
                 </span>

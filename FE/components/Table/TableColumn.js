@@ -1,22 +1,18 @@
 import React from "react";
 import Link from "next/link";
 
-const TableColumn = ({ fixed, content, url }) => {
+const TableColumn = ({ fixed, content, name, id }) => {
   if (fixed & (fixed == 1)) {
     return (
-      <td className="table-column">
-        <Link href={url} passHref>
-          <a>[고정]</a>
-        </Link>
-      </td>
+      <Link href={`/${name}/${id}`}>
+        <td className="table-column">[고정]</td>
+      </Link>
     );
   }
   return (
-    <td className="table-column">
-      <Link href={url} passHref>
-        <a>{content}</a>
-      </Link>
-    </td>
+    <Link href={`/${name}/${id}`}>
+      <td className="table-column">{content}</td>
+    </Link>
   );
 };
 

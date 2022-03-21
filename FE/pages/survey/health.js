@@ -7,12 +7,13 @@ import Paging from "../../components/Paging";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const SURVEY_URL = "http://i6a205.p.ssafy.io:8000/api/survey";
+const SURVEY_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/survey`;
 
 function HealthSurvey() {
   const [dataList, setDataList] = useState([]);
+  const [dataListProp, setDataListProp] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
 
   const router = useRouter();
 
@@ -26,6 +27,7 @@ function HealthSurvey() {
         .get(SURVEY_HEALTH_URL)
         .then((res) => {
           setDataList(res.data);
+          setDataListProp(res.data);
         })
         .catch((error) => {
           console.log("건강설문 목록 get 실패", error);
@@ -43,13 +45,18 @@ function HealthSurvey() {
 
   return (
     <div>
-      <Header title="건강설문"></Header>
-      <div className="container">
-        <Link href={"service"}>
-          <a>만족도 설문으로 가기</a>
-        </Link>
+      <Header title="건강설문">
+        <></>
+      </Header>
+      <div className="container div-table shadow">
+        <div className="ms-3 mt-2">
+          <Link href={"service"}>
+            <a>만족도 설문으로 가기</a>
+          </Link>
+        </div>
         <SurveyList
           setDataList={setDataList}
+          dataListProp={dataListProp}
           dataList={currentPosts}
           category={"0"}
           url={SURVEY_URL}

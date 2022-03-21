@@ -6,7 +6,9 @@ function BackButton({ url }) {
   return (
     <Link href={url} passHref>
       <a className={cn(styles.backButton)}>
-        <span className="material-icons">arrow_back_ios</span>
+        <span className={cn(styles.backButtonIcon, "material-icons")}>
+          arrow_back_ios
+        </span>
       </a>
     </Link>
   );

@@ -1,0 +1,10 @@
+.btnUser {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ffc107;
+}
+
+.btnUser:hover {
+  background-color: #ffc107;
+  color: white;
+}

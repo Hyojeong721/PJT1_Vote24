@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 function PopularSurvery({ popularSurveys }) {
-  if (!popularSurveys.length) {
+  if (popularSurveys && !popularSurveys.length) {
     return (
       <div className="card">
         <div className="card-body">
@@ -13,8 +13,8 @@ function PopularSurvery({ popularSurveys }) {
   }
 
   const paintPopularSurveys = popularSurveys.map((s, idx) => (
-    <Link href={`/survey/${s.id}`}>
-      <tr key={s.id}>
+    <Link key={s.id} href={`/survey/${s.id}`}>
+      <tr>
         <th scope="row">{idx + 1}</th>
         <td>{s.title}</td>
         <td>{s.userId}</td>

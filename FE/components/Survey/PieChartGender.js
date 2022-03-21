@@ -48,7 +48,7 @@ const PieChartGender = ({ result }) => {
       ],
     };
     return (
-      <div style={{ height: "400px", width: "400px" }}>
+      <div style={{ maxHeight: "400px", maxWidth: "400px" }}>
         <Pie data={data} options={options} />
       </div>
     );

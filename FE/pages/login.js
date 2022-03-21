@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Header from "../components/Header";
 import Link from "next/link";
 
-const LOGIN_URL = "http://i6a205.p.ssafy.io:8000/api/login";
+const LOGIN_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/login`;
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -57,6 +57,7 @@ function Login() {
       .catch((err) => {
         toast.dismiss();
         toast.error(`${err.message}`);
+        console.log(err);
       });
   };
 

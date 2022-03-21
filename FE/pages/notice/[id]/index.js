@@ -6,7 +6,7 @@ import NoticeDetailItem from "../../../components/Notice/NoticeDetailItem";
 function NoticeDetail() {
   const { userInfo } = useSelector((state) => state.userStatus);
   const hospital_id = userInfo.id;
-  const NOTICE_DETAIL_URL = `http://i6a205.p.ssafy.io:8000/api/notice/${hospital_id}`;
+  const NOTICE_DETAIL_URL = `${process.env.NEXT_PUBLIC_SERVER}/api/notice/${hospital_id}`;
 
   return (
     <div>
