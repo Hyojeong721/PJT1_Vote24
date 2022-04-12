@@ -1,4 +1,4 @@
-# velog
+# 개발로그
 프로젝트 개발일지
 
 ## SSafeebean
