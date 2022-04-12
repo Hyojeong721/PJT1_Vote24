@@ -12,6 +12,6 @@ Vue.js
 Next.js
 
 ## 도와주개냥
-📅22.03.01 ~ 진행중
+📅22.03.01 ~ 22.04.08
 [유기동물 조회, 입양 커뮤니티](https://velog.io/@ase0574/%EB%8F%84%EC%99%80%EC%A3%BC%EA%B0%9C%EB%83%A5-%EA%B0%9C%EB%B0%9C%EC%9D%BC%EC%A7%80) - 개인 개발 일지로 이동(ssafy git lab에서 작업중 / 추후 코드 반출 요청 예정 )
 React.js
